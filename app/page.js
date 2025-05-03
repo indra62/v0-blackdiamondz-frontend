@@ -1,11 +1,11 @@
-import Header from "@/components/Header"
-import Hero from "@/components/Hero"
+import Header from "@/components/header"
+import Hero from "@/components/hero"
 import Properties from "@/components/properties"
-import Stats from "@/components/Stats"
-import AboutUs from "@/components/AboutUs"
-import ExploreCity from "@/components/ExploreCity"
-import OffMarket from "@/components/OffMarket"
-import Footer from "@/components/Footer"
+import Stats from "@/components/stats"
+import AboutUs from "@/components/about-us"
+import ExploreCity from "@/components/explore-city"
+import OffMarket from "@/components/off-market"
+import Footer from "@/components/footer"
 
 export default function Home() {
   return (

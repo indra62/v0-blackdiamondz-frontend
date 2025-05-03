@@ -1,5 +1,6 @@
-import Header from "@/components/Header"
-import Footer from "@/components/Footer"
+// Update import statements to use kebab-case
+import Header from "@/components/header"
+import Footer from "@/components/footer"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Image from "next/image"

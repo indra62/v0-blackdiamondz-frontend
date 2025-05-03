@@ -1,4 +1,4 @@
-import Header from "@/components/Header"
+import Header from "@/components/header"
 import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"

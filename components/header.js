@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { ChevronDown, ArrowRight } from "lucide-react"
 import { Archivo } from "next/font/google"
-import Menu from "./Menu"
+import Menu from "./menu"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 

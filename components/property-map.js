@@ -4,7 +4,8 @@ import { useState } from "react"
 import { Archivo, Taviraj } from "next/font/google"
 import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
-import Header from "@/components/Header"
+// Update import statements to use kebab-case
+import Header from "@/components/header"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
@@ -145,6 +146,7 @@ export default function PropertyMap({ onClose, propertyName, propertyAddress, pr
         <button
           onClick={onClose}
           className="flex items-center justify-center gap-2 px-8 py-3 border border-[#656565] text-[#bd9574] hover:bg-[#2c2920] transition-colors"
+          id="go-back-button"
         >
           <ArrowLeft size={20} />
           <span className={`${archivo.className} font-light`}>Go Back</span>

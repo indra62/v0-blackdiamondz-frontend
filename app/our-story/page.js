@@ -1,8 +1,7 @@
-import Header from "@/components/Header"
-import Stats from "@/components/Stats"
-import Footer from "@/components/Footer"
+import Header from "@/components/header"
+import Stats from "@/components/stats"
+import Footer from "@/components/footer"
 import Image from "next/image"
-import Link from "next/link"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 
@@ -19,8 +18,8 @@ export default function OurStoryPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Black_Diamondz__AUS_.png-LsiwGZYoWQV7ecrPlwMowKn6onTXYf.jpeg"
-            alt="Sydney Harbour Bridge and Opera House at sunset"
+            src="/sydney-harbour-sunset.png"
+            alt="Sydney Harbour with Bridge and city skyline at sunset"
             fill
             priority
             className="object-cover"
@@ -28,7 +27,8 @@ export default function OurStoryPage() {
           <div
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7))",
+              background:
+                "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, rgba(33, 31, 23, 0) 80.08%, #211F17 100%)",
             }}
           ></div>
         </div>
@@ -83,12 +83,18 @@ export default function OurStoryPage() {
           {/* Market with Us */}
           <div className="relative h-[400px] group overflow-hidden">
             <Image
-              src="/professional-man-suit.png"
-              alt="Market with Us"
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/7470e0820992d2b66bee3a39dccd98f3d6f6f899-pO9jU6S7LTdX93C7IH1hXoHZWqYhZC.png"
+              alt="Market with Us - Professional real estate agents"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
+              }}
+            ></div>
             <div className="absolute bottom-12 left-0 right-0 text-center">
               <h3 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}>
                 Market
@@ -101,12 +107,18 @@ export default function OurStoryPage() {
           {/* Buy Property */}
           <div className="relative h-[400px] group overflow-hidden">
             <Image
-              src="/placeholder.svg?key=prspf"
-              alt="Buy Property"
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/dd0d5c628ee9b692963e4e2d51ffa87ce6ad3dc4.jpg-uwutigNOWgSZLeKOxjdXKkkkVDZ2Q4.jpeg"
+              alt="Buy Property - Luxury interior design"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
+              }}
+            ></div>
             <div className="absolute bottom-12 left-0 right-0 text-center">
               <h3 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}>
                 Buy
@@ -119,12 +131,18 @@ export default function OurStoryPage() {
           {/* Sell Your Property */}
           <div className="relative h-[400px] group overflow-hidden">
             <Image
-              src="/placeholder.svg?key=w4gg4"
-              alt="Sell Your Property"
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/65fd9c5c7ee6f24274b8a8b17e499f2235fcf6ce.jpg-Cxfy81yKgquVoEpI7zbNPlLAUAmGO0.jpeg"
+              alt="Sell Your Property - Luxury oceanfront property"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
+              }}
+            ></div>
             <div className="absolute bottom-12 left-0 right-0 text-center">
               <h3 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}>
                 Sell Your
@@ -137,12 +155,18 @@ export default function OurStoryPage() {
           {/* Club Diamondz */}
           <div className="relative h-[400px] group overflow-hidden">
             <Image
-              src="/placeholder.svg?key=k3gaa"
-              alt="Club Diamondz"
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4fedfe79131693b98c63bbd11e70b55109f260c2-1jVyBWtyOJhBmdhU1P4eJStsD2e0wj.png"
+              alt="Club Diamondz - Exclusive membership"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
+              }}
+            ></div>
             <div className="absolute bottom-12 left-0 right-0 text-center">
               <h3 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}>
                 Club
@@ -178,58 +202,21 @@ export default function OurStoryPage() {
         </div>
       </section>
 
-      {/* Meet Our Team Section */}
-      <section className="py-16 relative">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image src="/placeholder.svg?key=7q9v2" alt="Our Team" fill className="object-cover" />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(0deg, rgba(33, 31, 23, 0.8), rgba(33, 31, 23, 0.8))",
-            }}
-          ></div>
+      {/* Meet Our Team Section - Updated to match Figma design */}
+      <section className="relative">
+        {/* Banner Image with Text Overlay */}
+        <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden">
+          <Image
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Black_Diamondz__AUS_-VJAPLCB6zzqHrlmryhniiFRL4tAU9s.png"
+            alt="Meet Our Team"
+            fill
+            priority
+            className="object-cover"
+          />
         </div>
 
-        {/* Content */}
-        <div className="relative container mx-auto px-4 text-center">
-          <h2 className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%] mb-8`}>
-            Meet Our Team
-          </h2>
-
-          {/* Diamond Separator */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-            <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-            <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-          </div>
-
-          {/* Team Button - This would link to a team page */}
-          <div className="mt-12">
-            <Link
-              href="/team"
-              className="inline-flex items-center text-[#BD9574] hover:text-[#e5c04b] transition-colors group border border-[#BD9574] hover:border-[#e5c04b] px-8 py-3"
-            >
-              <span className={`${archivo.className} mr-2 font-light text-base leading-6`}>View Our Team</span>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="group-hover:translate-x-1 transition-transform"
-              >
-                <path
-                  d="M5 12h14M12 5l7 7-7 7"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
-          </div>
-        </div>
+        {/* Team Content */}
+        <div className="bg-[#211f17] py-4"></div>
       </section>
 
       {/* Partners Section */}
@@ -360,7 +347,7 @@ export default function OurStoryPage() {
             <div className="bg-[#2c2920] p-6 flex flex-col items-center">
               <div className="w-24 h-24 mb-4 relative">
                 <Image
-                  src="/placeholder.svg?height=100&width=100&query=concierge realty logo"
+                  src="/placeholder.svg?key=9fp2t"
                   alt="Concierge Realty Services"
                   width={96}
                   height={96}
@@ -377,7 +364,7 @@ export default function OurStoryPage() {
             <div className="bg-[#2c2920] p-6 flex flex-col items-center">
               <div className="w-24 h-24 mb-4 relative">
                 <Image
-                  src="/placeholder.svg?height=100&width=100&query=propeller property advisors logo"
+                  src="/placeholder.svg?key=pmgt2"
                   alt="Propeller Property Advisors"
                   width={96}
                   height={96}

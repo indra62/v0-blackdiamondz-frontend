@@ -1,17 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import Header from "@/components/Header"
-import Footer from "@/components/Footer"
+import Header from "@/components/header"
+import Footer from "@/components/footer"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import { Inter } from "next/font/google"
 import Image from "next/image"
 import { MapPin } from "lucide-react"
 import Paddington from "@/components/paddington"
-import PropertyImagesGallery from "@/components/PropertyImagesGallery"
-import PropertyGridGallery from "@/components/PropertyGridGallery"
-import PropertyMap from "@/components/PropertyMap"
+import PropertyImagesGallery from "@/components/property-images-gallery"
+import PropertyGridGallery from "@/components/property-grid-gallery"
+import PropertyMap from "@/components/property-map"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })

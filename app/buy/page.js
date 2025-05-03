@@ -1,8 +1,8 @@
-import Header from "@/components/Header"
-import BuyFilters from "@/components/BuyFilters"
+import Header from "@/components/header"
+import BuyFilters from "@/components/buy-filters"
 import Properties from "@/components/properties"
-import ExploreCity from "@/components/ExploreCity"
-import Footer from "@/components/Footer"
+import ExploreCity from "@/components/explore-city"
+import Footer from "@/components/footer"
 
 export default function BuyPage() {
   return (
