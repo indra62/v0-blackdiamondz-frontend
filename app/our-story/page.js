@@ -36,7 +36,7 @@ export default function OurStoryPage() {
         {/* Hero Content */}
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
           <h1
-            className={`${taviraj.className} text-[#E2DBCC] text-[48px] md:text-[56px] font-light leading-[125%] tracking-[2px] mb-8`}
+            className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
           >
             Australia's most highly regarded
             <br />
@@ -51,13 +51,15 @@ export default function OurStoryPage() {
           </div>
 
           <p
-            className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-[150%] max-w-3xl mx-auto mb-4`}
+            className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
           >
             Our point of difference in a saturated market is our unmatched international database, specializing in
             high-end luxury residential property sales, investment properties and business solutions.
           </p>
 
-          <p className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-[150%] max-w-3xl mx-auto`}>
+          <p
+            className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto`}
+          >
             Our industry expertise, negotiating prowess and suite of integrated services ensure that we remain firmly at
             the forefront of the market, all while providing a bespoke and VIP client offering. With a long-term
             Chinese, Australian, and international client base, Black Diamondz Property and Monika Tu, Black Diamondz
@@ -184,7 +186,9 @@ export default function OurStoryPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             {/* Left Column */}
             <div>
-              <h2 className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-light leading-[120%] mb-8`}>
+              <h2
+                className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[100%] tracking-[0%] mb-8`}
+              >
                 Beyond selling properties, we're also helps large and small organizations in reaching their top
                 confidence to fly higher and grow better.
               </h2>
@@ -192,7 +196,9 @@ export default function OurStoryPage() {
 
             {/* Right Column */}
             <div>
-              <p className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-[150%] mb-6`}>
+              <p
+                className={`${archivo.className} text-[#BD9574] font-light text-base leading-[150%] tracking-[0px] mb-6`}
+              >
                 Black Diamondz PR & Marketing is fast becoming Australia's leading premium communications agency. As the
                 authority on the Chinese-Australian audience, we know how to leverage real insight to create branded
                 content, communications strategies and event experiences that resonate by engaging and meaningful way.
@@ -220,15 +226,15 @@ export default function OurStoryPage() {
       </section>
 
       {/* Partners Section */}
-      <section className="py-16">
+      <section className="py-16 bg-[#211f17]">
         <div className="container mx-auto px-4 text-center">
           <h2 className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%] mb-8`}>Partners</h2>
 
           {/* Diamond Separator */}
           <div className="flex items-center justify-center gap-4 mb-12">
-            <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+            <div className="w-36 h-[1px] bg-[#BD9574]"></div>
             <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-            <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+            <div className="w-36 h-[1px] bg-[#BD9574]"></div>
           </div>
 
           <p
@@ -239,163 +245,89 @@ export default function OurStoryPage() {
             seamless experience.
           </p>
 
-          {/* Partners Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            {/* Partner 1 */}
-            <div className="bg-[#2c2920] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 mb-4 relative">
-                <Image
-                  src="/placeholder.svg?key=45dks"
-                  alt="Premier Property Concierge"
-                  width={96}
-                  height={96}
-                  className="object-contain"
-                />
+          {/* Partners Grid - Single row with exact Figma dimensions */}
+          <div className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-7xl mx-auto justify-center">
+            {[
+              {
+                name: "Premier Property Concierge",
+                country: "Indonesia",
+                bgColor: "#1E1C3A",
+                imageKey: "r6e29",
+              },
+              {
+                name: "Invotive Property Management",
+                country: "Italy",
+                bgColor: "#E5E5E5",
+                imageKey: "s7gic",
+              },
+              {
+                name: "Energizer Property Services",
+                country: "Norway",
+                bgColor: "#D9E6F2",
+                imageKey: "k7rms",
+              },
+              {
+                name: "Dynamic Realty",
+                country: "Spain",
+                bgColor: "#1E2A3B",
+                imageKey: "hwe67",
+              },
+              {
+                name: "Vision Property",
+                country: "Brazil",
+                bgColor: "#D9B8A8",
+                imageKey: "xcyl1",
+              },
+              {
+                name: "Harmony Home Solutions",
+                country: "Nepal",
+                bgColor: "#F2F2F2",
+                imageKey: "mngzr",
+              },
+              {
+                name: "Genzzero Service",
+                country: "Thailand",
+                bgColor: "#D9C8A8",
+                imageKey: "sfecy",
+              },
+              {
+                name: "Peopeller Property Advisors",
+                country: "Finland",
+                bgColor: "#E5E5E5",
+                imageKey: "xuzo0",
+              },
+            ].map((partner, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center flex-shrink-0 w-[150.25px]"
+                style={{ height: "214px" }}
+              >
+                <div
+                  className="w-[150.25px] h-[150.25px] flex items-center justify-center"
+                  style={{ backgroundColor: partner.bgColor }}
+                >
+                  <Image
+                    src={`/generic-placeholder-graphic.png?key=${partner.imageKey}`}
+                    alt={partner.name}
+                    width={80}
+                    height={80}
+                    className="object-contain"
+                  />
+                </div>
+                <div className="h-[64px] flex flex-col justify-center">
+                  <h4
+                    className={`${archivo.className} text-[#FBF4E4] font-light text-[16px] leading-[150%] mt-4 mb-1 text-center px-1`}
+                  >
+                    {partner.name}
+                  </h4>
+                  <p
+                    className={`${archivo.className} text-[#BD9574] font-light text-[12px] leading-[100%] text-center`}
+                  >
+                    {partner.country}
+                  </p>
+                </div>
               </div>
-              <h4 className={`${archivo.className} text-[#BD9574] font-light text-base mb-1`}>
-                Premier Property Concierge
-              </h4>
-              <p className={`${archivo.className} text-[#656565] font-light text-sm`}>Established</p>
-            </div>
-
-            {/* Partner 2 */}
-            <div className="bg-[#2c2920] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 mb-4 relative">
-                <Image
-                  src="/placeholder.svg?key=xhfxz"
-                  alt="Innovative Property Management"
-                  width={96}
-                  height={96}
-                  className="object-contain"
-                />
-              </div>
-              <h4 className={`${archivo.className} text-[#BD9574] font-light text-base mb-1`}>
-                Innovative Property Management
-              </h4>
-              <p className={`${archivo.className} text-[#656565] font-light text-sm`}>1997</p>
-            </div>
-
-            {/* Partner 3 */}
-            <div className="bg-[#2c2920] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 mb-4 relative">
-                <Image
-                  src="/placeholder.svg?key=mtnyw"
-                  alt="Energizer Property Services"
-                  width={96}
-                  height={96}
-                  className="object-contain"
-                />
-              </div>
-              <h4 className={`${archivo.className} text-[#BD9574] font-light text-base mb-1`}>
-                Energizer Property Services
-              </h4>
-              <p className={`${archivo.className} text-[#656565] font-light text-sm`}>2003</p>
-            </div>
-
-            {/* Partner 4 */}
-            <div className="bg-[#2c2920] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 mb-4 relative">
-                <Image
-                  src="/placeholder.svg?key=npzpk"
-                  alt="Dynamic Realty Concierge"
-                  width={96}
-                  height={96}
-                  className="object-contain"
-                />
-              </div>
-              <h4 className={`${archivo.className} text-[#BD9574] font-light text-base mb-1`}>
-                Dynamic Realty Concierge
-              </h4>
-              <p className={`${archivo.className} text-[#656565] font-light text-sm`}>2010</p>
-            </div>
-
-            {/* Partner 5 */}
-            <div className="bg-[#2c2920] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 mb-4 relative">
-                <Image
-                  src="/placeholder.svg?key=90qw5"
-                  alt="Vision Property Partners"
-                  width={96}
-                  height={96}
-                  className="object-contain"
-                />
-              </div>
-              <h4 className={`${archivo.className} text-[#BD9574] font-light text-base mb-1`}>
-                Vision Property Partners
-              </h4>
-              <p className={`${archivo.className} text-[#656565] font-light text-sm`}>2015</p>
-            </div>
-
-            {/* Partner 6 */}
-            <div className="bg-[#2c2920] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 mb-4 relative">
-                <Image
-                  src="/placeholder.svg?key=bjdhz"
-                  alt="Harmony Home Solutions"
-                  width={96}
-                  height={96}
-                  className="object-contain"
-                />
-              </div>
-              <h4 className={`${archivo.className} text-[#BD9574] font-light text-base mb-1`}>
-                Harmony Home Solutions
-              </h4>
-              <p className={`${archivo.className} text-[#656565] font-light text-sm`}>2008</p>
-            </div>
-
-            {/* Partner 7 */}
-            <div className="bg-[#2c2920] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 mb-4 relative">
-                <Image
-                  src="/placeholder.svg?key=9fp2t"
-                  alt="Concierge Realty Services"
-                  width={96}
-                  height={96}
-                  className="object-contain"
-                />
-              </div>
-              <h4 className={`${archivo.className} text-[#BD9574] font-light text-base mb-1`}>
-                Concierge Realty Services
-              </h4>
-              <p className={`${archivo.className} text-[#656565] font-light text-sm`}>2012</p>
-            </div>
-
-            {/* Partner 8 */}
-            <div className="bg-[#2c2920] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 mb-4 relative">
-                <Image
-                  src="/placeholder.svg?key=pmgt2"
-                  alt="Propeller Property Advisors"
-                  width={96}
-                  height={96}
-                  className="object-contain"
-                />
-              </div>
-              <h4 className={`${archivo.className} text-[#BD9574] font-light text-base mb-1`}>
-                Propeller Property Advisors
-              </h4>
-              <p className={`${archivo.className} text-[#656565] font-light text-sm`}>2018</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="py-16 bg-[#2c2920]">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className={`${archivo.className} text-[#E2DBCC] font-light text-xl uppercase mb-8`}>
-            BLACK DIAMONDZ NEWSLETTER
-          </h2>
-
-          <div className="flex flex-col md:flex-row gap-4 max-w-xl mx-auto">
-            <input
-              type="email"
-              placeholder="Email"
-              className="flex-grow bg-transparent border border-[#656565] px-4 py-3 text-white focus:outline-none focus:border-[#BD9574]"
-            />
-            <button className="bg-[#BD9574] text-[#211f17] px-8 py-3 font-light hover:bg-[#d4af37] transition-colors">
-              Subscribe
-            </button>
+            ))}
           </div>
         </div>
       </section>
