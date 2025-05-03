@@ -1,174 +1,243 @@
+"use client"
+
+import { useState } from "react"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
+import { Inter } from "next/font/google"
 import Image from "next/image"
-import { Bed, Bath, Square, Home, MapPin, Eye } from "lucide-react"
+import { MapPin } from "lucide-react"
+import Paddington from "@/components/paddington"
+import PropertyImagesGallery from "@/components/PropertyImagesGallery"
+import PropertyGridGallery from "@/components/PropertyGridGallery"
+import PropertyMap from "@/components/PropertyMap"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const inter = Inter({ subsets: ["latin"], weight: ["500"] })
 
-export default function PropertyDetailPage() {
+export default function PropertyDetailPage({ params }) {
+  // Extract the property ID from params
+  const propertyId = params.id
+
+  // You would typically fetch property data based on this ID
+  // For now, we'll just log it and continue with the static content
+  console.log(`Displaying property with ID: ${propertyId}`)
+
+  const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", or "map"
+  const [selectedImageId, setSelectedImageId] = useState(1) // Default to first image
+
+  // Update the toggleViewMode function to accept an event parameter
+  const toggleViewMode = (event) => {
+    if (viewMode === "grid") {
+      setViewMode("gallery")
+    } else if (viewMode === "gallery" && event?.currentTarget?.dataset?.action === "grid") {
+      setViewMode("gridGallery")
+    } else {
+      setViewMode("grid")
+    }
+  }
+
+  // Update the switchToGridGallery function to accept an event parameter
+  const switchToGridGallery = (event) => {
+    setViewMode("gridGallery")
+  }
+
+  const switchToGallery = () => {
+    setViewMode("gallery")
+  }
+
+  const showMap = () => {
+    setViewMode("map")
+  }
+
+  const hideMap = () => {
+    setViewMode("grid")
+  }
+
+  // Handle clicking on an image in the grid gallery
+  const handleGridImageClick = (imageId) => {
+    setSelectedImageId(imageId) // Store which image was clicked
+    setViewMode("gallery") // Switch to gallery view
+  }
+
+  // If we're in map view, show only the map
+  if (viewMode === "map") {
+    return (
+      <PropertyMap
+        onClose={hideMap}
+        propertyName="Sunny Vista"
+        propertyAddress="5408/101 Bathurst Street, Sydney, 2000."
+        propertyCity="Sydney, 2000"
+      />
+    )
+  }
+
   return (
     <main className="min-h-screen bg-[#211f17]">
       <Header />
-
-      {/* Breadcrumb */}
-      <div className="container mx-auto px-4 py-6">
-        <div className="text-[#656565] text-sm">
-          <span>House | Beachfront</span>
-        </div>
-      </div>
-
-      {/* Property Title */}
-      <section className="container mx-auto px-4 pb-6">
-        <h1 className={`${taviraj.className} text-[#E8D09A] text-[48px] font-light leading-[60px] tracking-[2px] mb-2`}>
-          Sunny Vista
-        </h1>
-        <p className={`${archivo.className} text-[#E2DBCC] font-light text-base mb-2`}>
-          5408/101 Bathurst Street, Sydney, 2000.
-        </p>
-        <p className={`${archivo.className} text-[#E2DBCC] font-light text-base mb-4`}>Sydney, 2000</p>
-        <p className={`${archivo.className} text-[#BD9574] font-light text-xl mb-6`}>Auction: $ 730.000</p>
-
-        {/* Property Features */}
-        <div className="flex flex-wrap items-center gap-6 mb-6">
-          <div className="flex items-center gap-2 text-[#E2DBCC]">
-            <Bed size={20} />
-            <span className={`${archivo.className} font-light text-base`}>3</span>
-          </div>
-          <div className="flex items-center gap-2 text-[#E2DBCC]">
-            <Bath size={20} />
-            <span className={`${archivo.className} font-light text-base`}>5</span>
-          </div>
-          <div className="flex items-center gap-2 text-[#E2DBCC]">
-            <Home size={20} />
-            <span className={`${archivo.className} font-light text-base`}>1</span>
-          </div>
-          <div className="flex items-center gap-2 text-[#E2DBCC]">
-            <Square size={20} />
-            <span className={`${archivo.className} font-light text-base`}>8</span>
-          </div>
-          <div className="flex items-center gap-2 text-[#E2DBCC]">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16M9 8h1m5 0h1M9 16h1m5 0h1"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className={`${archivo.className} font-light text-base`}>8</span>
-          </div>
-          <div className="flex items-center gap-2 text-[#E2DBCC]">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className={`${archivo.className} font-light text-base`}>2</span>
+      <div className="container mx-auto px-4">
+        {/* Breadcrumb */}
+        <div className="py-6">
+          <div className="text-[#e2dbcc] text-sm">
+            <span>House | Beachfront</span>
           </div>
         </div>
 
-        {/* Map Button */}
-        <button className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#BD9574] hover:bg-[#2c2920] transition-colors mb-8">
-          <MapPin size={20} />
-          <span className={`${archivo.className} font-light text-base`}>See map</span>
-        </button>
-      </section>
+        {/* Main Property Content */}
+        <div className="flex mb-16">
+          {/* Left Column - Property Info */}
+          <div
+            style={{
+              width: 420,
+              maxWidth: "420px",
+              gap: "20px",
+              paddingRight: "20px",
+              paddingBottom: "60px",
+            }}
+          >
+            {/* Property Title */}
+            <h1
+              className={`${taviraj.className} text-[#bd9574] text-[32px] font-normal leading-[100%] tracking-[0px] mb-4`}
+            >
+              Sunny Vista
+            </h1>
 
-      {/* Property Images */}
-      <section className="container mx-auto px-4 pb-12">
-        <div className="grid grid-cols-2 grid-rows-2 gap-2 h-[600px]">
-          <div className="row-span-2 relative">
-            <Image
-              src="/luxury-beachfront-aerial.png"
-              alt="Luxury beachfront property aerial view"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="relative">
-            <Image
-              src="/luxury-ocean-bedroom.png"
-              alt="Luxury bedroom with ocean view"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="relative">
-            <Image
-              src="/placeholder.svg?key=21zqr"
-              alt="Luxury wooden ceiling architecture"
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
+            <p
+              className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
+            >
+              5408/101 Bathurst Street, Sydney, 2000.
+            </p>
+            <p
+              className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-4`}
+            >
+              Sydney, 2000
+            </p>
 
-        <div className="grid grid-cols-2 gap-2 mt-2">
-          <div className="relative h-[200px]">
-            <Image src="/placeholder.svg?key=12e9h" alt="Luxury property beach view" fill className="object-cover" />
-          </div>
-          <div className="relative h-[200px]">
-            <Image
-              src="/luxury-ocean-view-interior.png"
-              alt="Luxury property interior with ocean view"
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
+            <p className="mb-6">
+              <span
+                className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+              >
+                Auction:
+              </span>{" "}
+              <span
+                className={`${archivo.className} text-[#bd9574] font-[700] text-[16px] leading-[150%] tracking-[0px]`}
+              >
+                $ 730.000
+              </span>
+            </p>
 
-        {/* Image Controls */}
-        <div className="flex justify-between items-center mt-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-[#E2DBCC]">
-              <Eye size={20} />
-              <span className={`${archivo.className} font-light text-base`}>21</span>
+            {/* Property Features */}
+            <div className="flex flex-wrap items-center gap-6 mb-8">
+              <div className="flex items-center gap-2 text-[#e2dbcc]">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
+                    stroke="#e2dbcc"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span
+                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
+                >
+                  3
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-[#e2dbcc]">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M4 12h16a1 1 0 011 1v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2a1 1 0 011-1zm4-9v5m4-2v2m4-4v7"
+                    stroke="#e2dbcc"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span
+                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
+                >
+                  5
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-[#e2dbcc]">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M5 17h14M5 17a2 2 0 01-2-2V9m2 8a2 2 0 002 2h10a2 2 0 002-2M5 17V7a2 2 0 012-2h10a2 2 0 012 2v10m0 0V9m0 0H3"
+                    stroke="#e2dbcc"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span
+                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
+                >
+                  1
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-[#e2dbcc]">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M3 21h18M9 8h1m5 0h1M9 16h1m5 0h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"
+                    stroke="#e2dbcc"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span
+                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
+                >
+                  6
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-[#e2dbcc]">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M4 21V8a2 2 0 012-2h12a2 2 0 012 2v13M2 10h20M10 2v6m4-6v6"
+                    stroke="#e2dbcc"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span
+                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
+                >
+                  8
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-[#e2dbcc]">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
+                    stroke="#e2dbcc"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span
+                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
+                >
+                  2
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-[#E2DBCC]">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M7 11v8a1 1 0 001 1h8a1 1 0 001-1v-8M16 7V5a1 1 0 00-1-1h-6a1 1 0 00-1 1v2M12 12v6M9 9h6M17 5H7M7 9H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V10a1 1 0 00-1-1h-3"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className={`${archivo.className} font-light text-base`}>3</span>
-            </div>
-            <div className="flex items-center gap-2 text-[#E2DBCC]">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M4 21v-13M4 8l8-5 8 5M4 16h2M4 12h5M19 21v-13"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className={`${archivo.className} font-light text-base`}>2</span>
-            </div>
-          </div>
 
-          <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#d4af37] hover:text-[#d4af37] transition-colors">
-            View All Media
-          </button>
-        </div>
-      </section>
+            {/* Map Button */}
+            <button
+              onClick={showMap}
+              className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
+            >
+              <MapPin size={20} />
+              <span className={`${archivo.className} font-light text-base`}>See map</span>
+            </button>
 
-      {/* Property Description */}
-      <section className="container mx-auto px-4 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-          <div className="md:col-span-2">
-            <p className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-7 mb-6`}>
+            {/* Property Description */}
+            <p className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}>
               The sky's the limit in this luxurious penthouse, offering panoramic views over the world's most beautiful
               harbour, providing a captivating backdrop to all three levels. The crowning glory of the landmark Lumiere,
               the three-storey penthouse has been conceived as a spectacular skyhome with an exceptional layout and
@@ -177,227 +246,147 @@ export default function PropertyDetailPage() {
             </p>
           </div>
 
-          <div className="bg-[#2c2920] p-6">
-            <h3 className={`${archivo.className} text-white text-lg font-normal mb-4`}>Don't miss it !</h3>
-            <p className={`${archivo.className} text-[#E2DBCC] font-light text-sm mb-4`}>
-              Follow the updates about this property by subscribing to our newsletter and stay in the loop with news &
-              updates.
-            </p>
-            <div className="flex flex-col gap-4">
-              <input
-                type="email"
-                placeholder="Email"
-                className="bg-transparent border border-[#656565] p-3 text-white focus:outline-none focus:border-[#BD9574]"
-              />
-              <button className="bg-[#BD9574] text-[#211f17] py-3 hover:bg-[#d4af37] transition-colors">
-                Subscribe
-              </button>
-            </div>
+          {/* Property Images - Right Column */}
+          <div className="flex-1">
+            {viewMode === "grid" ? (
+              /* Grid View - Original Layout */
+              <div className="grid grid-cols-2" style={{ gap: "8px" }}>
+                {/* Column 1 (Left) */}
+                <div className="flex flex-col gap-2">
+                  {/* Row 1: Large Image */}
+                  <div className="relative h-64">
+                    <Image
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fb4b9176ce0784c618052fed8acd9206d51de44a-IrssQQqUj5REJrtEGwxbOkZFhcbMY4.png"
+                      alt="Luxury cliff-side villa with infinity pool overlooking ocean"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {/* Row 2: Two Half-Size Images */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="relative h-40">
+                      <Image
+                        src="/luxury-ocean-bedroom.png"
+                        alt="Luxury bedroom with ocean view"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="relative h-40">
+                      <Image
+                        src="/luxury-spa-interior.png"
+                        alt="Luxury property spa interior"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Don't Miss It Section */}
+                  <div className="mt-4">
+                    <h3
+                      className={`${archivo.className} text-[#E2DBCC] text-[20px] font-[400] leading-[100%] tracking-[0%] mb-2`}
+                    >
+                      Don't miss it !
+                    </h3>
+                    <p
+                      className={`${inter.className} text-[#757575] font-[500] text-[12px] leading-[150%] tracking-[-1.1%] mb-4`}
+                    >
+                      Follow the updates about this property by subscribing to our newsletter and stay in the loop with
+                      news & updates.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Column 2 (Right) */}
+                <div className="flex flex-col gap-2">
+                  {/* Row 1: Image */}
+                  <div className="relative h-64">
+                    <Image
+                      src="/luxury-ocean-view-interior.png"
+                      alt="Luxury property interior with ocean view"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {/* Row 2: Image */}
+                  <div className="relative h-40">
+                    <Image
+                      src="/luxury-beachfront-aerial.png"
+                      alt="Luxury beachfront aerial view"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {/* Row 3: Icons and All Media Button */}
+                  <div className="flex items-center justify-end mt-4">
+                    <div className="flex items-center gap-6 mr-6">
+                      <div className="flex items-center gap-2 text-[#bd9574]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H17.5L13.96 12.29Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        <span className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}>
+                          21
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[#bd9574]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M17 10.5V7C17 6.45 16.55 6 16 6H4C3.45 6 3 6.45 3 7V17C3 17.55 3.45 18 4 18H16C16.55 18 17 17.55 17 17V13.5L21 17.5V6.5L17 10.5Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        <span className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}>
+                          3
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[#bd9574]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M20 2H4C2.9 2 2 2.9 2 4V20C2 21.1 2.9 22 4 22H20C21.1 22 22 21.1 22 20V4C22 2.9 21.1 2 20 2Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        <span className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}>
+                          2
+                        </span>
+                      </div>
+                    </div>
+                    {/* Update the button onClick handler to pass the event */}
+                    <button
+                      onClick={(e) => toggleViewMode(e)}
+                      className="px-6 py-3 border border-[#bd9574] text-[#bd9574] hover:border-[#d4af37] hover:text-[#d4af37] transition-colors"
+                    >
+                      View All Media
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : viewMode === "gallery" ? (
+              /* Gallery View - Replaces the grid when "View All Media" is clicked */
+              <div className="w-full h-[500px]">
+                <PropertyImagesGallery
+                  onClose={toggleViewMode}
+                  onGridView={switchToGridGallery}
+                  initialImageId={selectedImageId}
+                />
+              </div>
+            ) : (
+              /* Grid Gallery View - Replaces the gallery when "Grid" button is clicked */
+              <div className="w-full h-[500px] relative">
+                <PropertyGridGallery onClose={() => setViewMode("grid")} onImageClick={handleGridImageClick} />
+              </div>
+            )}
           </div>
         </div>
-      </section>
-
-      {/* Paddington Stats */}
-      <section className="py-16 border-t border-[#656565]/30">
-        <div className="container mx-auto px-4">
-          <h2
-            className={`${taviraj.className} text-[#E8D09A] text-[48px] font-light leading-[60px] tracking-[2px] text-center mb-8`}
-          >
-            Paddington Stats
-          </h2>
-
-          {/* Diamond Separator */}
-          <div className="flex items-center justify-center gap-4 mb-12">
-            <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-            <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-            <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-          </div>
-
-          <p
-            className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 max-w-2xl mx-auto text-center mb-16`}
-          >
-            On behalf of the Black Diamondz team we thank you for making the first step in looking for a preferred
-            agency to secure the sale of your property asset.
-          </p>
-
-          {/* Stats Row 1 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {/* Median Sale Price */}
-            <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M3 3v18h18M3 17l5-5 4 4 8-8"
-                    stroke="#BD9574"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className={`${archivo.className} text-[#E2DBCC] font-light text-sm mb-2 text-center`}>
-                Median Sale Price (12 mo)
-              </div>
-              <div className={`${taviraj.className} text-[#BD9574] text-4xl font-normal mb-2 text-center`}>$3.34M</div>
-              <div className={`${archivo.className} text-[#656565] font-light text-sm text-center`}>
-                in January 2025
-              </div>
-            </div>
-
-            {/* Annual Change */}
-            <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M12 3a9 9 0 109 9 9 9 0 00-9-9zm0 16a7 7 0 117-7 7 7 0 01-7 7z"
-                    stroke="#BD9574"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12 7v5l3 3"
-                    stroke="#BD9574"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className={`${archivo.className} text-[#E2DBCC] font-light text-sm mb-2 text-center`}>
-                Annual Change in Median Price (5 yrs)
-              </div>
-              <div className={`${taviraj.className} text-[#BD9574] text-4xl font-normal mb-2 text-center`}>28.1%</div>
-              <div className={`${archivo.className} text-[#656565] font-light text-sm text-center`}>
-                in January 2025
-              </div>
-            </div>
-
-            {/* Properties Sold */}
-            <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6a3 3 0 116 0v6"
-                    stroke="#BD9574"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className={`${archivo.className} text-[#E2DBCC] font-light text-sm mb-2 text-center`}>
-                Properties Sold (12 mo)
-              </div>
-              <div className={`${taviraj.className} text-[#BD9574] text-4xl font-normal mb-2 text-center`}>234</div>
-              <div className={`${archivo.className} text-[#656565] font-light text-sm text-center`}>
-                in November 2024
-              </div>
-            </div>
-          </div>
-
-          {/* Stats Row 2 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Median Days on Market */}
-            <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                    stroke="#BD9574"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className={`${archivo.className} text-[#E2DBCC] font-light text-sm mb-2 text-center`}>
-                Median Days on Market (12 mo)
-              </div>
-              <div className={`${taviraj.className} text-[#BD9574] text-4xl font-normal mb-2 text-center`}>43</div>
-              <div className={`${archivo.className} text-[#656565] font-light text-sm text-center`}>
-                in November 2024
-              </div>
-            </div>
-
-            {/* Median Asking Rent */}
-            <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M3 21h18M5 21V8l7-5 7 5v13M9 9h6M9 13h6M9 17h6"
-                    stroke="#BD9574"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className={`${archivo.className} text-[#E2DBCC] font-light text-sm mb-2 text-center`}>
-                Median Asking Rent (12 mo)
-              </div>
-              <div className={`${taviraj.className} text-[#BD9574] text-4xl font-normal mb-2 text-center`}>$1350</div>
-              <div className={`${archivo.className} text-[#656565] font-light text-sm text-center`}>
-                in January 2025
-              </div>
-            </div>
-
-            {/* Avg. Hold Period */}
-            <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M12 21a9 9 0 100-18 9 9 0 000 18z"
-                    stroke="#BD9574"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12 7v5l3 3"
-                    stroke="#BD9574"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className={`${archivo.className} text-[#E2DBCC] font-light text-sm mb-2 text-center`}>
-                Avg. Hold Period (12 mo)
-              </div>
-              <div className={`${taviraj.className} text-[#BD9574] text-4xl font-normal mb-2 text-center`}>
-                12.2 yrs
-              </div>
-              <div className={`${archivo.className} text-[#656565] font-light text-sm text-center`}>
-                in November 2024
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="py-16 bg-[#2c2920]">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <h3 className={`${archivo.className} text-white text-xl font-light mb-4 md:mb-0`}>
-              BLACK DIAMONDZ NEWSLETTER
-            </h3>
-
-            <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-              <input
-                type="email"
-                placeholder="Email"
-                className="bg-transparent border border-[#656565] p-4 text-white focus:outline-none focus:border-[#BD9574] w-full md:w-[320px]"
-              />
-              <button className="bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#d4af37] transition-colors">
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      </div>
+      <Paddington />
       <Footer />
     </main>
   )

@@ -304,7 +304,11 @@ export default function Properties({ showFilters = true, showNavigation = true, 
         {/* Properties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {displayProperties.map((property) => (
-            <div key={property.id} className="bg-[#211f17] overflow-hidden">
+            <Link
+              key={property.id}
+              href={`/property/${property.id}`}
+              className="block bg-[#211f17] overflow-hidden hover:opacity-95 transition-opacity"
+            >
               {/* Image Container */}
               <div className="relative h-[200px] mb-4">
                 <Image
@@ -424,7 +428,10 @@ export default function Properties({ showFilters = true, showNavigation = true, 
 
               {/* Action Buttons */}
               <div className="grid grid-cols-2 gap-0">
-                <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-r-0 border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
+                <button
+                  className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-r-0 border-[#656565]/20 hover:bg-[#1A1814] transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M9 20l-5.447-5.447a8 8 0 1113.894 0L12 20l-3-3z"
@@ -443,7 +450,10 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                   </svg>
                   <span className="font-light text-[16px]">See map</span>
                 </button>
-                <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
+                <button
+                  className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-[#656565]/20 hover:bg-[#1A1814] transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M12 11a4 4 0 100-8 4 4 0 000 8zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"
@@ -456,7 +466,7 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                   <span className="font-light text-[16px]">Agent</span>
                 </button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
