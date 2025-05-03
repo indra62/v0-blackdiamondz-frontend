@@ -243,13 +243,24 @@ export default function OurTeamPage() {
         {/* Team Grid - Single Row with Overflow */}
         <div className="flex overflow-x-auto pb-8 gap-6 max-w-[1200px] mx-auto hide-scrollbar">
           {currentTeamMembers.map((member) => (
-            <div key={member.id} className="flex-none w-[150px]">
+            <Link
+              key={member.id}
+              href={`/team/${member.name.toLowerCase().replace(/\s+/g, "-")}`}
+              className="flex-none w-[150px] group cursor-pointer"
+            >
               <div className="relative w-[150px] h-[200px] mb-4 overflow-hidden">
-                <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover" />
+                <Image
+                  src={member.image || "/placeholder.svg"}
+                  alt={member.name}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
-              <h4 className="text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-1 text-center">{member.name}</h4>
+              <h4 className="text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-1 text-center group-hover:text-[#BD9574] transition-colors">
+                {member.name}
+              </h4>
               <p className="text-[#BD9574] font-light text-[14px] leading-[150%] text-center">{member.title}</p>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -388,20 +399,22 @@ export default function OurTeamPage() {
           <div className="flex flex-col md:flex-row justify-center items-start">
             {/* First Member */}
             <div className="flex flex-col items-center md:items-end text-center md:text-right md:w-1/2 md:pr-12 mb-16 md:mb-0">
-              <div className="w-[400px] h-[400px] mb-8 overflow-hidden">
-                <Image
-                  src="/monika-tu.png"
-                  alt="Monika (Yanling) Tu"
-                  width={400}
-                  height={400}
-                  className="object-cover"
-                />
-              </div>
-              <h3
-                className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-normal leading-[100%] tracking-[0px] mb-2`}
-              >
-                Monika (Yanling) Tu
-              </h3>
+              <Link href={`/team/monika-tu`} className="group cursor-pointer">
+                <div className="w-[400px] h-[400px] mb-8 overflow-hidden">
+                  <Image
+                    src="/monika-tu.png"
+                    alt="Monika (Yanling) Tu"
+                    width={400}
+                    height={400}
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <h3
+                  className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-normal leading-[100%] tracking-[0px] mb-2 group-hover:text-[#BD9574] transition-colors`}
+                >
+                  Monika (Yanling) Tu
+                </h3>
+              </Link>
               <p
                 className={`${archivo.className} text-[#E2DBCC] text-[20px] font-normal leading-[100%] tracking-[0px] mb-6 text-center`}
               >
@@ -427,14 +440,22 @@ export default function OurTeamPage() {
 
             {/* Second Member */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left md:w-1/2 md:pl-12">
-              <div className="w-[400px] h-[400px] mb-8 overflow-hidden">
-                <Image src="/jad-khatar.png" alt="Jad Khatar" width={400} height={400} className="object-cover" />
-              </div>
-              <h3
-                className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-normal leading-[100%] tracking-[0px] mb-2`}
-              >
-                Jad Khatar
-              </h3>
+              <Link href={`/team/jad-khatar`} className="group cursor-pointer">
+                <div className="w-[400px] h-[400px] mb-8 overflow-hidden">
+                  <Image
+                    src="/jad-khatar.png"
+                    alt="Jad Khatar"
+                    width={400}
+                    height={400}
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <h3
+                  className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-normal leading-[100%] tracking-[0px] mb-2 group-hover:text-[#BD9574] transition-colors`}
+                >
+                  Jad Khatar
+                </h3>
+              </Link>
               <p
                 className={`${archivo.className} text-[#E2DBCC] text-[20px] font-normal leading-[100%] tracking-[0px] mb-6 text-center`}
               >
