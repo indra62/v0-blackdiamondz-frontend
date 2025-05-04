@@ -38,8 +38,13 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Copyright */}
-            <div className="font-light text-[14px] text-white opacity-80">© 2005–2025 • Black Diamondz Corp.</div>
+            {/* Copyright - Links to Directus Test Page */}
+            <Link
+              href="/directus-test"
+              className="font-light text-[14px] text-white opacity-80 hover:opacity-100 cursor-pointer transition-opacity"
+            >
+              © 2005–2025 • Black Diamondz Corp.
+            </Link>
           </div>
 
           {/* Right Column - Newsletter, Contact and Social Media */}
