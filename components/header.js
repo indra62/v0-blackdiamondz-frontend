@@ -12,7 +12,7 @@
  */
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ChevronDown, ArrowRight } from "lucide-react"
 import { Archivo } from "next/font/google"
@@ -24,12 +24,17 @@ export default function Header() {
   // State management for navigation tabs, dropdowns and menu visibility
   const [activeTab, setActiveTab] = useState("buy")
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
-  const [selectedLanguage, setSelectedLanguage] = useState({ name: "English", country: "UK", flag: "🇬🇧" })
+  const [selectedLanguage, setSelectedLanguage] = useState({
+    name: "English",
+    country: "UK",
+    flag: "🇬🇧",
+    value: "en",
+  })
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const languages = [
-    { name: "English", country: "UK", flag: "🇬🇧" },
-    { name: "中文", country: "CN", flag: "🇨🇳" },
+    { name: "English", country: "UK", flag: "🇬🇧", value: "en" },
+    { name: "中文", country: "CN", flag: "🇨🇳", value: "cn" },
   ]
 
   const toggleLanguageDropdown = () => {
@@ -38,12 +43,29 @@ export default function Header() {
 
   const selectLanguage = (language) => {
     setSelectedLanguage(language)
+    localStorage.setItem("language", language.value)
     setIsLanguageDropdownOpen(false)
+
+    window.location.reload()
   }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("language")
+    if (savedLanguage) {
+      const foundLanguage = languages.find(
+        (lang) => lang.value === savedLanguage
+      )
+      if (foundLanguage) {
+        setSelectedLanguage(foundLanguage)
+      }
+    } else {
+      localStorage.setItem("language", "en")
+    }
+  }, [])
 
   return (
     <>
@@ -67,14 +89,18 @@ export default function Header() {
             {/* Location Section */}
             <div className="flex items-center px-6 border-r border-[#333] w-[220px]">
               <div className="flex flex-col w-full">
-                <span className="text-[16px] leading-[150%] font-light text-[#888]">Location</span>
+                <span className="text-[16px] leading-[150%] font-light text-[#888]">
+                  Location
+                </span>
               </div>
             </div>
 
             {/* Type Section */}
             <div className="flex items-center px-6 border-r border-[#333] w-[180px]">
               <div className="flex items-center justify-between w-full">
-                <span className="text-[16px] leading-[150%] font-light text-[#888]">Type</span>
+                <span className="text-[16px] leading-[150%] font-light text-[#888]">
+                  Type
+                </span>
                 <ChevronDown className="h-5 w-5 text-[#888]" />
               </div>
             </div>
@@ -82,7 +108,9 @@ export default function Header() {
             {/* Bedroom Section */}
             <div className="flex items-center px-6 border-r border-[#333] w-[180px]">
               <div className="flex items-center justify-between w-full">
-                <span className="text-[16px] leading-[150%] font-light text-[#888]">Bedroom</span>
+                <span className="text-[16px] leading-[150%] font-light text-[#888]">
+                  Bedroom
+                </span>
                 <ChevronDown className="h-5 w-5 text-[#888]" />
               </div>
             </div>
@@ -90,7 +118,9 @@ export default function Header() {
             {/* Value Section */}
             <div className="flex items-center px-6 border-r border-[#333] w-[180px]">
               <div className="flex items-center justify-between w-full">
-                <span className="text-[16px] leading-[150%] font-light text-[#888]">Value</span>
+                <span className="text-[16px] leading-[150%] font-light text-[#888]">
+                  Value
+                </span>
                 <ChevronDown className="h-5 w-5 text-[#888]" />
               </div>
             </div>
@@ -135,8 +165,12 @@ export default function Header() {
                     >
                       <span className="text-xl">{language.flag}</span>
                       <div className="flex flex-col items-start">
-                        <span className="text-[#BD9574] text-base font-light">{language.name}</span>
-                        <span className="text-[#BD9574] text-xs font-light">{language.country}</span>
+                        <span className="text-[#BD9574] text-base font-light">
+                          {language.name}
+                        </span>
+                        <span className="text-[#BD9574] text-xs font-light">
+                          {language.country}
+                        </span>
                       </div>
                     </button>
                   ))}
@@ -146,7 +180,10 @@ export default function Header() {
 
             {/* Menu Button */}
             <div className="flex items-center justify-center px-6 w-[80px]">
-              <button onClick={toggleMenu} className="text-[#d4af37] hover:text-[#FFE55C] transition-colors">
+              <button
+                onClick={toggleMenu}
+                className="text-[#d4af37] hover:text-[#FFE55C] transition-colors"
+              >
                 <div className="flex flex-col gap-2">
                   <div className="w-[32px] h-[1px] bg-current"></div>
                   <div className="w-[32px] h-[1px] bg-current"></div>
