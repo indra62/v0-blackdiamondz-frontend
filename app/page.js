@@ -9,7 +9,7 @@
  * @page
  */
 import Header from "@/components/header"
-import Hero from "@/components/hero"
+import HeroContainer from "@/components/hero-container"
 import Properties from "@/components/properties"
 import Stats from "@/components/stats"
 import AboutUs from "@/components/about-us"
@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#211f17]">
       <Header />
-      <Hero />
+      <HeroContainer />
       <Properties />
       <Stats />
       <AboutUs />

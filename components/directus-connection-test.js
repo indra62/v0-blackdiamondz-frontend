@@ -11,11 +11,11 @@ import { CheckCircle, XCircle, Loader2, RefreshCw } from "lucide-react"
 import Link from "next/link"
 
 export default function DirectusConnectionTest() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
-  const [data, setData] = useState<any>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [errorHint, setErrorHint] = useState<string | null>(null)
-  const [debugInfo, setDebugInfo] = useState<any>(null)
+  const [status, setStatus] = useState("idle")
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+  const [errorHint, setErrorHint] = useState(null)
+  const [debugInfo, setDebugInfo] = useState(null)
 
   const testConnection = async () => {
     try {
@@ -139,7 +139,7 @@ export default function DirectusConnectionTest() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {data.collections.map((collection: any, index: number) => (
+                    {data.collections.map((collection, index) => (
                       <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {collection.name}

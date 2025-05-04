@@ -12,7 +12,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
-import type { Property } from "@/app/api/directus"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
@@ -28,11 +27,11 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
   const [currentPage, setCurrentPage] = useState(0)
   const [selectedFilters, setSelectedFilters] = useState(["buy"])
   const [activeTab, setActiveTab] = useState("buy")
-  const [properties, setProperties] = useState<Property[]>([])
-  const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
-  const [favorites, setFavorites] = useState<string[]>([])
+  const [properties, setProperties] = useState([])
+  const [filteredProperties, setFilteredProperties] = useState([])
+  const [favorites, setFavorites] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState(null)
   const itemsPerPage = 4
 
   // Fetch properties from our API route that connects to Directus
