@@ -1,3 +1,12 @@
+/**
+ * Sell Page
+ *
+ * Information page for property sellers.
+ * Includes stats, property image gallery, and contact form.
+ *
+ * @page
+ */
+
 // Update import statements to use kebab-case
 import Header from "@/components/header"
 import Footer from "@/components/footer"
@@ -178,7 +187,8 @@ export default function SellPage() {
         </div>
       </section>
 
-      {/* Contact Form Section */}
+      {/* Contact form for property sellers
+      In production, this would submit to a CRM or email service */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">

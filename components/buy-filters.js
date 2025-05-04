@@ -1,3 +1,14 @@
+/**
+ * Buy Filters Component
+ *
+ * Specialized filter bar for the Buy page.
+ * Includes text and icon filters with active states.
+ *
+ * @component
+ */
+
+// Filter configuration
+// Each filter has an id, label, type, and optional icon and active state
 const filters = [
   {
     id: "buy",

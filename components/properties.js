@@ -7,6 +7,19 @@ import Image from "next/image"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 
+/**
+ * Properties Component
+ *
+ * Displays a grid of property listings with filtering capabilities.
+ * Supports pagination, favorites, and different view modes.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} props.showFilters - Whether to display the filter options
+ * @param {boolean} props.showNavigation - Whether to display pagination controls
+ * @param {number} props.propertyCount - Number of properties to display
+ */
+
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
@@ -218,6 +231,8 @@ export default function Properties({ showFilters = true, showNavigation = true, 
   const [favorites, setFavorites] = useState([])
   const itemsPerPage = 4
 
+  // Filter properties whenever selected filters change
+  // Reset to first page when filters change
   useEffect(() => {
     const newFilteredProperties = properties.filter((property) =>
       selectedFilters.every((filter) => property.categories.includes(filter)),
@@ -226,6 +241,7 @@ export default function Properties({ showFilters = true, showNavigation = true, 
     setCurrentPage(0)
   }, [selectedFilters])
 
+  // Calculate which properties to show based on pagination and count limits
   const displayProperties = showNavigation
     ? filteredProperties.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
     : filteredProperties.slice(0, propertyCount)
@@ -240,6 +256,12 @@ export default function Properties({ showFilters = true, showNavigation = true, 
     setCurrentPage((prev) => (prev < totalPages - 1 ? prev + 1 : prev))
   }
 
+  /**
+   * Toggles a filter on or off
+   * Special handling for mutually exclusive filters (buy/sell)
+   *
+   * @param {string} filterId - ID of the filter to toggle
+   */
   const toggleFilter = (filterId) => {
     if (filterId === "buy" || filterId === "sell") {
       setActiveTab(filterId)

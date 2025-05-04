@@ -1,3 +1,12 @@
+/**
+ * Signup Page
+ *
+ * User registration page with multi-field signup form.
+ * Split layout with image on the left and form on the right.
+ *
+ * @page
+ */
+
 import Header from "@/components/header"
 import Link from "next/link"
 import Image from "next/image"
@@ -27,6 +36,8 @@ export default function SignupPage() {
           <div className="w-full max-w-md">
             <h1 className={`${taviraj.className} text-white text-5xl mb-12 text-center`}>Join the Club!</h1>
 
+            {/* Registration form with validation */}
+            {/* In production, this would connect to an auth service or API */}
             <form>
               <div className="flex flex-col">
                 <div className="flex w-full">

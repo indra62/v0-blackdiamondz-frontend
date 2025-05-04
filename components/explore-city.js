@@ -1,3 +1,13 @@
+/**
+ * Explore City Component
+ *
+ * Horizontal scrollable gallery of city cards with hover effects.
+ * Each card shows a city image with name overlay.
+ *
+ * Uses a fixed-width container with overflow to create the scrollable effect.
+ *
+ * @component
+ */
 import { Taviraj } from "next/font/google"
 import Image from "next/image"
 
@@ -32,6 +42,8 @@ const cities = [
 ]
 
 export default function ExploreCity() {
+  // Fixed width container to show exactly 2.5 cards at once
+  // Creates a visual cue that there's more content to scroll
   return (
     <div className={`${taviraj.className} bg-[#211f17] py-16`}>
       <div className="container mx-auto px-4">

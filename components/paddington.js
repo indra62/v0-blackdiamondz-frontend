@@ -1,3 +1,11 @@
+/**
+ * Paddington Stats Component
+ *
+ * Displays real estate statistics for the Paddington area.
+ * Organized in a responsive grid with icons and values.
+ *
+ * @component
+ */
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 

@@ -1,3 +1,16 @@
+/**
+ * Property Detail Page
+ *
+ * Dynamic page that displays detailed information about a specific property.
+ * Supports different view modes for property images (grid, gallery, map).
+ *
+ * Uses dynamic routing with [id] parameter to fetch the specific property.
+ *
+ * @page
+ * @param {Object} props - Component props
+ * @param {Object} props.params - Route parameters
+ * @param {string} props.params.id - Property ID from the URL
+ */
 "use client"
 
 import { useState } from "react"
@@ -25,10 +38,16 @@ export default function PropertyDetailPage({ params }) {
   // For now, we'll just log it and continue with the static content
   console.log(`Displaying property with ID: ${propertyId}`)
 
+  // State management for different view modes and selected images
   const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", or "map"
   const [selectedImageId, setSelectedImageId] = useState(1) // Default to first image
 
-  // Update the toggleViewMode function to accept an event parameter
+  /**
+   * Toggle between different view modes (grid, gallery, gridGallery)
+   * Preserves the selected image when switching to gallery view
+   *
+   * @param {React.SyntheticEvent} event - Click event
+   */
   const toggleViewMode = (event) => {
     if (viewMode === "grid") {
       setViewMode("gallery")
@@ -62,6 +81,8 @@ export default function PropertyDetailPage({ params }) {
     setViewMode("gallery") // Switch to gallery view
   }
 
+  // Special case: Map view takes over the entire page
+  // Return early to avoid rendering the standard layout
   // If we're in map view, show only the map
   if (viewMode === "map") {
     return (

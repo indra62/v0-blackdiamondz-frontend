@@ -1,3 +1,14 @@
+/**
+ * Featured Properties Component
+ *
+ * Highlights selected properties in a responsive grid.
+ * Each property card includes image, details, and key features.
+ *
+ * @component
+ */
+
+// Sample featured property data
+// In production, this would be fetched from an API or CMS
 import { MapPin, Bed, Bath, Square } from "lucide-react"
 
 const properties = [

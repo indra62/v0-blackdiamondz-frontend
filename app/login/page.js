@@ -1,3 +1,12 @@
+/**
+ * Login Page
+ *
+ * User authentication page with email/password form.
+ * Split layout with image on the left and form on the right.
+ *
+ * @page
+ */
+
 import Header from "@/components/header"
 import Link from "next/link"
 import Image from "next/image"
@@ -20,6 +29,8 @@ export default function LoginPage() {
           <div className="w-full max-w-md">
             <h1 className={`${taviraj.className} text-white text-5xl mb-12 text-center`}>Welcome back!</h1>
 
+            {/* Authentication form */}
+            {/* In production, this would connect to an auth service or API */}
             <form>
               <div className="flex flex-col">
                 <input

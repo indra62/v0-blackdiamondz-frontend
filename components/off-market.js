@@ -1,3 +1,11 @@
+/**
+ * Off Market Properties Component
+ *
+ * Displays a grid of exclusive off-market property listings.
+ * Each card includes property details, features, and action buttons.
+ *
+ * @component
+ */
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Image from "next/image"
@@ -6,6 +14,8 @@ import { Heart } from "lucide-react"
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 
+// Sample property data
+// In production, this would be fetched from an API
 const properties = [
   {
     id: 1,

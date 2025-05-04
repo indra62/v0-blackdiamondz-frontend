@@ -1,3 +1,14 @@
+/**
+ * Footer Component
+ *
+ * Site-wide footer containing navigation links, newsletter signup,
+ * contact information, and social media links.
+ *
+ * The footer is organized in a responsive grid layout that adjusts
+ * based on screen size.
+ *
+ * @component
+ */
 import Link from "next/link"
 import { Archivo } from "next/font/google"
 
@@ -36,6 +47,7 @@ export default function Footer() {
             {/* Newsletter and Contact */}
             <div className="flex flex-col gap-16">
               {/* Newsletter */}
+              {/* Newsletter signup form - connects to marketing service in production */}
               <div className="flex flex-col items-start gap-4 w-full lg:w-[633px]">
                 <div className="w-full text-[#A1A1AA] font-light text-[16px] leading-[150%] font-['Archivo']">
                   BLACK DIAMONDZ NEWSLETTER

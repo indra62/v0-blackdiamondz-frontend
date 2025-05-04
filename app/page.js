@@ -1,3 +1,13 @@
+/**
+ * Home Page
+ *
+ * Main landing page of the website.
+ * Assembles various components to create the complete homepage.
+ *
+ * Component order determines the visual hierarchy and flow of the page.
+ *
+ * @page
+ */
 import Header from "@/components/header"
 import Hero from "@/components/hero"
 import Properties from "@/components/properties"

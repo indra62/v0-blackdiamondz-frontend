@@ -1,3 +1,11 @@
+/**
+ * Stats Component
+ *
+ * Displays key business statistics in a visually appealing grid.
+ * Each stat includes an icon, value, and label.
+ *
+ * @component
+ */
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 

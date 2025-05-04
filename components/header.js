@@ -1,3 +1,15 @@
+/**
+ * Header Component
+ *
+ * Main navigation component that appears at the top of every page.
+ * Includes search filters, language selector, and menu toggle.
+ *
+ * The component is split into two sections:
+ * 1. Main navigation bar with logo, search inputs, and user actions
+ * 2. Property filter bar with toggleable filter options
+ *
+ * @component
+ */
 "use client"
 
 import { useState } from "react"
@@ -9,6 +21,7 @@ import Menu from "./menu"
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
 export default function Header() {
+  // State management for navigation tabs, dropdowns and menu visibility
   const [activeTab, setActiveTab] = useState("buy")
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
   const [selectedLanguage, setSelectedLanguage] = useState({ name: "English", country: "UK", flag: "🇬🇧" })

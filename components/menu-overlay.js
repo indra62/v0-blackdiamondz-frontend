@@ -1,3 +1,14 @@
+/**
+ * Menu Overlay Component
+ *
+ * Full-screen overlay menu that appears when the user clicks the menu button.
+ * Contains navigation links, newsletter signup, and contact information.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} props.isOpen - Whether the menu is currently open
+ * @param {Function} props.onClose - Function to call when closing the menu
+ */
 "use client"
 
 import { X, ArrowRight, ChevronDown } from "lucide-react"
@@ -6,6 +17,7 @@ import Image from "next/image"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function MenuOverlay({ isOpen, onClose }) {
+  // Early return if menu is not open to prevent rendering when hidden
   if (!isOpen) return null
 
   return (

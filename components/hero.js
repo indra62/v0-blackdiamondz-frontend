@@ -1,5 +1,14 @@
 "use client"
 
+/**
+ * Hero Component
+ *
+ * Full-screen hero section with background image, overlay, and scroll indicator.
+ * Includes parallax-like scroll effect using scroll position.
+ *
+ * @component
+ */
+
 import { useEffect, useState } from "react"
 import { ChevronDown } from "lucide-react"
 import Image from "next/image"
@@ -10,6 +19,11 @@ const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["700"] })
 
 export default function Hero() {
+  /**
+   * Scroll effect handler
+   * Updates scroll count based on window scroll position
+   * Limited to max 100 to prevent excessive calculations
+   */
   const [scrollCount, setScrollCount] = useState(0)
 
   useEffect(() => {

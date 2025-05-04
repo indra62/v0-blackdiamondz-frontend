@@ -1,3 +1,11 @@
+/**
+ * Buy Page
+ *
+ * Property listings page for properties available for purchase.
+ * Includes filters specific to buying properties.
+ *
+ * @page
+ */
 import Header from "@/components/header"
 import BuyFilters from "@/components/buy-filters"
 import Properties from "@/components/properties"

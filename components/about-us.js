@@ -1,3 +1,13 @@
+/**
+ * About Us Component
+ *
+ * Two-column section with text content and background image.
+ * Includes heading, separator, description text and CTA button.
+ *
+ * Uses a gradient overlay on the image for better text contrast.
+ *
+ * @component
+ */
 import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"

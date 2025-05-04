@@ -1,5 +1,14 @@
 "use client"
 
+/**
+ * Property Filter Component
+ *
+ * Horizontal filter bar for property listings with toggleable options.
+ * Includes buy/sell tabs and property feature filters.
+ *
+ * @component
+ */
+
 import { useState } from "react"
 import Link from "next/link"
 
@@ -7,6 +16,11 @@ export default function PropertyFilter() {
   const [activeTab, setActiveTab] = useState("buy")
   const [activeFilters, setActiveFilters] = useState([])
 
+  /**
+   * Toggle a filter on/off in the activeFilters state
+   *
+   * @param {string} filterId - ID of the filter to toggle
+   */
   const toggleFilter = (filterId) => {
     setActiveFilters((prev) => (prev.includes(filterId) ? prev.filter((id) => id !== filterId) : [...prev, filterId]))
   }
