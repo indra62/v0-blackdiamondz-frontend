@@ -87,12 +87,7 @@ export default function Hero({ data }) {
         <div
           className={`${archivo.className} text-white text-[16px] font-bold leading-[150%] tracking-[0px] text-center mb-2`}
         >
-          Hello, <span className="text-[#FFD700]">George</span>
-        </div>
-        <div
-          className={`${archivo.className} text-white text-[16px] font-bold leading-[150%] tracking-[0px] text-center`}
-        >
-          Let&apos;s find the best property for you.
+          {translation?.hero_greetings || ""}
         </div>
 
         {/* Scroll Indicator */}

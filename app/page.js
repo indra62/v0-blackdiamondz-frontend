@@ -32,10 +32,105 @@ export default function Home() {
   const [properties, setProperties] = useState(null)
   const [offMarket, setOffMarket] = useState(null)
   const [offMarketSection, setOffMarketSection] = useState(null)
+  const [categories, setCategories] = useState([])
+
+  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0)
+  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0)
+  const [propertiesStatus, setPropertiesStatus] = useState("Current")
+  const [propertiesType, setPropertiesType] = useState([])
+  const [propertiesCount, setPropertiesCount] = useState(0)
+  const ITEMS_PER_PAGE = 4
+
+  const fetchProperties = async (page = 0, status = "Current", type = []) => {
+    try {
+      // Convert page index to Directus page number (1-based)
+      const directusPage = page + 1
+
+      // Create filter based on status
+      const filter = {
+        is_off_market: { _eq: false },
+        status:
+          status === "Current"
+            ? { _nin: ["Sold", "Inactive"] }
+            : { _eq: "Sold", _neq: "Inactive" },
+      }
+
+      if (type.length > 0) {
+        // For One-to-Many relationship
+        filter.type = {
+          id: { _in: type },
+        }
+
+        // For Many-to-Many relationship, use this instead:
+        // filter.type = {
+        //   _some: {
+        //     id: { _in: type }
+        //   }
+        // }
+      }
+
+      // Fetch properties with pagination
+      const data = await getItems("properties", {
+        fields: [
+          "*",
+          "translations.*",
+          "images.directus_files_id.*",
+          "plans.*",
+          "videos.*",
+          "features.feature_id.*",
+          "features.value",
+          "agents.*.*",
+          "type.*.*",
+        ],
+        filter,
+        limit: ITEMS_PER_PAGE,
+        page: directusPage,
+        meta: "filter_count,total_count",
+      })
+
+      // Update properties state
+      setProperties(data || [])
+
+      // Calculate total pages
+      const totalCount = data.meta?.filter_count || 0
+      setPropertiesCount(totalCount)
+      setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE))
+
+      return data
+    } catch (err) {
+      console.error("Error fetching properties:", err)
+      setError("Failed to load properties")
+      return { data: [] }
+    }
+  }
+
+  // Handle property filter change
+  const handlePropertyFilterChange = (status) => {
+    setPropertiesStatus(status)
+    setPropertiesCurrentPage(0)
+    fetchProperties(0, status, propertiesType)
+  }
+
+  const handlePropertyTypeChange = (type) => {
+    setPropertiesType(type)
+    setPropertiesCurrentPage(0)
+    fetchProperties(0, propertiesStatus, type)
+  }
+
+  // Handle property page change
+  const handlePropertyPageChange = (page) => {
+    if (page >= 0 && page < propertiesTotalPages) {
+      setPropertiesCurrentPage(page)
+      fetchProperties(page, propertiesStatus, propertiesType)
+    }
+  }
 
   useEffect(() => {
     const fetchDataHome = async () => {
       try {
+        const propertyTypes = await getItems("property_types", {
+          fields: ["*", "translations.*"],
+        })
         const dataHero = await getItems("hero_section", {
           fields: ["*", "hero_image.*", "translations.*"],
         })
@@ -46,22 +141,6 @@ export default function Home() {
             "translations.*",
             "aboutUs_Image.directus_files_id.*",
           ],
-        })
-        const dataProperties = await getItems("properties", {
-          fields: [
-            "*",
-            "translations.*",
-            "images.directus_files_id.*",
-            "plans.*",
-            "videos.*",
-            "features.feature_id.*",
-            "features.value",
-            "agents.*.*",
-          ],
-          filter: {
-            status: { _nin: ["Sold", "archived"] },
-          },
-          limit: 4,
         })
         const dataStatistic_section = await getItems("statistic_section", {
           fields: ["*", "translations.*"],
@@ -82,6 +161,7 @@ export default function Home() {
             "features.feature_id.*",
             "features.value",
             "agents.*.*",
+            "type.*.*",
           ],
           filter: {
             is_off_market: { _eq: true },
@@ -111,16 +191,18 @@ export default function Home() {
         //   fields: ["*", "sectionBackground.*"],
         // })
 
+        const propertiesData = await fetchProperties(0, "Current", [])
+
+        setCategories(propertyTypes)
         setHeroData(dataHero)
         setAboutUs(dataAboutUs_section)
         setStatistic(dataStatistic_section)
         setExplore(dataExplore_section)
-        setProperties(dataProperties)
         setOffMarketSection(dataOffMarketSection)
         setOffMarket(dataOffMarketProperties)
         setLoading(false)
       } catch (err) {
-        setError("Failed to load home data")
+        setError("Failed to load home data:" + err.message)
       }
     }
     fetchDataHome()
@@ -136,7 +218,16 @@ export default function Home() {
         <>
           <Header />
           <Hero data={heroData} />
-          {/* <Properties data={properties} /> */}
+          <Properties
+            data={properties}
+            properties={properties}
+            currentPage={propertiesCurrentPage}
+            totalPages={propertiesTotalPages}
+            onPageChange={handlePropertyPageChange}
+            onFilterChange={handlePropertyFilterChange}
+            onTypeChange={handlePropertyTypeChange}
+            categories={categories}
+          />
           <Stats data={statistic} />
           <AboutUs data={aboutUs} />
           <ExploreCity data={explore} />
