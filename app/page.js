@@ -11,28 +11,34 @@
 "use client"
 
 import Header from "@/components/header"
-import HeroContainer from "@/components/hero-container"
+import Hero from "@/components/hero"
 import Properties from "@/components/properties"
 import Stats from "@/components/stats"
 import AboutUs from "@/components/about-us"
 import ExploreCity from "@/components/explore-city"
 import OffMarket from "@/components/off-market"
 import Footer from "@/components/footer"
-import { getItems } from "@/lib/api"
+import { getItems, getFilteredItems } from "@/lib/api"
 import Loading from "@/components/loading"
 import { useEffect, useState } from "react"
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [heroData, setHeroData] = useState(null)
   const [aboutUs, setAboutUs] = useState(null)
-  const [statistic_section, setStatistic_section] = useState(null)
-  const [clientData, setClientData] = useState(null)
-  const [businessData, setBusinessData] = useState(null)
+  const [statistic, setStatistic] = useState(null)
+  const [explore, setExplore] = useState(null)
+  const [properties, setProperties] = useState(null)
+  const [offMarket, setOffMarket] = useState(null)
+  const [offMarketSection, setOffMarketSection] = useState(null)
 
   useEffect(() => {
     const fetchDataHome = async () => {
       try {
+        const dataHero = await getItems("hero_section", {
+          fields: ["*", "hero_image.*", "translations.*"],
+        })
         const dataAboutUs_section = await getItems("aboutUs_section", {
           fields: [
             "*",
@@ -41,10 +47,49 @@ export default function Home() {
             "aboutUs_Image.directus_files_id.*",
           ],
         })
+        const dataProperties = await getItems("properties", {
+          fields: [
+            "*",
+            "translations.*",
+            "images.directus_files_id.*",
+            "plans.*",
+            "videos.*",
+            "features.feature_id.*",
+            "features.value",
+            "agents.*.*",
+          ],
+          filter: {
+            status: { _nin: ["Sold", "archived"] },
+          },
+          limit: 4,
+        })
         const dataStatistic_section = await getItems("statistic_section", {
           fields: ["*", "translations.*"],
         })
-        console.log(dataAboutUs_section)
+        const dataExplore_section = await getItems("explore_section", {
+          fields: ["*", "translations.*", "cities.*"],
+        })
+        const dataOffMarketSection = await getItems("offMarket_section", {
+          fields: ["*", "translations.*"],
+        })
+        const dataOffMarketProperties = await getItems("properties", {
+          fields: [
+            "*",
+            "translations.*",
+            "images.directus_files_id.*",
+            "plans.*",
+            "videos.*",
+            "features.feature_id.*",
+            "features.value",
+            "agents.*.*",
+          ],
+          filter: {
+            is_off_market: { _eq: true },
+            status: { _nin: ["Sold", "archived"] },
+          },
+          limit: 4,
+        })
+        console.log(dataOffMarketProperties)
         // const dataProduct = await getItems("our_products", {
         //   fields: [
         //     "*",
@@ -66,10 +111,13 @@ export default function Home() {
         //   fields: ["*", "sectionBackground.*"],
         // })
 
+        setHeroData(dataHero)
         setAboutUs(dataAboutUs_section)
-        setStatistic_section(dataStatistic_section)
-        // setClientData(dataClient)
-        // setProductData(dataProduct)
+        setStatistic(dataStatistic_section)
+        setExplore(dataExplore_section)
+        setProperties(dataProperties)
+        setOffMarketSection(dataOffMarketSection)
+        setOffMarket(dataOffMarketProperties)
         setLoading(false)
       } catch (err) {
         setError("Failed to load home data")
@@ -87,12 +135,12 @@ export default function Home() {
       ) : (
         <>
           <Header />
-          {/* <HeroContainer /> */}
-          {/* <Properties /> */}
-          <Stats data={statistic_section} />
+          <Hero data={heroData} />
+          {/* <Properties data={properties} /> */}
+          <Stats data={statistic} />
           <AboutUs data={aboutUs} />
-          <ExploreCity />
-          <OffMarket />
+          <ExploreCity data={explore} />
+          <OffMarket data={offMarket} section={offMarketSection} />
           <Footer />
         </>
       )}

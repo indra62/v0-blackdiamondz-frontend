@@ -8,49 +8,38 @@
  *
  * @component
  */
+"use client"
+
+import { useState, useEffect } from "react"
 import { Taviraj } from "next/font/google"
 import Image from "next/image"
+import { getImageUrl } from "@/lib/api"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
 
-const cities = [
-  {
-    id: 1,
-    name: "Sydney",
-    image: "/images/sydney.png",
-  },
-  {
-    id: 2,
-    name: "Melbourne",
-    image: "/images/melbourne.png",
-  },
-  {
-    id: 3,
-    name: "Brisbane",
-    image: "/images/brisbane.png",
-  },
-  {
-    id: 4,
-    name: "Perth",
-    image: "/images/perth.png",
-  },
-  {
-    id: 5,
-    name: "Adelaide",
-    image: "/images/adelaide.png",
-  },
-]
+export default function ExploreCity({ data }) {
+  const [language, setLanguage] = useState("en")
 
-export default function ExploreCity() {
-  // Fixed width container to show exactly 2.5 cards at once
-  // Creates a visual cue that there's more content to scroll
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedLanguage = localStorage.getItem("language")
+      if (storedLanguage) {
+        setLanguage(storedLanguage)
+      }
+    }
+  }, [])
+
+  const translation =
+    data?.translations?.find((t) => t.languages_code === language) ||
+    data?.translations?.[0]
+
   return (
     <div className={`${taviraj.className} bg-[#211f17] py-16`}>
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-[#E8D09A] text-[48px] font-light leading-[60px] tracking-[2px] mb-8">
-            Explore your perfect city
+            {translation?.explore_title}
           </h2>
 
           {/* Diamond Separator */}
@@ -67,13 +56,17 @@ export default function ExploreCity() {
           style={{ width: "calc(400px * 2 + 200px + 12px)" }}
         >
           <div className="flex gap-6 w-max">
-            {cities.map((city) => (
+            {data?.cities.map((city) => (
               <div
                 key={city.id}
                 className="relative w-[400px] h-[300px] flex-none group cursor-pointer overflow-hidden"
               >
                 <Image
-                  src={city.image || "/placeholder.svg"}
+                  src={getImageUrl(city?.image, {
+                    format: "webp",
+                    quality: 80,
+                    fit: "cover",
+                  })}
                   alt={`${city.name} cityscape`}
                   fill
                   sizes="400px"
@@ -82,7 +75,9 @@ export default function ExploreCity() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div className="absolute bottom-8 left-8">
-                  <h3 className="font-light text-[32px] leading-[40px] text-white">{city.name}</h3>
+                  <h3 className="font-light text-[32px] leading-[40px] text-white">
+                    {city.name}
+                  </h3>
                 </div>
               </div>
             ))}

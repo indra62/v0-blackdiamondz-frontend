@@ -14,17 +14,32 @@ import { ChevronDown } from "lucide-react"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
+import { getImageUrl } from "@/lib/api"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["700"] })
 
-export default function Hero() {
+export default function Hero({ data }) {
   /**
    * Scroll effect handler
    * Updates scroll count based on window scroll position
    * Limited to max 100 to prevent excessive calculations
    */
   const [scrollCount, setScrollCount] = useState(0)
+  const [language, setLanguage] = useState("en")
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedLanguage = localStorage.getItem("language")
+      if (storedLanguage) {
+        setLanguage(storedLanguage)
+      }
+    }
+  }, [])
+
+  const translation =
+    data?.translations?.find((t) => t.languages_code === language) ||
+    data?.translations?.[0]
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,20 +56,24 @@ export default function Hero() {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <Image
-          src="/images/sydney-aerial-view.png"
+          src={getImageUrl(data?.hero_image?.id, {
+            format: "webp",
+            quality: 100,
+            fit: "cover",
+          })}
           alt="Sydney Harbour aerial view with Opera House and Harbour Bridge"
           fill
           sizes="100vw"
           style={{ objectFit: "cover" }}
           priority
         />
-        <div
+        {/* <div
           className="absolute inset-0"
           style={{
             background: `linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)),
           linear-gradient(180deg, rgba(33, 31, 23, 0) 80.08%, #211F17 100%)`,
           }}
-        ></div>
+        ></div> */}
       </div>
 
       {/* Content */}
@@ -62,7 +81,7 @@ export default function Hero() {
         <h1
           className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center max-w-5xl mb-8 -mt-32`}
         >
-          Premier luxury real estate and lifestyle strategic excellence
+          {translation?.hero_text || ""}
         </h1>
 
         <div

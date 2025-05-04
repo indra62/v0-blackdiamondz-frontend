@@ -223,7 +223,12 @@ const properties = [
   },
 ]
 
-export default function Properties({ showFilters = true, showNavigation = true, propertyCount = 4 }) {
+export default function Properties({
+  properties,
+  showFilters = true,
+  showNavigation = true,
+  propertyCount = 4,
+}) {
   const [currentPage, setCurrentPage] = useState(0)
   const [selectedFilters, setSelectedFilters] = useState(["buy"])
   const [activeTab, setActiveTab] = useState("buy")
@@ -235,7 +240,7 @@ export default function Properties({ showFilters = true, showNavigation = true, 
   // Reset to first page when filters change
   useEffect(() => {
     const newFilteredProperties = properties.filter((property) =>
-      selectedFilters.every((filter) => property.categories.includes(filter)),
+      selectedFilters.every((filter) => property.categories.includes(filter))
     )
     setFilteredProperties(newFilteredProperties)
     setCurrentPage(0)
@@ -243,7 +248,10 @@ export default function Properties({ showFilters = true, showNavigation = true, 
 
   // Calculate which properties to show based on pagination and count limits
   const displayProperties = showNavigation
-    ? filteredProperties.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+    ? filteredProperties.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+      )
     : filteredProperties.slice(0, propertyCount)
 
   const totalPages = Math.ceil(filteredProperties.length / itemsPerPage)
@@ -265,16 +273,25 @@ export default function Properties({ showFilters = true, showNavigation = true, 
   const toggleFilter = (filterId) => {
     if (filterId === "buy" || filterId === "sell") {
       setActiveTab(filterId)
-      setSelectedFilters((prev) => [filterId, ...prev.filter((id) => id !== "buy" && id !== "sell")])
+      setSelectedFilters((prev) => [
+        filterId,
+        ...prev.filter((id) => id !== "buy" && id !== "sell"),
+      ])
     } else {
       setSelectedFilters((prev) =>
-        prev.includes(filterId) ? prev.filter((id) => id !== filterId) : [...prev, filterId],
+        prev.includes(filterId)
+          ? prev.filter((id) => id !== filterId)
+          : [...prev, filterId]
       )
     }
   }
 
   const toggleFavorite = (propertyId) => {
-    setFavorites((prev) => (prev.includes(propertyId) ? prev.filter((id) => id !== propertyId) : [...prev, propertyId]))
+    setFavorites((prev) =>
+      prev.includes(propertyId)
+        ? prev.filter((id) => id !== propertyId)
+        : [...prev, propertyId]
+    )
   }
 
   return (
@@ -289,11 +306,17 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                 .map((category) => (
                   <div
                     key={category.id}
-                    className={`cursor-pointer ${activeTab === category.id ? "text-[#BD9574]" : "text-[#656565]"}`}
+                    className={`cursor-pointer ${
+                      activeTab === category.id
+                        ? "text-[#BD9574]"
+                        : "text-[#656565]"
+                    }`}
                     onClick={() => toggleFilter(category.id)}
                   >
                     <span className="font-light text-lg">{category.label}</span>
-                    {activeTab === category.id && <div className="w-full h-[2px] bg-[#BD9574] mt-2" />}
+                    {activeTab === category.id && (
+                      <div className="w-full h-[2px] bg-[#BD9574] mt-2" />
+                    )}
                   </div>
                 ))}
             </div>
@@ -305,14 +328,18 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                   <div
                     key={category.id}
                     className={`flex flex-col items-center cursor-pointer ${
-                      selectedFilters.includes(category.id) ? "text-[#BD9574]" : "text-[#656565]"
+                      selectedFilters.includes(category.id)
+                        ? "text-[#BD9574]"
+                        : "text-[#656565]"
                     }`}
                     onClick={() => toggleFilter(category.id)}
                   >
                     <div className="mb-1">{category.icon}</div>
                     <span
                       className={`font-light text-xs ${
-                        selectedFilters.includes(category.id) ? "text-[#BD9574]" : "text-[#656565]"
+                        selectedFilters.includes(category.id)
+                          ? "text-[#BD9574]"
+                          : "text-[#656565]"
                       }`}
                     >
                       {category.label}
@@ -352,7 +379,11 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                   className="text-[#E2DBCC] hover:text-[#BD9574] transition-colors"
                 >
                   <Heart
-                    className={`w-6 h-6 ${favorites.includes(property.id) ? "fill-[#BD9574] stroke-[#BD9574]" : ""}`}
+                    className={`w-6 h-6 ${
+                      favorites.includes(property.id)
+                        ? "fill-[#BD9574] stroke-[#BD9574]"
+                        : ""
+                    }`}
                   />
                 </button>
               </div>
@@ -365,18 +396,28 @@ export default function Properties({ showFilters = true, showNavigation = true, 
               </h3>
 
               {/* Address */}
-              <div className="text-[#E2DBCC] text-[16px] font-light mb-1">{property.address}</div>
+              <div className="text-[#E2DBCC] text-[16px] font-light mb-1">
+                {property.address}
+              </div>
               <div className="text-[#E2DBCC] text-[16px] font-light mb-4">
                 {property.city}, {property.postcode}
               </div>
 
               {/* Price */}
-              <div className="text-[#BD9574] text-[16px] font-light mb-6">{property.price}</div>
+              <div className="text-[#BD9574] text-[16px] font-light mb-6">
+                {property.price}
+              </div>
 
               {/* Property Features */}
               <div className="flex flex-wrap items-center gap-4 mb-6">
                 <div className="flex items-center gap-1 text-[#E2DBCC]">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
                       stroke="#E2DBCC"
@@ -385,10 +426,18 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="text-[14px] font-light">{property.features.bedrooms}</span>
+                  <span className="text-[14px] font-light">
+                    {property.features.bedrooms}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1 text-[#E2DBCC]">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M4 12h16a1 1 0 011 1v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2a1 1 0 011-1zm4-9v5m4-2v2m4-4v7"
                       stroke="#E2DBCC"
@@ -397,10 +446,18 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="text-[14px] font-light">{property.features.bathrooms}</span>
+                  <span className="text-[14px] font-light">
+                    {property.features.bathrooms}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1 text-[#E2DBCC]">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M5 17h14M5 17a2 2 0 01-2-2V9m2 8a2 2 0 002 2h10a2 2 0 002-2M5 17V7a2 2 0 012-2h10a2 2 0 012 2v10m0 0V9m0 0H3"
                       stroke="#E2DBCC"
@@ -408,10 +465,18 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                       strokeLinecap="round"
                     />
                   </svg>
-                  <span className="text-[14px] font-light">{property.features.parking}</span>
+                  <span className="text-[14px] font-light">
+                    {property.features.parking}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1 text-[#E2DBCC]">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M3 21h18M9 8h1m5 0h1M9 16h1m5 0h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"
                       stroke="#E2DBCC"
@@ -420,10 +485,18 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="text-[14px] font-light">{property.features.floors}</span>
+                  <span className="text-[14px] font-light">
+                    {property.features.floors}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1 text-[#E2DBCC]">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M4 21V8a2 2 0 012-2h12a2 2 0 012 2v13M2 10h20M10 2v6m4-6v6"
                       stroke="#E2DBCC"
@@ -432,10 +505,18 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="text-[14px] font-light">{property.features.rooms}</span>
+                  <span className="text-[14px] font-light">
+                    {property.features.rooms}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1 text-[#E2DBCC]">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
                       stroke="#E2DBCC"
@@ -444,7 +525,9 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="text-[14px] font-light">{property.features.additional}</span>
+                  <span className="text-[14px] font-light">
+                    {property.features.additional}
+                  </span>
                 </div>
               </div>
 
@@ -454,7 +537,13 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                   className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-r-0 border-[#656565]/20 hover:bg-[#1A1814] transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M9 20l-5.447-5.447a8 8 0 1113.894 0L12 20l-3-3z"
                       stroke="#BD9574"
@@ -476,7 +565,13 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                   className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-[#656565]/20 hover:bg-[#1A1814] transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M12 11a4 4 0 100-8 4 4 0 000 8zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"
                       stroke="#BD9574"
@@ -499,7 +594,9 @@ export default function Properties({ showFilters = true, showNavigation = true, 
               {Array.from({ length: totalPages }, (_, index) => (
                 <div
                   key={index}
-                  className={`w-3 h-3 ${index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]"} transform rotate-45 cursor-pointer`}
+                  className={`w-3 h-3 ${
+                    index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]"
+                  } transform rotate-45 cursor-pointer`}
                   onClick={() => setCurrentPage(index)}
                 />
               ))}
@@ -508,12 +605,20 @@ export default function Properties({ showFilters = true, showNavigation = true, 
             <div className="flex items-center gap-4">
               <button
                 className={`p-2 border border-[#656565] rounded ${
-                  currentPage === 0 ? "opacity-50 cursor-not-allowed" : "hover:border-[#BD9574] hover:text-[#BD9574]"
+                  currentPage === 0
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:border-[#BD9574] hover:text-[#BD9574]"
                 } transition-colors`}
                 onClick={handlePrevious}
                 disabled={currentPage === 0}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M15 18l-6-6 6-6"
                     stroke="currentColor"
@@ -532,7 +637,13 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                 onClick={handleNext}
                 disabled={currentPage === totalPages - 1}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M9 6l6 6-6 6"
                     stroke="currentColor"
@@ -546,8 +657,16 @@ export default function Properties({ showFilters = true, showNavigation = true, 
                 href="/buy"
                 className="flex items-center gap-2 bg-[#BD9574] text-[#211f17] px-6 py-2 rounded hover:bg-[#d4af37] transition-colors"
               >
-                <span className="font-light text-[16px]">See All Properties</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <span className="font-light text-[16px]">
+                  See All Properties
+                </span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M5 12h14M12 5l7 7-7 7"
                     stroke="currentColor"
