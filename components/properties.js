@@ -220,8 +220,6 @@ export default function Properties({
     categories?.translations?.find((t) => t.languages_code === language) ||
     categories?.translations?.[0]
 
-  console.log(categories)
-
   const toggleFilter = (filterId) => {
     if (filterId === "Current" || filterId === "Sold") {
       setActiveTab(filterId)

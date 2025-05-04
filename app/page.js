@@ -130,6 +130,9 @@ export default function Home() {
       try {
         const propertyTypes = await getItems("property_types", {
           fields: ["*", "translations.*"],
+          filter: {
+            is_filterable: { _eq: true },
+          },
         })
         const dataHero = await getItems("hero_section", {
           fields: ["*", "hero_image.*", "translations.*"],
@@ -165,31 +168,10 @@ export default function Home() {
           ],
           filter: {
             is_off_market: { _eq: true },
-            status: { _nin: ["Sold", "archived"] },
+            status: { _nin: ["Sold", "Inactive"] },
           },
           limit: 4,
         })
-        console.log(dataOffMarketProperties)
-        // const dataProduct = await getItems("our_products", {
-        //   fields: [
-        //     "*",
-        //     "productList.id",
-        //     "productList.name",
-        //     "productList.description",
-        //     "productList.image.*",
-        //   ],
-        //   limit: -1,
-        // })
-        // const dataClient = await getItems("our_clients", {
-        //   fields: [
-        //     "*",
-        //     "top_row_client_logo.directus_files_id.*",
-        //     "bottom_row_client_logo.directus_files_id.*",
-        //   ],
-        // })
-        // const dataBusiness = await getItems("our_business", {
-        //   fields: ["*", "sectionBackground.*"],
-        // })
 
         const propertiesData = await fetchProperties(0, "Current", [])
 
