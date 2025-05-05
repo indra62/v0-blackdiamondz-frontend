@@ -67,13 +67,13 @@ export default function Hero({ data }) {
           style={{ objectFit: "cover" }}
           priority
         />
-        {/* <div
+        <div
           className="absolute inset-0"
           style={{
             background: `linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)),
           linear-gradient(180deg, rgba(33, 31, 23, 0) 80.08%, #211F17 100%)`,
           }}
-        ></div> */}
+        ></div>
       </div>
 
       {/* Content */}

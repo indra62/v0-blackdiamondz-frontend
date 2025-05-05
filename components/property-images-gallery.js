@@ -1,17 +1,18 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { ChevronLeft, ChevronRight, Grid } from "lucide-react"
-import { Archivo } from "next/font/google"
+import { useState } from "react";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight, Grid } from "lucide-react";
+import { Archivo } from "next/font/google";
+import { getImageUrl } from "@/lib/api";
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
 // Sample property images
 const propertyImages = [
   {
     id: 1,
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fb4b9176ce0784c618052fed8acd9206d51de44a-IrssQQqUj5REJrtEGwxbOkZFhcbMY4.png",
+    src: "/luxury-beachfront-property.png",
     alt: "Luxury cliff-side villa with infinity pool overlooking ocean",
   },
   {
@@ -21,12 +22,12 @@ const propertyImages = [
   },
   {
     id: 3,
-    src: "/luxury-ocean-bedroom.png",
+    src: "/luxury-beachfront-property.png",
     alt: "Luxury bedroom with ocean view",
   },
   {
     id: 4,
-    src: "/luxury-spa-interior.png",
+    src: "/luxury-beachfront-property.png",
     alt: "Luxury property spa interior",
   },
   {
@@ -40,30 +41,45 @@ const propertyImages = [
     alt: "Luxury beachfront aerial view",
   },
   // Add more images as needed
-]
+];
 
-export default function PropertyImagesGallery({ onClose, onGridView, initialImageId = 1 }) {
+export default function PropertyImagesGallery({
+  onClose,
+  onGridView,
+  property,
+  initialImageId = 1,
+}) {
   // Find the index of the image with the given ID, or default to 0
-  const initialIndex = propertyImages.findIndex((img) => img.id === initialImageId)
-  const [currentIndex, setCurrentIndex] = useState(initialIndex >= 0 ? initialIndex : 0)
+  const initialIndex = propertyImages.findIndex(
+    (img) => img.id === initialImageId
+  );
+  const [currentIndex, setCurrentIndex] = useState(
+    initialIndex >= 0 ? initialIndex : 0
+  );
 
-  const totalImages = propertyImages.length
+  const totalImages = property?.images?.length;
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : totalImages - 1))
-  }
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : totalImages - 1));
+  };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev < totalImages - 1 ? prev + 1 : 0))
-  }
+    setCurrentIndex((prev) => (prev < totalImages - 1 ? prev + 1 : 0));
+  };
 
   return (
     <div className="relative h-full">
       {/* Main Image - Full Height */}
       <div className="relative h-[500px] w-full">
         <Image
-          src={propertyImages[currentIndex].src || "/placeholder.svg"}
-          alt={propertyImages[currentIndex].alt}
+          src={getImageUrl(
+            property?.images?.[currentIndex]?.directus_files_id?.id,
+            {
+              quality: 80,
+              fit: "cover",
+            }
+          )}
+          alt={property?.name}
           fill
           className="object-cover"
           priority
@@ -73,7 +89,9 @@ export default function PropertyImagesGallery({ onClose, onGridView, initialImag
       {/* Navigation Controls - Positioned at the bottom */}
       <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-4 bg-gradient-to-t from-[#211f17]/80 to-transparent">
         {/* Image Counter */}
-        <div className={`${archivo.className} text-[#e2dbcc] font-light text-base`}>
+        <div
+          className={`${archivo.className} text-[#e2dbcc] font-light text-base`}
+        >
           {currentIndex + 1} / {totalImages}
         </div>
 
@@ -107,5 +125,5 @@ export default function PropertyImagesGallery({ onClose, onGridView, initialImag
         </div>
       </div>
     </div>
-  )
+  );
 }

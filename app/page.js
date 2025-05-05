@@ -192,13 +192,13 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
+      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />
         </section>
       ) : (
         <>
-          <Header />
           <Hero data={heroData} />
           <Properties
             data={properties}
@@ -214,9 +214,9 @@ export default function Home() {
           <AboutUs data={aboutUs} />
           <ExploreCity data={explore} />
           <OffMarket data={offMarket} section={offMarketSection} />
-          <Footer />
         </>
       )}
+      <Footer />
     </main>
   )
 }

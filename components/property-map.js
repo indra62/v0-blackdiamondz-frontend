@@ -1,19 +1,28 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Archivo, Taviraj } from "next/font/google"
 import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
 // Update import statements to use kebab-case
 import Header from "@/components/header"
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 
-export default function PropertyMap({ onClose, propertyName, propertyAddress, propertyCity }) {
+export default function PropertyMap({ onClose, property, type }) {
   const [mapType, setMapType] = useState("Map")
 
-  // Function to handle map type change
+  // NOTE: To use Google Maps, you must set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
+  // Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
+  // The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-maps-script',
+    googleMapsApiKey: 'AIzaSyAU7qoKGLlzkWmLTUOOXyv48tLOGljBXm0'
+  })
+
   const handleMapTypeChange = (type) => {
     setMapType(type)
   }
@@ -26,7 +35,7 @@ export default function PropertyMap({ onClose, propertyName, propertyAddress, pr
       {/* Property Info - Updated with correct font sizes */}
       <div className="container mx-auto px-4 py-6">
         <div className="text-[#e2dbcc] text-[14px] mb-4">
-          <span>House | Beachfront</span>
+          <span>{type}</span>
         </div>
 
         <div className="flex justify-between items-start">
@@ -34,17 +43,21 @@ export default function PropertyMap({ onClose, propertyName, propertyAddress, pr
             <h1
               className={`${taviraj.className} text-[#bd9574] text-[64px] font-light leading-[125%] tracking-[0px] mb-0`}
             >
-              {propertyName || "Sunny Vista"}
+              {property?.name || "Sunny Vista"}
             </h1>
           </div>
           <div className="text-right">
             <p
               className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
             >
-              {propertyAddress || "5408/101 Bathurst Street, Sydney, 2000."}
+              {property?.address_street + ", " + property?.address_suburb ||
+                "5408/101 Bathurst Street, Sydney, 2000."}
             </p>
-            <p className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}>
-              {propertyCity || "Sydney, 2000"}
+            <p
+              className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+            >
+              {property?.address_state + ", " + property?.address_postcode ||
+                "Sydney, 2000"}
             </p>
           </div>
         </div>
@@ -52,45 +65,22 @@ export default function PropertyMap({ onClose, propertyName, propertyAddress, pr
 
       {/* Map Container */}
       <div className="flex-1 relative">
-        {/* Map Type Toggle */}
-        <div className="absolute top-4 left-4 z-10 bg-white rounded-sm flex">
-          <button
-            className={`px-4 py-2 text-sm ${mapType === "Map" ? "bg-gray-200" : "bg-white"}`}
-            onClick={() => handleMapTypeChange("Map")}
-          >
-            Map
-          </button>
-          <button
-            className={`px-4 py-2 text-sm ${mapType === "Satellite" ? "bg-gray-200" : "bg-white"}`}
-            onClick={() => handleMapTypeChange("Satellite")}
-          >
-            Satellite
-          </button>
-        </div>
-
-<<<<<<< Updated upstream
-        {/* Fullscreen Button */}
-        <div className="absolute top-4 right-4 z-10">
-          <button className="bg-white p-2 rounded-sm">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4H20V20H4V4Z" stroke="black" strokeWidth="1.5" />
-              <path d="M9 9H15V15H9V9Z" stroke="black" strokeWidth="1.5" />
-            </svg>
-          </button>
-=======
-
-        
-        {/* Google Map Container */}
+        {/* Map Image - Different based on selected map type */}
         <div className="h-full w-full">
-          {/* Only render Google Map after API is loaded */
-          console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
+          {
+            /* Only render Google Map after API is loaded */
+            console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
           }
           {isLoaded ? (
             <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '100%' }}
-              center={property?.geo_lat && property?.geo_lon ? { lat: property?.geo_lat, lng: property?.geo_lon } : { lat: -33.8688, lng: 151.2093 }}
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+              center={
+                property?.geo_lat && property?.geo_lon
+                  ? { lat: property?.geo_lat, lng: property?.geo_lon }
+                  : { lat: -33.8688, lng: 151.2093 }
+              }
               zoom={16}
-              mapTypeId={mapType === 'Satellite' ? 'satellite' : 'roadmap'}
+              mapTypeId={mapType === "Satellite" ? "satellite" : "roadmap"}
               options={{
                 disableDefaultUI: true,
                 zoomControl: true,
@@ -102,80 +92,23 @@ export default function PropertyMap({ onClose, propertyName, propertyAddress, pr
             >
               {/* Custom Black Diamondz Pin Marker */}
               <Marker
-                position={property?.geo_lat && property?.geo_lon ? { lat: property?.geo_lat, lng: property?.geo_lon } : { lat: -33.8688, lng: 151.2093 }}
+                position={
+                  property?.geo_lat && property?.geo_lon
+                    ? { lat: property?.geo_lat, lng: property?.geo_lon }
+                    : { lat: -33.8688, lng: 151.2093 }
+                }
                 icon={{
-                  url: '/bd-map-pin.png',
+                  url: "/smallLogoBD.png",
                   scaledSize: { width: 32, height: 32 },
                   anchor: { x: 16, y: 32 },
                 }}
               />
             </GoogleMap>
           ) : (
-            <div className="flex items-center justify-center h-full w-full">Loading Map...</div>
-          )}
->>>>>>> Stashed changes
-        </div>
-
-        {/* Zoom Controls */}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-2">
-          <button className="bg-white p-2 rounded-sm">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 0V16M0 8H16" stroke="black" strokeWidth="1.5" />
-            </svg>
-          </button>
-          <button className="bg-white p-2 rounded-sm">
-            <svg width="16" height="2" viewBox="0 0 16 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 1H16" stroke="black" strokeWidth="1.5" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Compass */}
-        <div className="absolute left-4 bottom-16 z-10">
-          <button className="bg-white p-2 rounded-sm">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="8" stroke="black" strokeWidth="1.5" />
-              <path d="M12 4V20M4 12H20" stroke="black" strokeWidth="1.5" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Map Image - Different based on selected map type */}
-        <div className="h-full w-full">
-          {mapType === "Map" ? (
-            <Image src="/placeholder.svg?key=uzm9n" alt="Map showing property location" fill className="object-cover" />
-          ) : (
-            <Image
-              src="/placeholder.svg?key=pd7ai"
-              alt="Satellite view of property location"
-              fill
-              className="object-cover"
-            />
-          )}
-
-          {/* Black Diamondz Logo Pin */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full z-20 animate-bounce">
-            <div className="relative w-12 h-16">
-              {/* Black Pin Background */}
-              <svg width="48" height="64" viewBox="0 0 48 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M24 0C10.745 0 0 10.745 0 24C0 42 24 64 24 64C24 64 48 42 48 24C48 10.745 37.255 0 24 0Z"
-                  fill="black"
-                />
-              </svg>
-
-              {/* Black Diamondz Logo */}
-              <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-6 h-6">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/smallLogoBD-zxDglqhR7Dv3zdEHln30LxjDUQXDD7.png"
-                  alt="Black Diamondz Logo"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                />
-              </div>
+            <div className="flex items-center justify-center h-full w-full">
+              Loading Map...
             </div>
-          </div>
+          )}
         </div>
       </div>
 

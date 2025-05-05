@@ -1,6 +1,7 @@
 "use client"
 import Image from "next/image"
 import { Archivo } from "next/font/google"
+import { getImageUrl } from "@/lib/api";
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 
@@ -8,7 +9,7 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 const propertyImages = [
   {
     id: 1,
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fb4b9176ce0784c618052fed8acd9206d51de44a-IrssQQqUj5REJrtEGwxbOkZFhcbMY4.png",
+    src: "/luxury-beachfront-property.png",
     alt: "Luxury cliff-side villa with infinity pool overlooking ocean",
   },
   {
@@ -89,7 +90,7 @@ const propertyImages = [
   },
 ]
 
-export default function PropertyGridGallery({ onClose, onImageClick }) {
+export default function PropertyGridGallery({ onClose, onImageClick, property }) {
   // Function to handle image click - defaults to onClose if onImageClick is not provided
   const handleImageClick = (imageId) => {
     // If a specific onImageClick handler is provided, use it with the image ID
@@ -113,19 +114,25 @@ export default function PropertyGridGallery({ onClose, onImageClick }) {
     <div className="relative h-full bg-black overflow-y-auto">
       {/* Grid of Images */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-2">
-        {propertyImages.slice(0, 16).map((image) => (
+        {property?.images.slice(0, property?.images?.length).map((image) => (
           <div
             key={image.id}
             className="relative aspect-[3/2] cursor-pointer transition-opacity hover:opacity-90"
             onClick={() => handleImageClick(image.id)}
           >
-            <Image src={image.src || "/placeholder.svg"} alt={image.alt} fill className="object-cover" />
+            <Image src={getImageUrl(
+              image.directus_files_id.id,
+              {
+                quality: 80,
+                fit: "cover",
+              }
+            )} alt={image.alt} fill className="object-cover" />
           </div>
         ))}
       </div>
 
       {/* Close Button - Positioned at the bottom */}
-      <div className="absolute bottom-4 right-4 flex items-center z-10">
+      <div className="sticky bottom-4 right-4 left-auto flex items-center z-10 w-fit" style={{marginLeft: 'auto'}}>
         <div className="flex items-center bg-[#211f17]/80 border border-[#656565]/50">
           <button
             onClick={() => onImageClick && onImageClick(1)}
