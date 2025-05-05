@@ -68,6 +68,7 @@ export default function PropertyMap({ onClose, propertyName, propertyAddress, pr
           </button>
         </div>
 
+<<<<<<< Updated upstream
         {/* Fullscreen Button */}
         <div className="absolute top-4 right-4 z-10">
           <button className="bg-white p-2 rounded-sm">
@@ -76,6 +77,43 @@ export default function PropertyMap({ onClose, propertyName, propertyAddress, pr
               <path d="M9 9H15V15H9V9Z" stroke="black" strokeWidth="1.5" />
             </svg>
           </button>
+=======
+
+        
+        {/* Google Map Container */}
+        <div className="h-full w-full">
+          {/* Only render Google Map after API is loaded */
+          console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
+          }
+          {isLoaded ? (
+            <GoogleMap
+              mapContainerStyle={{ width: '100%', height: '100%' }}
+              center={property?.geo_lat && property?.geo_lon ? { lat: property?.geo_lat, lng: property?.geo_lon } : { lat: -33.8688, lng: 151.2093 }}
+              zoom={16}
+              mapTypeId={mapType === 'Satellite' ? 'satellite' : 'roadmap'}
+              options={{
+                disableDefaultUI: true,
+                zoomControl: true,
+                fullscreenControl: true,
+                streetViewControl: true,
+                mapTypeControl: true,
+                scaleControl: true,
+              }}
+            >
+              {/* Custom Black Diamondz Pin Marker */}
+              <Marker
+                position={property?.geo_lat && property?.geo_lon ? { lat: property?.geo_lat, lng: property?.geo_lon } : { lat: -33.8688, lng: 151.2093 }}
+                icon={{
+                  url: '/bd-map-pin.png',
+                  scaledSize: { width: 32, height: 32 },
+                  anchor: { x: 16, y: 32 },
+                }}
+              />
+            </GoogleMap>
+          ) : (
+            <div className="flex items-center justify-center h-full w-full">Loading Map...</div>
+          )}
+>>>>>>> Stashed changes
         </div>
 
         {/* Zoom Controls */}
