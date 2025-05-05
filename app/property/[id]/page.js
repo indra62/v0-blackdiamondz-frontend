@@ -25,7 +25,7 @@ import Paddington from "@/components/paddington";
 import PropertyImagesGallery from "@/components/property-images-gallery";
 import PropertyGridGallery from "@/components/property-grid-gallery";
 import PropertyMap from "@/components/property-map";
-import { getItem, getImageUrl, getFileUrl } from "@/lib/api";
+import { getItem, getImageUrl } from "@/lib/api";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
@@ -133,9 +133,8 @@ export default function PropertyDetailPage({ params }) {
     return (
       <PropertyMap
         onClose={hideMap}
-        propertyName="Sunny Vista"
-        propertyAddress="5408/101 Bathurst Street, Sydney, 2000."
-        propertyCity="Sydney, 2000"
+        property={property}
+        type={translation?.name}
       />
     );
   }
@@ -205,7 +204,21 @@ export default function PropertyDetailPage({ params }) {
             {/* Property Features */}
             <div className="flex flex-wrap items-center gap-6 mb-8">
               <div className="flex items-center gap-2 text-[#e2dbcc]">
-                
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
+                    stroke="#e2dbcc"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
                 <span
                   className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
                 >
@@ -344,6 +357,7 @@ export default function PropertyDetailPage({ params }) {
 
           {/* Property Images - Right Column */}
           <div className="flex-1">
+
             {viewMode === "grid" ? (
               /* Grid View - Original Layout */
               <div className="grid grid-cols-2" style={{ gap: "8px" }}>
@@ -537,6 +551,7 @@ export default function PropertyDetailPage({ params }) {
                   onClose={toggleViewMode}
                   onGridView={switchToGridGallery}
                   initialImageId={selectedImageId}
+                  property={property}
                 />
               </div>
             ) : (
@@ -545,6 +560,7 @@ export default function PropertyDetailPage({ params }) {
                 <PropertyGridGallery
                   onClose={() => setViewMode("grid")}
                   onImageClick={handleGridImageClick}
+                  property={property}
                 />
               </div>
             )}
