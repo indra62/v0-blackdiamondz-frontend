@@ -14,13 +14,18 @@ import { Taviraj } from "next/font/google"
 import { getImageUrl, getItems } from "@/lib/api"
 import { useEffect, useState } from "react"
 import Loading from "@/components/loading"
+import { useAuth } from "@/hooks/useAuth"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
 
 export default function LoginPage() {
-  const [error, setError] = useState(null)
+  const [errors, setErrors] = useState(null)
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState(null)
+  const { login } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,18 +37,49 @@ export default function LoginPage() {
         setData(data)
         setLoading(false)
       } catch (err) {
-        setError("Failed to paddington data:" + err.message)
+        setErrors("Failed to load login image" + err.message)
       }
     }
     fetchData()
   }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const email = e.target.email.value
+    const password = e.target.password.value
+
+    try {
+      await login(email, password)
+      toast.success("Logged in!", {
+        style: {
+          background: "#BD9574",
+          color: "#211F17",
+          border: "1px solid #211F17",
+          borderRadius: "99px",
+          padding: "16px 24px",
+        },
+        duration: 3000,
+      })
+      router.push("/")
+    } catch (err) {
+      toast.error(err.message, {
+        style: {
+          background: "#A1A1AA",
+          color: "#211F17",
+          border: "1px solid #211F17",
+          borderRadius: "99px",
+          padding: "16px 24px",
+        },
+      })
+    }
+  }
 
   return (
     <main className="min-h-screen bg-[#211f17]">
       <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
-          <Loading error={error} />
+          <Loading error={errors} />
         </section>
       ) : (
         <>
@@ -76,16 +112,18 @@ export default function LoginPage() {
 
                 {/* Authentication form */}
                 {/* In production, this would connect to an auth service or API */}
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="flex flex-col">
                     <input
                       type="email"
+                      name="email"
                       placeholder="Email"
                       className="w-full bg-transparent border border-[#656565] border-b-0 p-4 text-white focus:outline-none focus:border-[#BD9574]"
                       required
                     />
                     <input
                       type="password"
+                      name="password"
                       placeholder="Password"
                       className="w-full bg-transparent border border-[#656565] border-b-0 p-4 text-white focus:outline-none focus:border-[#BD9574]"
                       required

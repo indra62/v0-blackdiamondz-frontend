@@ -13,7 +13,7 @@
 import Link from "next/link"
 import { Archivo } from "next/font/google"
 import { getImageUrl, getItems, submitSubscribe } from "@/lib/api"
-import { toast, Toaster } from "react-hot-toast"
+import { toast } from "react-hot-toast"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 
@@ -88,7 +88,6 @@ export default function Footer() {
 
   return (
     <>
-      <Toaster position="top-center" reverseOrder={false} />
       <footer className={`${archivo.className} bg-[#211f17] text-white py-16`}>
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row justify-between gap-16">
