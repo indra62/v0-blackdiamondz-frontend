@@ -17,7 +17,7 @@ export default function BuyPage() {
     <main className="min-h-screen bg-[#211f17]">
       <Header />
       <BuyFilters />
-      <Properties showFilters={false} showNavigation={false} propertyCount={12} />
+      {/* <Properties showFilters={false} showNavigation={false} propertyCount={12} /> */}
       <ExploreCity />
       <Footer />
     </main>
