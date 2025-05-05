@@ -12,38 +12,20 @@ import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"
 import { getImageUrl, getItems, verify } from "@/lib/api"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import Loading from "@/components/loading"
 import { useSearchParams } from "next/navigation"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
 
-export default function VerifyPage({ params }) {
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [data, setData] = useState(null)
+// Component to handle the search params
+function VerificationContent() {
   const [verifying, setVerifying] = useState(false)
   const [verified, setVerified] = useState(false)
   const [verificationError, setVerificationError] = useState(null)
 
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getItems("Global", {
-          fields: ["login_image.*"],
-        })
-
-        setData(data)
-        setLoading(false)
-      } catch (err) {
-        setError("Failed to load verification image" + err.message)
-      }
-    }
-    fetchData()
-  }, [])
 
   const handleVerify = async () => {
     if (!token) {
@@ -67,6 +49,72 @@ export default function VerifyPage({ params }) {
       setVerifying(false)
     }
   }
+
+  return (
+    <div className="text-center mb-8">
+      {verified ? (
+        <div className="text-[#E2DBCC] p-6 border border-[#BD9574]">
+          <p className="mb-4">Your account has been successfully verified!</p>
+          <p className="mb-6">You can now log in to access your account.</p>
+          <Link
+            href="/login"
+            className="inline-block bg-[#BD9574] text-[#211f17] px-6 py-3 hover:bg-[#d4af37] transition-colors"
+          >
+            Go to Login
+          </Link>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center">
+          {verificationError && (
+            <div className="mb-6 p-4 border border-red-500 text-red-300 w-full">
+              {verificationError}
+            </div>
+          )}
+
+          <p className="text-[#E2DBCC] mb-8">
+            Please click the button below to verify your email address and
+            activate your account.
+          </p>
+
+          <button
+            onClick={handleVerify}
+            disabled={verifying || !token}
+            className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#d4af37] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {verifying ? "Verifying..." : "Verify Email"}
+          </button>
+
+          {!token && (
+            <p className="mt-4 text-[#BD9574]">
+              No verification token found. Please check your email link.
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function VerifyPage({ params }) {
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getItems("Global", {
+          fields: ["login_image.*"],
+        })
+
+        setData(data)
+        setLoading(false)
+      } catch (err) {
+        setError("Failed to load verification image" + err.message)
+      }
+    }
+    fetchData()
+  }, [])
 
   return (
     <main className="min-h-screen bg-[#211f17]">
@@ -104,52 +152,15 @@ export default function VerifyPage({ params }) {
                   Verify Your Account
                 </h1>
 
-                <div className="text-center mb-8">
-                  {verified ? (
-                    <div className="text-[#E2DBCC] p-6 border border-[#BD9574]">
-                      <p className="mb-4">
-                        Your account has been successfully verified!
-                      </p>
-                      <p className="mb-6">
-                        You can now log in to access your account.
-                      </p>
-                      <Link
-                        href="/login"
-                        className="inline-block bg-[#BD9574] text-[#211f17] px-6 py-3 hover:bg-[#d4af37] transition-colors"
-                      >
-                        Go to Login
-                      </Link>
+                <Suspense
+                  fallback={
+                    <div className="text-center text-white">
+                      Loading verification details...
                     </div>
-                  ) : (
-                    <div className="flex flex-col items-center">
-                      {verificationError && (
-                        <div className="mb-6 p-4 border border-red-500 text-red-300 w-full">
-                          {verificationError}
-                        </div>
-                      )}
-
-                      <p className="text-[#E2DBCC] mb-8">
-                        Please click the button below to verify your email
-                        address and activate your account.
-                      </p>
-
-                      <button
-                        onClick={handleVerify}
-                        disabled={verifying || !token}
-                        className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#d4af37] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {verifying ? "Verifying..." : "Verify Email"}
-                      </button>
-
-                      {!token && (
-                        <p className="mt-4 text-[#BD9574]">
-                          No verification token found. Please check your email
-                          link.
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </div>
+                  }
+                >
+                  <VerificationContent />
+                </Suspense>
 
                 <div className="mt-8 text-center">
                   <p className="text-[#656565]">
