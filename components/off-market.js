@@ -44,7 +44,7 @@ export default function OffMarket({ data, section }) {
         {/* Header */}
         <div className="text-center mb-16">
           <h2
-            className={`${taviraj.className} text-[#E8D09A] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+            className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
           >
             {translation?.offmarket_title_section}
           </h2>
@@ -79,7 +79,7 @@ export default function OffMarket({ data, section }) {
           {!isAuthenticated && (
             <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
               <div
-                className={`${taviraj.className} text-[#E8D09A] text-2xl mb-6 text-center`}
+                className={`${taviraj.className} text-[#e2dbcc] text-2xl mb-6 text-center`}
               >
                 Login to view our exclusive off-market properties
               </div>

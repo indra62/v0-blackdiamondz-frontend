@@ -43,7 +43,7 @@ export default function AboutUs({ data }) {
         <div className="w-full lg:w-[60%] px-4 py-16 lg:py-24 lg:pl-[10%] lg:pr-12 flex items-center">
           <div className="max-w-xl">
             <h2
-              className={`${taviraj.className} text-[#E8D09A] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+              className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
             >
               {translation?.aboutUs_title || ""}
             </h2>

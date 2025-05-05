@@ -20,6 +20,8 @@ import Link from "next/link";
 import { Property } from "@/lib/component/property"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
+import Loading from "@/components/loading"
+import { set } from "date-fns"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
@@ -144,6 +146,7 @@ export default function BuyPage() {
         setDataExplore(dataExplore)
         setOffMarketSection(dataOffMarketSection)
         setOffMarket(dataOffMarketProperties)
+        setLoading(false)
       } catch (error) {
         console.error("Error fetching data:", error)
         setError("Failed to load data")
@@ -168,47 +171,53 @@ export default function BuyPage() {
   return (
     <main className="min-h-screen bg-[#211f17]">
       <Header />
+      {loading ? (
+        <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
+          <Loading error={error} />
+        </section>
+      ) : (
+        <>
+          <div className="container mx-auto px-4 py-16">
+            {/* Heading */}
+            <div className="flex flex-col items-center text-center mb-12">
+              <h2
+                className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+              >
+                {translationExplore?.property_buy_title}
+              </h2>
+              <div className="flex justify-center mb-6">
+                <div className="w-24 h-px bg-[#bd9574] relative">
+                  <div className="absolute w-2 h-2 bg-[#bd9574] rotate-45 -top-[3px] left-1/2 transform -translate-x-1/2"></div>
+                </div>
+              </div>
 
-      <div className="container mx-auto px-4 py-16">
-        {/* Heading */}
-        <div className="flex flex-col items-center text-center mb-12">
-          <h2
-            className={`${taviraj.className} text-[#E8D09A] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
-          >
-            {translationExplore?.property_buy_title}
-          </h2>
-          <div className="flex justify-center mb-6">
-            <div className="w-24 h-px bg-[#bd9574] relative">
-              <div className="absolute w-2 h-2 bg-[#bd9574] rotate-45 -top-[3px] left-1/2 transform -translate-x-1/2"></div>
+              <div
+                className={`${archivo.className} text-[#e2dbcc] text-base mb-6 text-center max-w-[732px]`}
+              >
+                {translationExplore?.property_buy_description}
+              </div>
+            </div>
+
+            {/* Property Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {properties.map((property) => (
+                <Property
+                  key={property.id}
+                  property={property}
+                  taviraj={taviraj}
+                  archivo={archivo}
+                />
+              ))}
             </div>
           </div>
 
-          <div
-            className={`${archivo.className} text-[#E8D09A] text-base mb-6 text-center max-w-[732px]`}
-          >
-            {translationExplore?.property_buy_description}
-          </div>
-        </div>
+          {/* Explore City Section */}
+          <ExploreCity data={explore} />
 
-        {/* Property Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {properties.map((property) => (
-            <Property
-              key={property.id}
-              property={property}
-              taviraj={taviraj}
-              archivo={archivo}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Explore City Section */}
-      <ExploreCity data={explore} />
-
-      {/* Off-Market Properties Section */}
-      <OffMarket data={offMarket} section={offMarketSection} />
-
+          {/* Off-Market Properties Section */}
+          <OffMarket data={offMarket} section={offMarketSection} />
+        </>
+      )}
       <Footer />
     </main>
   )

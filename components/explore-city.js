@@ -38,7 +38,7 @@ export default function ExploreCity({ data }) {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-[#E8D09A] text-[48px] font-light leading-[60px] tracking-[2px] mb-8">
+          <h2 className="text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8">
             {translation?.explore_title}
           </h2>
 
