@@ -22,7 +22,7 @@ import { getItems } from "@/lib/api"
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
 export default function Header() {
-  const { user, logout, isAuthenticated } = useAuth()
+  const { logout, isAuthenticated } = useAuth()
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState("buy")
   const [dataSocial, setDataSocial] = useState(null)

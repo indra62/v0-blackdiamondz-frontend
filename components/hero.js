@@ -53,8 +53,6 @@ export default function Hero({ data }) {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  console.log(user)
-
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {/* Background Image with Overlay */}
