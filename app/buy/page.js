@@ -15,11 +15,11 @@ import Footer from "@/components/footer"
 export default function BuyPage() {
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
+      {/* <Header /> */}
       <BuyFilters />
-      <Properties showFilters={false} showNavigation={false} propertyCount={12} />
+      {/* <Properties showFilters={false} showNavigation={false} propertyCount={12} /> */}
       <ExploreCity />
-      <Footer />
+      {/* <Footer /> */}
     </main>
   )
 }

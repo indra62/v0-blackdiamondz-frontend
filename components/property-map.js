@@ -50,10 +50,14 @@ export default function PropertyMap({ onClose, property, type }) {
             <p
               className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
             >
-              {property?.address_street + ", " + property?.address_suburb || "5408/101 Bathurst Street, Sydney, 2000."}
+              {property?.address_street + ", " + property?.address_suburb ||
+                "5408/101 Bathurst Street, Sydney, 2000."}
             </p>
-            <p className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}>
-              {property?.address_state + ", " + property?.address_postcode || "Sydney, 2000"}
+            <p
+              className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+            >
+              {property?.address_state + ", " + property?.address_postcode ||
+                "Sydney, 2000"}
             </p>
           </div>
         </div>
@@ -61,35 +65,22 @@ export default function PropertyMap({ onClose, property, type }) {
 
       {/* Map Container */}
       <div className="flex-1 relative">
-        {/* Map Type Toggle */}
-        <div className="absolute top-4 left-4 z-10 bg-white rounded-sm flex">
-          <button
-            className={`px-4 py-2 text-sm ${mapType === "Map" ? "bg-gray-200" : "bg-white"}`}
-            onClick={() => handleMapTypeChange("Map")}
-          >
-            Map
-          </button>
-          <button
-            className={`px-4 py-2 text-sm ${mapType === "Satellite" ? "bg-gray-200" : "bg-white"}`}
-            onClick={() => handleMapTypeChange("Satellite")}
-          >
-            Satellite
-          </button>
-        </div>
-
-
-        
-        {/* Google Map Container */}
+        {/* Map Image - Different based on selected map type */}
         <div className="h-full w-full">
-          {/* Only render Google Map after API is loaded */
-          console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
+          {
+            /* Only render Google Map after API is loaded */
+            console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
           }
           {isLoaded ? (
             <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '100%' }}
-              center={property?.geo_lat && property?.geo_lon ? { lat: property?.geo_lat, lng: property?.geo_lon } : { lat: -33.8688, lng: 151.2093 }}
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+              center={
+                property?.geo_lat && property?.geo_lon
+                  ? { lat: property?.geo_lat, lng: property?.geo_lon }
+                  : { lat: -33.8688, lng: 151.2093 }
+              }
               zoom={16}
-              mapTypeId={mapType === 'Satellite' ? 'satellite' : 'roadmap'}
+              mapTypeId={mapType === "Satellite" ? "satellite" : "roadmap"}
               options={{
                 disableDefaultUI: true,
                 zoomControl: true,
@@ -101,19 +92,24 @@ export default function PropertyMap({ onClose, property, type }) {
             >
               {/* Custom Black Diamondz Pin Marker */}
               <Marker
-                position={property?.geo_lat && property?.geo_lon ? { lat: property?.geo_lat, lng: property?.geo_lon } : { lat: -33.8688, lng: 151.2093 }}
+                position={
+                  property?.geo_lat && property?.geo_lon
+                    ? { lat: property?.geo_lat, lng: property?.geo_lon }
+                    : { lat: -33.8688, lng: 151.2093 }
+                }
                 icon={{
-                  url: '/smallLogoBD.png',
+                  url: "/smallLogoBD.png",
                   scaledSize: { width: 32, height: 32 },
                   anchor: { x: 16, y: 32 },
                 }}
               />
             </GoogleMap>
           ) : (
-            <div className="flex items-center justify-center h-full w-full">Loading Map...</div>
+            <div className="flex items-center justify-center h-full w-full">
+              Loading Map...
+            </div>
           )}
         </div>
-
       </div>
 
       {/* Back Button - Moved below the map */}
