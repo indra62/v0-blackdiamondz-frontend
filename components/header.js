@@ -11,7 +11,7 @@
  * @component
  */
 "use client"
-
+import { useAuth } from "@/hooks/useAuth"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ChevronDown, ArrowRight } from "lucide-react"
@@ -22,6 +22,7 @@ import { getItems } from "@/lib/api"
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
 export default function Header() {
+  const { user, logout, isAuthenticated } = useAuth()
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState("buy")
   const [dataSocial, setDataSocial] = useState(null)
@@ -153,12 +154,21 @@ export default function Header() {
 
             {/* Login Button */}
             <div className="flex items-center justify-center px-6 border-r border-[#333] w-[120px]">
-              <Link
-                href="/login"
-                className="text-[#d4af37] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-              >
-                Login
-              </Link>
+              {isAuthenticated ? (
+                <button
+                  onClick={logout}
+                  className="text-[#d4af37] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  href="/login"
+                  className="text-[#d4af37] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                >
+                  Login
+                </Link>
+              )}
             </div>
 
             {/* Language Selection */}
