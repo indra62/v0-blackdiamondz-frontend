@@ -17,12 +17,14 @@ import Link from "next/link"
 import { ChevronDown, ArrowRight } from "lucide-react"
 import { Archivo } from "next/font/google"
 import Menu from "./menu"
+import { getItems } from "@/lib/api"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
-export default function Header({ dataSocial }) {
-  // State management for navigation tabs, dropdowns and menu visibility
+export default function Header() {
+  const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState("buy")
+  const [dataSocial, setDataSocial] = useState(null)
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
   const [selectedLanguage, setSelectedLanguage] = useState({
     name: "English",
@@ -65,6 +67,22 @@ export default function Header({ dataSocial }) {
     } else {
       localStorage.setItem("language", "en")
     }
+  }, [])
+
+  useEffect(() => {
+    const fetchDataSocial = async () => {
+      try {
+        const dataFooter = await getItems("footer", {
+          fields: ["*.*"],
+        })
+
+        setDataSocial(dataFooter)
+        setLoading(false)
+      } catch (err) {
+        setError("Failed to load home data:" + err.message)
+      }
+    }
+    fetchDataSocial()
   }, [])
 
   return (

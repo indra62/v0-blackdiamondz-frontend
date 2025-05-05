@@ -12,18 +12,36 @@
  */
 import Link from "next/link"
 import { Archivo } from "next/font/google"
-import { getImageUrl, submitSubscribe } from "@/lib/api"
+import { getImageUrl, getItems, submitSubscribe } from "@/lib/api"
 import { toast, Toaster } from "react-hot-toast"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 const currentyear = new Date().getFullYear()
 
-export default function Footer({ data }) {
+export default function Footer() {
+  const [error, setError] = useState(null)
+  const [data, setData] = useState(null)
   const [formData, setFormData] = useState({
     email: "",
   })
+
+  useEffect(() => {
+    const fetchDataSocial = async () => {
+      try {
+        const dataFooter = await getItems("footer", {
+          fields: ["*.*"],
+        })
+
+        setData(dataFooter)
+        setLoading(false)
+      } catch (err) {
+        setError("Failed to load home data:" + err.message)
+      }
+    }
+    fetchDataSocial()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -87,7 +105,7 @@ export default function Footer({ data }) {
                         fit: "fit",
                       }) || "/placeholder-image.png"
                     }
-                    alt={data?.id}
+                    alt={data?.footer_logo?.filename_download || "Logo"}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     style={{ objectFit: "fit" }}
