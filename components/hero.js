@@ -15,6 +15,7 @@ import Image from "next/image"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import { getImageUrl } from "@/lib/api"
+import { useAuth } from "@/hooks/useAuth"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["700"] })
@@ -25,6 +26,7 @@ export default function Hero({ data }) {
    * Updates scroll count based on window scroll position
    * Limited to max 100 to prevent excessive calculations
    */
+  const { user } = useAuth()
   const [scrollCount, setScrollCount] = useState(0)
   const [language, setLanguage] = useState("en")
 
@@ -87,7 +89,15 @@ export default function Hero({ data }) {
         <div
           className={`${archivo.className} text-white text-[16px] font-bold leading-[150%] tracking-[0px] text-center mb-2`}
         >
-          {translation?.hero_greetings || ""}
+          {`${translation?.hero_greetings}`}{" "}
+          <span className="text-[#BD9574] text-[16px] font-bold leading-[150%] tracking-[0px] text-center mb-2">{`${
+            user ? user?.first_name : "Guest"
+          }`}</span>
+        </div>
+        <div
+          className={`${archivo.className} text-white text-[16px] font-bold leading-[150%] tracking-[0px] text-center mb-2`}
+        >
+          {translation?.hero_message}
         </div>
 
         {/* Scroll Indicator */}

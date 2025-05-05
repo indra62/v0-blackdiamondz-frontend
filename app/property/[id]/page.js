@@ -25,7 +25,7 @@ import Paddington from "@/components/paddington";
 import PropertyImagesGallery from "@/components/property-images-gallery";
 import PropertyGridGallery from "@/components/property-grid-gallery";
 import PropertyMap from "@/components/property-map";
-import { getItem, getImageUrl } from "@/lib/api";
+import { getItem, getImageUrl, findFeature } from "@/lib/api";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
@@ -79,6 +79,11 @@ export default function PropertyDetailPage({ params }) {
       }
     }
   }, [propertyId]);
+
+  const findFeature = (feature) => {
+    if (!property || !property.features) return undefined;
+    return property.features.find((f) => f.feature_id?.slug === feature);
+  }
 
   const translation =
     property?.type?.translations?.find((t) => t.languages_code === language) ||
@@ -202,139 +207,136 @@ export default function PropertyDetailPage({ params }) {
             </p>
 
             {/* Property Features */}
-            <div className="flex flex-wrap items-center gap-6 mb-8">
-              <div className="flex items-center gap-2 text-[#e2dbcc]">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
-                    stroke="#e2dbcc"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span
-                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
-                >
-                  3
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-[#e2dbcc]">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 12h16a1 1 0 011 1v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2a1 1 0 011-1zm4-9v5m4-2v2m4-4v7"
-                    stroke="#e2dbcc"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span
-                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
-                >
-                  5
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-[#e2dbcc]">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5 17h14M5 17a2 2 0 01-2-2V9m2 8a2 2 0 002 2h10a2 2 0 002-2M5 17V7a2 2 0 012-2h10a2 2 0 012 2v10m0 0V9m0 0H3"
-                    stroke="#e2dbcc"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span
-                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
-                >
-                  1
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-[#e2dbcc]">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3 21h18M9 8h1m5 0h1M9 16h1m5 0h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"
-                    stroke="#e2dbcc"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span
-                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
-                >
-                  6
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-[#e2dbcc]">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 21V8a2 2 0 012-2h12a2 2 0 012 2v13M2 10h20M10 2v6m4-6v6"
-                    stroke="#e2dbcc"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span
-                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
-                >
-                  8
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-[#e2dbcc]">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
-                    stroke="#e2dbcc"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span
-                  className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px] text-[#e2dbcc]`}
-                >
-                  2
-                </span>
-              </div>
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+            <div
+              className="flex items-center gap-1 text-[#E2DBCC]"
+              title="Bedrooms"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
+                  stroke="#E2DBCC"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className={`${archivo.className} font-light text-[14px]`}>
+                {(findFeature && findFeature("bedrooms")?.value) ?? ""}
+              </span>
             </div>
+            <div
+              className="flex items-center gap-1 text-[#E2DBCC]"
+              title="Bathrooms"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 12h16a1 1 0 011 1v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2a1 1 0 011-1zm4-9v5m4-2v2m4-4v7"
+                  stroke="#E2DBCC"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className={`${archivo.className} font-light text-[14px]`}>
+                {(findFeature && findFeature("bathrooms")?.value) ?? ""}
+              </span>
+            </div>
+            <div
+              className="flex items-center gap-1 text-[#E2DBCC]"
+              title="Garages"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 17h14M5 17a2 2 0 01-2-2V9m2 8a2 2 0 002 2h10a2 2 0 002-2M5 17V7a2 2 0 012-2h10a2 2 0 012 2v10m0 0V9m0 0H3"
+                  stroke="#E2DBCC"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span className={`${archivo.className} font-light text-[14px]`}>
+                {(findFeature && findFeature("garages")?.value) ?? ""}
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-[#E2DBCC]">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 21h18M9 8h1m5 0h1M9 16h1m5 0h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"
+                  stroke="#E2DBCC"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className={`${archivo.className} font-light text-[14px]`}>
+                {property?.features?.floors ?? ""}
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-[#E2DBCC]">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 21V8a2 2 0 012-2h12a2 2 0 012 2v13M2 10h20M10 2v6m4-6v6"
+                  stroke="#E2DBCC"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className={`${archivo.className} font-light text-[14px]`}>
+                {property?.features?.rooms ?? ""}
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-[#E2DBCC]">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
+                  stroke="#E2DBCC"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className={`${archivo.className} font-light text-[14px]`}>
+                {property?.features?.additional ?? ""}
+              </span>
+            </div>
+          </div>
 
             {/* Map Button */}
             <button
@@ -492,7 +494,7 @@ export default function PropertyDetailPage({ params }) {
                         <span
                           className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                         >
-                          21
+                          {property?.images?.length}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-[#bd9574]">
