@@ -32,8 +32,9 @@ export default function Home() {
   const [properties, setProperties] = useState(null)
   const [offMarket, setOffMarket] = useState(null)
   const [offMarketSection, setOffMarketSection] = useState(null)
-  const [categories, setCategories] = useState([])
+  const [footer, setFooter] = useState(null)
 
+  const [categories, setCategories] = useState([])
   const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0)
   const [propertiesTotalPages, setPropertiesTotalPages] = useState(0)
   const [propertiesStatus, setPropertiesStatus] = useState("Current")
@@ -172,6 +173,9 @@ export default function Home() {
           },
           limit: 4,
         })
+        const dataFooter = await getItems("footer", {
+          fields: ["*.*"],
+        })
 
         const propertiesData = await fetchProperties(0, "Current", [])
 
@@ -182,6 +186,7 @@ export default function Home() {
         setExplore(dataExplore_section)
         setOffMarketSection(dataOffMarketSection)
         setOffMarket(dataOffMarketProperties)
+        setFooter(dataFooter)
         setLoading(false)
       } catch (err) {
         setError("Failed to load home data:" + err.message)
@@ -214,7 +219,7 @@ export default function Home() {
           <AboutUs data={aboutUs} />
           <ExploreCity data={explore} />
           <OffMarket data={offMarket} section={offMarketSection} />
-          <Footer />
+          <Footer data={footer} />
         </>
       )}
     </main>
