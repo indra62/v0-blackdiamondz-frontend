@@ -203,7 +203,7 @@ export default function Home() {
         </section>
       ) : (
         <>
-          <Header />
+          <Header dataSocial={footer} />
           <Hero data={heroData} />
           <Properties
             data={properties}

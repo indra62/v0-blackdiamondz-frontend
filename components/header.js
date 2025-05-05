@@ -20,7 +20,7 @@ import Menu from "./menu"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
-export default function Header() {
+export default function Header({ dataSocial }) {
   // State management for navigation tabs, dropdowns and menu visibility
   const [activeTab, setActiveTab] = useState("buy")
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
@@ -198,7 +198,11 @@ export default function Header() {
       </header>
 
       {/* Menu Overlay */}
-      <Menu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <Menu
+        dataSocial={dataSocial}
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+      />
     </>
   )
 }
