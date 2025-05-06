@@ -1,4 +1,3 @@
-import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { ChevronDown } from "lucide-react"
 import { Taviraj } from "next/font/google"
@@ -10,8 +9,6 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 export default function ContactUs() {
   return (
     <main className="bg-[#211f17] min-h-screen">
-      <Header />
-
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

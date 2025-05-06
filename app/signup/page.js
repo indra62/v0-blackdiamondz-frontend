@@ -7,7 +7,6 @@
  * @page
  */
 "use client"
-import Header from "@/components/header"
 import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"
@@ -26,7 +25,7 @@ export default function SignupPage() {
     last_name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   })
   const [formError, setFormError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -51,20 +50,20 @@ export default function SignupPage() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setFormError("")
-    
+
     // Basic validation
     if (formData.password !== formData.confirmPassword) {
       setFormError("Passwords do not match")
       return
     }
-    
+
     if (formData.password.length < 8) {
       setFormError("Password must be at least 8 characters")
       return
@@ -75,7 +74,10 @@ export default function SignupPage() {
       await apiSignup(formData)
       setSuccess(true)
     } catch (err) {
-      setFormError(err.response?.data?.errors?.[0]?.message || "Registration failed. Please try again.")
+      setFormError(
+        err.response?.data?.errors?.[0]?.message ||
+          "Registration failed. Please try again."
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -83,7 +85,6 @@ export default function SignupPage() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />

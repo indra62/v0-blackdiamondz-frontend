@@ -7,7 +7,6 @@
  * @page
  */
 "use client"
-import Header from "@/components/header"
 import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"
@@ -118,7 +117,6 @@ export default function VerifyPage({ params }) {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />
