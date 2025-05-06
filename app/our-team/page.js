@@ -85,7 +85,6 @@ export default function OurTeamPage() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />

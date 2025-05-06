@@ -37,43 +37,40 @@ export default function Stats({ data }) {
         <div className="flex flex-col lg:flex-row">
           {/* Black Diamondz Stats */}
           <div className="flex-1 mb-12 lg:mb-0">
-            <div className="flex items-center justify-between mb-12">
-              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white">
-                Black Diamondz
+            <div className="flex items-center justify-center mb-12">
+              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
+                {translation?.left_title}
               </h2>
-              <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
-                More about Black Diamondz
-              </button>
             </div>
             <div className="grid grid-cols-3 gap-8">
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_project_value}
+                  {translation?.left_title_value_1}
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-white">
-                  {translation?.left_project_text}
+                  {translation?.left_title_value_1_text}
                 </div>
               </div>
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_units_value}
+                  {translation?.left_title_value_2}
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-white">
-                  {translation?.left_units_text}
+                  {translation?.left_title_value_2_text}
                 </div>
               </div>
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_totalSQM_value}
+                  {translation?.left_title_value_3}
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-white">
-                  {translation?.left_totalSQM_text}
+                  {translation?.left_title_value_3_text}
                 </div>
               </div>
             </div>
@@ -90,43 +87,40 @@ export default function Stats({ data }) {
 
           {/* Australian Market Stats */}
           <div className="flex-1">
-            <div className="flex items-center justify-between mb-12">
-              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white">
-                Australian Market
+            <div className="flex items-center justify-center mb-12">
+              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
+                {translation?.right_title}
               </h2>
-              <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
-                See Market Insight
-              </button>
             </div>
             <div className="grid grid-cols-3 gap-8">
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  4
+                  {translation?.right_title_value_1}
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-white">
-                  {translation?.left_project_text}
+                  {translation?.right_title_value_1_text}
                 </div>
               </div>
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  24
+                  {translation?.right_title_value_2}
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-white">
-                  {translation?.left_units_text}
+                  {translation?.right_title_value_2_text}
                 </div>
               </div>
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  7325
+                  {translation?.right_title_value_3}
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-white">
-                  {translation?.left_totalSQM_text}
+                  {translation?.right_title_value_3_text}
                 </div>
               </div>
             </div>
