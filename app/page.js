@@ -12,7 +12,7 @@
 
 import Hero from "@/components/hero"
 import Properties from "@/components/properties"
-import Stats from "@/components/stats"
+import StatsHome from "@/components/stats_home"
 import AboutUs from "@/components/about-us"
 import ExploreCity from "@/components/explore-city"
 import OffMarket from "@/components/off-market"
@@ -209,7 +209,7 @@ export default function Home() {
             onTypeChange={handlePropertyTypeChange}
             categories={categories}
           />
-          <Stats data={statistic} />
+          <StatsHome data={statistic} />
           <AboutUs data={aboutUs} />
           <ExploreCity data={explore} />
           <OffMarket data={offMarket} section={offMarketSection} />
