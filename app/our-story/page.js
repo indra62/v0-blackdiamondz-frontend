@@ -1,10 +1,4 @@
-<<<<<<< Updated upstream
-import Stats from "@/components/stats"
-import Footer from "@/components/footer"
-import Image from "next/image"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-=======
+
 "use client";
 import Header from "@/components/header";
 import Stats from "@/components/stats";
@@ -16,7 +10,6 @@ import { Archivo } from "next/font/google";
 import Loading from "@/components/loading";
 import { useEffect, useState } from "react";
 import { getImageUrl, getItems } from "@/lib/api";
->>>>>>> Stashed changes
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
@@ -156,26 +149,7 @@ export default function OurStoryPage() {
           <p
             className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
           >
-<<<<<<< Updated upstream
-            Our point of difference in a saturated market is our unmatched
-            international database, specializing in high-end luxury residential
-            property sales, investment properties and business solutions.
-          </p>
-
-          <p
-            className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto`}
-          >
-            Our industry expertise, negotiating prowess and suite of integrated
-            services ensure that we remain firmly at the forefront of the
-            market, all while providing a bespoke and VIP client offering. With
-            a long-term Chinese, Australian, and international client base,
-            Black Diamondz Property and Monika Tu, Black Diamondz Group's
-            Founder and Director, is a total property and local marketing
-            package that we provide the very best solution for buyers and
-            sellers alike.
-=======
             {translation?.description}
->>>>>>> Stashed changes
           </p>
         </div>
 
@@ -216,17 +190,11 @@ export default function OurStoryPage() {
               <h3
                 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
               >
-<<<<<<< Updated upstream
-                Market
-                <br />
-                with Us
-=======
                 <span
                   dangerouslySetInnerHTML={{
                     __html: translationStory?.text_1 ?? "",
                   }}
                 />
->>>>>>> Stashed changes
               </h3>
             </div>
           </div>
@@ -254,17 +222,11 @@ export default function OurStoryPage() {
               <h3
                 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
               >
-<<<<<<< Updated upstream
-                Buy
-                <br />
-                Property
-=======
                 <span
                   dangerouslySetInnerHTML={{
                     __html: translationStory?.text_2 ?? "",
                   }}
                 />
->>>>>>> Stashed changes
               </h3>
             </div>
           </div>
@@ -292,17 +254,11 @@ export default function OurStoryPage() {
               <h3
                 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
               >
-<<<<<<< Updated upstream
-                Sell Your
-                <br />
-                Property
-=======
                 <span
                   dangerouslySetInnerHTML={{
                     __html: translationStory?.text_3 ?? "",
                   }}
                 />
->>>>>>> Stashed changes
               </h3>
             </div>
           </div>
@@ -330,17 +286,11 @@ export default function OurStoryPage() {
               <h3
                 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
               >
-<<<<<<< Updated upstream
-                Club
-                <br />
-                Diamondz
-=======
                 <span
                   dangerouslySetInnerHTML={{
                     __html: translationStory?.text_4 ?? "",
                   }}
                 />
->>>>>>> Stashed changes
               </h3>
             </div>
           </div>
@@ -356,13 +306,7 @@ export default function OurStoryPage() {
               <h2
                 className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[100%] tracking-[0%] mb-8`}
               >
-<<<<<<< Updated upstream
-                Beyond selling properties, we're also helps large and small
-                organizations in reaching their top confidence to fly higher and
-                grow better.
-=======
                 {translationStoryStory?.story_1}
->>>>>>> Stashed changes
               </h2>
             </div>
 
@@ -371,15 +315,7 @@ export default function OurStoryPage() {
               <p
                 className={`${archivo.className} text-[#BD9574] font-light text-base leading-[150%] tracking-[0px] mb-6`}
               >
-<<<<<<< Updated upstream
-                Black Diamondz PR & Marketing is fast becoming Australia's
-                leading premium communications agency. As the authority on the
-                Chinese-Australian audience, we know how to leverage real
-                insight to create branded content, communications strategies and
-                event experiences that resonate by engaging and meaningful way.
-=======
                 {translationStoryStory?.story_2}
->>>>>>> Stashed changes
               </p>
             </div>
           </div>
@@ -431,11 +367,7 @@ export default function OurStoryPage() {
           <h2
             className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%] mb-8`}
           >
-<<<<<<< Updated upstream
-            Partners
-=======
             {translationStoryPartner?.title}
->>>>>>> Stashed changes
           </h2>
 
           {/* Diamond Separator */}
@@ -448,14 +380,7 @@ export default function OurStoryPage() {
           <p
             className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-[150%] max-w-3xl mx-auto mb-16`}
           >
-<<<<<<< Updated upstream
-            Our curated list of partners is designed to connect you with the
-            best agencies for selling your property. Each partner is dedicated
-            to providing exceptional support throughout the entire process,
-            ensuring a seamless experience.
-=======
             {translationStoryPartner?.description}
->>>>>>> Stashed changes
           </p>
 
           {/* Partners Grid - Single row with exact Figma dimensions */}
