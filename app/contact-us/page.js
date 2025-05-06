@@ -136,7 +136,6 @@ export default function ContactUs() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    console.log("Form Data:", formData)
     try {
       setSubmitting(true)
       await submitContact(formData)

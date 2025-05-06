@@ -12,18 +12,20 @@
  */
 "use client"
 import { useAuth } from "@/hooks/useAuth"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { ChevronDown, ArrowRight } from "lucide-react"
 import { Archivo } from "next/font/google"
 import Menu from "./menu"
 import { getItems } from "@/lib/api"
+import { createPortal } from "react-dom"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
 export default function Header() {
   const { logout, isAuthenticated } = useAuth()
   const [error, setError] = useState(null)
+  const languageButtonRef = useRef(null)
   const [activeTab, setActiveTab] = useState("buy")
   const [dataSocial, setDataSocial] = useState(null)
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
@@ -100,9 +102,22 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (isLanguageDropdownOpen) {
+      const updatePosition = () => {
+        // Update dropdown position based on button position
+        const rect = languageButtonRef.current?.getBoundingClientRect()
+        // Update dropdown position here
+      }
+
+      window.addEventListener("scroll", updatePosition)
+      return () => window.removeEventListener("scroll", updatePosition)
+    }
+  }, [isLanguageDropdownOpen])
+
   return (
     <>
-      <header className={`${archivo.className} font-light sticky top-0 z-40`}>
+      <header className={`${archivo.className} font-light sticky top-0 z-[90]`}>
         {/* Main Navigation */}
         <div
           className={`${
@@ -192,6 +207,7 @@ export default function Header() {
             {/* Language Selection */}
             <div className="flex items-center justify-center px-6 border-r border-[#333] w-[80px] relative">
               <button
+                ref={languageButtonRef} // Add ref here
                 onClick={toggleLanguageDropdown}
                 className="flex items-center gap-2 text-[#BD9574] focus:outline-none"
                 aria-expanded={isLanguageDropdownOpen}
@@ -201,27 +217,45 @@ export default function Header() {
                 <ChevronDown className="h-4 w-4 text-[#BD9574]" />
               </button>
 
-              {isLanguageDropdownOpen && (
-                <div className="absolute top-full right-0 mt-1 w-32 bg-[#211f17] border border-[#333] shadow-lg z-50">
-                  {languages.map((language) => (
-                    <button
-                      key={language.country}
-                      onClick={() => selectLanguage(language)}
-                      className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
-                    >
-                      <span className="text-xl">{language.flag}</span>
-                      <div className="flex flex-col items-start">
-                        <span className="text-[#BD9574] text-base font-light">
-                          {language.name}
+              {isLanguageDropdownOpen &&
+                createPortal(
+                  <div
+                    className="bg-[#211f17] border border-[#333] shadow-lg z-[100]"
+                    style={{
+                      position: "fixed",
+                      top:
+                        languageButtonRef.current?.getBoundingClientRect()
+                          .bottom + "px",
+                      left:
+                        languageButtonRef.current?.getBoundingClientRect()
+                          .right -
+                        128 +
+                        "px",
+                      width: "128px",
+                    }}
+                  >
+                    {languages.map((language) => (
+                      <button
+                        key={language.country}
+                        onClick={() => selectLanguage(language)}
+                        className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
+                      >
+                        <span className="text-[#BD9574] text-xl">
+                          {language.flag}
                         </span>
-                        <span className="text-[#BD9574] text-xs font-light">
-                          {language.country}
-                        </span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
+                        <div className="flex flex-col items-start">
+                          <span className="text-[#BD9574] text-base font-light">
+                            {language.name}
+                          </span>
+                          <span className="text-[#BD9574] text-xs font-light">
+                            {language.country}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>,
+                  document.body
+                )}
             </div>
 
             {/* Menu Button */}

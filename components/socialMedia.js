@@ -17,10 +17,7 @@ export default function SocialMediaLinks() {
         })
 
         setData(dataFooter)
-        setLoading(false)
-      } catch (err) {
-        setLoading(false)
-      }
+      } catch (err) {}
     }
     fetchDataSocial()
   }, [])
