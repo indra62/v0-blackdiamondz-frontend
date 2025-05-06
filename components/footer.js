@@ -152,7 +152,7 @@ export default function Footer() {
                     </div>
                     <button
                       type="submit"
-                      className="bg-[#BD9574] text-[#211f17] px-6 py-3 h-[60px] w-[160px] font-light font-['Archivo'] hover:bg-[#d4af37] transition-colors flex justify-center items-center"
+                      className="bg-[#BD9574] text-[#211f17] px-6 py-3 h-[60px] w-[160px] font-light font-['Archivo'] hover:bg-[#BD9574] transition-colors flex justify-center items-center"
                     >
                       Subscribe
                     </button>
@@ -174,7 +174,7 @@ export default function Footer() {
                       </span>
                       <Link
                         href={`tel:${data?.phone_contact || "0409-898-888"}`}
-                        className="text-[#BD9574] font-light text-[16px] hover:text-[#d4af37] transition-colors font-['Archivo']"
+                        className="text-[#BD9574] font-light text-[16px] hover:text-[#BD9574] transition-colors font-['Archivo']"
                       >
                         {data?.phone_contact || "0409-898-888"}
                       </Link>
@@ -187,7 +187,7 @@ export default function Footer() {
                         href={`mailto:${
                           data?.email_contact || "hello@blackdiamondz.co.au"
                         }`}
-                        className="text-[#BD9574] font-light text-[16px] hover:text-[#d4af37] transition-colors font-['Archivo']"
+                        className="text-[#BD9574] font-light text-[16px] hover:text-[#BD9574] transition-colors font-['Archivo']"
                       >
                         {data?.email_contact || "hello@blackdiamondz.co.au"}
                       </Link>

@@ -244,7 +244,7 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
                 />
                 <button
                   type="submit"
-                  className="bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#d4af37] transition-colors md:border-l-0 text-lg"
+                  className="bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#BD9574] transition-colors md:border-l-0 text-lg"
                 >
                   Subscribe
                 </button>
@@ -284,7 +284,7 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
                     </span>
                     <a
                       href={`tel:${dataSocial?.phone_contact}`}
-                      className="text-[#BD9574] hover:text-[#d4af37] transition-colors font-light text-base leading-[150%]"
+                      className="text-[#BD9574] hover:text-[#BD9574] transition-colors font-light text-base leading-[150%]"
                     >
                       {dataSocial?.phone_contact}
                     </a>
@@ -298,7 +298,7 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
                     </span>
                     <a
                       href={`mailto:${dataSocial?.email_contact}`}
-                      className="text-[#BD9574] hover:text-[#d4af37] transition-colors font-light text-base leading-[150%]"
+                      className="text-[#BD9574] hover:text-[#BD9574] transition-colors font-light text-base leading-[150%]"
                     >
                       {dataSocial?.email_contact}
                     </a>
@@ -393,11 +393,11 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
                         fill="currentColor"
                       >
                         <path d="M9.5 8.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                      <path d="M14.5 8.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                      <path d="M9.5 17.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                      <path d="M14.5 17.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-4.41 3.59-8 8-8s8 3.59 8 8c0 4.08-3.05 7.44-7 7.93V18h-2v1.93z" />
-                    </svg>
+                        <path d="M14.5 8.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                        <path d="M9.5 17.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                        <path d="M14.5 17.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-4.41 3.59-8 8-8s8 3.59 8 8c0 4.08-3.05 7.44-7 7.93V18h-2v1.93z" />
+                      </svg>
                     </a>
                   )}
                 </div>

@@ -128,7 +128,7 @@ export default function LoginPage() {
                     />
                     <button
                       type="submit"
-                      className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#d4af37] transition-colors"
+                      className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#BD9574] transition-colors"
                     >
                       Login
                     </button>
@@ -140,7 +140,7 @@ export default function LoginPage() {
                     Don't have an account?{" "}
                     <Link
                       href="/signup"
-                      className="text-[#BD9574] hover:text-[#d4af37] transition-colors"
+                      className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
                     >
                       Sign up!
                     </Link>

@@ -130,7 +130,7 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
         <div className="container mx-auto px-4 text-center">
           <p className="text-red-400">{error}</p>
           <button
-            className="mt-4 px-4 py-2 bg-[#BD9574] text-[#211f17] hover:bg-[#d4af37]"
+            className="mt-4 px-4 py-2 bg-[#BD9574] text-[#211f17] hover:bg-[#BD9574]"
             onClick={() => window.location.reload()}
           >
             Try Again
@@ -153,11 +153,17 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
                 .map((category) => (
                   <div
                     key={category.id}
-                    className={`cursor-pointer ${activeTab === category.id ? "text-[#BD9574]" : "text-[#656565]"}`}
+                    className={`cursor-pointer ${
+                      activeTab === category.id
+                        ? "text-[#BD9574]"
+                        : "text-[#656565]"
+                    }`}
                     onClick={() => toggleFilter(category.id)}
                   >
                     <span className="font-light text-lg">{category.label}</span>
-                    {activeTab === category.id && <div className="w-full h-[2px] bg-[#BD9574] mt-2" />}
+                    {activeTab === category.id && (
+                      <div className="w-full h-[2px] bg-[#BD9574] mt-2" />
+                    )}
                   </div>
                 ))}
             </div>
@@ -170,14 +176,18 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
                   <div
                     key={category.id}
                     className={`flex flex-col items-center cursor-pointer ${
-                      selectedFilters.includes(category.id) ? "text-[#BD9574]" : "text-[#656565]"
+                      selectedFilters.includes(category.id)
+                        ? "text-[#BD9574]"
+                        : "text-[#656565]"
                     }`}
                     onClick={() => toggleFilter(category.id)}
                   >
                     <div className="mb-1">{category.icon}</div>
                     <span
                       className={`font-light text-xs ${
-                        selectedFilters.includes(category.id) ? "text-[#BD9574]" : "text-[#656565]"
+                        selectedFilters.includes(category.id)
+                          ? "text-[#BD9574]"
+                          : "text-[#656565]"
                       }`}
                     >
                       {category.label}
@@ -221,7 +231,11 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
                     className="text-[#E2DBCC] hover:text-[#BD9574] transition-colors"
                   >
                     <Heart
-                      className={`w-6 h-6 ${favorites.includes(property.id) ? "fill-[#BD9574] stroke-[#BD9574]" : ""}`}
+                      className={`w-6 h-6 ${
+                        favorites.includes(property.id)
+                          ? "fill-[#BD9574] stroke-[#BD9574]"
+                          : ""
+                      }`}
                     />
                   </button>
                 </div>
@@ -232,12 +246,16 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
                   {property.name}
                 </h3>
 
-                <div className="text-[#E2DBCC] text-[16px] font-light mb-1">{property.address}</div>
+                <div className="text-[#E2DBCC] text-[16px] font-light mb-1">
+                  {property.address}
+                </div>
                 <div className="text-[#E2DBCC] text-[16px] font-light mb-4">
                   {property.city}, {property.postcode}
                 </div>
 
-                <div className="text-[#BD9574] text-[16px] font-light mb-6">{property.price}</div>
+                <div className="text-[#BD9574] text-[16px] font-light mb-6">
+                  {property.price}
+                </div>
 
                 {/* Property features */}
                 <div className="flex flex-wrap items-center gap-4 mb-6">
@@ -246,13 +264,17 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
                 </div>
 
                 {/* Action buttons */}
-                <div className="grid grid-cols-2 gap-0">{/* ... (action buttons remain the same) */}</div>
+                <div className="grid grid-cols-2 gap-0">
+                  {/* ... (action buttons remain the same) */}
+                </div>
               </Link>
             ))}
           </div>
         ) : (
           <div className="text-center py-8">
-            <p className="text-[#E2DBCC]">No properties found matching your criteria.</p>
+            <p className="text-[#E2DBCC]">
+              No properties found matching your criteria.
+            </p>
           </div>
         )}
 
@@ -263,7 +285,9 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
               {Array.from({ length: totalPages }, (_, index) => (
                 <div
                   key={index}
-                  className={`w-3 h-3 ${index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]"} transform rotate-45 cursor-pointer`}
+                  className={`w-3 h-3 ${
+                    index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]"
+                  } transform rotate-45 cursor-pointer`}
                   onClick={() => setCurrentPage(index)}
                 />
               ))}
@@ -272,12 +296,20 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
             <div className="flex items-center gap-4 justify-center">
               <button
                 className={`p-2 border border-[#656565] rounded ${
-                  currentPage === 0 ? "opacity-50 cursor-not-allowed" : "hover:border-[#BD9574] hover:text-[#BD9574]"
+                  currentPage === 0
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:border-[#BD9574] hover:text-[#BD9574]"
                 } transition-colors`}
                 onClick={handlePrevious}
                 disabled={currentPage === 0}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M15 18l-6-6 6-6"
                     stroke="currentColor"
@@ -296,7 +328,13 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
                 onClick={handleNext}
                 disabled={currentPage === totalPages - 1}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M9 6l6 6-6 6"
                     stroke="currentColor"
@@ -308,10 +346,18 @@ export default function PropertiesWithDirectus({ showFilters = true, showNavigat
               </button>
               <Link
                 href="/buy"
-                className="flex items-center gap-2 bg-[#BD9574] text-[#211f17] px-6 py-2 rounded hover:bg-[#d4af37] transition-colors"
+                className="flex items-center gap-2 bg-[#BD9574] text-[#211f17] px-6 py-2 rounded hover:bg-[#BD9574] transition-colors"
               >
-                <span className="font-light text-[16px]">See All Properties</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <span className="font-light text-[16px]">
+                  See All Properties
+                </span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M5 12h14M12 5l7 7-7 7"
                     stroke="currentColor"

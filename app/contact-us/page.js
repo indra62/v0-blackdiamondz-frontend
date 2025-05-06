@@ -17,16 +17,23 @@ export default function ContactUs() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column - Contact Info */}
             <div className="flex flex-col justify-center">
-              <h1 className={`${taviraj.className} text-[#E2DBCC] text-5xl font-light leading-tight mb-12`}>
+              <h1
+                className={`${taviraj.className} text-[#E2DBCC] text-5xl font-light leading-tight mb-12`}
+              >
                 More details?
                 <br />
                 Contact Us
               </h1>
 
-              <div className={`${archivo.className} text-[#656565] font-light text-base mb-12`}>
+              <div
+                className={`${archivo.className} text-[#656565] font-light text-base mb-12`}
+              >
                 <p className="mb-1">
                   ph{" "}
-                  <a href="tel:0409-898-888" className="text-[#BD9574] hover:text-[#d4af37] transition-colors">
+                  <a
+                    href="tel:0409-898-888"
+                    className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
+                  >
                     0409-898-888
                   </a>
                 </p>
@@ -34,7 +41,7 @@ export default function ContactUs() {
                   email{" "}
                   <a
                     href="mailto:hello@blackdiamondz.co.au"
-                    className="text-[#BD9574] hover:text-[#d4af37] transition-colors"
+                    className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
                   >
                     hello@blackdiamondz.co.au
                   </a>
@@ -44,36 +51,78 @@ export default function ContactUs() {
               {/* Social Media Icons */}
               <div className="flex space-x-6">
                 {/* Diamond Icon */}
-                <a href="#" className="text-[#656565] hover:text-[#BD9574] transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <a
+                  href="#"
+                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M12 2L2 12L12 22L22 12L12 2Z" />
                   </svg>
                 </a>
                 {/* Facebook Icon */}
-                <a href="#" className="text-[#656565] hover:text-[#BD9574] transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <a
+                  href="#"
+                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3V2z" />
                   </svg>
                 </a>
                 {/* Instagram Icon */}
-                <a href="#" className="text-[#656565] hover:text-[#BD9574] transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <a
+                  href="#"
+                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                     <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                   </svg>
                 </a>
                 {/* LinkedIn Icon */}
-                <a href="#" className="text-[#656565] hover:text-[#BD9574] transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <a
+                  href="#"
+                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
                     <rect x="2" y="9" width="4" height="12" />
                     <circle cx="4" cy="4" r="2" />
                   </svg>
                 </a>
                 {/* WeChat Icon */}
-                <a href="#" className="text-[#656565] hover:text-[#BD9574] transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <a
+                  href="#"
+                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M9.5 8.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
                     <path d="M14.5 8.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
                     <path d="M9.5 17.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
@@ -89,27 +138,55 @@ export default function ContactUs() {
               {/* User Type Selection */}
               <div className="flex space-x-8 mb-8">
                 <label className="flex items-center cursor-pointer">
-                  <input type="radio" name="userType" value="buyer" className="sr-only peer" />
+                  <input
+                    type="radio"
+                    name="userType"
+                    value="buyer"
+                    className="sr-only peer"
+                  />
                   <div className="w-5 h-5 border border-[#656565] rounded-full mr-2 flex items-center justify-center peer-checked:border-[#BD9574]">
                     <div className="w-3 h-3 rounded-full bg-[#BD9574] opacity-0 peer-checked:opacity-100"></div>
                   </div>
-                  <span className={`${archivo.className} text-[#E2DBCC] font-light`}>Buyer</span>
+                  <span
+                    className={`${archivo.className} text-[#E2DBCC] font-light`}
+                  >
+                    Buyer
+                  </span>
                 </label>
 
                 <label className="flex items-center cursor-pointer">
-                  <input type="radio" name="userType" value="seller" className="sr-only peer" defaultChecked />
+                  <input
+                    type="radio"
+                    name="userType"
+                    value="seller"
+                    className="sr-only peer"
+                    defaultChecked
+                  />
                   <div className="w-5 h-5 border border-[#656565] rounded-full mr-2 flex items-center justify-center peer-checked:border-[#BD9574]">
                     <div className="w-3 h-3 rounded-full bg-[#BD9574] opacity-0 peer-checked:opacity-100"></div>
                   </div>
-                  <span className={`${archivo.className} text-[#E2DBCC] font-light`}>Seller</span>
+                  <span
+                    className={`${archivo.className} text-[#E2DBCC] font-light`}
+                  >
+                    Seller
+                  </span>
                 </label>
 
                 <label className="flex items-center cursor-pointer">
-                  <input type="radio" name="userType" value="agency" className="sr-only peer" />
+                  <input
+                    type="radio"
+                    name="userType"
+                    value="agency"
+                    className="sr-only peer"
+                  />
                   <div className="w-5 h-5 border border-[#656565] rounded-full mr-2 flex items-center justify-center peer-checked:border-[#BD9574]">
                     <div className="w-3 h-3 rounded-full bg-[#BD9574] opacity-0 peer-checked:opacity-100"></div>
                   </div>
-                  <span className={`${archivo.className} text-[#E2DBCC] font-light`}>Agency</span>
+                  <span
+                    className={`${archivo.className} text-[#E2DBCC] font-light`}
+                  >
+                    Agency
+                  </span>
                 </label>
               </div>
 
@@ -150,7 +227,10 @@ export default function ContactUs() {
                     <option value="usa">USA</option>
                     <option value="uk">UK</option>
                   </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#656565]" size={16} />
+                  <ChevronDown
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#656565]"
+                    size={16}
+                  />
                 </div>
 
                 {/* City */}
@@ -168,7 +248,10 @@ export default function ContactUs() {
                     <option value="brisbane">Brisbane</option>
                     <option value="perth">Perth</option>
                   </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#656565]" size={16} />
+                  <ChevronDown
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#656565]"
+                    size={16}
+                  />
                 </div>
 
                 {/* Email */}
@@ -203,7 +286,7 @@ export default function ContactUs() {
                 <div className="col-span-1 md:col-span-2">
                   <button
                     type="submit"
-                    className={`${archivo.className} w-full bg-[#BD9574] text-[#211f17] py-4 hover:bg-[#d4af37] transition-colors`}
+                    className={`${archivo.className} w-full bg-[#BD9574] text-[#211f17] py-4 hover:bg-[#BD9574] transition-colors`}
                   >
                     Send
                   </button>

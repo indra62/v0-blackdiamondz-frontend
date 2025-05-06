@@ -536,7 +536,7 @@ export default function PropertyDetailPage({ params }) {
                     {/* Update the button onClick handler to pass the event */}
                     <button
                       onClick={(e) => toggleViewMode(e)}
-                      className="px-6 py-3 border border-[#bd9574] text-[#bd9574] hover:border-[#d4af37] hover:text-[#d4af37] transition-colors"
+                      className="px-6 py-3 border border-[#bd9574] text-[#bd9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
                     >
                       View All Media
                     </button>

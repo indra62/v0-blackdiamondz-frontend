@@ -148,10 +148,14 @@ export default function BuyFilters() {
               .map((filter) => (
                 <div
                   key={filter.id}
-                  className={`cursor-pointer ${filter.active ? "text-[#d4af37]" : "text-[#656565]"}`}
+                  className={`cursor-pointer ${
+                    filter.active ? "text-[#BD9574]" : "text-[#656565]"
+                  }`}
                 >
                   <span className="text-lg font-light">{filter.label}</span>
-                  {filter.active && <div className="w-full h-[2px] bg-[#d4af37] mt-2" />}
+                  {filter.active && (
+                    <div className="w-full h-[2px] bg-[#BD9574] mt-2" />
+                  )}
                 </div>
               ))}
           </div>
@@ -163,7 +167,7 @@ export default function BuyFilters() {
                 <div
                   key={filter.id}
                   className={`flex flex-col items-center cursor-pointer ${
-                    filter.active ? "text-[#d4af37]" : "text-[#656565]"
+                    filter.active ? "text-[#BD9574]" : "text-[#656565]"
                   }`}
                 >
                   <div className="mb-1">{filter.icon}</div>
