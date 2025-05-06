@@ -1,12 +1,167 @@
-import Footer from "@/components/footer"
+"use client"
 import { ChevronDown } from "lucide-react"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
+import { useState, useEffect } from "react"
+import { submitContact, getItems } from "@/lib/api"
+import toast from "react-hot-toast"
+import AsyncSelect from "react-select/async"
+import { useDebouncedCallback } from "use-debounce"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    backgroundColor: "transparent",
+    border: "none",
+    boxShadow: "none",
+    color: "#E2DBCC",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: "#211f17",
+    border: "1px solid rgba(101, 101, 101, 0.3)",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? "#2c2a20" : "#211f17",
+    color: "#E2DBCC",
+    cursor: "pointer",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "#E2DBCC",
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "#656565",
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: "#E2DBCC",
+  }),
+}
+
 export default function ContactUs() {
+  const [formData, setFormData] = useState({
+    type: "buyer",
+    first_name: "",
+    last_name: "",
+    country: "",
+    country_id: "",
+    city: "",
+    city_id: "",
+    email: "",
+    phone: "",
+    message: "",
+  })
+
+  const [loading, setLoading] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+
+  const debouncedLoadCountryOptions = useDebouncedCallback(
+    (inputValue, callback) => {
+      const fetchData = async () => {
+        try {
+          const data = await getItems("countries", {
+            fields: ["*"],
+            search: inputValue,
+            sort: ["name"],
+          })
+          callback(data)
+        } catch (error) {
+          console.error("Error fetching countries:", error)
+          callback([])
+        }
+      }
+      fetchData()
+    },
+    300
+  )
+
+  const debouncedLoadCityOptions = useDebouncedCallback(
+    (inputValue, callback) => {
+      if (!formData.country_id) {
+        callback([])
+        return
+      }
+
+      const fetchData = async () => {
+        try {
+          const data = await getItems("cities", {
+            fields: ["*"],
+            filter: {
+              country_id: { _eq: formData.country_id },
+            },
+            search: inputValue,
+            sort: ["name"],
+          })
+          callback(data)
+        } catch (error) {
+          console.error("Error fetching cities:", error)
+          callback([])
+        }
+      }
+      fetchData()
+    },
+    300
+  )
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+    // Reset dependent fields
+    if (name === "country") {
+      setFormData((prev) => ({
+        ...prev,
+        city: "",
+        city_id: "",
+      }))
+    }
+  }
+
+  const handleTypeChange = (type) => {
+    setFormData((prev) => ({
+      ...prev,
+      type,
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    console.log("Form Data:", formData)
+    try {
+      setSubmitting(true)
+      await submitContact(formData)
+      toast.success("Form submitted successfully!")
+
+      // Reset form
+      setFormData({
+        type: "buyer",
+        first_name: "",
+        last_name: "",
+        country: "",
+        country_id: "",
+        city: "",
+        city_id: "",
+        email: "",
+        phone: "",
+        message: "",
+      })
+    } catch (error) {
+      toast.error("Failed to submit form. Please try again.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <main className="bg-[#211f17] min-h-screen">
       <section className="py-16 md:py-24">
@@ -44,90 +199,6 @@ export default function ContactUs() {
                   </a>
                 </p>
               </div>
-
-              {/* Social Media Icons */}
-              <div className="flex space-x-6">
-                {/* Diamond Icon */}
-                <a
-                  href="#"
-                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M12 2L2 12L12 22L22 12L12 2Z" />
-                  </svg>
-                </a>
-                {/* Facebook Icon */}
-                <a
-                  href="#"
-                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3V2z" />
-                  </svg>
-                </a>
-                {/* Instagram Icon */}
-                <a
-                  href="#"
-                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                  </svg>
-                </a>
-                {/* LinkedIn Icon */}
-                <a
-                  href="#"
-                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
-                    <rect x="2" y="9" width="4" height="12" />
-                    <circle cx="4" cy="4" r="2" />
-                  </svg>
-                </a>
-                {/* WeChat Icon */}
-                <a
-                  href="#"
-                  className="text-[#656565] hover:text-[#BD9574] transition-colors"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M9.5 8.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                    <path d="M14.5 8.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                    <path d="M9.5 17.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                    <path d="M14.5 17.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-4.41 3.59-8 8-8s8 3.59 8 8c0 4.08-3.05 7.44-7 7.93V18h-2v1.93z" />
-                  </svg>
-                </a>
-              </div>
             </div>
 
             {/* Right Column - Contact Form */}
@@ -137,12 +208,18 @@ export default function ContactUs() {
                 <label className="flex items-center cursor-pointer">
                   <input
                     type="radio"
-                    name="userType"
+                    name="type"
                     value="buyer"
+                    checked={formData.type === "buyer"}
+                    onChange={() => handleTypeChange("buyer")}
                     className="sr-only peer"
                   />
                   <div className="w-5 h-5 border border-[#656565] rounded-full mr-2 flex items-center justify-center peer-checked:border-[#BD9574]">
-                    <div className="w-3 h-3 rounded-full bg-[#BD9574] opacity-0 peer-checked:opacity-100"></div>
+                    <div
+                      className={`w-3 h-3 rounded-full bg-[#BD9574] ${
+                        formData.type === "buyer" ? "opacity-100" : "opacity-0"
+                      }`}
+                    ></div>
                   </div>
                   <span
                     className={`${archivo.className} text-[#E2DBCC] font-light`}
@@ -154,13 +231,18 @@ export default function ContactUs() {
                 <label className="flex items-center cursor-pointer">
                   <input
                     type="radio"
-                    name="userType"
+                    name="type"
                     value="seller"
+                    checked={formData.type === "seller"}
+                    onChange={() => handleTypeChange("seller")}
                     className="sr-only peer"
-                    defaultChecked
                   />
                   <div className="w-5 h-5 border border-[#656565] rounded-full mr-2 flex items-center justify-center peer-checked:border-[#BD9574]">
-                    <div className="w-3 h-3 rounded-full bg-[#BD9574] opacity-0 peer-checked:opacity-100"></div>
+                    <div
+                      className={`w-3 h-3 rounded-full bg-[#BD9574] ${
+                        formData.type === "seller" ? "opacity-100" : "opacity-0"
+                      }`}
+                    ></div>
                   </div>
                   <span
                     className={`${archivo.className} text-[#E2DBCC] font-light`}
@@ -172,12 +254,18 @@ export default function ContactUs() {
                 <label className="flex items-center cursor-pointer">
                   <input
                     type="radio"
-                    name="userType"
+                    name="type"
                     value="agency"
+                    checked={formData.type === "agency"}
+                    onChange={() => handleTypeChange("agency")}
                     className="sr-only peer"
                   />
                   <div className="w-5 h-5 border border-[#656565] rounded-full mr-2 flex items-center justify-center peer-checked:border-[#BD9574]">
-                    <div className="w-3 h-3 rounded-full bg-[#BD9574] opacity-0 peer-checked:opacity-100"></div>
+                    <div
+                      className={`w-3 h-3 rounded-full bg-[#BD9574] ${
+                        formData.type === "agency" ? "opacity-100" : "opacity-0"
+                      }`}
+                    ></div>
                   </div>
                   <span
                     className={`${archivo.className} text-[#E2DBCC] font-light`}
@@ -188,11 +276,17 @@ export default function ContactUs() {
               </div>
 
               {/* Contact Form */}
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-0">
+              <form
+                onSubmit={handleSubmit}
+                className="grid grid-cols-1 md:grid-cols-2 gap-0"
+              >
                 {/* First Name */}
                 <div className="border border-[#656565]/30 p-4">
                   <input
                     type="text"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
                     placeholder="First Name*"
                     className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] focus:outline-none`}
                     required
@@ -203,6 +297,9 @@ export default function ContactUs() {
                 <div className="border border-[#656565]/30 border-l-0 md:border-l-0 p-4">
                   <input
                     type="text"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
                     placeholder="Last Name*"
                     className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] focus:outline-none`}
                     required
@@ -211,43 +308,67 @@ export default function ContactUs() {
 
                 {/* Country */}
                 <div className="border border-[#656565]/30 border-t-0 p-4 relative">
-                  <select
-                    className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] focus:outline-none appearance-none`}
-                    defaultValue=""
-                    required
-                  >
-                    <option value="" disabled>
-                      Country
-                    </option>
-                    <option value="australia">Australia</option>
-                    <option value="china">China</option>
-                    <option value="usa">USA</option>
-                    <option value="uk">UK</option>
-                  </select>
-                  <ChevronDown
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#656565]"
-                    size={16}
+                  <AsyncSelect
+                    name="country"
+                    value={
+                      formData.country
+                        ? {
+                            id: formData.country_id,
+                            name: formData.country,
+                          }
+                        : null
+                    }
+                    loadOptions={debouncedLoadCountryOptions}
+                    onChange={(option) => {
+                      // Update both the label and ID fields
+                      setFormData((prev) => ({
+                        ...prev,
+                        country: option ? option.name : "",
+                        country_id: option ? option.id : "",
+                        // Clear city when country changes
+                        city: "",
+                        city_id: "",
+                      }))
+                    }}
+                    getOptionLabel={(option) => option.name}
+                    getOptionValue={(option) => option.id}
+                    placeholder="Country"
+                    styles={customStyles}
+                    className={archivo.className}
+                    defaultOptions={true}
+                    cacheOptions
                   />
                 </div>
 
                 {/* City */}
-                <div className="border border-[#656565]/30 border-t-0 border-l-0 md:border-l-0 p-4 relative">
-                  <select
-                    className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] focus:outline-none appearance-none`}
-                    defaultValue=""
-                    required
-                  >
-                    <option value="" disabled>
-                      City
-                    </option>
-                    <option value="sydney">Sydney</option>
-                    <option value="melbourne">Melbourne</option>
-                    <option value="brisbane">Brisbane</option>
-                    <option value="perth">Perth</option>
-                  </select>
-                  <ChevronDown
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#656565]"
-                    size={16}
+                <div className="border border-[#656565]/30 border-t-0 p-4 relative">
+                  <AsyncSelect
+                    name="city"
+                    value={
+                      formData.city
+                        ? {
+                            id: formData.city_id,
+                            name: formData.city,
+                          }
+                        : null
+                    }
+                    loadOptions={debouncedLoadCityOptions}
+                    onChange={(option) => {
+                      // Update both the label and ID fields
+                      setFormData((prev) => ({
+                        ...prev,
+                        city: option ? option.name : "",
+                        city_id: option ? option.id : "",
+                      }))
+                    }}
+                    getOptionLabel={(option) => option.name}
+                    getOptionValue={(option) => option.id}
+                    placeholder={loading ? "Loading cities..." : "City"}
+                    styles={customStyles}
+                    className={archivo.className}
+                    isDisabled={!formData.country_id || loading}
+                    defaultOptions={formData.country_id ? true : false}
+                    cacheOptions
                   />
                 </div>
 
@@ -255,6 +376,9 @@ export default function ContactUs() {
                 <div className="border border-[#656565]/30 border-t-0 p-4">
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="Email*"
                     className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] focus:outline-none`}
                     required
@@ -262,9 +386,12 @@ export default function ContactUs() {
                 </div>
 
                 {/* Phone */}
-                <div className="border border-[#656565]/30 border-t-0 border-l-0 md:border-l-0 p-4">
+                <div className="border border-[#656565]/30 border-t-0 p-4">
                   <input
                     type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
                     placeholder="Phone*"
                     className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] focus:outline-none`}
                     required
@@ -274,6 +401,9 @@ export default function ContactUs() {
                 {/* Message */}
                 <div className="border border-[#656565]/30 border-t-0 p-4 col-span-1 md:col-span-2">
                   <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="Message"
                     className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] focus:outline-none h-32 resize-none`}
                   ></textarea>
@@ -283,9 +413,10 @@ export default function ContactUs() {
                 <div className="col-span-1 md:col-span-2">
                   <button
                     type="submit"
-                    className={`${archivo.className} w-full bg-[#BD9574] text-[#211f17] py-4 hover:bg-[#BD9574] transition-colors`}
+                    disabled={submitting}
+                    className={`${archivo.className} w-full bg-[#BD9574] text-[#211f17] py-4 hover:bg-[#BD9574]/90 transition-colors disabled:opacity-50`}
                   >
-                    Send
+                    {submitting ? "Sending..." : "Send"}
                   </button>
                 </div>
               </form>
@@ -293,8 +424,6 @@ export default function ContactUs() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </main>
   )
 }
