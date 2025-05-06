@@ -31,11 +31,11 @@ function VerificationContent() {
       setVerificationError("Verification token is missing")
       return
     }
-
+  
     try {
       setVerifying(true)
       const result = await verify(token)
-      if (result) {
+      if (result && (result.status === 200 || result.status === 302)) {
         setVerified(true)
       } else {
         setVerificationError(
@@ -43,6 +43,7 @@ function VerificationContent() {
         )
       }
     } catch (err) {
+      console.error("Verification error:", err)
       setVerificationError("An error occurred during verification")
     } finally {
       setVerifying(false)
