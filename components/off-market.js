@@ -85,7 +85,7 @@ export default function OffMarket({ data, section }) {
               </div>
               <Link
                 href="/login"
-                className="bg-[#BD9574] text-[#211f17] px-8 py-3 hover:bg-[#d4af37] transition-colors"
+                className="bg-[#BD9574] text-[#211f17] px-8 py-3 hover:bg-[#BD9574] transition-colors"
               >
                 Login Now
               </Link>

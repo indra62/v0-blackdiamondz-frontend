@@ -8,7 +8,6 @@
  */
 
 // Update import statements to use kebab-case
-import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
@@ -20,8 +19,6 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 export default function SellPage() {
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
-
       {/* Hero Section */}
       <section className="py-16 text-center">
         <h1
@@ -60,7 +57,7 @@ export default function SellPage() {
                 >
                   Black Diamondz
                 </h2>
-                <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#d4af37] hover:text-[#d4af37] transition-colors font-archivo font-light text-base leading-6">
+                <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
                   More about Black Diamondz
                 </button>
               </div>
@@ -121,7 +118,7 @@ export default function SellPage() {
                 >
                   Australian Market
                 </h2>
-                <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#d4af37] hover:text-[#d4af37] transition-colors font-archivo font-light text-base leading-6">
+                <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
                   See Market Insight
                 </button>
               </div>
@@ -250,7 +247,7 @@ export default function SellPage() {
               placeholder="Start typing to find your address..."
               className="flex-grow bg-transparent border border-[#656565] p-4 text-white focus:outline-none focus:border-[#BD9574]"
             />
-            <button className="bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#d4af37] transition-colors">
+            <button className="bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#BD9574] transition-colors">
               Find Out
             </button>
           </div>
@@ -456,7 +453,7 @@ export default function SellPage() {
                   className="bg-transparent border border-[#656565] p-4 text-white focus:outline-none focus:border-[#BD9574]"
                 ></textarea>
 
-                <button className="bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#d4af37] transition-colors">
+                <button className="bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#BD9574] transition-colors">
                   Send
                 </button>
               </div>

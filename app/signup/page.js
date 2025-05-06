@@ -7,7 +7,6 @@
  * @page
  */
 "use client"
-import Header from "@/components/header"
 import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"
@@ -26,7 +25,7 @@ export default function SignupPage() {
     last_name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   })
   const [formError, setFormError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -51,20 +50,20 @@ export default function SignupPage() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setFormError("")
-    
+
     // Basic validation
     if (formData.password !== formData.confirmPassword) {
       setFormError("Passwords do not match")
       return
     }
-    
+
     if (formData.password.length < 8) {
       setFormError("Password must be at least 8 characters")
       return
@@ -75,7 +74,10 @@ export default function SignupPage() {
       await apiSignup(formData)
       setSuccess(true)
     } catch (err) {
-      setFormError(err.response?.data?.errors?.[0]?.message || "Registration failed. Please try again.")
+      setFormError(
+        err.response?.data?.errors?.[0]?.message ||
+          "Registration failed. Please try again."
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -83,7 +85,6 @@ export default function SignupPage() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />
@@ -119,10 +120,13 @@ export default function SignupPage() {
 
                 {success ? (
                   <div className="text-center text-white p-4 border border-[#BD9574]">
-                    <p className="mb-4">Registration successful! Please check your email to verify your account.</p>
+                    <p className="mb-4">
+                      Registration successful! Please check your email to verify
+                      your account.
+                    </p>
                     <Link
                       href="/login"
-                      className="text-[#BD9574] hover:text-[#d4af37] transition-colors"
+                      className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
                     >
                       Go to login
                     </Link>
@@ -134,7 +138,7 @@ export default function SignupPage() {
                         {formError}
                       </div>
                     )}
-                    
+
                     <form onSubmit={handleSubmit}>
                       <div className="flex flex-col">
                         <div className="flex w-full">
@@ -191,7 +195,7 @@ export default function SignupPage() {
 
                         <button
                           type="submit"
-                          className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#d4af37] transition-colors disabled:opacity-50"
+                          className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#BD9574] transition-colors disabled:opacity-50"
                           disabled={isSubmitting}
                         >
                           {isSubmitting ? "Signing Up..." : "Sign Up"}
@@ -204,7 +208,7 @@ export default function SignupPage() {
                         Already have an account?{" "}
                         <Link
                           href="/login"
-                          className="text-[#BD9574] hover:text-[#d4af37] transition-colors"
+                          className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
                         >
                           Sign in!
                         </Link>

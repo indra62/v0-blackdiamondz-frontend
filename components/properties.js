@@ -402,7 +402,7 @@ export default function Properties({
               </button>
               <Link
                 href="/buy"
-                className="flex items-center gap-2 bg-[#BD9574] text-[#211f17] px-6 py-2 rounded hover:bg-[#d4af37] transition-colors"
+                className="flex items-center gap-2 bg-[#BD9574] text-[#211f17] px-6 py-2 rounded hover:bg-[#BD9574] transition-colors"
               >
                 <span className="font-light text-[16px]">
                   See All Properties

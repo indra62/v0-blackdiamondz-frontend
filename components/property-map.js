@@ -4,8 +4,7 @@ import { useState, useMemo } from "react"
 import { Archivo, Taviraj } from "next/font/google"
 import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
-// Update import statements to use kebab-case
-import Header from "@/components/header"
+
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
@@ -29,9 +28,6 @@ export default function PropertyMap({ onClose, property, type }) {
 
   return (
     <div className="fixed inset-0 bg-[#211f17] z-50 flex flex-col">
-      {/* Use the existing Header component */}
-      <Header />
-
       {/* Property Info - Updated with correct font sizes */}
       <div className="container mx-auto px-4 py-6">
         <div className="text-[#e2dbcc] text-[14px] mb-4">

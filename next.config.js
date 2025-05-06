@@ -9,12 +9,6 @@ const nextConfig = {
         hostname: "staging.cms.black-diamondz.62dev.org",
         pathname: "/assets/**",
       },
-      {
-        protocol: "https",
-        hostname: "hebbkx1anhila5yf.public.blob.vercel-storage.com",
-        port: "",
-        pathname: "/**",
-      },
     ],
   },
 };

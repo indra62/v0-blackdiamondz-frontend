@@ -7,7 +7,6 @@
  * @page
  */
 "use client"
-import Header from "@/components/header"
 import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"
@@ -32,11 +31,11 @@ function VerificationContent() {
       setVerificationError("Verification token is missing")
       return
     }
-
+  
     try {
       setVerifying(true)
       const result = await verify(token)
-      if (result) {
+      if (result && (result.status === 200 || result.status === 302)) {
         setVerified(true)
       } else {
         setVerificationError(
@@ -44,6 +43,7 @@ function VerificationContent() {
         )
       }
     } catch (err) {
+      console.error("Verification error:", err)
       setVerificationError("An error occurred during verification")
     } finally {
       setVerifying(false)
@@ -58,7 +58,7 @@ function VerificationContent() {
           <p className="mb-6">You can now log in to access your account.</p>
           <Link
             href="/login"
-            className="inline-block bg-[#BD9574] text-[#211f17] px-6 py-3 hover:bg-[#d4af37] transition-colors"
+            className="inline-block bg-[#BD9574] text-[#211f17] px-6 py-3 hover:bg-[#BD9574] transition-colors"
           >
             Go to Login
           </Link>
@@ -79,7 +79,7 @@ function VerificationContent() {
           <button
             onClick={handleVerify}
             disabled={verifying || !token}
-            className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#d4af37] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#BD9574] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {verifying ? "Verifying..." : "Verify Email"}
           </button>
@@ -118,7 +118,6 @@ export default function VerifyPage({ params }) {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />
@@ -167,7 +166,7 @@ export default function VerifyPage({ params }) {
                     Already verified?{" "}
                     <Link
                       href="/login"
-                      className="text-[#BD9574] hover:text-[#d4af37] transition-colors"
+                      className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
                     >
                       Sign in!
                     </Link>

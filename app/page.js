@@ -10,7 +10,6 @@
  */
 "use client";
 
-import Header from "@/components/header";
 import Hero from "@/components/hero";
 import Properties from "@/components/properties";
 import Stats from "@/components/stats";
@@ -32,7 +31,6 @@ export default function Home() {
   const [properties, setProperties] = useState(null);
   const [offMarket, setOffMarket] = useState(null);
   const [offMarketSection, setOffMarketSection] = useState(null);
-
   const [categories, setCategories] = useState([]);
   const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0);
   const [propertiesTotalPages, setPropertiesTotalPages] = useState(0);
@@ -192,7 +190,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />
