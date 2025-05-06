@@ -22,7 +22,6 @@ import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Loading from "@/components/loading"
 import { set } from "date-fns"
-import Properties from "@/components/properties"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
@@ -34,19 +33,13 @@ export default function BuyPage() {
   const [dataExplore, setDataExplore] = useState(null)
   const [properties, setProperties] = useState([])
   const [favorites, setFavorites] = useState([])
+  const [propertiesCount, setPropertiesCount] = useState(0)
+  const [propertiesTotalPages, setPropertiesTotalPages] = useState(1)
   const [error, setError] = useState(null)
   const [explore, setExplore] = useState(null)
   const [offMarket, setOffMarket] = useState(null)
   const [offMarketSection, setOffMarketSection] = useState(null)
   const [language, setLanguage] = useState("en")
-
-  const [categories, setCategories] = useState([])
-  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0)
-  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0)
-  const [propertiesStatus, setPropertiesStatus] = useState("Current")
-  const [propertiesType, setPropertiesType] = useState([])
-  const [propertiesCount, setPropertiesCount] = useState(0)
-  const ITEMS_PER_PAGE = 4
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -163,27 +156,9 @@ export default function BuyPage() {
     // eslint-disable-next-line
   }, [])
 
+  // (Removed duplicate BuyPage export and block)
 
-  // Handle property filter change
-  const handlePropertyFilterChange = (status) => {
-    setPropertiesStatus(status)
-    setPropertiesCurrentPage(0)
-    fetchProperties(0, status, propertiesType)
-  }
-
-  const handlePropertyTypeChange = (type) => {
-    setPropertiesType(type)
-    setPropertiesCurrentPage(0)
-    fetchProperties(0, propertiesStatus, type)
-  }
-
-  // Handle property page change
-  const handlePropertyPageChange = (page) => {
-    if (page >= 0 && page < propertiesTotalPages) {
-      setPropertiesCurrentPage(page)
-      fetchProperties(page, propertiesStatus, propertiesType)
-    }
-  }
+  // (Removed duplicate toggleFavorite declaration)
 
   useEffect(() => {
     fetchProperties()
@@ -202,18 +177,39 @@ export default function BuyPage() {
         </section>
       ) : (
         <>
-          
+          <div className="container mx-auto px-4 py-16">
+            {/* Heading */}
+            <div className="flex flex-col items-center text-center mb-12">
+              <h2
+                className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+              >
+                {translationExplore?.property_buy_title}
+              </h2>
+              <div className="flex justify-center mb-6">
+                <div className="w-24 h-px bg-[#bd9574] relative">
+                  <div className="absolute w-2 h-2 bg-[#bd9574] rotate-45 -top-[3px] left-1/2 transform -translate-x-1/2"></div>
+                </div>
+              </div>
 
-          <Properties
-                      data={properties}
-                      properties={properties}
-                      currentPage={propertiesCurrentPage}
-                      totalPages={propertiesTotalPages}
-                      onPageChange={handlePropertyPageChange}
-                      onFilterChange={handlePropertyFilterChange}
-                      onTypeChange={handlePropertyTypeChange}
-                      categories={categories}
-                    />
+              <div
+                className={`${archivo.className} text-[#e2dbcc] text-base mb-6 text-center max-w-[732px]`}
+              >
+                {translationExplore?.property_buy_description}
+              </div>
+            </div>
+
+            {/* Property Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {properties.map((property) => (
+                <Property
+                  key={property.id}
+                  property={property}
+                  taviraj={taviraj}
+                  archivo={archivo}
+                />
+              ))}
+            </div>
+          </div>
 
           {/* Explore City Section */}
           <ExploreCity data={explore} />
