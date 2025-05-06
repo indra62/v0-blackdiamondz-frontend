@@ -41,7 +41,7 @@ export default function Stats({ data }) {
               <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white">
                 Black Diamondz
               </h2>
-              <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#d4af37] hover:text-[#d4af37] transition-colors font-archivo font-light text-base leading-6">
+              <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
                 More about Black Diamondz
               </button>
             </div>
@@ -94,7 +94,7 @@ export default function Stats({ data }) {
               <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white">
                 Australian Market
               </h2>
-              <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#d4af37] hover:text-[#d4af37] transition-colors font-archivo font-light text-base leading-6">
+              <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
                 See Market Insight
               </button>
             </div>

@@ -7,7 +7,6 @@
  * @page
  */
 "use client"
-import Header from "@/components/header"
 import Link from "next/link"
 import Image from "next/image"
 import { Taviraj } from "next/font/google"
@@ -76,7 +75,6 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={errors} />
@@ -130,7 +128,7 @@ export default function LoginPage() {
                     />
                     <button
                       type="submit"
-                      className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#d4af37] transition-colors"
+                      className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#BD9574] transition-colors"
                     >
                       Login
                     </button>
@@ -142,7 +140,7 @@ export default function LoginPage() {
                     Don't have an account?{" "}
                     <Link
                       href="/signup"
-                      className="text-[#BD9574] hover:text-[#d4af37] transition-colors"
+                      className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
                     >
                       Sign up!
                     </Link>

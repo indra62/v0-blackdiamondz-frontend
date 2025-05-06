@@ -10,7 +10,6 @@
  */
 "use client"
 
-import Header from "@/components/header"
 import Hero from "@/components/hero"
 import Properties from "@/components/properties"
 import Stats from "@/components/stats"
@@ -39,7 +38,7 @@ export default function Home() {
   const [propertiesStatus, setPropertiesStatus] = useState("Current")
   const [propertiesType, setPropertiesType] = useState([])
   const [propertiesCount, setPropertiesCount] = useState(0)
-  const ITEMS_PER_PAGE = 4
+  const ITEMS_PER_PAGE = 4 
 
   const fetchProperties = async (page = 0, status = "Current", type = []) => {
     try {
@@ -183,6 +182,7 @@ export default function Home() {
         setOffMarketSection(dataOffMarketSection)
         setOffMarket(dataOffMarketProperties)
         setLoading(false)
+
       } catch (err) {
         setError("Failed to load home data:" + err.message)
       }
@@ -192,7 +192,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />

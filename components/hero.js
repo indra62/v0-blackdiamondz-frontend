@@ -29,6 +29,7 @@ export default function Hero({ data }) {
   const { user } = useAuth()
   const [scrollCount, setScrollCount] = useState(0)
   const [language, setLanguage] = useState("en")
+  const [heroData, setHeroData] = useState(null)
 
   useEffect(() => {
     if (typeof window !== "undefined") {

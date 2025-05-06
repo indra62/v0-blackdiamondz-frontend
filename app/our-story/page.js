@@ -1,4 +1,3 @@
-import Header from "@/components/header"
 import Stats from "@/components/stats"
 import Footer from "@/components/footer"
 import Image from "next/image"
@@ -11,8 +10,6 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 export default function OurStoryPage() {
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
-
       {/* Hero Section */}
       <section className="relative h-screen">
         {/* Background Image */}
@@ -53,18 +50,22 @@ export default function OurStoryPage() {
           <p
             className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
           >
-            Our point of difference in a saturated market is our unmatched international database, specializing in
-            high-end luxury residential property sales, investment properties and business solutions.
+            Our point of difference in a saturated market is our unmatched
+            international database, specializing in high-end luxury residential
+            property sales, investment properties and business solutions.
           </p>
 
           <p
             className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto`}
           >
-            Our industry expertise, negotiating prowess and suite of integrated services ensure that we remain firmly at
-            the forefront of the market, all while providing a bespoke and VIP client offering. With a long-term
-            Chinese, Australian, and international client base, Black Diamondz Property and Monika Tu, Black Diamondz
-            Group's Founder and Director, is a total property and local marketing package that we provide the very best
-            solution for buyers and sellers alike.
+            Our industry expertise, negotiating prowess and suite of integrated
+            services ensure that we remain firmly at the forefront of the
+            market, all while providing a bespoke and VIP client offering. With
+            a long-term Chinese, Australian, and international client base,
+            Black Diamondz Property and Monika Tu, Black Diamondz Group's
+            Founder and Director, is a total property and local marketing
+            package that we provide the very best solution for buyers and
+            sellers alike.
           </p>
         </div>
 
@@ -98,7 +99,9 @@ export default function OurStoryPage() {
               }}
             ></div>
             <div className="absolute bottom-12 left-0 right-0 text-center">
-              <h3 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}>
+              <h3
+                className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+              >
                 Market
                 <br />
                 with Us
@@ -122,7 +125,9 @@ export default function OurStoryPage() {
               }}
             ></div>
             <div className="absolute bottom-12 left-0 right-0 text-center">
-              <h3 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}>
+              <h3
+                className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+              >
                 Buy
                 <br />
                 Property
@@ -146,7 +151,9 @@ export default function OurStoryPage() {
               }}
             ></div>
             <div className="absolute bottom-12 left-0 right-0 text-center">
-              <h3 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}>
+              <h3
+                className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+              >
                 Sell Your
                 <br />
                 Property
@@ -170,7 +177,9 @@ export default function OurStoryPage() {
               }}
             ></div>
             <div className="absolute bottom-12 left-0 right-0 text-center">
-              <h3 className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}>
+              <h3
+                className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+              >
                 Club
                 <br />
                 Diamondz
@@ -189,8 +198,9 @@ export default function OurStoryPage() {
               <h2
                 className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[100%] tracking-[0%] mb-8`}
               >
-                Beyond selling properties, we're also helps large and small organizations in reaching their top
-                confidence to fly higher and grow better.
+                Beyond selling properties, we're also helps large and small
+                organizations in reaching their top confidence to fly higher and
+                grow better.
               </h2>
             </div>
 
@@ -199,9 +209,11 @@ export default function OurStoryPage() {
               <p
                 className={`${archivo.className} text-[#BD9574] font-light text-base leading-[150%] tracking-[0px] mb-6`}
               >
-                Black Diamondz PR & Marketing is fast becoming Australia's leading premium communications agency. As the
-                authority on the Chinese-Australian audience, we know how to leverage real insight to create branded
-                content, communications strategies and event experiences that resonate by engaging and meaningful way.
+                Black Diamondz PR & Marketing is fast becoming Australia's
+                leading premium communications agency. As the authority on the
+                Chinese-Australian audience, we know how to leverage real
+                insight to create branded content, communications strategies and
+                event experiences that resonate by engaging and meaningful way.
               </p>
             </div>
           </div>
@@ -228,7 +240,11 @@ export default function OurStoryPage() {
       {/* Partners Section */}
       <section className="py-16 bg-[#211f17]">
         <div className="container mx-auto px-4 text-center">
-          <h2 className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%] mb-8`}>Partners</h2>
+          <h2
+            className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%] mb-8`}
+          >
+            Partners
+          </h2>
 
           {/* Diamond Separator */}
           <div className="flex items-center justify-center gap-4 mb-12">
@@ -240,9 +256,10 @@ export default function OurStoryPage() {
           <p
             className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-[150%] max-w-3xl mx-auto mb-16`}
           >
-            Our curated list of partners is designed to connect you with the best agencies for selling your property.
-            Each partner is dedicated to providing exceptional support throughout the entire process, ensuring a
-            seamless experience.
+            Our curated list of partners is designed to connect you with the
+            best agencies for selling your property. Each partner is dedicated
+            to providing exceptional support throughout the entire process,
+            ensuring a seamless experience.
           </p>
 
           {/* Partners Grid - Single row with exact Figma dimensions */}
