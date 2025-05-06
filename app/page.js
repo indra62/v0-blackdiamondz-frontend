@@ -10,7 +10,6 @@
  */
 "use client"
 
-import Header from "@/components/header"
 import Hero from "@/components/hero"
 import Properties from "@/components/properties"
 import Stats from "@/components/stats"
@@ -193,7 +192,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />

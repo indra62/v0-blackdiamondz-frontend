@@ -8,7 +8,6 @@
  */
 
 // Update import statements to use kebab-case
-import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
@@ -20,7 +19,6 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 export default function SellPage() {
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
 
       {/* Hero Section */}
       <section className="py-16 text-center">

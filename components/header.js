@@ -88,7 +88,7 @@ export default function Header() {
 
   return (
     <>
-      <header className={`${archivo.className} font-light`}>
+      <header className={`${archivo.className} font-light sticky top-0 z-40`}>
         {/* Main Navigation */}
         <div className="bg-black text-[#d4af37] border-b border-[#333]">
           <div className="flex items-stretch h-[60px]">

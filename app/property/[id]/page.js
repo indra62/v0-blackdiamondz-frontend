@@ -13,31 +13,30 @@
  */
 "use client";
 
-import { useState, useEffect, use } from "react";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import { Taviraj } from "next/font/google";
-import { Archivo } from "next/font/google";
-import { Inter } from "next/font/google";
-import Image from "next/image";
-import { MapPin } from "lucide-react";
-import Paddington from "@/components/paddington";
-import PropertyImagesGallery from "@/components/property-images-gallery";
-import PropertyGridGallery from "@/components/property-grid-gallery";
-import PropertyMap from "@/components/property-map";
-import { getItem, getImageUrl, findFeature } from "@/lib/api";
+import { useState, useEffect, use } from "react"
+import Footer from "@/components/footer"
+import { Taviraj } from "next/font/google"
+import { Archivo } from "next/font/google"
+import { Inter } from "next/font/google"
+import Image from "next/image"
+import { MapPin } from "lucide-react"
+import Paddington from "@/components/paddington"
+import PropertyImagesGallery from "@/components/property-images-gallery"
+import PropertyGridGallery from "@/components/property-grid-gallery"
+import PropertyMap from "@/components/property-map"
+import { getItem, getImageUrl, findFeature } from "@/lib/api"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
-const inter = Inter({ subsets: ["latin"], weight: ["500"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const inter = Inter({ subsets: ["latin"], weight: ["500"] })
 
 export default function PropertyDetailPage({ params }) {
   // Unwrap the params promise using React.use()
-  const { id: propertyId } = use(params);
+  const { id: propertyId } = use(params)
 
   // You would typically fetch property data based on this ID
   // For now, we'll just log it and continue with the static content
-  console.log(`Displaying property with ID: ${propertyId}`);
+  console.log(`Displaying property with ID: ${propertyId}`)
 
   const fetchProperty = async (id) => {
     try {
@@ -53,41 +52,41 @@ export default function PropertyDetailPage({ params }) {
           "agents.*.*",
           "type.*.*",
         ],
-      });
-      console.log("property", data);
-      return data;
+      })
+      console.log("property", data)
+      return data
     } catch (error) {
-      console.error("Error fetching property:", error);
-      return null;
+      console.error("Error fetching property:", error)
+      return null
     }
-  };
+  }
 
   // State management for different view modes and selected images
-  const [viewMode, setViewMode] = useState("grid"); // "grid", "gallery", "gridGallery", or "map"
-  const [selectedImageId, setSelectedImageId] = useState(1); // Default to first image
-  const [property, setProperty] = useState(null);
+  const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", or "map"
+  const [selectedImageId, setSelectedImageId] = useState(1) // Default to first image
+  const [property, setProperty] = useState(null)
 
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("en")
 
   useEffect(() => {
-    fetchProperty(propertyId).then(setProperty);
+    fetchProperty(propertyId).then(setProperty)
 
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
-  }, [propertyId]);
+  }, [propertyId])
 
   const findFeature = (feature) => {
-    if (!property || !property.features) return undefined;
-    return property.features.find((f) => f.feature_id?.slug === feature);
+    if (!property || !property.features) return undefined
+    return property.features.find((f) => f.feature_id?.slug === feature)
   }
 
   const translation =
     property?.type?.translations?.find((t) => t.languages_code === language) ||
-    property?.type?.translations?.[0];
+    property?.type?.translations?.[0]
 
   /**
    * Toggle between different view modes (grid, gallery, gridGallery)
@@ -97,39 +96,39 @@ export default function PropertyDetailPage({ params }) {
    */
   const toggleViewMode = (event) => {
     if (viewMode === "grid") {
-      setViewMode("gallery");
+      setViewMode("gallery")
     } else if (
       viewMode === "gallery" &&
       event?.currentTarget?.dataset?.action === "grid"
     ) {
-      setViewMode("gridGallery");
+      setViewMode("gridGallery")
     } else {
-      setViewMode("grid");
+      setViewMode("grid")
     }
-  };
+  }
 
   // Update the switchToGridGallery function to accept an event parameter
   const switchToGridGallery = (event) => {
-    setViewMode("gridGallery");
-  };
+    setViewMode("gridGallery")
+  }
 
   const switchToGallery = () => {
-    setViewMode("gallery");
-  };
+    setViewMode("gallery")
+  }
 
   const showMap = () => {
-    setViewMode("map");
-  };
+    setViewMode("map")
+  }
 
   const hideMap = () => {
-    setViewMode("grid");
-  };
+    setViewMode("grid")
+  }
 
   // Handle clicking on an image in the grid gallery
   const handleGridImageClick = (imageId) => {
-    setSelectedImageId(imageId); // Store which image was clicked
-    setViewMode("gallery"); // Switch to gallery view
-  };
+    setSelectedImageId(imageId) // Store which image was clicked
+    setViewMode("gallery") // Switch to gallery view
+  }
 
   // Special case: Map view takes over the entire page
   // Return early to avoid rendering the standard layout
@@ -141,12 +140,11 @@ export default function PropertyDetailPage({ params }) {
         property={property}
         type={translation?.name}
       />
-    );
+    )
   }
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="py-6">
@@ -208,135 +206,135 @@ export default function PropertyDetailPage({ params }) {
 
             {/* Property Features */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
-            <div
-              className="flex items-center gap-1 text-[#E2DBCC]"
-              title="Bedrooms"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              <div
+                className="flex items-center gap-1 text-[#E2DBCC]"
+                title="Bedrooms"
               >
-                <path
-                  d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
-                  stroke="#E2DBCC"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className={`${archivo.className} font-light text-[14px]`}>
-                {(findFeature && findFeature("bedrooms")?.value) ?? ""}
-              </span>
-            </div>
-            <div
-              className="flex items-center gap-1 text-[#E2DBCC]"
-              title="Bathrooms"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
+                    stroke="#E2DBCC"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className={`${archivo.className} font-light text-[14px]`}>
+                  {(findFeature && findFeature("bedrooms")?.value) ?? ""}
+                </span>
+              </div>
+              <div
+                className="flex items-center gap-1 text-[#E2DBCC]"
+                title="Bathrooms"
               >
-                <path
-                  d="M4 12h16a1 1 0 011 1v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2a1 1 0 011-1zm4-9v5m4-2v2m4-4v7"
-                  stroke="#E2DBCC"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className={`${archivo.className} font-light text-[14px]`}>
-                {(findFeature && findFeature("bathrooms")?.value) ?? ""}
-              </span>
-            </div>
-            <div
-              className="flex items-center gap-1 text-[#E2DBCC]"
-              title="Garages"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 12h16a1 1 0 011 1v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2a1 1 0 011-1zm4-9v5m4-2v2m4-4v7"
+                    stroke="#E2DBCC"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className={`${archivo.className} font-light text-[14px]`}>
+                  {(findFeature && findFeature("bathrooms")?.value) ?? ""}
+                </span>
+              </div>
+              <div
+                className="flex items-center gap-1 text-[#E2DBCC]"
+                title="Garages"
               >
-                <path
-                  d="M5 17h14M5 17a2 2 0 01-2-2V9m2 8a2 2 0 002 2h10a2 2 0 002-2M5 17V7a2 2 0 012-2h10a2 2 0 012 2v10m0 0V9m0 0H3"
-                  stroke="#E2DBCC"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className={`${archivo.className} font-light text-[14px]`}>
-                {(findFeature && findFeature("garages")?.value) ?? ""}
-              </span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 17h14M5 17a2 2 0 01-2-2V9m2 8a2 2 0 002 2h10a2 2 0 002-2M5 17V7a2 2 0 012-2h10a2 2 0 012 2v10m0 0V9m0 0H3"
+                    stroke="#E2DBCC"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span className={`${archivo.className} font-light text-[14px]`}>
+                  {(findFeature && findFeature("garages")?.value) ?? ""}
+                </span>
+              </div>
+              <div className="flex items-center gap-1 text-[#E2DBCC]">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 21h18M9 8h1m5 0h1M9 16h1m5 0h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"
+                    stroke="#E2DBCC"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className={`${archivo.className} font-light text-[14px]`}>
+                  {property?.features?.floors ?? ""}
+                </span>
+              </div>
+              <div className="flex items-center gap-1 text-[#E2DBCC]">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 21V8a2 2 0 012-2h12a2 2 0 012 2v13M2 10h20M10 2v6m4-6v6"
+                    stroke="#E2DBCC"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className={`${archivo.className} font-light text-[14px]`}>
+                  {property?.features?.rooms ?? ""}
+                </span>
+              </div>
+              <div className="flex items-center gap-1 text-[#E2DBCC]">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
+                    stroke="#E2DBCC"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className={`${archivo.className} font-light text-[14px]`}>
+                  {property?.features?.additional ?? ""}
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-1 text-[#E2DBCC]">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 21h18M9 8h1m5 0h1M9 16h1m5 0h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"
-                  stroke="#E2DBCC"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className={`${archivo.className} font-light text-[14px]`}>
-                {property?.features?.floors ?? ""}
-              </span>
-            </div>
-            <div className="flex items-center gap-1 text-[#E2DBCC]">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 21V8a2 2 0 012-2h12a2 2 0 012 2v13M2 10h20M10 2v6m4-6v6"
-                  stroke="#E2DBCC"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className={`${archivo.className} font-light text-[14px]`}>
-                {property?.features?.rooms ?? ""}
-              </span>
-            </div>
-            <div className="flex items-center gap-1 text-[#E2DBCC]">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
-                  stroke="#E2DBCC"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className={`${archivo.className} font-light text-[14px]`}>
-                {property?.features?.additional ?? ""}
-              </span>
-            </div>
-          </div>
 
             {/* Map Button */}
             <button
@@ -359,7 +357,6 @@ export default function PropertyDetailPage({ params }) {
 
           {/* Property Images - Right Column */}
           <div className="flex-1">
-
             {viewMode === "grid" ? (
               /* Grid View - Original Layout */
               <div className="grid grid-cols-2" style={{ gap: "8px" }}>
@@ -388,36 +385,36 @@ export default function PropertyDetailPage({ params }) {
                   {/* Row 2: Two Half-Size Images */}
                   <div className="grid grid-cols-2 gap-2">
                     <div className="relative h-40">
-                    {property?.images?.[1] && (
-                      <Image
-                        src={getImageUrl(
-                          property?.images?.[1]?.directus_files_id?.id,
-                          {
-                            quality: 80,
-                            fit: "cover",
-                          }
-                        )}
-                        alt="Luxury bedroom with ocean view"
-                        fill
-                        className="object-cover"
-                      />
-                    )}
+                      {property?.images?.[1] && (
+                        <Image
+                          src={getImageUrl(
+                            property?.images?.[1]?.directus_files_id?.id,
+                            {
+                              quality: 80,
+                              fit: "cover",
+                            }
+                          )}
+                          alt="Luxury bedroom with ocean view"
+                          fill
+                          className="object-cover"
+                        />
+                      )}
                     </div>
                     <div className="relative h-40">
-                    {property?.images?.[2] && (
-                      <Image
-                        src={getImageUrl(
-                          property?.images?.[2]?.directus_files_id?.id,
-                          {
-                            quality: 80,
-                            fit: "cover",
-                          }
-                        )}
-                        alt="Luxury property spa interior"
-                        fill
-                        className="object-cover"
-                      />
-                    )}
+                      {property?.images?.[2] && (
+                        <Image
+                          src={getImageUrl(
+                            property?.images?.[2]?.directus_files_id?.id,
+                            {
+                              quality: 80,
+                              fit: "cover",
+                            }
+                          )}
+                          alt="Luxury property spa interior"
+                          fill
+                          className="object-cover"
+                        />
+                      )}
                     </div>
                   </div>
 
@@ -443,35 +440,35 @@ export default function PropertyDetailPage({ params }) {
                   <div className="relative h-64">
                     {property?.images?.[3] && (
                       <Image
-                      src={getImageUrl(
-                        property?.images?.[3]?.directus_files_id?.id,
-                        {
-                          quality: 80,
-                          fit: "cover",
-                        }
-                      )}
-                      alt="Luxury property interior with ocean view"
-                      fill
-                      className="object-cover"
-                    />
+                        src={getImageUrl(
+                          property?.images?.[3]?.directus_files_id?.id,
+                          {
+                            quality: 80,
+                            fit: "cover",
+                          }
+                        )}
+                        alt="Luxury property interior with ocean view"
+                        fill
+                        className="object-cover"
+                      />
                     )}
                   </div>
 
                   {/* Row 2: Image */}
                   <div className="relative h-40">
                     {property?.images?.[4] && (
-                    <Image
-                      src={getImageUrl(
-                        property?.images?.[4]?.directus_files_id?.id,
-                        {
-                          quality: 80,
-                          fit: "cover",
-                        }
-                      )}
-                      alt="Luxury beachfront aerial view"
-                      fill
-                      className="object-cover"
-                    />
+                      <Image
+                        src={getImageUrl(
+                          property?.images?.[4]?.directus_files_id?.id,
+                          {
+                            quality: 80,
+                            fit: "cover",
+                          }
+                        )}
+                        alt="Luxury beachfront aerial view"
+                        fill
+                        className="object-cover"
+                      />
                     )}
                   </div>
 
@@ -572,5 +569,5 @@ export default function PropertyDetailPage({ params }) {
       <Paddington />
       <Footer />
     </main>
-  );
+  )
 }

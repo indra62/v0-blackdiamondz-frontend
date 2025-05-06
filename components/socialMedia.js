@@ -19,7 +19,6 @@ export default function SocialMediaLinks() {
         setData(dataFooter)
         setLoading(false)
       } catch (err) {
-        setError("Failed to load home data:" + err.message)
         setLoading(false)
       }
     }
