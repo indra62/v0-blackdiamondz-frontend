@@ -2,6 +2,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/hooks/useAuth"
 import { Toaster } from "react-hot-toast"
+import SocialMediaLinks from "@/components/socialMedia"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -16,8 +17,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          {children}
           <Toaster position="top-center" reverseOrder={false} />
+          {children}
+          <SocialMediaLinks />
         </AuthProvider>
       </body>
     </html>
