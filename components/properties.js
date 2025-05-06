@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Heart } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import { Property } from "@/lib/component/property"
+import { useState, useEffect } from "react";
+import { Heart } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import { Property } from "@/lib/component/property";
 
 /**
  * Properties Component
@@ -21,13 +21,13 @@ import { Property } from "@/lib/component/property"
  * @param {number} props.propertyCount - Number of properties to display
  */
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300"] });
 
 const propertyTab = [
   { id: "buy", label: "Buy", type: "text", value: "Current" },
   { id: "sell", label: "Sell", type: "text", value: "Sold" },
-]
+];
 
 // const categories = [
 //   { id: "buy", label: "Buy", type: "text", value: "Current" },
@@ -201,63 +201,63 @@ export default function Properties({
   onTypeChange,
   categories,
 }) {
-  const [selectedFilters, setSelectedFilters] = useState(["Current"])
-  const [selectedType, setSelectedType] = useState([])
-  const [activeTab, setActiveTab] = useState("Current")
-  const [favorites, setFavorites] = useState([])
-  const [language, setLanguage] = useState("en")
+  const [selectedFilters, setSelectedFilters] = useState(["Current"]);
+  const [selectedType, setSelectedType] = useState([]);
+  const [activeTab, setActiveTab] = useState("Current");
+  const [favorites, setFavorites] = useState([]);
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const translationCategories =
     categories?.translations?.find((t) => t.languages_code === language) ||
-    categories?.translations?.[0]
+    categories?.translations?.[0];
 
   const toggleFilter = (filterId) => {
     if (filterId === "Current" || filterId === "Sold") {
-      setActiveTab(filterId)
+      setActiveTab(filterId);
       // Call the parent component's filter handler
       if (onFilterChange) {
-        onFilterChange(filterId, selectedType)
+        onFilterChange(filterId, selectedType);
       }
     } else {
       setSelectedFilters((prev) =>
         prev.includes(filterId)
           ? prev.filter((id) => id !== filterId)
           : [...prev, filterId]
-      )
+      );
     }
-  }
+  };
 
   const toggleType = (filterId) => {
     const updatedTypes = selectedType.includes(filterId)
       ? selectedType.filter((id) => id !== filterId)
-      : [...selectedType, filterId]
+      : [...selectedType, filterId];
 
-    setSelectedType(updatedTypes)
+    setSelectedType(updatedTypes);
     if (onTypeChange) {
-      onTypeChange(updatedTypes) // Only pass the updated types
+      onTypeChange(updatedTypes); // Only pass the updated types
     }
-  }
+  };
 
   const toggleFavorite = (propertyId) => {
     setFavorites((prev) =>
       prev.includes(propertyId)
         ? prev.filter((id) => id !== propertyId)
         : [...prev, propertyId]
-    )
-  }
+    );
+  };
 
   return (
     <div className="bg-[#211f17] text-white py-12">
-      <div className="container mx-auto px-4">
+      <div>
         {/* Only show filters if showFilters prop is true */}
         {showFilters && (
           <div className="flex items-center justify-between pb-4 mb-8">
@@ -290,7 +290,7 @@ export default function Properties({
                   // Assuming you have a currentLanguage variable or similar
                   const translation = category.translations.find(
                     (t) => t.languages_code === language // or use your current language code
-                  )
+                  );
 
                   return (
                     <div
@@ -316,7 +316,7 @@ export default function Properties({
                         {translation?.name || category.slug}
                       </span>
                     </div>
-                  )
+                  );
                 })}
             </div>
           </div>
@@ -428,5 +428,5 @@ export default function Properties({
         )}
       </div>
     </div>
-  )
+  );
 }

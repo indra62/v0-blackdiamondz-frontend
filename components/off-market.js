@@ -6,41 +6,41 @@
  *
  * @component
  */
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import Image from "next/image"
-import { Heart } from "lucide-react"
-import { getImageUrl } from "@/lib/api"
-import { Property } from "@/lib/component/property"
-import { useAuth } from "@/hooks/useAuth"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import Image from "next/image";
+import { Heart } from "lucide-react";
+import { getImageUrl } from "@/lib/api";
+import { Property } from "@/lib/component/property";
+import { useAuth } from "@/hooks/useAuth";
+import Link from "next/link";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
 export default function OffMarket({ data, section }) {
-  const { isAuthenticated } = useAuth()
-  const [language, setLanguage] = useState("en")
+  const { isAuthenticated } = useAuth();
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const translation =
     section?.translations?.find((t) => t.languages_code === language) ||
-    section?.translations?.[0]
+    section?.translations?.[0];
 
   return (
     <div className={`bg-[#211f17] text-white py-16`}>
-      <div className="container mx-auto px-4">
+      <div>
         {/* Header */}
         <div className="text-center mb-16">
           <h2
@@ -94,5 +94,5 @@ export default function OffMarket({ data, section }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

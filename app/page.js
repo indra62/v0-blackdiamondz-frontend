@@ -8,43 +8,43 @@
  *
  * @page
  */
-"use client"
+"use client";
 
-import Header from "@/components/header"
-import Hero from "@/components/hero"
-import Properties from "@/components/properties"
-import Stats from "@/components/stats"
-import AboutUs from "@/components/about-us"
-import ExploreCity from "@/components/explore-city"
-import OffMarket from "@/components/off-market"
-import Footer from "@/components/footer"
-import { getItems, getFilteredItems } from "@/lib/api"
-import Loading from "@/components/loading"
-import { useEffect, useState } from "react"
+import Header from "@/components/header";
+import Hero from "@/components/hero";
+import Properties from "@/components/properties";
+import Stats from "@/components/stats";
+import AboutUs from "@/components/about-us";
+import ExploreCity from "@/components/explore-city";
+import OffMarket from "@/components/off-market";
+import Footer from "@/components/footer";
+import { getItems, getFilteredItems } from "@/lib/api";
+import Loading from "@/components/loading";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [heroData, setHeroData] = useState(null)
-  const [aboutUs, setAboutUs] = useState(null)
-  const [statistic, setStatistic] = useState(null)
-  const [explore, setExplore] = useState(null)
-  const [properties, setProperties] = useState(null)
-  const [offMarket, setOffMarket] = useState(null)
-  const [offMarketSection, setOffMarketSection] = useState(null)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [heroData, setHeroData] = useState(null);
+  const [aboutUs, setAboutUs] = useState(null);
+  const [statistic, setStatistic] = useState(null);
+  const [explore, setExplore] = useState(null);
+  const [properties, setProperties] = useState(null);
+  const [offMarket, setOffMarket] = useState(null);
+  const [offMarketSection, setOffMarketSection] = useState(null);
 
-  const [categories, setCategories] = useState([])
-  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0)
-  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0)
-  const [propertiesStatus, setPropertiesStatus] = useState("Current")
-  const [propertiesType, setPropertiesType] = useState([])
-  const [propertiesCount, setPropertiesCount] = useState(0)
-  const ITEMS_PER_PAGE = 4
+  const [categories, setCategories] = useState([]);
+  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0);
+  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0);
+  const [propertiesStatus, setPropertiesStatus] = useState("Current");
+  const [propertiesType, setPropertiesType] = useState([]);
+  const [propertiesCount, setPropertiesCount] = useState(0);
+  const ITEMS_PER_PAGE = 4;
 
   const fetchProperties = async (page = 0, status = "Current", type = []) => {
     try {
       // Convert page index to Directus page number (1-based)
-      const directusPage = page + 1
+      const directusPage = page + 1;
 
       // Create filter based on status
       const filter = {
@@ -53,13 +53,13 @@ export default function Home() {
           status === "Current"
             ? { _nin: ["Sold", "Inactive"] }
             : { _eq: "Sold", _neq: "Inactive" },
-      }
+      };
 
       if (type.length > 0) {
         // For One-to-Many relationship
         filter.type = {
           id: { _in: type },
-        }
+        };
 
         // For Many-to-Many relationship, use this instead:
         // filter.type = {
@@ -86,44 +86,44 @@ export default function Home() {
         limit: ITEMS_PER_PAGE,
         page: directusPage,
         meta: "filter_count,total_count",
-      })
+      });
 
       // Update properties state
-      setProperties(data || [])
+      setProperties(data || []);
 
       // Calculate total pages
-      const totalCount = data.meta?.filter_count || 0
-      setPropertiesCount(totalCount)
-      setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE))
+      const totalCount = data.meta?.filter_count || 0;
+      setPropertiesCount(totalCount);
+      setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE));
 
-      return data
+      return data;
     } catch (err) {
-      console.error("Error fetching properties:", err)
-      setError("Failed to load properties")
-      return { data: [] }
+      console.error("Error fetching properties:", err);
+      setError("Failed to load properties");
+      return { data: [] };
     }
-  }
+  };
 
   // Handle property filter change
   const handlePropertyFilterChange = (status) => {
-    setPropertiesStatus(status)
-    setPropertiesCurrentPage(0)
-    fetchProperties(0, status, propertiesType)
-  }
+    setPropertiesStatus(status);
+    setPropertiesCurrentPage(0);
+    fetchProperties(0, status, propertiesType);
+  };
 
   const handlePropertyTypeChange = (type) => {
-    setPropertiesType(type)
-    setPropertiesCurrentPage(0)
-    fetchProperties(0, propertiesStatus, type)
-  }
+    setPropertiesType(type);
+    setPropertiesCurrentPage(0);
+    fetchProperties(0, propertiesStatus, type);
+  };
 
   // Handle property page change
   const handlePropertyPageChange = (page) => {
     if (page >= 0 && page < propertiesTotalPages) {
-      setPropertiesCurrentPage(page)
-      fetchProperties(page, propertiesStatus, propertiesType)
+      setPropertiesCurrentPage(page);
+      fetchProperties(page, propertiesStatus, propertiesType);
     }
-  }
+  };
 
   useEffect(() => {
     const fetchDataHome = async () => {
@@ -133,10 +133,10 @@ export default function Home() {
           filter: {
             is_filterable: { _eq: true },
           },
-        })
+        });
         const dataHero = await getItems("hero_section", {
           fields: ["*", "hero_image.*", "translations.*"],
-        })
+        });
         const dataAboutUs_section = await getItems("aboutUs_section", {
           fields: [
             "*",
@@ -144,16 +144,16 @@ export default function Home() {
             "translations.*",
             "aboutUs_Image.directus_files_id.*",
           ],
-        })
+        });
         const dataStatistic_section = await getItems("statistic_section", {
           fields: ["*", "translations.*"],
-        })
+        });
         const dataExplore_section = await getItems("explore_section", {
           fields: ["*", "translations.*", "cities.*"],
-        })
+        });
         const dataOffMarketSection = await getItems("offMarket_section", {
           fields: ["*", "translations.*"],
-        })
+        });
         const dataOffMarketProperties = await getItems("properties", {
           fields: [
             "*",
@@ -171,24 +171,24 @@ export default function Home() {
             status: { _nin: ["Sold", "Inactive"] },
           },
           limit: 4,
-        })
+        });
 
-        const propertiesData = await fetchProperties(0, "Current", [])
+        const propertiesData = await fetchProperties(0, "Current", []);
 
-        setCategories(propertyTypes)
-        setHeroData(dataHero)
-        setAboutUs(dataAboutUs_section)
-        setStatistic(dataStatistic_section)
-        setExplore(dataExplore_section)
-        setOffMarketSection(dataOffMarketSection)
-        setOffMarket(dataOffMarketProperties)
-        setLoading(false)
+        setCategories(propertyTypes);
+        setHeroData(dataHero);
+        setAboutUs(dataAboutUs_section);
+        setStatistic(dataStatistic_section);
+        setExplore(dataExplore_section);
+        setOffMarketSection(dataOffMarketSection);
+        setOffMarket(dataOffMarketProperties);
+        setLoading(false);
       } catch (err) {
-        setError("Failed to load home data:" + err.message)
+        setError("Failed to load home data:" + err.message);
       }
-    }
-    fetchDataHome()
-  }, [])
+    };
+    fetchDataHome();
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#211f17]">
@@ -200,23 +200,33 @@ export default function Home() {
       ) : (
         <>
           <Hero data={heroData} />
-          <Properties
-            data={properties}
-            properties={properties}
-            currentPage={propertiesCurrentPage}
-            totalPages={propertiesTotalPages}
-            onPageChange={handlePropertyPageChange}
-            onFilterChange={handlePropertyFilterChange}
-            onTypeChange={handlePropertyTypeChange}
-            categories={categories}
-          />
-          <Stats data={statistic} />
-          <AboutUs data={aboutUs} />
-          <ExploreCity data={explore} />
-          <OffMarket data={offMarket} section={offMarketSection} />
+          <div className="px-[40px]">
+            <Properties
+              data={properties}
+              properties={properties}
+              currentPage={propertiesCurrentPage}
+              totalPages={propertiesTotalPages}
+              onPageChange={handlePropertyPageChange}
+              onFilterChange={handlePropertyFilterChange}
+              onTypeChange={handlePropertyTypeChange}
+              categories={categories}
+            />
+          </div>
+          <div className="px-2 py-16">
+            <Stats data={statistic} />
+          </div>
+          <div className="pl-[40px] py-16">
+            <AboutUs data={aboutUs} />
+          </div>
+          <div className="py-16">
+            <ExploreCity data={explore} />
+          </div>
+          <div className="px-[40px] ">
+            <OffMarket data={offMarket} section={offMarketSection} />
+          </div>
         </>
       )}
       <Footer />
     </main>
-  )
+  );
 }

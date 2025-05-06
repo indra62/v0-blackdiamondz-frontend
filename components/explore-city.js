@@ -8,34 +8,34 @@
  *
  * @component
  */
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Taviraj } from "next/font/google"
-import Image from "next/image"
-import { getImageUrl } from "@/lib/api"
+import { useState, useEffect } from "react";
+import { Taviraj } from "next/font/google";
+import Image from "next/image";
+import { getImageUrl } from "@/lib/api";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] });
 
 export default function ExploreCity({ data }) {
-  const [language, setLanguage] = useState("en")
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const translation =
     data?.translations?.find((t) => t.languages_code === language) ||
-    data?.translations?.[0]
+    data?.translations?.[0];
 
   return (
-    <div className={`${taviraj.className} bg-[#211f17] py-16`}>
-      <div className="container mx-auto px-4">
+    <div className={`${taviraj.className} bg-[#211f17] `}>
+      <div className={data?.cities.length <= 3 ? "" : "pl-[40px]"}>
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8">
@@ -50,16 +50,23 @@ export default function ExploreCity({ data }) {
           </div>
         </div>
 
-        {/* Container with fixed width to show 2 full images + 200px of the third */}
+        {/* Container with fixed width to show 3 full images + 250px of the fourth */}
         <div
-          className="mx-auto overflow-x-auto scrollbar-hide pb-8"
-          style={{ width: "calc(400px * 2 + 200px + 12px)" }}
+          className="overflow-x-auto pl-2 pb-8 max-w-full md:max-w-[calc(508px * 3 + 270px +12px)]"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
         >
-          <div className="flex gap-6 w-max">
+          <div
+            className={`flex items-center gap-6  ${
+              data?.cities.length <= 3 ? "w-fit mx-auto" : "w-max pl-[40px]"
+            }`}
+          >
             {data?.cities.map((city) => (
               <div
                 key={city.id}
-                className="relative w-[400px] h-[300px] flex-none group cursor-pointer overflow-hidden"
+                className="relative w-[280px] md:w-[508px] h-[460px] flex-none group cursor-pointer overflow-hidden"
               >
                 <Image
                   src={getImageUrl(city?.image, {
@@ -69,7 +76,7 @@ export default function ExploreCity({ data }) {
                   })}
                   alt={`${city.name} cityscape`}
                   fill
-                  sizes="400px"
+                  sizes="(max-width: 768px) 280px, 508px"
                   style={{ objectFit: "cover" }}
                   className="transition-transform duration-700 group-hover:scale-110"
                 />
@@ -85,5 +92,5 @@ export default function ExploreCity({ data }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
