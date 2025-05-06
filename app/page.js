@@ -39,7 +39,7 @@ export default function Home() {
   const [propertiesStatus, setPropertiesStatus] = useState("Current")
   const [propertiesType, setPropertiesType] = useState([])
   const [propertiesCount, setPropertiesCount] = useState(0)
-  const ITEMS_PER_PAGE = 4
+  const ITEMS_PER_PAGE = 4 
 
   const fetchProperties = async (page = 0, status = "Current", type = []) => {
     try {
@@ -183,6 +183,7 @@ export default function Home() {
         setOffMarketSection(dataOffMarketSection)
         setOffMarket(dataOffMarketProperties)
         setLoading(false)
+
       } catch (err) {
         setError("Failed to load home data:" + err.message)
       }
