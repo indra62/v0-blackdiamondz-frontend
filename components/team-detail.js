@@ -204,7 +204,6 @@ export default function TeamDetail({ member }) {
 
   return (
     <>
-      <Header />
       <style jsx global>
         {scrollbarHideStyles}
       </style>
