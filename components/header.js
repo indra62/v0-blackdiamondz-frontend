@@ -33,6 +33,7 @@ export default function Header() {
   ]
 
   const toggleLanguageDropdown = () => {
+    console.log("Language button ref:", languageButtonRef.current)
     setIsLanguageDropdownOpen(!isLanguageDropdownOpen)
   }
 
@@ -111,13 +112,16 @@ export default function Header() {
               </div>
             </Link>
 
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 mobile-header-actions">
               <button
                 ref={languageButtonRef}
-                onClick={toggleLanguageDropdown}
+                onTouchStart={(e) => {
+                  e.preventDefault()
+                  toggleLanguageDropdown()
+                }}
                 aria-expanded={isLanguageDropdownOpen}
                 aria-haspopup="true"
-                className="flex items-center gap-1 text-[#BD9574] focus:outline-none relative z-90"
+                className="flex items-center w-10 h-10 gap-1 text-[#BD9574] focus:outline-none relative z-[999]"
               >
                 <span className="text-xl">{selectedLanguage.flag}</span>
                 <ChevronDown className="h-4 w-4 text-[#BD9574]" />
@@ -233,7 +237,7 @@ export default function Header() {
                 isLanguageDropdownOpen &&
                 createPortal(
                   <div
-                    className="bg-[#211f17] border border-[#333] shadow-lg z-[90]"
+                    className="bg-[#211f17] border border-[#333] shadow-lg z-[1000]"
                     style={{
                       position: "fixed",
                       top:
@@ -298,32 +302,29 @@ export default function Header() {
       </header>
 
       {/* Language Dropdown for Mobile */}
-      {isMobileView &&
-        isLanguageDropdownOpen &&
-        createPortal(
-          <div
-            className="bg-[#211f17] border border-[#333] shadow-lg fixed language-dropdown"
-            style={{
-              top: "60px",
-              right: "10px",
-              width: "150px",
-            }}
-          >
-            {languages.map((language) => (
-              <button
-                key={language.country}
-                onClick={() => selectLanguage(language)}
-                className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
-              >
-                <span className="text-[#BD9574] text-xl">{language.flag}</span>
-                <span className="text-[#BD9574] text-base font-light">
-                  {language.name}
-                </span>
-              </button>
-            ))}
-          </div>,
-          document.body
-        )}
+      {isMobileView && isLanguageDropdownOpen && (
+        <div
+          className="bg-[#211f17] border border-[#333] shadow-lg fixed z-[1000]"
+          style={{
+            top: "60px",
+            right: "10px",
+            width: "150px",
+          }}
+        >
+          {languages.map((language) => (
+            <button
+              key={language.country}
+              onClick={() => selectLanguage(language)}
+              className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
+            >
+              <span className="text-[#BD9574] text-xl">{language.flag}</span>
+              <span className="text-[#BD9574] text-base font-light">
+                {language.name}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Menu Overlay */}
       <Menu

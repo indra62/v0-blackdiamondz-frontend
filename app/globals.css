@@ -61,7 +61,13 @@
     left: auto !important;
     max-width: 150px !important;
     transform: translateY(0) !important;
-    z-index: 90 !important;
+    z-index: 1000 !important;
+  }
+
+  .mobile-header-actions button {
+    position: relative;
+    z-index: 50;
+    touch-action: manipulation;
   }
 }
 
@@ -83,7 +89,7 @@
   .sticky-header {
     position: sticky !important;
     top: 0 !important;
-    z-index: 80 !important;
+    z-index: 70 !important;
     width: 100%;
     height: auto;
     transform: translateZ(0);
