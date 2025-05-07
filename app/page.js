@@ -218,9 +218,7 @@ export default function Home() {
           <div className="py-16">
             <ExploreCity data={explore} />
           </div>
-          <div className="px-[40px] ">
-            <OffMarket data={offMarket} section={offMarketSection} />
-          </div>
+          <OffMarket data={offMarket} section={offMarketSection} />
         </>
       )}
       <Footer />

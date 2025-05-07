@@ -1,4 +1,3 @@
-
 "use client";
 import Header from "@/components/header";
 import Stats from "@/components/stats";
@@ -105,6 +104,70 @@ export default function OurStoryPage() {
     fetchDataHome();
   }, []);
 
+  // component images with services
+  /////////////////////////////////
+  const ImagesOfServices = ({ storyImageLink, translationStory }) => {
+    if (!storyImageLink) {
+      return null;
+    }
+
+    // Filter only image_1 through image_4
+    const imageKeys = Object.keys(storyImageLink).filter(
+      (key) =>
+        key.startsWith("image_") &&
+        parseInt(key.split("_")[1]) <= 4 &&
+        storyImageLink[key]
+    );
+
+    return (
+      <>
+        {imageKeys.map((imageKey) => {
+          const image = storyImageLink[imageKey];
+          // Extract the number from imageKey (e.g., 'image_1' -> '1')
+          const imageNumber = imageKey.split("_")[1];
+
+          return (
+            <div
+              key={image.id}
+              className="relative h-[480px] md:h-[680px] group overflow-hidden"
+            >
+              <Image
+                src={
+                  getImageUrl(image.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  }) || "/placeholder.png"
+                }
+                alt={image.title || `Story Image`}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
+                }}
+              ></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <h3
+                  className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+                >
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: translationStory?.[`text_${imageNumber}`] ?? "",
+                    }}
+                  />
+                </h3>
+              </div>
+            </div>
+          );
+        })}
+      </>
+    );
+  };
+
   return (
     <main className="min-h-screen bg-[#211f17]">
       {/* Hero Section */}
@@ -112,11 +175,13 @@ export default function OurStoryPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src={getImageUrl(heroData?.aboutUs_ourStory_heroImage?.id, {
-              format: "webp",
-              quality: 100,
-              fit: "cover",
-            }) || "/placeholder.png"}
+            src={
+              getImageUrl(heroData?.aboutUs_ourStory_heroImage?.id, {
+                format: "webp",
+                quality: 100,
+                fit: "cover",
+              }) || "/placeholder.png"
+            }
             alt="Sydney Harbour with Bridge and city skyline at sunset"
             fill
             priority
@@ -154,11 +219,11 @@ export default function OurStoryPage() {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <div className="flex flex-col items-center">
             <div className="w-1 h-16 bg-gradient-to-b from-[#BD9574] to-transparent"></div>
           </div>
-        </div>
+        </div> */}
       </section>
 
       {/* Stats Section */}
@@ -167,133 +232,10 @@ export default function OurStoryPage() {
       {/* Services Section */}
       <section className="py-16">
         <div className="grid grid-cols-1 md:grid-cols-4">
-          {/* Market with Us */}
-          <div className="relative h-[400px] group overflow-hidden">
-            <Image
-              src={getImageUrl(storyImageLink?.image_1?.id, {
-                format: "webp",
-                quality: 100,
-                fit: "cover",
-              }) || "/placeholder.png"}
-              alt="Market with Us - Professional real estate agents"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
-              }}
-            ></div>
-            <div className="absolute bottom-12 left-0 right-0 text-center">
-              <h3
-                className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
-              >
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: translationStory?.text_1 ?? "",
-                  }}
-                />
-              </h3>
-            </div>
-          </div>
-
-          {/* Buy Property */}
-          <div className="relative h-[400px] group overflow-hidden">
-            <Image
-              src={getImageUrl(storyImageLink?.image_2?.id, {
-                format: "webp",
-                quality: 100,
-                fit: "cover",
-              }) || "/placeholder.png"}
-              alt="Buy Property - Luxury interior design"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
-              }}
-            ></div>
-            <div className="absolute bottom-12 left-0 right-0 text-center">
-              <h3
-                className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
-              >
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: translationStory?.text_2 ?? "",
-                  }}
-                />
-              </h3>
-            </div>
-          </div>
-
-          {/* Sell Your Property */}
-          <div className="relative h-[400px] group overflow-hidden">
-            <Image
-              src={getImageUrl(storyImageLink?.image_3?.id, {
-                format: "webp",
-                quality: 100,
-                fit: "cover",
-              }) || "/placeholder.png"}
-              alt="Sell Your Property - Luxury oceanfront property"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
-              }}
-            ></div>
-            <div className="absolute bottom-12 left-0 right-0 text-center">
-              <h3
-                className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
-              >
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: translationStory?.text_3 ?? "",
-                  }}
-                />
-              </h3>
-            </div>
-          </div>
-
-          {/* Club Diamondz */}
-          <div className="relative h-[400px] group overflow-hidden">
-            <Image
-              src={getImageUrl(storyImageLink?.image_4?.id, {
-                format: "webp",
-                quality: 100,
-                fit: "cover",
-              }) || "/placeholder.png"}
-              alt="Club Diamondz - Exclusive membership"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
-              }}
-            ></div>
-            <div className="absolute bottom-12 left-0 right-0 text-center">
-              <h3
-                className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
-              >
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: translationStory?.text_4 ?? "",
-                  }}
-                />
-              </h3>
-            </div>
-          </div>
+          <ImagesOfServices
+            storyImageLink={storyImageLink}
+            translationStory={translationStory}
+          />
         </div>
       </section>
 
@@ -325,13 +267,15 @@ export default function OurStoryPage() {
       {/* Meet Our Team Section - Updated to match Figma design */}
       <section className="relative">
         {/* Banner Image with Text Overlay */}
-        <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden">
+        <div className="relative h-[300px] md:h-[450px] w-full overflow-hidden">
           <Image
-            src={getImageUrl(storyImageLink?.image_5?.id, {
-              format: "webp",
-              quality: 100,
-              fit: "cover",
-            }) || "/placeholder.png"}
+            src={
+              getImageUrl(storyImageLink?.image_5?.id, {
+                format: "webp",
+                quality: 100,
+                fit: "cover",
+              }) || "/placeholder.png"
+            }
             alt="Meet Our Team"
             fill
             priority

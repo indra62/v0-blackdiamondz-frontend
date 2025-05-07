@@ -140,11 +140,11 @@ export default function OurTeamPage() {
             </div>
 
             {/* Scroll Indicator */}
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
               <div className="flex flex-col items-center">
                 <div className="w-1 h-16 bg-gradient-to-b from-[#BD9574] to-transparent"></div>
               </div>
-            </div>
+            </div> */}
           </section>
 
           {/* Featured Team Members */}

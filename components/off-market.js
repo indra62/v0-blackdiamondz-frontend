@@ -40,7 +40,7 @@ export default function OffMarket({ data, section }) {
 
   return (
     <div className={`bg-[#211f17] text-white py-16`}>
-      <div>
+      <div className="container mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
           <h2
