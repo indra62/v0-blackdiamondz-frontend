@@ -152,10 +152,10 @@ export default function OurTeamPage() {
             <div className="container mx-auto px-4">
               <div className="flex flex-col md:flex-row justify-center items-start">
                 {/* First Member */}
-                <div className="flex flex-col items-center md:items-end text-center md:text-right md:w-1/2 md:pr-12 mb-16 md:mb-0">
+                <div className="flex flex-col items-center text-center w-full mb-16 md:mb-0">
                   <Link
                     href={`/team/monika-tu`}
-                    className="group cursor-pointer"
+                    className="group cursor-pointer flex flex-col items-center"
                   >
                     <div className="w-[400px] h-[400px] mb-8 overflow-hidden">
                       <Image
@@ -171,7 +171,7 @@ export default function OurTeamPage() {
                       />
                     </div>
                     <h3
-                      className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-normal leading-[100%] tracking-[0px] mb-2 group-hover:text-[#BD9574] transition-colors`}
+                      className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-normal leading-[100%] tracking-[0px] mb-2 group-hover:text-[#BD9574] transition-colors text-center`}
                     >
                       {translationFounder?.founder_1_name}
                     </h3>
@@ -182,7 +182,7 @@ export default function OurTeamPage() {
                     {translationFounder?.founder_1_title}
                   </p>
                   <p
-                    className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-md`}
+                    className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center mx-auto max-w-md`}
                   >
                     {translationFounder?.founder_1_description}
                   </p>
@@ -196,7 +196,7 @@ export default function OurTeamPage() {
                 </div>
 
                 {/* Second Member */}
-                <div className="flex flex-col items-center md:items-start text-center md:text-left md:w-1/2 md:pl-12">
+                <div className="flex flex-col items-center text-center w-full mb-16 md:mb-0">
                   <Link
                     href={`/team/jad-khatar`}
                     className="group cursor-pointer"
@@ -225,6 +225,7 @@ export default function OurTeamPage() {
                   >
                     {translationFounder?.founder_2_title}
                   </p>
+
                   <p
                     className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-md`}
                   >
