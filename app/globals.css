@@ -31,6 +31,40 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  /* Stack elements vertically on mobile */
+  .header > div {
+    flex-direction: column;
+  }
+  
+  /* Make the filter sections scrollable horizontally */
+  .property-filter {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
+  }
+
+  .language-dropdown {
+    position: fixed !important;
+    top: auto !important;
+    right: 0 !important;
+    left: auto !important;
+    max-width: 150px !important;
+    transform: translateY(0) !important;
+    z-index: 90 !important;
+  }
+}
+
 @layer components {
   .dark [data-radix-select-trigger] {
     @apply text-gray-500;
@@ -46,6 +80,21 @@
 }
 
 @layer utilities {
+  .sticky-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 90 !important;
+    width: 100%;
+    height: auto;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Prevent parent elements from breaking sticky positioning */
+  body, html {
+    overflow-x: visible !important;
+  }
+
   .hide-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -53,5 +102,11 @@
 
   .hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari and Opera */
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    .sticky-header {
+      position: -webkit-sticky !important;
+    }
   }
 }

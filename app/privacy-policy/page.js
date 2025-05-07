@@ -282,29 +282,6 @@ export default function PrivacyPolicy() {
         </div>
       </div>
 
-      {/* Newsletter Section */}
-      <section className="py-12 bg-[#211f17] border-t border-[#656565]/30">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center">
-            <h2
-              className={`${archivo.className} text-[#656565] text-base font-light uppercase mb-6`}
-            >
-              BLACK DIAMONDZ NEWSLETTER
-            </h2>
-            <div className="flex w-full max-w-md">
-              <input
-                type="email"
-                placeholder="Email"
-                className="flex-grow bg-transparent border border-[#656565]/30 border-r-0 px-4 py-3 text-[#E2DBCC] placeholder-[#656565] focus:outline-none"
-              />
-              <button className="bg-[#BD9574] text-[#211f17] px-6 py-3 font-medium">
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <Footer />
     </main>
   )

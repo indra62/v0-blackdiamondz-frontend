@@ -200,60 +200,61 @@ export default function Properties({
   onPageChange,
   onTypeChange,
   categories,
+  isMobileView,
 }) {
-  const [selectedFilters, setSelectedFilters] = useState(["Current"]);
-  const [selectedType, setSelectedType] = useState([]);
-  const [activeTab, setActiveTab] = useState("Current");
-  const [favorites, setFavorites] = useState([]);
-  const [language, setLanguage] = useState("en");
+  const [selectedFilters, setSelectedFilters] = useState(["Current"])
+  const [selectedType, setSelectedType] = useState([])
+  const [activeTab, setActiveTab] = useState("Current")
+  const [favorites, setFavorites] = useState([])
+  const [language, setLanguage] = useState("en")
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
-  }, []);
+  }, [])
 
   const translationCategories =
     categories?.translations?.find((t) => t.languages_code === language) ||
-    categories?.translations?.[0];
+    categories?.translations?.[0]
 
   const toggleFilter = (filterId) => {
     if (filterId === "Current" || filterId === "Sold") {
-      setActiveTab(filterId);
+      setActiveTab(filterId)
       // Call the parent component's filter handler
       if (onFilterChange) {
-        onFilterChange(filterId, selectedType);
+        onFilterChange(filterId, selectedType)
       }
     } else {
       setSelectedFilters((prev) =>
         prev.includes(filterId)
           ? prev.filter((id) => id !== filterId)
           : [...prev, filterId]
-      );
+      )
     }
-  };
+  }
 
   const toggleType = (filterId) => {
     const updatedTypes = selectedType.includes(filterId)
       ? selectedType.filter((id) => id !== filterId)
-      : [...selectedType, filterId];
+      : [...selectedType, filterId]
 
-    setSelectedType(updatedTypes);
+    setSelectedType(updatedTypes)
     if (onTypeChange) {
-      onTypeChange(updatedTypes); // Only pass the updated types
+      onTypeChange(updatedTypes) // Only pass the updated types
     }
-  };
+  }
 
   const toggleFavorite = (propertyId) => {
     setFavorites((prev) =>
       prev.includes(propertyId)
         ? prev.filter((id) => id !== propertyId)
         : [...prev, propertyId]
-    );
-  };
+    )
+  }
 
   return (
     <div className="bg-[#211f17] text-white py-12">
@@ -290,7 +291,7 @@ export default function Properties({
                   // Assuming you have a currentLanguage variable or similar
                   const translation = category.translations.find(
                     (t) => t.languages_code === language // or use your current language code
-                  );
+                  )
 
                   return (
                     <div
@@ -316,7 +317,7 @@ export default function Properties({
                         {translation?.name || category.slug}
                       </span>
                     </div>
-                  );
+                  )
                 })}
             </div>
           </div>
@@ -336,18 +337,20 @@ export default function Properties({
 
         {/* Navigation - only show if showNavigation prop is true */}
         {showNavigation && (
-          <div className="flex items-center justify-between mt-12">
-            <div className="flex gap-8">
-              {Array.from({ length: totalPages + 1 }, (_, index) => (
-                <div
-                  key={index}
-                  className={`w-3 h-3 ${
-                    index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]"
-                  } transform rotate-45 cursor-pointer`}
-                  onClick={() => onPageChange(index)}
-                />
-              ))}
-            </div>
+          <div className={`flex items-center justify-between mt-12`}>
+            {!isMobileView && (
+              <div className="flex gap-8">
+                {Array.from({ length: totalPages + 1 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={`w-3 h-3 ${
+                      index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]"
+                    } transform rotate-45 cursor-pointer`}
+                    onClick={() => onPageChange(index)}
+                  />
+                ))}
+              </div>
+            )}
 
             <div className="flex items-center gap-4">
               <button
@@ -428,5 +431,5 @@ export default function Properties({
         )}
       </div>
     </div>
-  );
+  )
 }
