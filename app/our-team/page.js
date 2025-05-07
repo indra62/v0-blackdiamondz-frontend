@@ -82,7 +82,6 @@ export default function OurTeamPage() {
     fetchDataHome();
   }, []);
 
-
   return (
     <main className="min-h-screen bg-[#211f17]">
       {loading ? (

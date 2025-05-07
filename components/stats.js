@@ -6,30 +6,30 @@
  *
  * @component
  */
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
+import { useState, useEffect } from "react";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
 export default function Stats({ data }) {
-  const [language, setLanguage] = useState("en")
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const translation =
     data?.translations?.find((t) => t.languages_code === language) ||
-    data?.translations?.[0]
+    data?.translations?.[0];
 
   return (
     <div className={`${archivo.className} bg-[#211f17] text-white py-16`}>
@@ -128,5 +128,5 @@ export default function Stats({ data }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
