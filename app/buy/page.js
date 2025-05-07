@@ -81,7 +81,7 @@ export default function BuyPage() {
           "videos.*",
           "features.feature_id.*",
           "features.value",
-          "agents.*.*",
+          "agents.*",
           "type.*.*",
         ],
         filter,
@@ -131,7 +131,7 @@ export default function BuyPage() {
             "videos.*",
             "features.feature_id.*",
             "features.value",
-            "agents.*.*",
+            "agents.*",
             "type.*.*",
           ],
           filter: {

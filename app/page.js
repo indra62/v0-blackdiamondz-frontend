@@ -91,7 +91,7 @@ export default function Home() {
           "videos.*",
           "features.feature_id.*",
           "features.value",
-          "agents.*.*",
+          "agents.*",
           "type.*.*",
         ],
         filter,
@@ -175,7 +175,7 @@ export default function Home() {
             "videos.*",
             "features.feature_id.*",
             "features.value",
-            "agents.*.*",
+            "agents.*",
             "type.*.*",
           ],
           filter: {

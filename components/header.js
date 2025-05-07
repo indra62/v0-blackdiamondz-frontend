@@ -111,13 +111,16 @@ export default function Header() {
               </div>
             </Link>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <button
                 ref={languageButtonRef}
                 onClick={toggleLanguageDropdown}
-                className="flex items-center gap-1 text-[#BD9574] focus:outline-none relative z-50"
+                aria-expanded={isLanguageDropdownOpen}
+                aria-haspopup="true"
+                className="flex items-center gap-1 text-[#BD9574] focus:outline-none relative z-90"
               >
                 <span className="text-xl">{selectedLanguage.flag}</span>
+                <ChevronDown className="h-4 w-4 text-[#BD9574]" />
               </button>
 
               <button
@@ -226,10 +229,11 @@ export default function Header() {
                 <ChevronDown className="h-4 w-4 text-[#BD9574]" />
               </button>
 
-              {isLanguageDropdownOpen &&
+              {!isMobileView &&
+                isLanguageDropdownOpen &&
                 createPortal(
                   <div
-                    className="bg-[#211f17] border border-[#333] shadow-lg z-[100]"
+                    className="bg-[#211f17] border border-[#333] shadow-lg z-[90]"
                     style={{
                       position: "fixed",
                       top:

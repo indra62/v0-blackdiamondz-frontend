@@ -49,7 +49,7 @@ export default function PropertyDetailPage({ params }) {
           "videos.*",
           "features.feature_id.*",
           "features.value",
-          "agents.*.*",
+          "agents.*",
           "type.*.*",
         ],
       })

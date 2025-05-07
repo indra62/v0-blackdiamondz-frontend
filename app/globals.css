@@ -83,7 +83,7 @@
   .sticky-header {
     position: sticky !important;
     top: 0 !important;
-    z-index: 90 !important;
+    z-index: 80 !important;
     width: 100%;
     height: auto;
     transform: translateZ(0);
