@@ -20,7 +20,6 @@ export default function OurTeamPage() {
   const [heroData, setHeroData] = useState(null);
   const [teamFounderData, setTeamFounderData] = useState(null);
   const [supportData, setSupportData] = useState(null);
-  const [teamData, setTeamData] = useState(null);
   const [error, setError] = useState(null);
 
   const translation =
@@ -63,17 +62,12 @@ export default function OurTeamPage() {
         });
 
         const dataSupport = await getItems("aboutUs_team_support", {
-          fields: ["*", "translations.*"],
-        });
-
-        const dataTeam = await getItems("agents", {
-          fields: ["*", "translations.*"],
+          fields: ["*", "translations.*", "agents.*"],
         });
 
         setHeroData(dataHero);
         setTeamFounderData(dataTeamFounder);
         setSupportData(dataSupport);
-        setTeamData(dataTeam);
         setLoading(false);
       } catch (err) {
         setError("Failed to load home data:" + err.message);
@@ -456,7 +450,7 @@ export default function OurTeamPage() {
               </p>
 
               {/* Team Members Section with Pagination */}
-              <TeamMembersCarousel data={teamData || []} />
+              <TeamMembersCarousel data={supportData|| []} />
             </div>
           </section>
         </>

@@ -65,7 +65,6 @@ export default function PropertyDetailPage({ params }) {
   const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", or "map"
   const [selectedImageId, setSelectedImageId] = useState(1) // Default to first image
   const [property, setProperty] = useState(null)
-
   const [language, setLanguage] = useState("en")
 
   useEffect(() => {

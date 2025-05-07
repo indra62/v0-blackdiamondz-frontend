@@ -7,6 +7,7 @@ import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { getImageUrl } from "@/lib/api";
 
 // Add this CSS class for the scrollbar
 const scrollbarHideStyles = `
@@ -22,7 +23,8 @@ const scrollbarHideStyles = `
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
 
-export default function TeamDetail({ member }) {
+export default function TeamDetail({ member, translation, agentProperties }) {
+  
   // Default member data if none is provided
   const defaultMember = {
     id: 1,
@@ -179,7 +181,7 @@ export default function TeamDetail({ member }) {
   }
 
   // Use provided member data or default
-  const agentData = member || defaultMember
+  const agentData = defaultMember
 
   // State for testimonial carousel
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
@@ -214,7 +216,7 @@ export default function TeamDetail({ member }) {
             {/* Left Column - Agent Info */}
             <div className="w-full md:w-1/3 pr-0 md:pr-8">
               <h1 className={`${taviraj.className} text-[#BD9574] text-[48px] font-light leading-[120%] mb-2`}>
-                {agentData.name}
+                {member?.agents?.[0].first_name + " " + member?.agents?.[0].last_name}
               </h1>
               <p className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}>
                 {agentData.tagline}
@@ -236,7 +238,7 @@ export default function TeamDetail({ member }) {
                 </button>
 
                 <a
-                  href={`tel:${agentData.phone}`}
+                  href={`tel:${member?.agents?.[0].contact_phone}`}
                   className="w-full border border-t-0 border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -248,11 +250,11 @@ export default function TeamDetail({ member }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>{agentData.phone}</span>
+                  <span className={`${archivo.className} font-light text-base`}>{member?.agents?.[0].contact_phone}</span>
                 </a>
 
                 <a
-                  href={`mailto:${agentData.email}`}
+                  href={`mailto:${member?.agents?.[0].contact_email}`}
                   className="w-full border border-t-0 border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -271,20 +273,16 @@ export default function TeamDetail({ member }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>{agentData.email}</span>
+                  <span className={`${archivo.className} font-light text-base`}>{member?.agents?.[0].contact_email}</span>
                 </a>
               </div>
 
               {/* Bio */}
               <div className="space-y-4">
-                {agentData.bio.map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px]`}
-                  >
-                    {paragraph}
-                  </p>
-                ))}
+                <div
+                  className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-relaxed`}
+                  dangerouslySetInnerHTML={{ __html: translation?.bio || "" }}
+                />
               </div>
 
               {/* Stats */}
@@ -322,8 +320,12 @@ export default function TeamDetail({ member }) {
               <div className="relative mb-12">
                 <div className="relative h-[500px] w-full">
                   <Image
-                    src={agentData.image || "/placeholder.svg"}
-                    alt={agentData.name}
+                    src={getImageUrl(member?.agents?.[0].avatar, {
+                                      format: "webp",
+                                      quality: 100,
+                                      fit: "cover",
+                                    })}
+                    alt={member?.agents?.[0].first_name + " " + member?.agents?.[0].last_name}
                     fill
                     className="object-cover object-top"
                     priority
