@@ -210,7 +210,7 @@ export default function Home() {
             />
           </div>
           <div className="px-2 py-16">
-            <Stats data={statistic} />
+            <StatsHome data={statistic} />
           </div>
           <div className="pl-[40px] py-16">
             <AboutUs data={aboutUs} />
