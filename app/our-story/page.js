@@ -244,18 +244,18 @@ export default function OurStoryPage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             {/* Left Column */}
-            <div>
+            <div className="md:w-[305px] place-self-end ">
               <h2
-                className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[100%] tracking-[0%] mb-8`}
+                className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[180%] tracking-[0%] mb-8`}
               >
                 {translationStoryStory?.story_1}
               </h2>
             </div>
 
             {/* Right Column */}
-            <div>
+            <div className="md:w-[305px] ">
               <p
-                className={`${archivo.className} text-[#BD9574] font-light text-base leading-[150%] tracking-[0px] mb-6`}
+                className={`${archivo.className} text-[#BD9574] font-light text-base leading-[180%] tracking-[0px] mb-6`}
               >
                 {translationStoryStory?.story_2}
               </p>

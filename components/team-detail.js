@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { Heart } from "lucide-react"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { getImageUrl } from "@/lib/api"
-import { useEffect } from "react"
+import { useState } from "react";
+import Image from "next/image";
+import { Heart } from "lucide-react";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { getImageUrl } from "@/lib/api";
+import { useEffect } from "react";
 
 // Add this CSS class for the scrollbar
 const scrollbarHideStyles = `
@@ -19,26 +19,26 @@ const scrollbarHideStyles = `
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
 export default function TeamDetail({ member, agentProperties }) {
-  const [language, setLanguage] = useState("en")
+  const [language, setLanguage] = useState("en");
 
   const translation =
     member?.translations?.find((t) => t.languages_code === language) ||
-    member?.translations?.[0]
+    member?.translations?.[0];
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   // Default member data if none is provided
   const defaultMember = {
@@ -193,35 +193,35 @@ export default function TeamDetail({ member, agentProperties }) {
         address: "42 Harbour View Road, Sydney, 2000.",
       },
     ],
-  }
+  };
 
   // Use provided member data or default
-  const agentData = defaultMember
+  const agentData = defaultMember;
 
   // State for testimonial carousel
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
 
   // Navigation functions for testimonial carousel
   const goToPrevTestimonial = () => {
     setCurrentTestimonialIndex((prev) =>
       prev > 0 ? prev - 1 : agentData.testimonials.length - 1
-    )
-  }
+    );
+  };
 
   const goToNextTestimonial = () => {
     setCurrentTestimonialIndex((prev) =>
       prev < agentData.testimonials.length - 1 ? prev + 1 : 0
-    )
-  }
+    );
+  };
 
   const goToTestimonial = (index) => {
     if (index >= 0 && index < agentData.testimonials.length) {
-      setCurrentTestimonialIndex(index)
+      setCurrentTestimonialIndex(index);
     }
-  }
+  };
 
   // Current testimonial
-  const currentTestimonial = agentData.testimonials[currentTestimonialIndex]
+  const currentTestimonial = agentData.testimonials[currentTestimonialIndex];
 
   return (
     <>
@@ -377,24 +377,24 @@ export default function TeamDetail({ member, agentProperties }) {
             {/* Right Column - Agent Photo and Current Listings */}
             <div className="w-full md:w-2/3">
               {/* Agent Photo and Quote */}
-              <div className="relative w-full h-[480px] bg-black">
+              <div className="relative w-full h-[480px] bg-black overflow-hidden">
                 {/* Image Container */}
-                <div className=" absolute left-24 w-[70%] ">
+                <div className=" relative w-[60%] top-10 h-full">
                   <Image
                     src={getImageUrl(member?.avatar?.id, {
                       format: "webp",
                       quality: 100,
-                      fit: "cover",
+                      fit: "contain",
                     })}
                     alt={member?.first_name + " " + member?.last_name}
                     fill
-                    className="object-cover object-top"
+                    className="object-contain scale-125"
                     priority
                   />
                 </div>
 
                 {/* Text Overlay - Positioned in the middle-right area */}
-                <div className="absolute top-1/2 right-24 transform -translate-y-1/2 max-w-[400px] bg-black/70 p-6">
+                <div className="absolute top-1/2 right-16 transform -translate-y-1/2 max-w-[400px]  p-6">
                   <p
                     className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
                   >
@@ -404,8 +404,6 @@ export default function TeamDetail({ member, agentProperties }) {
                     their home, and to enable transparent and open
                     communication."
                   </p>
-                  
-                  
                 </div>
               </div>
 
@@ -1300,5 +1298,5 @@ export default function TeamDetail({ member, agentProperties }) {
       </main>
       <Footer />
     </>
-  )
+  );
 }
