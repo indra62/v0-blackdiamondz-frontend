@@ -8,13 +8,13 @@
  */
 
 // Update import statements to use kebab-case
-import Footer from "@/components/footer"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import Image from "next/image"
+import Footer from "@/components/footer";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import Image from "next/image";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
 export default function SellPage() {
   return (
@@ -51,10 +51,8 @@ export default function SellPage() {
           <div className="flex flex-col md:flex-row">
             {/* Black Diamondz Stats */}
             <div className="flex-1 mb-12 md:mb-0">
-              <div className="flex items-center justify-between mb-12">
-                <h2
-                  className={`${archivo.className} font-normal text-[20px] leading-[21.76px] text-white`}
-                >
+              <div className="flex items-center gap-6 mb-12 pl-24">
+                <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
                   Black Diamondz
                 </h2>
                 <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
@@ -112,7 +110,7 @@ export default function SellPage() {
 
             {/* Australian Market Stats */}
             <div className="flex-1">
-              <div className="flex items-center justify-between mb-12">
+              <div className="flex items-center gap-6 mb-12 pl-24">
                 <h2
                   className={`${archivo.className} font-normal text-[20px] leading-[21.76px] text-white`}
                 >
@@ -464,5 +462,5 @@ export default function SellPage() {
 
       <Footer />
     </main>
-  )
+  );
 }
