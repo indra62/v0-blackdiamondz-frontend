@@ -8,37 +8,50 @@
  *
  * @page
  */
-"use client"
+"use client";
 
-import Hero from "@/components/hero"
-import Properties from "@/components/properties"
-import Stats from "@/components/stats"
-import AboutUs from "@/components/about-us"
-import ExploreCity from "@/components/explore-city"
-import OffMarket from "@/components/off-market"
-import Footer from "@/components/footer"
-import { getItems, getFilteredItems } from "@/lib/api"
-import Loading from "@/components/loading"
-import { useEffect, useState } from "react"
+import Hero from "@/components/hero";
+import Properties from "@/components/properties";
+import StatsHome from "@/components/stats_home";
+import AboutUs from "@/components/about-us";
+import ExploreCity from "@/components/explore-city";
+import OffMarket from "@/components/off-market";
+import Footer from "@/components/footer";
+import { getItems, getFilteredItems } from "@/lib/api";
+import Loading from "@/components/loading";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [heroData, setHeroData] = useState(null)
-  const [aboutUs, setAboutUs] = useState(null)
-  const [statistic, setStatistic] = useState(null)
-  const [explore, setExplore] = useState(null)
-  const [properties, setProperties] = useState(null)
-  const [offMarket, setOffMarket] = useState(null)
-  const [offMarketSection, setOffMarketSection] = useState(null)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [heroData, setHeroData] = useState(null);
+  const [aboutUs, setAboutUs] = useState(null);
+  const [statistic, setStatistic] = useState(null);
+  const [explore, setExplore] = useState(null);
+  const [properties, setProperties] = useState(null);
+  const [offMarket, setOffMarket] = useState(null);
+  const [offMarketSection, setOffMarketSection] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0);
+  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0);
+  const [propertiesStatus, setPropertiesStatus] = useState("Current");
+  const [propertiesType, setPropertiesType] = useState([]);
+  const [propertiesCount, setPropertiesCount] = useState(0);
+  const ITEMS_PER_PAGE = 4;
+  const [isMobileView, setIsMobileView] = useState(false)
 
-  const [categories, setCategories] = useState([])
-  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0)
-  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0)
-  const [propertiesStatus, setPropertiesStatus] = useState("Current")
-  const [propertiesType, setPropertiesType] = useState([])
-  const [propertiesCount, setPropertiesCount] = useState(0)
-  const ITEMS_PER_PAGE = 4 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 768)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   const fetchProperties = async (page = 0, status = "Current", type = []) => {
     try {
@@ -78,7 +91,7 @@ export default function Home() {
           "videos.*",
           "features.feature_id.*",
           "features.value",
-          "agents.*.*",
+          "agents.*",
           "type.*.*",
         ],
         filter,
@@ -162,7 +175,7 @@ export default function Home() {
             "videos.*",
             "features.feature_id.*",
             "features.value",
-            "agents.*.*",
+            "agents.*",
             "type.*.*",
           ],
           filter: {
@@ -182,7 +195,6 @@ export default function Home() {
         setOffMarketSection(dataOffMarketSection)
         setOffMarket(dataOffMarketProperties)
         setLoading(false)
-
       } catch (err) {
         setError("Failed to load home data:" + err.message)
       }
@@ -199,20 +211,31 @@ export default function Home() {
       ) : (
         <>
           <Hero data={heroData} />
-          <Properties
-            data={properties}
-            properties={properties}
-            currentPage={propertiesCurrentPage}
-            totalPages={propertiesTotalPages}
-            onPageChange={handlePropertyPageChange}
-            onFilterChange={handlePropertyFilterChange}
-            onTypeChange={handlePropertyTypeChange}
-            categories={categories}
-          />
-          <Stats data={statistic} />
-          <AboutUs data={aboutUs} />
-          <ExploreCity data={explore} />
-          <OffMarket data={offMarket} section={offMarketSection} />
+          <div className="px-[40px]">
+            <Properties
+              data={properties}
+              properties={properties}
+              currentPage={propertiesCurrentPage}
+              totalPages={propertiesTotalPages}
+              onPageChange={handlePropertyPageChange}
+              onFilterChange={handlePropertyFilterChange}
+              onTypeChange={handlePropertyTypeChange}
+              categories={categories}
+              isMobileView={isMobileView}
+            />
+          </div>
+          <div className="px-[40px] py-16">
+            <StatsHome data={statistic} isMobileView={isMobileView} />
+          </div>
+          <div className="px-[40px] py-16">
+            <AboutUs data={aboutUs} />
+          </div>
+          <div className="py-16 px-[40px]">
+            <ExploreCity data={explore} />
+          </div>
+          <div className="px-[40px]">
+            <OffMarket data={offMarket} section={offMarketSection} />
+          </div>
         </>
       )}
       <Footer />

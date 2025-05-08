@@ -12,7 +12,6 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 export default function AgencyPage() {
   return (
     <main className="min-h-screen bg-[#211f17] text-white">
-      <Header />
 
       {/* Hero Section */}
       <section className="relative h-[600px]">

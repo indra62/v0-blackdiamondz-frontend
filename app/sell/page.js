@@ -8,13 +8,13 @@
  */
 
 // Update import statements to use kebab-case
-import Footer from "@/components/footer"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import Image from "next/image"
+import Footer from "@/components/footer";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import Image from "next/image";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
 export default function SellPage() {
   return (
@@ -51,10 +51,8 @@ export default function SellPage() {
           <div className="flex flex-col md:flex-row">
             {/* Black Diamondz Stats */}
             <div className="flex-1 mb-12 md:mb-0">
-              <div className="flex items-center justify-between mb-12">
-                <h2
-                  className={`${archivo.className} font-normal text-[20px] leading-[21.76px] text-white`}
-                >
+              <div className="flex items-center gap-6 mb-12 pl-24">
+                <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
                   Black Diamondz
                 </h2>
                 <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
@@ -112,7 +110,7 @@ export default function SellPage() {
 
             {/* Australian Market Stats */}
             <div className="flex-1">
-              <div className="flex items-center justify-between mb-12">
+              <div className="flex items-center gap-6 mb-12 pl-24">
                 <h2
                   className={`${archivo.className} font-normal text-[20px] leading-[21.76px] text-white`}
                 >
@@ -168,7 +166,7 @@ export default function SellPage() {
       {/* Property Images Grid */}
       <section className="pb-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
-          <div className="h-64 md:h-80 relative">
+          <div className="h-64 md:h-[392px] relative">
             <Image
               src="/modern-white-luxury-house.png"
               alt="Modern luxury house"
@@ -176,7 +174,7 @@ export default function SellPage() {
               className="object-cover"
             />
           </div>
-          <div className="h-64 md:h-80 relative">
+          <div className="h-64 md:h-[392px] relative">
             <Image
               src="/luxury-terracotta-interior.png"
               alt="Luxury interior"
@@ -185,7 +183,7 @@ export default function SellPage() {
             />
           </div>
           <div className="grid grid-rows-2 gap-1">
-            <div className="h-32 md:h-40 relative">
+            <div className="h-32 md:h-[204px] relative">
               <Image
                 src="/coastal-luxury-property.png"
                 alt="Coastal property"
@@ -194,7 +192,7 @@ export default function SellPage() {
               />
             </div>
             <div className="grid grid-cols-2 gap-1">
-              <div className="h-32 md:h-40 relative">
+              <div className="h-32 md:h-[180px] relative">
                 <Image
                   src="/modern-apartment-building.png"
                   alt="Modern apartment"
@@ -202,7 +200,7 @@ export default function SellPage() {
                   className="object-cover"
                 />
               </div>
-              <div className="h-32 md:h-40 relative">
+              <div className="h-32 md:h-[180px] relative">
                 <Image
                   src="/contemporary-architectural-detail.png"
                   alt="Architectural detail"
@@ -464,5 +462,5 @@ export default function SellPage() {
 
       <Footer />
     </main>
-  )
+  );
 }

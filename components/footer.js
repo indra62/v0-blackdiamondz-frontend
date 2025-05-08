@@ -102,7 +102,7 @@ export default function Footer() {
               {/* Logo - Using the CMS image */}
               <div className="mb-8">
                 <div className="flex flex-col items-center">
-                  <div className="mb-4 relative w-[458px] h-16">
+                  <div className="mb-4 relative w-[400px] h-14">
                     <Image
                       src={
                         getImageUrl(data?.footer_logo?.id, {

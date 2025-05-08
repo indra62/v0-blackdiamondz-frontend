@@ -20,7 +20,6 @@ export default function OurTeamPage() {
   const [heroData, setHeroData] = useState(null);
   const [teamFounderData, setTeamFounderData] = useState(null);
   const [supportData, setSupportData] = useState(null);
-  const [teamData, setTeamData] = useState(null);
   const [error, setError] = useState(null);
 
   const translation =
@@ -63,17 +62,12 @@ export default function OurTeamPage() {
         });
 
         const dataSupport = await getItems("aboutUs_team_support", {
-          fields: ["*", "translations.*"],
-        });
-
-        const dataTeam = await getItems("agents", {
-          fields: ["*", "translations.*"],
-        });
+          fields: ["*", "translations.*", "agents.*.*"],
+        })
 
         setHeroData(dataHero);
         setTeamFounderData(dataTeamFounder);
         setSupportData(dataSupport);
-        setTeamData(dataTeam);
         setLoading(false);
       } catch (err) {
         setError("Failed to load home data:" + err.message);
@@ -82,10 +76,8 @@ export default function OurTeamPage() {
     fetchDataHome();
   }, []);
 
-
   return (
     <main className="min-h-screen bg-[#211f17]">
-      <Header />
       {loading ? (
         <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
           <Loading error={error} />
@@ -142,11 +134,11 @@ export default function OurTeamPage() {
             </div>
 
             {/* Scroll Indicator */}
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
               <div className="flex flex-col items-center">
                 <div className="w-1 h-16 bg-gradient-to-b from-[#BD9574] to-transparent"></div>
               </div>
-            </div>
+            </div> */}
           </section>
 
           {/* Featured Team Members */}
@@ -154,10 +146,10 @@ export default function OurTeamPage() {
             <div className="container mx-auto px-4">
               <div className="flex flex-col md:flex-row justify-center items-start">
                 {/* First Member */}
-                <div className="flex flex-col items-center md:items-end text-center md:text-right md:w-1/2 md:pr-12 mb-16 md:mb-0">
+                <div className="flex flex-col items-center text-center w-full mb-16 md:mb-0">
                   <Link
                     href={`/team/monika-tu`}
-                    className="group cursor-pointer"
+                    className="group cursor-pointer flex flex-col items-center"
                   >
                     <div className="w-[400px] h-[400px] mb-8 overflow-hidden">
                       <Image
@@ -173,7 +165,7 @@ export default function OurTeamPage() {
                       />
                     </div>
                     <h3
-                      className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-normal leading-[100%] tracking-[0px] mb-2 group-hover:text-[#BD9574] transition-colors`}
+                      className={`${taviraj.className} text-[#E2DBCC] text-[32px] font-normal leading-[100%] tracking-[0px] mb-2 group-hover:text-[#BD9574] transition-colors text-center`}
                     >
                       {translationFounder?.founder_1_name}
                     </h3>
@@ -184,7 +176,7 @@ export default function OurTeamPage() {
                     {translationFounder?.founder_1_title}
                   </p>
                   <p
-                    className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-md`}
+                    className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center mx-auto max-w-md`}
                   >
                     {translationFounder?.founder_1_description}
                   </p>
@@ -198,9 +190,9 @@ export default function OurTeamPage() {
                 </div>
 
                 {/* Second Member */}
-                <div className="flex flex-col items-center md:items-start text-center md:text-left md:w-1/2 md:pl-12">
+                <div className="flex flex-col items-center text-center w-full mb-16 md:mb-0">
                   <Link
-                    href={`/team/jad-khatar`}
+                    href={`/team/jad-khattar`}
                     className="group cursor-pointer"
                   >
                     <div className="w-[400px] h-[400px] mb-8 overflow-hidden">
@@ -210,7 +202,7 @@ export default function OurTeamPage() {
                           quality: 100,
                           fit: "cover",
                         })}
-                        alt="Jad Khatar"
+                        alt="Jad Khattar"
                         width={400}
                         height={400}
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -227,6 +219,7 @@ export default function OurTeamPage() {
                   >
                     {translationFounder?.founder_2_title}
                   </p>
+
                   <p
                     className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-md`}
                   >
@@ -457,7 +450,7 @@ export default function OurTeamPage() {
               </p>
 
               {/* Team Members Section with Pagination */}
-              <TeamMembersCarousel data={teamData || []} />
+              <TeamMembersCarousel data={supportData|| []} />
             </div>
           </section>
         </>

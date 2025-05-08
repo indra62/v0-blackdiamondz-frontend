@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Heart } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import { Property } from "@/lib/component/property"
+import { useState, useEffect } from "react";
+import { Heart } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import { Property } from "@/lib/component/property";
 
 /**
  * Properties Component
@@ -21,13 +21,13 @@ import { Property } from "@/lib/component/property"
  * @param {number} props.propertyCount - Number of properties to display
  */
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300"] });
 
 const propertyTab = [
   { id: "buy", label: "Buy", type: "text", value: "Current" },
   { id: "sell", label: "Sell", type: "text", value: "Sold" },
-]
+];
 
 // const categories = [
 //   { id: "buy", label: "Buy", type: "text", value: "Current" },
@@ -200,6 +200,7 @@ export default function Properties({
   onPageChange,
   onTypeChange,
   categories,
+  isMobileView,
 }) {
   const [selectedFilters, setSelectedFilters] = useState(["Current"])
   const [selectedType, setSelectedType] = useState([])
@@ -257,7 +258,7 @@ export default function Properties({
 
   return (
     <div className="bg-[#211f17] text-white py-12">
-      <div className="container mx-auto px-4">
+      <div>
         {/* Only show filters if showFilters prop is true */}
         {showFilters && (
           <div className="flex items-center justify-between pb-4 mb-8">
@@ -336,18 +337,20 @@ export default function Properties({
 
         {/* Navigation - only show if showNavigation prop is true */}
         {showNavigation && (
-          <div className="flex items-center justify-between mt-12">
-            <div className="flex gap-8">
-              {Array.from({ length: totalPages + 1 }, (_, index) => (
-                <div
-                  key={index}
-                  className={`w-3 h-3 ${
-                    index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]"
-                  } transform rotate-45 cursor-pointer`}
-                  onClick={() => onPageChange(index)}
-                />
-              ))}
-            </div>
+          <div className={`flex items-center justify-between mt-12`}>
+            {!isMobileView && (
+              <div className="flex gap-8">
+                {Array.from({ length: totalPages + 1 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={`w-3 h-3 ${
+                      index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]"
+                    } transform rotate-45 cursor-pointer`}
+                    onClick={() => onPageChange(index)}
+                  />
+                ))}
+              </div>
+            )}
 
             <div className="flex items-center gap-4">
               <button

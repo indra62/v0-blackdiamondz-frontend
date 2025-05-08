@@ -4,11 +4,11 @@ import { useState } from "react";
 import { getImageUrl } from "@/lib/api";
 
 export default function TeamMembersCarousel({ data }) {
-  if (!Array.isArray(data)) return null; // safeguard
+  if (!data?.agents || !Array.isArray(data.agents)) return null; // safeguard
   const [currentPage, setCurrentPage] = useState(0);
 
   const ITEMS_PER_PAGE = 8;
-  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(data.agents.length / ITEMS_PER_PAGE);
 
   // Navigation functions
   const goToNextPage = () => {
@@ -26,7 +26,7 @@ export default function TeamMembersCarousel({ data }) {
   };
 
   // Get current page team members
-  const currentTeamMembers = data.slice(
+  const currentTeamMembers = data.agents.slice(
     currentPage * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE + ITEMS_PER_PAGE
   );
@@ -35,21 +35,26 @@ export default function TeamMembersCarousel({ data }) {
     <>
       {/* Team Grid - Single Row with Overflow */}
       <div className="flex overflow-x-auto pb-8 gap-6 max-w-[1200px] mx-auto hide-scrollbar">
-        {currentTeamMembers.map((member) => (
+        {currentTeamMembers.map((member, idx) => (
           <Link
-            key={member.id}
-            href={`/team/${member?.first_name
-              .toLowerCase()
-              .replace(/\s+/g, "-")}`}
+            key={member?.id || idx}
+            href={
+              "/team/" +
+              member?.first_name?.toLowerCase().replace(/\s+/g, "-") +
+              "-" +
+              member?.last_name?.toLowerCase().replace(/\s+/g, "-")
+            }
             className="flex-none w-[150px] group cursor-pointer"
           >
             <div className="relative w-[150px] h-[200px] mb-4 overflow-hidden">
               <Image
-                src={getImageUrl(member?.image?.id, {
-                  format: "webp",
-                  quality: 100,
-                  fit: "cover",
-                }) || "/placeholder.svg"}
+                src={
+                  getImageUrl(member?.avatar?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  }) || "/placeholder.svg"
+                }
                 alt={member?.first_name}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -59,7 +64,7 @@ export default function TeamMembersCarousel({ data }) {
               {member?.first_name + " " + member?.last_name}
             </h4>
             <p className="text-[#BD9574] font-light text-[14px] leading-[150%] text-center">
-              {member?.title || "Title"}
+              {member?.title || ""}
             </p>
           </Link>
         ))}
@@ -138,5 +143,5 @@ export default function TeamMembersCarousel({ data }) {
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,12 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { Heart } from "lucide-react"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+import { useState } from "react";
+import Image from "next/image";
+import { Heart } from "lucide-react";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { getImageUrl } from "@/lib/api";
+import { useEffect } from "react";
 
 // Add this CSS class for the scrollbar
 const scrollbarHideStyles = `
@@ -17,12 +19,27 @@ const scrollbarHideStyles = `
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
-export default function TeamDetail({ member }) {
+export default function TeamDetail({ member, agentProperties }) {
+  const [language, setLanguage] = useState("en");
+
+  const translation =
+    member?.translations?.find((t) => t.languages_code === language) ||
+    member?.translations?.[0];
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedLanguage = localStorage.getItem("language");
+      if (storedLanguage) {
+        setLanguage(storedLanguage);
+      }
+    }
+  }, []);
+
   // Default member data if none is provided
   const defaultMember = {
     id: 1,
@@ -176,35 +193,38 @@ export default function TeamDetail({ member }) {
         address: "42 Harbour View Road, Sydney, 2000.",
       },
     ],
-  }
+  };
 
   // Use provided member data or default
-  const agentData = member || defaultMember
+  const agentData = defaultMember;
 
   // State for testimonial carousel
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
 
   // Navigation functions for testimonial carousel
   const goToPrevTestimonial = () => {
-    setCurrentTestimonialIndex((prev) => (prev > 0 ? prev - 1 : agentData.testimonials.length - 1))
-  }
+    setCurrentTestimonialIndex((prev) =>
+      prev > 0 ? prev - 1 : agentData.testimonials.length - 1
+    );
+  };
 
   const goToNextTestimonial = () => {
-    setCurrentTestimonialIndex((prev) => (prev < agentData.testimonials.length - 1 ? prev + 1 : 0))
-  }
+    setCurrentTestimonialIndex((prev) =>
+      prev < agentData.testimonials.length - 1 ? prev + 1 : 0
+    );
+  };
 
   const goToTestimonial = (index) => {
     if (index >= 0 && index < agentData.testimonials.length) {
-      setCurrentTestimonialIndex(index)
+      setCurrentTestimonialIndex(index);
     }
-  }
+  };
 
   // Current testimonial
-  const currentTestimonial = agentData.testimonials[currentTestimonialIndex]
+  const currentTestimonial = agentData.testimonials[currentTestimonialIndex];
 
   return (
     <>
-      <Header />
       <style jsx global>
         {scrollbarHideStyles}
       </style>
@@ -214,17 +234,28 @@ export default function TeamDetail({ member }) {
           <div className="flex flex-col md:flex-row">
             {/* Left Column - Agent Info */}
             <div className="w-full md:w-1/3 pr-0 md:pr-8">
-              <h1 className={`${taviraj.className} text-[#BD9574] text-[48px] font-light leading-[120%] mb-2`}>
-                {agentData.name}
+              <h1
+                className={`${taviraj.className} text-[#BD9574] text-[48px] font-light leading-[120%] mb-2`}
+              >
+                {member?.first_name + " " + member?.last_name}
               </h1>
-              <p className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}>
-                {agentData.tagline}
+              <p
+                className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}
+              >
+                {member?.tagline}
+                {member?.translations?.[0]?.tagline}
               </p>
 
               {/* Contact Buttons */}
               <div className="space-y-0 mb-8">
                 <button className="w-full border border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                       stroke="#BD9574"
@@ -233,14 +264,22 @@ export default function TeamDetail({ member }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>Book Appraisal for Sale</span>
+                  <span className={`${archivo.className} font-light text-base`}>
+                    Book Appraisal for Sale
+                  </span>
                 </button>
 
                 <a
-                  href={`tel:${agentData.phone}`}
+                  href={`tel:${member?.contact_phone}`}
                   className="w-full border border-t-0 border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
                       stroke="#BD9574"
@@ -249,14 +288,22 @@ export default function TeamDetail({ member }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>{agentData.phone}</span>
+                  <span className={`${archivo.className} font-light text-base`}>
+                    {member?.contact_phone}
+                  </span>
                 </a>
 
                 <a
-                  href={`mailto:${agentData.email}`}
+                  href={`mailto:${member?.contact_email}`}
                   className="w-full border border-t-0 border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
                       stroke="#BD9574"
@@ -272,45 +319,55 @@ export default function TeamDetail({ member }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>{agentData.email}</span>
+                  <span className={`${archivo.className} font-light text-base`}>
+                    {member?.contact_email}
+                  </span>
                 </a>
               </div>
 
               {/* Bio */}
               <div className="space-y-4">
-                {agentData.bio.map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px]`}
-                  >
-                    {paragraph}
-                  </p>
-                ))}
+                <div
+                  className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-relaxed`}
+                  dangerouslySetInnerHTML={{ __html: translation?.bio || "" }}
+                />
               </div>
 
               {/* Stats */}
               <div className="mt-8 space-y-0">
                 <div className="flex justify-between items-center py-4 border-t border-[#656565]/30">
-                  <span className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}>
+                  <span
+                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
+                  >
                     Average sale price
                   </span>
-                  <span className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}>
+                  <span
+                    className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
+                  >
                     $ 925,000
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-4 border-t border-[#656565]/30">
-                  <span className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}>
+                  <span
+                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
+                  >
                     Average days on market
                   </span>
-                  <span className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}>
+                  <span
+                    className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
+                  >
                     17
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-4 border-t border-b border-[#656565]/30">
-                  <span className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}>
+                  <span
+                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
+                  >
                     Career Record sale
                   </span>
-                  <span className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}>
+                  <span
+                    className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
+                  >
                     $ 15,250,000
                   </span>
                 </div>
@@ -320,32 +377,43 @@ export default function TeamDetail({ member }) {
             {/* Right Column - Agent Photo and Current Listings */}
             <div className="w-full md:w-2/3">
               {/* Agent Photo and Quote */}
-              <div className="relative mb-12">
-                <div className="relative h-[500px] w-full">
+              <div className="relative w-full h-[480px] bg-black overflow-hidden">
+                {/* Image Container */}
+                <div className=" relative w-[60%] top-10 h-full">
                   <Image
-                    src={agentData.image || "/placeholder.svg"}
-                    alt={agentData.name}
+                    src={getImageUrl(member?.avatar?.id, {
+                      format: "webp",
+                      quality: 100,
+                      fit: "contain",
+                    })}
+                    alt={member?.first_name + " " + member?.last_name}
                     fill
-                    className="object-cover object-top"
+                    className="object-contain scale-125"
                     priority
                   />
                 </div>
-                <div className="absolute top-8 right-8 max-w-md bg-[#000000]/80 p-6">
+
+                {/* Text Overlay - Positioned in the middle-right area */}
+                <div className="absolute top-1/2 right-16 transform -translate-y-1/2 max-w-[400px]  p-6">
                   <p
-                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px]`}
+                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
                   >
-                    "Black Diamondz' hand-picked team provides homeowners with specialist support throughout the sale
-                    process. Our aim is to help clients make informed decisions about the sale of their home, and to
-                    enable transparent and open communication."
+                    "Black Diamondz' hand-picked team provides homeowners with
+                    specialist support throughout the sale process. Our aim is
+                    to help clients make informed decisions about the sale of
+                    their home, and to enable transparent and open
+                    communication."
                   </p>
                 </div>
               </div>
 
               {/* Current Listings Section */}
-              <div className="mb-12 overflow-hidden">
+              <div className="py-11 overflow-hidden">
                 <div className="flex items-center justify-center mb-8">
                   <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
-                  <h2 className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}>
+                  <h2
+                    className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}
+                  >
                     Current Listings (8)
                   </h2>
                   <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
@@ -353,7 +421,10 @@ export default function TeamDetail({ member }) {
 
                 <div className="flex space-x-6 pb-4 overflow-x-auto scrollbar-hide">
                   {agentData.currentListings.map((property) => (
-                    <div key={property.id} className="bg-[#211f17] overflow-hidden min-w-[350px] flex-shrink-0">
+                    <div
+                      key={property.id}
+                      className="bg-[#211f17] overflow-hidden min-w-[350px] flex-shrink-0"
+                    >
                       {/* Image Container */}
                       <div className="relative h-[240px] overflow-hidden">
                         <Image
@@ -370,7 +441,9 @@ export default function TeamDetail({ member }) {
                       {/* Property Type and Location */}
                       <div className="p-4">
                         <div className="flex justify-between items-center mb-2">
-                          <div className={`${archivo.className} text-[#BD9574] font-light text-[14px] leading-[150%]`}>
+                          <div
+                            className={`${archivo.className} text-[#BD9574] font-light text-[14px] leading-[150%]`}
+                          >
                             {property.type} | {property.location}
                           </div>
                         </div>
@@ -396,7 +469,9 @@ export default function TeamDetail({ member }) {
 
                         {/* Price */}
                         <div className="mb-6">
-                          <span className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}>
+                          <span
+                            className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
+                          >
                             Auction:
                           </span>{" "}
                           <span
@@ -422,10 +497,21 @@ export default function TeamDetail({ member }) {
                                 strokeWidth="1.5"
                                 strokeLinejoin="round"
                               />
-                              <path d="M9 22V16H15V22" stroke="#BD9574" strokeWidth="1.5" strokeLinejoin="round" />
-                              <path d="M3 12H21" stroke="#BD9574" strokeWidth="1.5" />
+                              <path
+                                d="M9 22V16H15V22"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3 12H21"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.bedrooms}
                             </span>
                           </div>
@@ -447,12 +533,34 @@ export default function TeamDetail({ member }) {
                                 stroke="#BD9574"
                                 strokeWidth="1.5"
                               />
-                              <path d="M4 20V22" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M20 20V22" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M7 8H10" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M7 10H10" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
+                              <path
+                                d="M4 20V22"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M20 20V22"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M7 8H10"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M7 10H10"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.bathrooms}
                             </span>
                           </div>
@@ -476,10 +584,24 @@ export default function TeamDetail({ member }) {
                                 strokeWidth="1.5"
                                 strokeLinejoin="round"
                               />
-                              <circle cx="8" cy="20" r="1" stroke="#BD9574" strokeWidth="1.5" />
-                              <circle cx="16" cy="20" r="1" stroke="#BD9574" strokeWidth="1.5" />
+                              <circle
+                                cx="8"
+                                cy="20"
+                                r="1"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <circle
+                                cx="16"
+                                cy="20"
+                                r="1"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.parking}
                             </span>
                           </div>
@@ -491,9 +613,24 @@ export default function TeamDetail({ member }) {
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <path d="M3 22H21" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M6 18V11" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M18 18V11" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
+                              <path
+                                d="M3 22H21"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M6 18V11"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M18 18V11"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
                               <path
                                 d="M6 7V2H18V7"
                                 stroke="#BD9574"
@@ -501,11 +638,28 @@ export default function TeamDetail({ member }) {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                               />
-                              <path d="M3 7H21V11H3V7Z" stroke="#BD9574" strokeWidth="1.5" strokeLinejoin="round" />
-                              <path d="M3 18H21V22H3V18Z" stroke="#BD9574" strokeWidth="1.5" strokeLinejoin="round" />
-                              <path d="M3 11H21V18H3V11Z" stroke="#BD9574" strokeWidth="1.5" strokeLinejoin="round" />
+                              <path
+                                d="M3 7H21V11H3V7Z"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3 18H21V22H3V18Z"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3 11H21V18H3V11Z"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinejoin="round"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.floors}
                             </span>
                           </div>
@@ -517,13 +671,39 @@ export default function TeamDetail({ member }) {
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <rect x="3" y="3" width="18" height="18" rx="2" stroke="#BD9574" strokeWidth="1.5" />
-                              <path d="M3 9H21" stroke="#BD9574" strokeWidth="1.5" />
-                              <path d="M9 21L9 9" stroke="#BD9574" strokeWidth="1.5" />
-                              <path d="M15 21V9" stroke="#BD9574" strokeWidth="1.5" />
-                              <path d="M3 15H21" stroke="#BD9574" strokeWidth="1.5" />
+                              <rect
+                                x="3"
+                                y="3"
+                                width="18"
+                                height="18"
+                                rx="2"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M3 9H21"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M9 21L9 9"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M15 21V9"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M3 15H21"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.rooms}
                             </span>
                           </div>
@@ -548,7 +728,9 @@ export default function TeamDetail({ member }) {
                                 strokeLinejoin="round"
                               />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.additional}
                             </span>
                           </div>
@@ -579,7 +761,11 @@ export default function TeamDetail({ member }) {
                                 strokeLinejoin="round"
                               />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[16px]`}>See map</span>
+                            <span
+                              className={`${archivo.className} font-light text-[16px]`}
+                            >
+                              See map
+                            </span>
                           </button>
                           <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border-t border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
                             <svg
@@ -604,7 +790,11 @@ export default function TeamDetail({ member }) {
                                 strokeLinejoin="round"
                               />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[16px]`}>Agent</span>
+                            <span
+                              className={`${archivo.className} font-light text-[16px]`}
+                            >
+                              Agent
+                            </span>
                           </button>
                         </div>
                       </div>
@@ -617,7 +807,9 @@ export default function TeamDetail({ member }) {
               <div className="mb-12 overflow-hidden">
                 <div className="flex items-center justify-center mb-8">
                   <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
-                  <h2 className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}>
+                  <h2
+                    className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}
+                  >
                     Recent Sales (8)
                   </h2>
                   <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
@@ -625,7 +817,10 @@ export default function TeamDetail({ member }) {
 
                 <div className="flex space-x-6 pb-4 overflow-x-auto scrollbar-hide">
                   {agentData.recentSales.map((property) => (
-                    <div key={property.id} className="bg-[#211f17] overflow-hidden min-w-[350px] flex-shrink-0">
+                    <div
+                      key={property.id}
+                      className="bg-[#211f17] overflow-hidden min-w-[350px] flex-shrink-0"
+                    >
                       {/* Image Container */}
                       <div className="relative h-[240px] overflow-hidden">
                         <Image
@@ -642,7 +837,9 @@ export default function TeamDetail({ member }) {
                       {/* Property Type and Location */}
                       <div className="p-4">
                         <div className="flex justify-between items-center mb-2">
-                          <div className={`${archivo.className} text-[#BD9574] font-light text-[14px] leading-[150%]`}>
+                          <div
+                            className={`${archivo.className} text-[#BD9574] font-light text-[14px] leading-[150%]`}
+                          >
                             {property.type} | {property.location}
                           </div>
                         </div>
@@ -668,7 +865,9 @@ export default function TeamDetail({ member }) {
 
                         {/* Price */}
                         <div className="mb-6">
-                          <span className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}>
+                          <span
+                            className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
+                          >
                             Auction:
                           </span>{" "}
                           <span
@@ -694,10 +893,21 @@ export default function TeamDetail({ member }) {
                                 strokeWidth="1.5"
                                 strokeLinejoin="round"
                               />
-                              <path d="M9 22V16H15V22" stroke="#BD9574" strokeWidth="1.5" strokeLinejoin="round" />
-                              <path d="M3 12H21" stroke="#BD9574" strokeWidth="1.5" />
+                              <path
+                                d="M9 22V16H15V22"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3 12H21"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.bedrooms}
                             </span>
                           </div>
@@ -719,12 +929,34 @@ export default function TeamDetail({ member }) {
                                 stroke="#BD9574"
                                 strokeWidth="1.5"
                               />
-                              <path d="M4 20V22" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M20 20V22" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M7 8H10" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M7 10H10" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
+                              <path
+                                d="M4 20V22"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M20 20V22"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M7 8H10"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M7 10H10"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.bathrooms}
                             </span>
                           </div>
@@ -748,10 +980,24 @@ export default function TeamDetail({ member }) {
                                 strokeWidth="1.5"
                                 strokeLinejoin="round"
                               />
-                              <circle cx="8" cy="20" r="1" stroke="#BD9574" strokeWidth="1.5" />
-                              <circle cx="16" cy="20" r="1" stroke="#BD9574" strokeWidth="1.5" />
+                              <circle
+                                cx="8"
+                                cy="20"
+                                r="1"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <circle
+                                cx="16"
+                                cy="20"
+                                r="1"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.parking}
                             </span>
                           </div>
@@ -763,9 +1009,24 @@ export default function TeamDetail({ member }) {
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <path d="M3 22H21" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M6 18V11" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M18 18V11" stroke="#BD9574" strokeWidth="1.5" strokeLinecap="round" />
+                              <path
+                                d="M3 22H21"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M6 18V11"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M18 18V11"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              />
                               <path
                                 d="M6 7V2H18V7"
                                 stroke="#BD9574"
@@ -773,11 +1034,28 @@ export default function TeamDetail({ member }) {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                               />
-                              <path d="M3 7H21V11H3V7Z" stroke="#BD9574" strokeWidth="1.5" strokeLinejoin="round" />
-                              <path d="M3 18H21V22H3V18Z" stroke="#BD9574" strokeWidth="1.5" strokeLinejoin="round" />
-                              <path d="M3 11H21V18H3V11Z" stroke="#BD9574" strokeWidth="1.5" strokeLinejoin="round" />
+                              <path
+                                d="M3 7H21V11H3V7Z"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3 18H21V22H3V18Z"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3 11H21V18H3V11Z"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                                strokeLinejoin="round"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.floors}
                             </span>
                           </div>
@@ -789,13 +1067,39 @@ export default function TeamDetail({ member }) {
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <rect x="3" y="3" width="18" height="18" rx="2" stroke="#BD9574" strokeWidth="1.5" />
-                              <path d="M3 9H21" stroke="#BD9574" strokeWidth="1.5" />
-                              <path d="M9 21L9 9" stroke="#BD9574" strokeWidth="1.5" />
-                              <path d="M15 21V9" stroke="#BD9574" strokeWidth="1.5" />
-                              <path d="M3 15H21" stroke="#BD9574" strokeWidth="1.5" />
+                              <rect
+                                x="3"
+                                y="3"
+                                width="18"
+                                height="18"
+                                rx="2"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M3 9H21"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M9 21L9 9"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M15 21V9"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M3 15H21"
+                                stroke="#BD9574"
+                                strokeWidth="1.5"
+                              />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.rooms}
                             </span>
                           </div>
@@ -820,7 +1124,9 @@ export default function TeamDetail({ member }) {
                                 strokeLinejoin="round"
                               />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[14px]`}>
+                            <span
+                              className={`${archivo.className} font-light text-[14px]`}
+                            >
                               {property.features.additional}
                             </span>
                           </div>
@@ -851,7 +1157,11 @@ export default function TeamDetail({ member }) {
                                 strokeLinejoin="round"
                               />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[16px]`}>See map</span>
+                            <span
+                              className={`${archivo.className} font-light text-[16px]`}
+                            >
+                              See map
+                            </span>
                           </button>
                           <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border-t border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
                             <svg
@@ -876,7 +1186,11 @@ export default function TeamDetail({ member }) {
                                 strokeLinejoin="round"
                               />
                             </svg>
-                            <span className={`${archivo.className} font-light text-[16px]`}>Agent</span>
+                            <span
+                              className={`${archivo.className} font-light text-[16px]`}
+                            >
+                              Agent
+                            </span>
                           </button>
                         </div>
                       </div>
@@ -889,7 +1203,9 @@ export default function TeamDetail({ member }) {
               <div>
                 <div className="flex items-center justify-center mb-8">
                   <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
-                  <h2 className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}>
+                  <h2
+                    className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}
+                  >
                     Testimonial
                   </h2>
                   <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
@@ -903,10 +1219,14 @@ export default function TeamDetail({ member }) {
                     >
                       {currentTestimonial.text}
                     </p>
-                    <h3 className={`${taviraj.className} text-[#BD9574] text-[20px] font-normal leading-[120%] mb-2`}>
+                    <h3
+                      className={`${taviraj.className} text-[#BD9574] text-[20px] font-normal leading-[120%] mb-2`}
+                    >
                       {currentTestimonial.author}
                     </h3>
-                    <p className={`${archivo.className} text-[#BD9574] font-light text-[14px] leading-[150%]`}>
+                    <p
+                      className={`${archivo.className} text-[#BD9574] font-light text-[14px] leading-[150%]`}
+                    >
                       {currentTestimonial.address}
                     </p>
                   </div>
@@ -917,7 +1237,13 @@ export default function TeamDetail({ member }) {
                       onClick={goToPrevTestimonial}
                       className="w-10 h-10 flex items-center justify-center text-[#E2DBCC] hover:text-[#BD9574] transition-colors"
                     >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
                         <path
                           d="M15 19l-7-7 7-7"
                           stroke="currentColor"
@@ -934,7 +1260,9 @@ export default function TeamDetail({ member }) {
                           key={index}
                           onClick={() => goToTestimonial(index)}
                           className={`w-2 h-2 rounded-full ${
-                            currentTestimonialIndex === index ? "bg-[#BD9574]" : "bg-[#656565]"
+                            currentTestimonialIndex === index
+                              ? "bg-[#BD9574]"
+                              : "bg-[#656565]"
                           } transition-colors hover:bg-[#BD9574]/80`}
                           aria-label={`Go to testimonial ${index + 1}`}
                         />
@@ -945,7 +1273,13 @@ export default function TeamDetail({ member }) {
                       onClick={goToNextTestimonial}
                       className="w-10 h-10 flex items-center justify-center text-[#E2DBCC] hover:text-[#BD9574] transition-colors"
                     >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
                         <path
                           d="M9 5l7 7-7 7"
                           stroke="currentColor"
@@ -964,5 +1298,5 @@ export default function TeamDetail({ member }) {
       </main>
       <Footer />
     </>
-  )
+  );
 }

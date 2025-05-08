@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-[#211F17]`}>
         <AuthProvider>
           <Toaster position="top-center" reverseOrder={false} />
           <Header />

@@ -109,7 +109,7 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
   // Main menu overlay with responsive layout
   // Uses flex-col on mobile and standard flex on desktop
   return (
-    <div className="fixed inset-0 bg-[#211f17] z-[100] overflow-y-auto">
+    <div className="fixed inset-0 bg-[#211f17] z-[1001] overflow-y-auto">
       <div className="container mx-auto px-4 py-6 h-full flex flex-col">
         <div className="flex justify-between items-center mb-12">
           {/* Diamond Logo */}
@@ -136,12 +136,14 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
             <nav className="grid grid-cols-1 content-start gap-y-4">
               <Link
                 href="/buy"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
               >
                 Buy
               </Link>
               <Link
                 href="/sell"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors mb-4`}
               >
                 Sell
@@ -151,24 +153,28 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
 
               <Link
                 href="/our-story"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
               >
                 Our Story
               </Link>
               <Link
                 href="/our-team"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
               >
                 Our Team
               </Link>
               <Link
                 href="/agency"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
               >
                 Agency
               </Link>
               <Link
                 href="/media"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors mb-4`}
               >
                 Media
@@ -179,6 +185,7 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
               <Link
                 href="/club-diamondz"
                 id="club-diamondz-link"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors mb-4`}
               >
                 Club Diamondz
@@ -189,12 +196,14 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
               <Link
                 href="/contact-us"
                 id="contact-us-link"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
               >
                 Contact Us
               </Link>
               <Link
                 href="/privacy-policy"
+                onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
               >
                 Privacy Policy

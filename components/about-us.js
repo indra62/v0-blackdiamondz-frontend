@@ -8,39 +8,39 @@
  *
  * @component
  */
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import { getImageUrl } from "@/lib/api"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import { getImageUrl } from "@/lib/api";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300"] });
 
 export default function AboutUs({ data }) {
-  const [language, setLanguage] = useState("en")
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const translation =
     data?.translations?.find((t) => t.languages_code === language) ||
-    data?.translations?.[0]
+    data?.translations?.[0];
 
   return (
     <section className="bg-[#211f17]">
       <div className="flex flex-col lg:flex-row">
         {/* Text Content - Left Side */}
-        <div className="w-full lg:w-[60%] px-4 py-16 lg:py-24 lg:pl-[10%] lg:pr-12 flex items-center">
+        <div className="w-full lg:w-[50%] py-16 lg:py-24 flex items-center">
           <div className="max-w-xl">
             <h2
               className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
@@ -91,7 +91,7 @@ export default function AboutUs({ data }) {
         </div>
 
         {/* Image - Right Side */}
-        <div className="w-full lg:w-[40%] h-[500px] lg:h-auto relative">
+        <div className="w-full lg:w-[100%] h-[500px] lg:h-auto relative">
           <Image
             src={getImageUrl(data?.aboutUs_Image?.id, {
               format: "webp",
@@ -100,7 +100,7 @@ export default function AboutUs({ data }) {
             })}
             alt="Luxury interior with person sitting by floor-to-ceiling windows overlooking nature"
             fill
-            sizes="(max-width: 768px) 100vw, 40vw"
+            sizes="(max-width: 1026px)"
             style={{ objectFit: "cover", objectPosition: "center" }}
             priority
           />
@@ -109,11 +109,11 @@ export default function AboutUs({ data }) {
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(90deg, rgba(33, 31, 23, 1) 0%, rgba(33, 31, 23, 0.9) 10%, rgba(33, 31, 23, 0.7) 30%, rgba(33, 31, 23, 0.3) 70%, rgba(33, 31, 23, 0) 100%)",
+                "linear-gradient(40deg, rgba(33, 31, 23, 1) 0%, rgba(33, 31, 23, 0.9) 10%, rgba(33, 31, 23, 0.7) 30%, rgba(33, 31, 23, 0.3) 70%, rgba(33, 31, 23, 0) 100%)",
             }}
           ></div>
         </div>
       </div>
     </section>
-  )
+  );
 }
