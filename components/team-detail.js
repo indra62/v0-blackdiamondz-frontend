@@ -381,7 +381,7 @@ export default function TeamDetail({ member, agentProperties }) {
                 {/* Image Container */}
                 <div className=" absolute left-24 w-[70%] ">
                   <Image
-                    src={getImageUrl(member?.avatar, {
+                    src={getImageUrl(member?.avatar?.id, {
                       format: "webp",
                       quality: 100,
                       fit: "cover",
@@ -404,6 +404,8 @@ export default function TeamDetail({ member, agentProperties }) {
                     their home, and to enable transparent and open
                     communication."
                   </p>
+                  
+                  
                 </div>
               </div>
 
