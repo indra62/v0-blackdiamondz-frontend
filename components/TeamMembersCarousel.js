@@ -62,7 +62,7 @@ export default function TeamMembersCarousel({ data }) {
               {member?.first_name + " " + member?.last_name}
             </h4>
             <p className="text-[#BD9574] font-light text-[14px] leading-[150%] text-center">
-              {member?.title || "Title"}
+              {member?.title || ""}
             </p>
           </Link>
         ))}

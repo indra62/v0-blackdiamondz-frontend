@@ -8,6 +8,7 @@ import { Archivo } from "next/font/google";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { getImageUrl } from "@/lib/api";
+import { useEffect } from "react";
 
 // Add this CSS class for the scrollbar
 const scrollbarHideStyles = `
@@ -23,7 +24,24 @@ const scrollbarHideStyles = `
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
-export default function TeamDetail({ member, translation, agentProperties }) {
+export default function TeamDetail({ member, agentProperties }) {
+
+  const [language, setLanguage] = useState("en");
+
+  const translation =
+    member?.translations?.find((t) => t.languages_code === language) ||
+    member?.translations?.[0];
+
+  useEffect(() => {
+      if (typeof window !== "undefined") {
+        const storedLanguage = localStorage.getItem("language");
+        if (storedLanguage) {
+          setLanguage(storedLanguage);
+        }
+      }
+    }, []);
+
+    
   // Default member data if none is provided
   const defaultMember = {
     id: 1,
@@ -218,17 +236,11 @@ export default function TeamDetail({ member, translation, agentProperties }) {
           <div className="flex flex-col md:flex-row">
             {/* Left Column - Agent Info */}
             <div className="w-full md:w-1/3 pr-0 md:pr-8">
-              <h1
-                className={`${taviraj.className} text-[#BD9574] text-[48px] font-light leading-[120%] mb-2`}
-              >
-                {member?.agents?.[0].first_name +
-                  " " +
-                  member?.agents?.[0].last_name}
+              <h1 className={`${taviraj.className} text-[#BD9574] text-[48px] font-light leading-[120%] mb-2`}>
+                {member?.first_name + " " + member?.last_name}
               </h1>
-              <p
-                className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}
-              >
-                {agentData.tagline}
+              <p className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}>
+                {member?.tagline}{member?.translations?.[0]?.tagline}
               </p>
 
               {/* Contact Buttons */}
@@ -255,7 +267,7 @@ export default function TeamDetail({ member, translation, agentProperties }) {
                 </button>
 
                 <a
-                  href={`tel:${member?.agents?.[0].contact_phone}`}
+                  href={`tel:${member?.contact_phone}`}
                   className="w-full border border-t-0 border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                 >
                   <svg
@@ -273,13 +285,11 @@ export default function TeamDetail({ member, translation, agentProperties }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>
-                    {member?.agents?.[0].contact_phone}
-                  </span>
+                  <span className={`${archivo.className} font-light text-base`}>{member?.contact_phone}</span>
                 </a>
 
                 <a
-                  href={`mailto:${member?.agents?.[0].contact_email}`}
+                  href={`mailto:${member?.contact_email}`}
                   className="w-full border border-t-0 border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                 >
                   <svg
@@ -304,9 +314,7 @@ export default function TeamDetail({ member, translation, agentProperties }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>
-                    {member?.agents?.[0].contact_email}
-                  </span>
+                  <span className={`${archivo.className} font-light text-base`}>{member?.contact_email}</span>
                 </a>
               </div>
 
@@ -364,21 +372,16 @@ export default function TeamDetail({ member, translation, agentProperties }) {
               {/* Agent Photo and Quote */}
               <div className="relative w-full h-[480px] bg-black">
                 {/* Image Container */}
-                <div className=" absolute  left-24 w-[70%] ">
+                <div className=" absolute left-24 w-[70%] ">
                   <Image
-                    src={getImageUrl(member?.agents?.[0].avatar, {
-                      format: "webp",
-                      quality: 100,
-                      fit: "contain",
-                    })}
-                    alt={
-                      member?.agents?.[0].first_name +
-                      " " +
-                      member?.agents?.[0].last_name
-                    }
-                    className="object-contain "
-                    width={320}
-                    height={320}
+                    src={getImageUrl(member?.avatar, {
+                                      format: "webp",
+                                      quality: 100,
+                                      fit: "cover",
+                                    })}
+                    alt={member?.first_name + " " + member?.last_name}
+                    fill
+                    className="object-cover object-top"
                     priority
                   />
                 </div>

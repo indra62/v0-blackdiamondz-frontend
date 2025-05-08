@@ -192,7 +192,7 @@ export default function OurTeamPage() {
                 {/* Second Member */}
                 <div className="flex flex-col items-center text-center w-full mb-16 md:mb-0">
                   <Link
-                    href={`/team/jad-khatar`}
+                    href={`/team/jad-khattar`}
                     className="group cursor-pointer"
                   >
                     <div className="w-[400px] h-[400px] mb-8 overflow-hidden">
@@ -202,7 +202,7 @@ export default function OurTeamPage() {
                           quality: 100,
                           fit: "cover",
                         })}
-                        alt="Jad Khatar"
+                        alt="Jad Khattar"
                         width={400}
                         height={400}
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
