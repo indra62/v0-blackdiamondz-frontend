@@ -21,12 +21,12 @@ export default function TeamMemberPage() {
       try {
 
         const dataTeam = await getUsers({
-          fields: ["*", "translations.*"],
+          fields: ["*.*"],
           filter: {
             first_name: { _contains: firstname },
-            last_name: { _contains: lastname }
+            last_name: { _contains: lastname },
           },
-        });
+        })
 
         // Find the matched agent based on first and last name (case-insensitive, trimmed)
         const matchedAgent = dataTeam?.find(

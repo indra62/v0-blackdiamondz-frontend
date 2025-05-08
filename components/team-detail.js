@@ -1,14 +1,14 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import Image from "next/image";
-import { Heart } from "lucide-react";
-import { Taviraj } from "next/font/google";
-import { Archivo } from "next/font/google";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import { getImageUrl } from "@/lib/api";
-import { useEffect } from "react";
+import { useState } from "react"
+import Image from "next/image"
+import { Heart } from "lucide-react"
+import { Taviraj } from "next/font/google"
+import { Archivo } from "next/font/google"
+import Header from "@/components/header"
+import Footer from "@/components/footer"
+import { getImageUrl } from "@/lib/api"
+import { useEffect } from "react"
 
 // Add this CSS class for the scrollbar
 const scrollbarHideStyles = `
@@ -19,29 +19,27 @@ const scrollbarHideStyles = `
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-`;
+`
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
 
 export default function TeamDetail({ member, agentProperties }) {
-
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("en")
 
   const translation =
     member?.translations?.find((t) => t.languages_code === language) ||
-    member?.translations?.[0];
+    member?.translations?.[0]
 
   useEffect(() => {
-      if (typeof window !== "undefined") {
-        const storedLanguage = localStorage.getItem("language");
-        if (storedLanguage) {
-          setLanguage(storedLanguage);
-        }
+    if (typeof window !== "undefined") {
+      const storedLanguage = localStorage.getItem("language")
+      if (storedLanguage) {
+        setLanguage(storedLanguage)
       }
-    }, []);
+    }
+  }, [])
 
-    
   // Default member data if none is provided
   const defaultMember = {
     id: 1,
@@ -195,35 +193,35 @@ export default function TeamDetail({ member, agentProperties }) {
         address: "42 Harbour View Road, Sydney, 2000.",
       },
     ],
-  };
+  }
 
   // Use provided member data or default
-  const agentData = defaultMember;
+  const agentData = defaultMember
 
   // State for testimonial carousel
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
 
   // Navigation functions for testimonial carousel
   const goToPrevTestimonial = () => {
     setCurrentTestimonialIndex((prev) =>
       prev > 0 ? prev - 1 : agentData.testimonials.length - 1
-    );
-  };
+    )
+  }
 
   const goToNextTestimonial = () => {
     setCurrentTestimonialIndex((prev) =>
       prev < agentData.testimonials.length - 1 ? prev + 1 : 0
-    );
-  };
+    )
+  }
 
   const goToTestimonial = (index) => {
     if (index >= 0 && index < agentData.testimonials.length) {
-      setCurrentTestimonialIndex(index);
+      setCurrentTestimonialIndex(index)
     }
-  };
+  }
 
   // Current testimonial
-  const currentTestimonial = agentData.testimonials[currentTestimonialIndex];
+  const currentTestimonial = agentData.testimonials[currentTestimonialIndex]
 
   return (
     <>
@@ -236,11 +234,16 @@ export default function TeamDetail({ member, agentProperties }) {
           <div className="flex flex-col md:flex-row">
             {/* Left Column - Agent Info */}
             <div className="w-full md:w-1/3 pr-0 md:pr-8">
-              <h1 className={`${taviraj.className} text-[#BD9574] text-[48px] font-light leading-[120%] mb-2`}>
+              <h1
+                className={`${taviraj.className} text-[#BD9574] text-[48px] font-light leading-[120%] mb-2`}
+              >
                 {member?.first_name + " " + member?.last_name}
               </h1>
-              <p className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}>
-                {member?.tagline}{member?.translations?.[0]?.tagline}
+              <p
+                className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}
+              >
+                {member?.tagline}
+                {member?.translations?.[0]?.tagline}
               </p>
 
               {/* Contact Buttons */}
@@ -285,7 +288,9 @@ export default function TeamDetail({ member, agentProperties }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>{member?.contact_phone}</span>
+                  <span className={`${archivo.className} font-light text-base`}>
+                    {member?.contact_phone}
+                  </span>
                 </a>
 
                 <a
@@ -314,7 +319,9 @@ export default function TeamDetail({ member, agentProperties }) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>{member?.contact_email}</span>
+                  <span className={`${archivo.className} font-light text-base`}>
+                    {member?.contact_email}
+                  </span>
                 </a>
               </div>
 
@@ -375,10 +382,10 @@ export default function TeamDetail({ member, agentProperties }) {
                 <div className=" absolute left-24 w-[70%] ">
                   <Image
                     src={getImageUrl(member?.avatar, {
-                                      format: "webp",
-                                      quality: 100,
-                                      fit: "cover",
-                                    })}
+                      format: "webp",
+                      quality: 100,
+                      fit: "cover",
+                    })}
                     alt={member?.first_name + " " + member?.last_name}
                     fill
                     className="object-cover object-top"
@@ -1291,5 +1298,5 @@ export default function TeamDetail({ member, agentProperties }) {
       </main>
       <Footer />
     </>
-  );
+  )
 }

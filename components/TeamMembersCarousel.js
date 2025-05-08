@@ -48,11 +48,13 @@ export default function TeamMembersCarousel({ data }) {
           >
             <div className="relative w-[150px] h-[200px] mb-4 overflow-hidden">
               <Image
-                src={getImageUrl(member?.avatar, {
-                  format: "webp",
-                  quality: 100,
-                  fit: "cover",
-                }) || "/placeholder.svg"}
+                src={
+                  getImageUrl(member?.avatar?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  }) || "/placeholder.svg"
+                }
                 alt={member?.first_name}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -141,5 +143,5 @@ export default function TeamMembersCarousel({ data }) {
         </div>
       </div>
     </>
-  );
+  )
 }

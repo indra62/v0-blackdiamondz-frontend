@@ -62,8 +62,8 @@ export default function OurTeamPage() {
         });
 
         const dataSupport = await getItems("aboutUs_team_support", {
-          fields: ["*", "translations.*", "agents.*"],
-        });
+          fields: ["*", "translations.*", "agents.*.*"],
+        })
 
         setHeroData(dataHero);
         setTeamFounderData(dataTeamFounder);
