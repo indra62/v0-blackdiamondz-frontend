@@ -29,6 +29,46 @@
   h1 {
     font-family: serif;
   }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  li {
+    display: list-item;
+    margin-bottom: 0.25rem;
+  }
+  
+  /* For nested lists */
+  ul ul {
+    list-style-type: circle;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  ul ol {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  ol ul {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  ol ol {
+    list-style-type: lower-alpha;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
