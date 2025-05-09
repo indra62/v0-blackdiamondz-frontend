@@ -63,7 +63,7 @@ export default function AboutUs({ data }) {
 
             <Link
               href="/about"
-              className="inline-flex items-center text-[#BD9574] hover:text-[#e5c04b] transition-colors group border border-[#BD9574] hover:border-[#e5c04b] px-8 py-3"
+              className="inline-flex items-center text-[#BD9574] hover:text-[#e5c04b] transition-colors group border border-[#656565] hover:border-[#BD9574] px-8 py-3"
             >
               <span
                 className={`${archivo.className} mr-2 font-light text-base leading-6`}

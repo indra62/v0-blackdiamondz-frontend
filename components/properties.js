@@ -202,65 +202,65 @@ export default function Properties({
   categories,
   isMobileView,
 }) {
-  const [selectedFilters, setSelectedFilters] = useState(["Current"])
-  const [selectedType, setSelectedType] = useState([])
-  const [activeTab, setActiveTab] = useState("Current")
-  const [favorites, setFavorites] = useState([])
-  const [language, setLanguage] = useState("en")
+  const [selectedFilters, setSelectedFilters] = useState(["Current"]);
+  const [selectedType, setSelectedType] = useState([]);
+  const [activeTab, setActiveTab] = useState("Current");
+  const [favorites, setFavorites] = useState([]);
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const translationCategories =
     categories?.translations?.find((t) => t.languages_code === language) ||
-    categories?.translations?.[0]
+    categories?.translations?.[0];
 
   const toggleFilter = (filterId) => {
     if (filterId === "Current" || filterId === "Sold") {
-      setActiveTab(filterId)
+      setActiveTab(filterId);
       // Call the parent component's filter handler
       if (onFilterChange) {
-        onFilterChange(filterId, selectedType)
+        onFilterChange(filterId, selectedType);
       }
     } else {
       setSelectedFilters((prev) =>
         prev.includes(filterId)
           ? prev.filter((id) => id !== filterId)
           : [...prev, filterId]
-      )
+      );
     }
-  }
+  };
 
   const toggleType = (filterId) => {
     const updatedTypes = selectedType.includes(filterId)
       ? selectedType.filter((id) => id !== filterId)
-      : [...selectedType, filterId]
+      : [...selectedType, filterId];
 
-    setSelectedType(updatedTypes)
+    setSelectedType(updatedTypes);
     if (onTypeChange) {
-      onTypeChange(updatedTypes) // Only pass the updated types
+      onTypeChange(updatedTypes); // Only pass the updated types
     }
-  }
+  };
 
   const toggleFavorite = (propertyId) => {
     setFavorites((prev) =>
       prev.includes(propertyId)
         ? prev.filter((id) => id !== propertyId)
         : [...prev, propertyId]
-    )
-  }
+    );
+  };
 
   return (
     <div className="bg-[#211f17] text-white py-12">
       <div>
         {/* Only show filters if showFilters prop is true */}
-        {showFilters && (
+        {/* {showFilters && (
           <div className="flex items-center justify-between pb-4 mb-8">
             <div className="flex gap-8">
               {propertyTab
@@ -321,7 +321,7 @@ export default function Properties({
                 })}
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Properties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -431,5 +431,5 @@ export default function Properties({
         )}
       </div>
     </div>
-  )
+  );
 }

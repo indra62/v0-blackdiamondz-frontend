@@ -150,15 +150,14 @@ export default function OurStoryPage() {
                     "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
                 }}
               ></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2   ">
                 <h3
-                  className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+                  className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%]`}
                 >
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: translationStory?.[`text_${imageNumber}`] ?? "",
-                    }}
-                  />
+                  {translationStory?.[`text_${imageNumber}`]?.replace(
+                    /<[^>]+>/g,
+                    ""
+                  ) ?? ""}
                 </h3>
               </div>
             </div>
@@ -197,9 +196,9 @@ export default function OurStoryPage() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+        <div className="text-[#E2DBCC] relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
           <h1
-            className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
+            className={`${taviraj.className} text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
           >
             {translation?.title}
           </h1>
@@ -212,7 +211,7 @@ export default function OurStoryPage() {
           </div>
 
           <p
-            className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
+            className={`${archivo.className}  font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
           >
             {translation?.description}
           </p>
@@ -290,13 +289,9 @@ export default function OurStoryPage() {
           ></div>
           <div className="absolute inset-0 flex items-center justify-center">
             <h3
-              className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+              className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%]`}
             >
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: translationStory?.text_5 ?? "",
-                }}
-              />
+              {translationStory?.text_5?.replace(/<[^>]+>/g, "") ?? ""}
             </h3>
           </div>
         </div>
