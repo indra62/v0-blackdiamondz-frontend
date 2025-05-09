@@ -36,10 +36,11 @@ export default function TeamMemberPage() {
         );
 
         // Only fetch agent properties if matchedAgent exists
+        //https://staging.cms.black-diamondz.62dev.org/items/agent_properties?fields=property_id.*.*&filter[user_id][_eq]=d936be1f-638e-42be-b6cd-eccc8dc4e8be ⁠
         let dataAgentProperties = null;
         if (matchedAgent && matchedAgent.id) {
           dataAgentProperties = await getItems("agent_properties", {
-            fields: ["*", "property_id.*.*"],
+            fields: ["property_id.*.*"],
             filter: {
               user_id: {
                 _eq: matchedAgent.id,
