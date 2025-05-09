@@ -31,13 +31,10 @@ const VideoCard = ({ video }) => {
   }
 
   return (
-    <div
-      className="relative group cursor-pointer"
-      onClick={handleClick}
-    >
+    <div className="relative group cursor-pointer" onClick={handleClick}>
       <div className="relative w-full aspect-video overflow-hidden">
         {(() => {
-          const thumbnailSrc = getYoutubeThumbnail(video.video_url);
+          const thumbnailSrc = getYoutubeThumbnail(video.video_url)
           return thumbnailSrc ? (
             <Image
               src={thumbnailSrc}
@@ -46,7 +43,7 @@ const VideoCard = ({ video }) => {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
-          ) : null;
+          ) : null
         })()}
 
         <div className="absolute top-0 left-0 p-3">
@@ -62,17 +59,24 @@ const VideoCard = ({ video }) => {
       </div>
       <div className="mt-3">
         <div className="text-[#BD9574] text-sm font-light">
-          {video.category || (video.video_category ? video.video_category.join(", ") : "")}
+          {video.category ||
+            (video.video_category ? video.video_category.join(" | ") : "")}
         </div>
         <h3 className="text-white text-lg font-light mt-1 line-clamp-2 group-hover:text-[#BD9574] transition-colors">
           {video.video_title}
         </h3>
-        {video.date && (
-          <div className="text-[#A1A1AA] text-sm mt-1">{video.date}</div>
+        {video.date_created && (
+          <div className="text-[#BD9574] text-sm font-light mt-1">
+            {new Date(video.date_created).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </div>
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default VideoCard;
