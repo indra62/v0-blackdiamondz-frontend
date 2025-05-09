@@ -250,7 +250,7 @@ export default function TeamDetail({ member, agentProperties }) {
 
               {/* Contact Buttons */}
               <div className="space-y-0 mb-8">
-                <button className="w-full border border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors">
+                <button className="w-full border border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors">
                   <svg
                     width="24"
                     height="24"
@@ -273,7 +273,7 @@ export default function TeamDetail({ member, agentProperties }) {
 
                 <a
                   href={`tel:${member?.contact_phone}`}
-                  className="w-full border border-t-0 border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
+                  className="w-full border border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                 >
                   <svg
                     width="24"
@@ -297,7 +297,7 @@ export default function TeamDetail({ member, agentProperties }) {
 
                 <a
                   href={`mailto:${member?.contact_email}`}
-                  className="w-full border border-t-0 border-[#BD9574] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
+                  className="w-full border border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                 >
                   <svg
                     width="24"
@@ -337,7 +337,7 @@ export default function TeamDetail({ member, agentProperties }) {
 
               {/* Stats */}
               <div className="mt-8 space-y-0">
-                <div className="flex justify-between items-center py-4 border-t border-[#656565]/30">
+                <div className="flex justify-between items-center py-4 border-t border-[#656565] ">
                   <span
                     className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
                   >
@@ -349,7 +349,7 @@ export default function TeamDetail({ member, agentProperties }) {
                     $ 925,000
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-4 border-t border-[#656565]/30">
+                <div className="flex justify-between items-center py-4 border-t border-[#656565] ">
                   <span
                     className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
                   >
@@ -361,7 +361,7 @@ export default function TeamDetail({ member, agentProperties }) {
                     17
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-4 border-t border-b border-[#656565]/30">
+                <div className="flex justify-between items-center py-4 border-t border-b border-[#656565] ">
                   <span
                     className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
                   >
@@ -396,7 +396,7 @@ export default function TeamDetail({ member, agentProperties }) {
                 </div>
 
                 {/* Text Overlay - Positioned in the middle-right area */}
-                <div className="absolute top-1/2 right-16 transform -translate-y-1/2 max-w-[400px]  p-6">
+                <div className="absolute top-1/2 right-28 transform -translate-y-1/2 max-w-[400px]  p-6">
                   <p
                     className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
                   >
@@ -412,8 +412,6 @@ export default function TeamDetail({ member, agentProperties }) {
               {/* Current Listings Section */}
               <TeamListing agentProperties={agentProperties} status="Current" />
               <TeamListing agentProperties={agentProperties} status="Sold" />
-
-              
 
               {/* Testimonial Section */}
               <div>

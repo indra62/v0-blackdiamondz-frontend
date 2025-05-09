@@ -12,16 +12,17 @@ const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
 export default function TeamListing({ agentProperties, status }) {
-  const currentListings = agentProperties?.filter(
-    (property) => property.property_id?.status === status
-  ) || [];
+  const currentListings =
+    agentProperties?.filter(
+      (property) => property.property_id?.status === status
+    ) || [];
 
   return (
     <div className="py-11 overflow-hidden">
       <div className="flex items-center justify-center mb-8">
         <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
         <h2
-          className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}
+          className={`${archivo.className} text-[#E2DBCC] text-[20px] font-normal leading-[120%] px-6`}
         >
           {status === "Current"
             ? `Current Listings (${currentListings.length})`
@@ -150,13 +151,11 @@ export default function TeamListing({ agentProperties, status }) {
                         strokeWidth="1.5"
                         strokeLinejoin="round"
                       />
-                      <path
-                        d="M3 12H21"
-                        stroke="#BD9574"
-                        strokeWidth="1.5"
-                      />
+                      <path d="M3 12H21" stroke="#BD9574" strokeWidth="1.5" />
                     </svg>
-                    <span className={`${archivo.className} font-light text-[14px]`}>
+                    <span
+                      className={`${archivo.className} font-light text-[14px]`}
+                    >
                       {features.bedrooms}
                     </span>
                   </div>
@@ -204,7 +203,9 @@ export default function TeamListing({ agentProperties, status }) {
                         strokeLinecap="round"
                       />
                     </svg>
-                    <span className={`${archivo.className} font-light text-[14px]`}>
+                    <span
+                      className={`${archivo.className} font-light text-[14px]`}
+                    >
                       {features.bathrooms}
                     </span>
                   </div>
@@ -244,7 +245,9 @@ export default function TeamListing({ agentProperties, status }) {
                         strokeWidth="1.5"
                       />
                     </svg>
-                    <span className={`${archivo.className} font-light text-[14px]`}>
+                    <span
+                      className={`${archivo.className} font-light text-[14px]`}
+                    >
                       {features.parking}
                     </span>
                   </div>
@@ -301,7 +304,9 @@ export default function TeamListing({ agentProperties, status }) {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span className={`${archivo.className} font-light text-[14px]`}>
+                    <span
+                      className={`${archivo.className} font-light text-[14px]`}
+                    >
                       {features.floors}
                     </span>
                   </div>
@@ -323,28 +328,14 @@ export default function TeamListing({ agentProperties, status }) {
                         stroke="#BD9574"
                         strokeWidth="1.5"
                       />
-                      <path
-                        d="M3 9H21"
-                        stroke="#BD9574"
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M9 21L9 9"
-                        stroke="#BD9574"
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M15 21V9"
-                        stroke="#BD9574"
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M3 15H21"
-                        stroke="#BD9574"
-                        strokeWidth="1.5"
-                      />
+                      <path d="M3 9H21" stroke="#BD9574" strokeWidth="1.5" />
+                      <path d="M9 21L9 9" stroke="#BD9574" strokeWidth="1.5" />
+                      <path d="M15 21V9" stroke="#BD9574" strokeWidth="1.5" />
+                      <path d="M3 15H21" stroke="#BD9574" strokeWidth="1.5" />
                     </svg>
-                    <span className={`${archivo.className} font-light text-[14px]`}>
+                    <span
+                      className={`${archivo.className} font-light text-[14px]`}
+                    >
                       {features.rooms}
                     </span>
                   </div>
@@ -370,7 +361,9 @@ export default function TeamListing({ agentProperties, status }) {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span className={`${archivo.className} font-light text-[14px]`}>
+                    <span
+                      className={`${archivo.className} font-light text-[14px]`}
+                    >
                       {features.additional}
                     </span>
                   </div>
@@ -378,7 +371,7 @@ export default function TeamListing({ agentProperties, status }) {
 
                 {/* Action Buttons */}
                 <div className="grid grid-cols-2 gap-0">
-                  <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border-t border-r border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
+                  <button className="py-3 flex items-center justify-center gap-2 text-[#BD9574] border border-[#656565] hover:border-[#BD9574] hover:text-[#e5c04b] transition-colors">
                     <LocationIcon width="22" height="22" />
                     <span
                       className={`${archivo.className} font-light text-[16px]`}
@@ -386,7 +379,7 @@ export default function TeamListing({ agentProperties, status }) {
                       See map
                     </span>
                   </button>
-                  <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border-t border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
+                  <button className="py-3 flex items-center justify-center gap-2 text-[#BD9574] border border-[#656565] hover:border-[#BD9574] hover:text-[#e5c04b] transition-colors">
                     <AgentIcon width="22" height="22" />
                     <span
                       className={`${archivo.className} font-light text-[16px]`}
