@@ -9,6 +9,8 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { getImageUrl } from "@/lib/api";
 import { useEffect } from "react";
+import { AgentIcon } from "./icons/AgentIcon";
+import { LocationIcon } from "./icons/LocationIcon";
 
 // Add this CSS class for the scrollbar
 const scrollbarHideStyles = `
@@ -230,7 +232,7 @@ export default function TeamDetail({ member, agentProperties }) {
       </style>
       <main className="bg-[#211f17] text-white">
         {/* Main Layout Structure */}
-        <div className="container mx-auto px-4 py-12">
+        <div className=" mx-auto pl-[40px] py-12">
           <div className="flex flex-col md:flex-row">
             {/* Left Column - Agent Info */}
             <div className="w-full md:w-1/3 pr-0 md:pr-8">
@@ -739,28 +741,7 @@ export default function TeamDetail({ member, agentProperties }) {
                         {/* Action Buttons */}
                         <div className="grid grid-cols-2 gap-0">
                           <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border-t border-r border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
-                                stroke="#BD9574"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M12 22C16 18 20 14.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 14.4183 8 18 12 22Z"
-                                stroke="#BD9574"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
+                            <LocationIcon width="22" height="22" />
                             <span
                               className={`${archivo.className} font-light text-[16px]`}
                             >
@@ -768,28 +749,7 @@ export default function TeamDetail({ member, agentProperties }) {
                             </span>
                           </button>
                           <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border-t border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21"
-                                stroke="#BD9574"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
-                                stroke="#BD9574"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
+                            <AgentIcon width="22" height="22" />
                             <span
                               className={`${archivo.className} font-light text-[16px]`}
                             >
@@ -1135,28 +1095,7 @@ export default function TeamDetail({ member, agentProperties }) {
                         {/* Action Buttons */}
                         <div className="grid grid-cols-2 gap-0">
                           <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border-t border-r border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
-                                stroke="#BD9574"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M12 22C16 18 20 14.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 14.4183 8 18 12 22Z"
-                                stroke="#BD9574"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
+                            <LocationIcon width="22" height="22" />
                             <span
                               className={`${archivo.className} font-light text-[16px]`}
                             >
@@ -1164,28 +1103,7 @@ export default function TeamDetail({ member, agentProperties }) {
                             </span>
                           </button>
                           <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border-t border-[#656565]/20 hover:bg-[#1A1814] transition-colors">
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21"
-                                stroke="#BD9574"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
-                                stroke="#BD9574"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
+                            <AgentIcon width="22" height="22" />
                             <span
                               className={`${archivo.className} font-light text-[16px]`}
                             >
