@@ -21,29 +21,30 @@ export default function OurStoryPage() {
   const [storyImageLink, setStoryImageLink] = useState(null);
   const [storyStory, setStoryStory] = useState(null);
   const [storyPartner, setStoryPartner] = useState(null);
-  const [error, setError] = useState(null);
+  const [listOfPartner, setListOfPartner] = useState([])
+  const [error, setError] = useState(null)
 
   const translation =
     heroData?.translations?.find((t) => t.languages_code === language) ||
-    heroData?.translations?.[0];
+    heroData?.translations?.[0]
 
   const translationStory =
     storyImageLink?.translations?.find((t) => t.languages_code === language) ||
-    storyImageLink?.translations?.[0];
+    storyImageLink?.translations?.[0]
 
   const translationStoryStory =
     storyStory?.translations?.find((t) => t.languages_code === language) ||
-    storyStory?.translations?.[0];
+    storyStory?.translations?.[0]
 
   const translationStoryPartner =
     storyPartner?.translations?.find((t) => t.languages_code === language) ||
-    storyPartner?.translations?.[0];
+    storyPartner?.translations?.[0]
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
 
@@ -51,11 +52,11 @@ export default function OurStoryPage() {
       try {
         const dataHero = await getItems("aboutUs_ourStory_section", {
           fields: ["*", "aboutUs_ourStory_heroImage.*", "translations.*"],
-        });
+        })
 
         const dataStats = await getItems("aboutUs_ourStory_stats", {
           fields: ["*", "translations.*"],
-        });
+        })
 
         const dataStoryImageLink = await getItems(
           "aboutUs_ourStory_image_link",
@@ -70,45 +71,40 @@ export default function OurStoryPage() {
               "translations.*",
             ],
           }
-        );
+        )
 
         const dataStoryStory = await getItems("aboutUs_ourStory_story", {
           fields: ["*", "translations.*"],
-        });
+        })
 
         const dataStoryPartner = await getItems("aboutUs_ourStory_partners", {
           fields: [
-            "*",
-            "partner_1.*",
-            "partner_2.*",
-            "partner_3.*",
-            "partner_4.*",
-            "partner_5.*",
-            "partner_6.*",
-            "partner_7.*",
-            "partner_8.*",
-            "translations.*",
+            "*.*",
+            "list_of_partner.image.*",
+            "list_of_partner.status.*",
+            "list_of_partner.translations.*",
           ],
-        });
+        })
 
-        setHeroData(dataHero);
-        setAboutStats(dataStats);
-        setStoryImageLink(dataStoryImageLink);
-        setStoryStory(dataStoryStory);
-        setStoryPartner(dataStoryPartner);
-        setLoading(false);
+        setHeroData(dataHero)
+        setAboutStats(dataStats)
+        setStoryImageLink(dataStoryImageLink)
+        setStoryStory(dataStoryStory)
+        setStoryPartner(dataStoryPartner)
+        setListOfPartner(dataStoryPartner?.list_of_partner)
+        setLoading(false)
       } catch (err) {
-        setError("Failed to load home data:" + err.message);
+        setError("Failed to load home data:" + err.message)
       }
-    };
-    fetchDataHome();
-  }, []);
+    }
+    fetchDataHome()
+  }, [])
 
   // component images with services
   /////////////////////////////////
   const ImagesOfServices = ({ storyImageLink, translationStory }) => {
     if (!storyImageLink) {
-      return null;
+      return null
     }
 
     // Filter only image_1 through image_4
@@ -117,14 +113,14 @@ export default function OurStoryPage() {
         key.startsWith("image_") &&
         parseInt(key.split("_")[1]) <= 4 &&
         storyImageLink[key]
-    );
+    )
 
     return (
       <>
         {imageKeys.map((imageKey) => {
-          const image = storyImageLink[imageKey];
+          const image = storyImageLink[imageKey]
           // Extract the number from imageKey (e.g., 'image_1' -> '1')
-          const imageNumber = imageKey.split("_")[1];
+          const imageNumber = imageKey.split("_")[1]
 
           return (
             <div
@@ -137,7 +133,7 @@ export default function OurStoryPage() {
                     format: "webp",
                     quality: 100,
                     fit: "cover",
-                  }) || "/placeholder.png"
+                  }) || "/placeholder-image.png"
                 }
                 alt={image.title || `Story Image`}
                 fill
@@ -161,11 +157,11 @@ export default function OurStoryPage() {
                 </h3>
               </div>
             </div>
-          );
+          )
         })}
       </>
-    );
-  };
+    )
+  }
 
   return (
     <main className="min-h-screen bg-[#211f17]">
@@ -324,8 +320,8 @@ export default function OurStoryPage() {
 
           {/* Partners Grid - Single row with exact Figma dimensions */}
           <PartnerCarousel
-            storyPartner={storyPartner}
-            translationStoryPartner={translationStoryPartner}
+            partners={listOfPartner}
+            language={language}
             getImageUrl={getImageUrl}
             archivo={archivo}
           />
@@ -334,5 +330,5 @@ export default function OurStoryPage() {
 
       <Footer />
     </main>
-  );
+  )
 }
