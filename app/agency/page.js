@@ -69,7 +69,9 @@ export default function AgencyPage() {
     gender: "", // 1: male, 2: female
     years_of_experience: "",
     country_id: "",
+    country: "",
     city_id: "",
+    city: "",
     email: "",
     phone: "",
     message: "",
@@ -194,8 +196,13 @@ export default function AgencyPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    const dataToSubmit = { ...formData }
+    delete dataToSubmit.country
+    delete dataToSubmit.city
+
     try {
       setSubmitting(true)
+
       await submitAgencyApplication(formData)
       toast.success("Form submitted successfully!")
 
@@ -206,7 +213,9 @@ export default function AgencyPage() {
         gender: "",
         years_of_experience: "",
         country_id: "",
+        country: "",
         city_id: "",
+        city: "",
         email: "",
         phone: "",
         message: "",
@@ -308,7 +317,7 @@ export default function AgencyPage() {
                       </div>
 
                       {/* Gender */}
-                      <div className="border border-[#656565]/30 p-4 border-t-0">
+                      <div className="border border-[#656565]/30 px-2 py-4 border-t-0">
                         <Select
                           name="gender"
                           value={genderOptions.find(
@@ -329,7 +338,7 @@ export default function AgencyPage() {
                       </div>
 
                       {/* Years of Experience */}
-                      <div className="border border-[#656565]/30 p-4 border-l-0 border-t-0">
+                      <div className="border border-[#656565]/30 p-4 border-l-0 border-t-0 flex justify-center">
                         <input
                           type="text"
                           placeholder="Years of Experience"
@@ -341,11 +350,11 @@ export default function AgencyPage() {
                       </div>
 
                       {/* Country */}
-                      <div className="border border-[#656565]/30 p-4 border-t-0 relative">
+                      <div className="border border-[#656565]/30 px-2 py-4 border-t-0 relative">
                         <AsyncSelect
                           name="country"
                           value={
-                            formData.country
+                            formData.country_id
                               ? {
                                   id: formData.country_id,
                                   name: formData.country,
@@ -354,11 +363,12 @@ export default function AgencyPage() {
                           }
                           loadOptions={debouncedLoadCountryOptions}
                           onChange={(option) => {
-                            // Update both the label and ID fields
                             setFormData((prev) => ({
                               ...prev,
                               country_id: option ? option.id : "",
+                              country: option ? option.name : "",
                               city_id: "",
+                              city: "",
                             }))
                           }}
                           getOptionLabel={(option) => option.name}
@@ -372,23 +382,20 @@ export default function AgencyPage() {
                       </div>
 
                       {/* City */}
-                      <div className="border border-[#656565]/30 p-4 border-l-0 border-t-0 relative">
+                      <div className="border border-[#656565]/30 px-2 py-4 border-l-0 border-t-0 relative">
                         <AsyncSelect
                           name="city"
                           value={
-                            formData.city
-                              ? {
-                                  id: formData.city_id,
-                                  name: formData.city,
-                                }
+                            formData.city_id
+                              ? { id: formData.city_id, name: formData.city }
                               : null
                           }
                           loadOptions={debouncedLoadCityOptions}
                           onChange={(option) => {
-                            // Update both the label and ID fields
                             setFormData((prev) => ({
                               ...prev,
                               city_id: option ? option.id : "",
+                              city: option ? option.name : "",
                             }))
                           }}
                           getOptionLabel={(option) => option.name}

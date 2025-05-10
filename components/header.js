@@ -33,9 +33,8 @@ export default function Header() {
   ];
 
   const toggleLanguageDropdown = () => {
-    console.log("Language button ref:", languageButtonRef.current);
-    setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
-  };
+    setIsLanguageDropdownOpen(!isLanguageDropdownOpen)
+  }
 
   const selectLanguage = (language) => {
     setSelectedLanguage(language);

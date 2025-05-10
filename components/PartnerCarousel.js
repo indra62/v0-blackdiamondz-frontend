@@ -10,8 +10,6 @@ import Image from "next/image"
  * @param {Object} props.archivo - Font class object.
  */
 const PartnerCarousel = ({ partners, language, getImageUrl, archivo }) => {
-  console.log(partners)
-
   return (
     <div className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-full mx-auto justify-center">
       {partners?.map((partner) => {
