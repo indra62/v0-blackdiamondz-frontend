@@ -95,13 +95,11 @@ export default function SignupPage() {
             {/* Left side - Sydney Harbour Image */}
             <div className="hidden md:block w-1/2 relative">
               <Image
-                src={
-                  getImageUrl(data?.signup_image?.id, {
-                    format: "webp",
-                    quality: 80,
-                    fit: "cover",
-                  }) || "/sydney-sunset-boats.png"
-                }
+                src={getImageUrl(data?.signup_image?.id, {
+                  format: "webp",
+                  quality: 80,
+                  fit: "cover",
+                })}
                 alt="Sydney Harbour"
                 fill
                 priority

@@ -114,7 +114,7 @@ export default function Header() {
                       format: "webp",
                       quality: 80,
                       fit: "fit",
-                    }) || "/placeholder-image.jpg"
+                    }) || "/images/smallLogoBD.png"
                   }
                   alt="Black Diamondz Logo"
                   className="w-auto h-6"
@@ -160,7 +160,7 @@ export default function Header() {
                       format: "webp",
                       quality: 80,
                       fit: "fit",
-                    }) || "/placeholder-image.jpg"
+                    }) || "/images/smallLogoBD.png"
                   }
                   alt="Black Diamondz Logo"
                   className="w-auto h-7"

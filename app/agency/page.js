@@ -251,7 +251,11 @@ export default function AgencyPage() {
             ></div>
             <div className="absolute inset-0 overflow-hidden">
               <Image
-                src="/suburban-neighborhood-aerial.png"
+                src={getImageUrl(data?.heroImage?.id, {
+                  format: "webp",
+                  quality: 80,
+                  fit: "cover",
+                })}
                 alt="Suburban neighborhood aerial view"
                 fill
                 priority
