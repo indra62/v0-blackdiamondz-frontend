@@ -14,7 +14,6 @@ import VideoCard from "./VideoCard";
  *  - navigateSlide: function (slide navigation handler)
  */
 
-
 import { useState } from "react";
 
 const VideoSection = ({
@@ -22,6 +21,7 @@ const VideoSection = ({
   videos = [],
   count = 0,
   slideKey = "",
+  hideTitle = false,
 }) => {
   let currentVideos = [];
   if (slideKey.toLowerCase() === "recent") {
@@ -45,14 +45,16 @@ const VideoSection = ({
   }
   return (
     <div className="mb-16">
-      <div className="flex items-center justify-center mb-10">
-        <div className="flex-grow h-px bg-[#656565]/30"></div>
-        <h2 className="text-[#e2dbcc] text-xl font-light px-6">
-          {title}{" "}
-          <span className="text-[#e2dbcc]">({currentVideos.length})</span>
-        </h2>
-        <div className="flex-grow h-px bg-[#656565]/30"></div>
-      </div>
+      {!hideTitle && (
+        <div className="flex items-center justify-center mb-10">
+          <div className="flex-grow h-px bg-[#656565]/30"></div>
+          <h2 className="text-[#e2dbcc] text-xl font-light px-6">
+            {title}{" "}
+            <span className="text-[#e2dbcc]">({currentVideos.length})</span>
+          </h2>
+          <div className="flex-grow h-px bg-[#656565]/30"></div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {currentVideos
@@ -77,14 +79,18 @@ const VideoSection = ({
         </div>
         <div className="flex space-x-4">
           <button
-            onClick={() => setActiveDot((prev) => (prev > 1 ? prev - 1 : slides))}
+            onClick={() =>
+              setActiveDot((prev) => (prev > 1 ? prev - 1 : slides))
+            }
             className="w-10 h-10 border border-[#656565] flex items-center justify-center text-[#656565] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
             aria-label="Previous videos"
           >
             <ChevronLeft size={20} />
           </button>
           <button
-            onClick={() => setActiveDot((prev) => (prev < slides ? prev + 1 : 1))}
+            onClick={() =>
+              setActiveDot((prev) => (prev < slides ? prev + 1 : 1))
+            }
             className="w-10 h-10 border border-[#656565] flex items-center justify-center text-[#656565] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
             aria-label="Next videos"
           >

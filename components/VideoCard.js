@@ -7,7 +7,7 @@ import { getImageUrl } from "@/lib/api";
 const VideoCard = ({ video }) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/media/${video.id}`);
+    router.push(`/media/video/${video.id}`);
   };
 
   // Helper to get YouTube thumbnail from video_url

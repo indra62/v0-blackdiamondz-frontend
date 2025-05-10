@@ -65,6 +65,7 @@ export default function MediaVideo() {
               format: "webp",
               quality: 100,
               fit: "cover",
+              alt: "Black Diamondz Media",
             })}
             alt="Black Diamondz Media"
             fill
