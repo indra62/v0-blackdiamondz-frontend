@@ -5,92 +5,97 @@ import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { Archivo } from "next/font/google";
 import Menu from "./menu";
-import { getItems } from "@/lib/api";
-import { createPortal } from "react-dom";
+import { getImageUrl, getItems } from "@/lib/api"
+import { createPortal } from "react-dom"
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
 export default function Header() {
-  const { logout, isAuthenticated } = useAuth();
-  const [error, setError] = useState(null);
-  const languageButtonRef = useRef(null);
-  const [activeTab, setActiveTab] = useState("buy");
-  const [dataSocial, setDataSocial] = useState(null);
-  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+  const { logout, isAuthenticated } = useAuth()
+  const [error, setError] = useState(null)
+  const languageButtonRef = useRef(null)
+  const [activeTab, setActiveTab] = useState("buy")
+  const [dataLogo, setDataLogo] = useState(null)
+  const [dataSocial, setDataSocial] = useState(null)
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
   const [selectedLanguage, setSelectedLanguage] = useState({
     name: "English",
     country: "UK",
     flag: "🇬🇧",
     value: "en",
-  });
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(false);
-  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  })
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMobileView, setIsMobileView] = useState(false)
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false)
 
   const languages = [
     { name: "English", country: "UK", flag: "🇬🇧", value: "en" },
     { name: "中文", country: "CN", flag: "🇨🇳", value: "cn" },
-  ];
+  ]
 
   const toggleLanguageDropdown = () => {
     setIsLanguageDropdownOpen(!isLanguageDropdownOpen)
   }
 
   const selectLanguage = (language) => {
-    setSelectedLanguage(language);
-    localStorage.setItem("language", language.value);
-    setIsLanguageDropdownOpen(false);
-    window.location.reload();
-  };
+    setSelectedLanguage(language)
+    localStorage.setItem("language", language.value)
+    setIsLanguageDropdownOpen(false)
+    window.location.reload()
+  }
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    setIsMenuOpen(!isMenuOpen)
+  }
 
   const toggleMobileFilters = () => {
-    setIsMobileFiltersOpen(!isMobileFiltersOpen);
-  };
+    setIsMobileFiltersOpen(!isMobileFiltersOpen)
+  }
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("language");
+    const savedLanguage = localStorage.getItem("language")
     if (savedLanguage) {
       const foundLanguage = languages.find(
         (lang) => lang.value === savedLanguage
-      );
+      )
       if (foundLanguage) {
-        setSelectedLanguage(foundLanguage);
+        setSelectedLanguage(foundLanguage)
       }
     } else {
-      localStorage.setItem("language", "en");
+      localStorage.setItem("language", "en")
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     const fetchDataSocial = async () => {
       try {
+        const dataLogo = await getItems("Global", {
+          fields: ["Logo.*"],
+        })
         const dataFooter = await getItems("footer", {
           fields: ["*.*"],
-        });
-        setDataSocial(dataFooter);
+        })
+        setDataLogo(dataLogo)
+        setDataSocial(dataFooter)
       } catch (err) {
-        setError("Failed to load home data:" + err.message);
+        setError("Failed to load home data:" + err.message)
       }
-    };
-    fetchDataSocial();
-  }, []);
+    }
+    fetchDataSocial()
+  }, [])
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth < 768);
-    };
+      setIsMobileView(window.innerWidth < 768)
+    }
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    handleResize()
+    window.addEventListener("resize", handleResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   return (
     <>
@@ -115,8 +120,8 @@ export default function Header() {
               <button
                 ref={languageButtonRef}
                 onTouchStart={(e) => {
-                  e.preventDefault();
-                  toggleLanguageDropdown();
+                  e.preventDefault()
+                  toggleLanguageDropdown()
                 }}
                 aria-expanded={isLanguageDropdownOpen}
                 aria-haspopup="true"
@@ -144,9 +149,15 @@ export default function Header() {
             <div className="flex items-center justify-center px-4 h-[60px]  w-[220px] border-r border-[#333]">
               <Link href="/">
                 <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/smallLogoBD-zxDglqhR7Dv3zdEHln30LxjDUQXDD7.png"
+                  src={
+                    getImageUrl(dataLogo?.Logo?.id, {
+                      format: "webp",
+                      quality: 80,
+                      fit: "fit",
+                    }) || "/placeholder-image.jpg"
+                  }
                   alt="Black Diamondz Logo"
-                  className="w-7 h-7"
+                  className="w-auto h-7"
                 />
               </Link>
             </div>
@@ -330,7 +341,7 @@ export default function Header() {
         onClose={() => setIsMenuOpen(false)}
       />
     </>
-  );
+  )
 }
 
 // Property Filter Component
