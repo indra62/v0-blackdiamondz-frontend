@@ -15,17 +15,17 @@ import VideoCard from "./VideoCard";
  */
 
 
+import { useState } from "react";
+
 const VideoSection = ({
   title,
   videos = [],
   count = 0,
-  activeDot = 1,
   slideKey = "",
-  navigateSlide = () => {},
 }) => {
   let currentVideos = [];
   if (slideKey.toLowerCase() === "recent") {
-    currentVideos = videos?.slice(-4) || [];
+    currentVideos = videos?.slice(-8) || [];
   } else {
     currentVideos =
       videos?.filter(
@@ -36,6 +36,9 @@ const VideoSection = ({
           )
       ) || [];
   }
+
+  const slides = Math.ceil(currentVideos.length / 4) || 1;
+  const [activeDot, setActiveDot] = useState(1);
 
   if (!currentVideos || currentVideos.length === 0) {
     return null;
@@ -52,33 +55,36 @@ const VideoSection = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {currentVideos.map((video) => (
-          <VideoCard key={video.id} video={video} />
-        ))}
+        {currentVideos
+          .slice((activeDot - 1) * 4, activeDot * 4)
+          .map((video) => (
+            <VideoCard key={video.id} video={video} />
+          ))}
       </div>
 
       <div className="flex justify-between mt-8">
         <div className="flex space-x-4">
-          {[1, 2, 3, 4, 5].map((dot) => (
+          {Array.from({ length: slides }, (_, i) => i + 1).map((dot) => (
             <button
               key={dot}
               className={`w-3 h-3 transform rotate-45 ${
                 dot === activeDot ? "bg-[#BD9574]" : "bg-[#656565]/50"
               }`}
               aria-label={`Go to slide ${dot}`}
+              onClick={() => setActiveDot(dot)}
             />
           ))}
         </div>
         <div className="flex space-x-4">
           <button
-            onClick={() => navigateSlide("prev", slideKey)}
+            onClick={() => setActiveDot((prev) => (prev > 1 ? prev - 1 : slides))}
             className="w-10 h-10 border border-[#656565] flex items-center justify-center text-[#656565] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
             aria-label="Previous videos"
           >
             <ChevronLeft size={20} />
           </button>
           <button
-            onClick={() => navigateSlide("next", slideKey)}
+            onClick={() => setActiveDot((prev) => (prev < slides ? prev + 1 : 1))}
             className="w-10 h-10 border border-[#656565] flex items-center justify-center text-[#656565] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
             aria-label="Next videos"
           >

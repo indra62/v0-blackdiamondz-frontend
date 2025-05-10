@@ -54,18 +54,6 @@ export default function MediaVideo() {
     fetchVideos();
   }, []);
 
-  // Function to navigate through video slides (would be implemented with proper carousel)
-  const navigateSlide = (direction, category) => {
-    console.log(`Navigate ${direction} in ${category}`);
-    // This would implement actual slide navigation
-  };
-
-  // Function to navigate to video detail page
-  const navigateToVideoDetail = (videoId) => {
-    router.push(`/media/${videoId}`);
-  };
-
-  
 
   return (
     <div className="bg-[#211f17] min-h-screen">
@@ -113,9 +101,7 @@ export default function MediaVideo() {
           title="Recently uploaded"
           videos={videos}
           count={videos?.length || 0}
-          activeDot={2} // to match original highlight
           slideKey="recent"
-          navigateSlide={navigateSlide}
         />
 
         {/* Talks Section */}
@@ -123,9 +109,7 @@ export default function MediaVideo() {
           title="Talks"
           videos={videos}
           count={videos?.length || 0}
-          activeDot={1}
           slideKey="talks"
-          navigateSlide={navigateSlide}
         />
 
         {/* House Tour Section */}
@@ -133,9 +117,7 @@ export default function MediaVideo() {
           title="House Tour"
           videos={videos}
           count={videos?.length || 0}
-          activeDot={1}
           slideKey="house tour"
-          navigateSlide={navigateSlide}
         />
 
         {/* Events Section */}
@@ -143,9 +125,7 @@ export default function MediaVideo() {
           title="Events"
           videos={videos}
           count={videos?.length || 0}
-          activeDot={1}
           slideKey="events"
-          navigateSlide={navigateSlide}
         />
       </div>
 
