@@ -109,9 +109,15 @@ export default function Header() {
             <Link href="/">
               <div className="flex items-center justify-center">
                 <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/smallLogoBD-zxDglqhR7Dv3zdEHln30LxjDUQXDD7.png"
+                  src={
+                    getImageUrl(dataLogo?.Logo?.id, {
+                      format: "webp",
+                      quality: 80,
+                      fit: "fit",
+                    }) || "/placeholder-image.jpg"
+                  }
                   alt="Black Diamondz Logo"
-                  className="w-6 h-6"
+                  className="w-auto h-6"
                 />
               </div>
             </Link>
