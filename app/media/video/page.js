@@ -39,7 +39,7 @@ export default function MediaVideo() {
         });
 
         const dataVideo = await getItems("videos", {
-          fields: ["*", "hero_image.*", "translations.*"],
+          fields: ["*", "translations.*"],
         });
 
         setHeroData(dataHero);
