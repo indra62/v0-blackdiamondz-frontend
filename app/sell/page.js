@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Sell Page
  *
@@ -12,11 +14,39 @@ import Footer from "@/components/footer";
 import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
 import Image from "next/image";
+import { useState, useRef, useEffect } from "react";
+
+import { getImageUrl, getItems, getItem } from "@/lib/api";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
 export default function SellPage() {
+  const [loading, setLoading] = useState(true);
+  const [language, setLanguage] = useState("en");
+  const [dataExplore, setDataExplore] = useState([]);
+
+  const translation =
+    dataExplore?.translations?.find((t) => t.languages_code === language) ||
+    dataExplore?.translations?.[0];
+
+  useEffect(() => {
+    const fetchDataSell = async () => {
+      try {
+        const dataExplore = await getItems("property_sell", {
+          fields: ["*", "translations.*", "images.directus_files_id.*"],
+        });
+        setDataExplore(dataExplore);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError("Failed to load data");
+      }
+    };
+    fetchDataSell();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#211f17]">
       {/* Hero Section */}
@@ -24,9 +54,7 @@ export default function SellPage() {
         <h1
           className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
         >
-          Sell your properties
-          <br />
-          with us!
+          {translation?.property_sell_title}
         </h1>
 
         {/* Diamond Separator */}
@@ -39,9 +67,7 @@ export default function SellPage() {
         <p
           className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 max-w-2xl mx-auto mb-16`}
         >
-          On behalf of the Black Diamondz team we thank you for making the first
-          step in looking for a preferred agency to secure the sale of your
-          property asset.
+          {translation?.property_sell_description}
         </p>
       </section>
 
@@ -168,7 +194,7 @@ export default function SellPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
           <div className="h-64 md:h-[392px] relative">
             <Image
-              src="/modern-white-luxury-house.png"
+              src={getImageUrl(dataExplore.images?.[0].directus_files_id.id)}
               alt="Modern luxury house"
               fill
               className="object-cover"
@@ -176,7 +202,7 @@ export default function SellPage() {
           </div>
           <div className="h-64 md:h-[392px] relative">
             <Image
-              src="/luxury-terracotta-interior.png"
+              src={getImageUrl(dataExplore.images?.[1].directus_files_id.id)}
               alt="Luxury interior"
               fill
               className="object-cover"
@@ -185,7 +211,7 @@ export default function SellPage() {
           <div className="grid grid-rows-2 gap-1">
             <div className="h-32 md:h-[204px] relative">
               <Image
-                src="/coastal-luxury-property.png"
+                src={getImageUrl(dataExplore.images?.[2].directus_files_id.id)}
                 alt="Coastal property"
                 fill
                 className="object-cover"
@@ -194,7 +220,7 @@ export default function SellPage() {
             <div className="grid grid-cols-2 gap-1">
               <div className="h-32 md:h-[180px] relative">
                 <Image
-                  src="/modern-apartment-building.png"
+                  src={getImageUrl(dataExplore.images?.[3].directus_files_id.id)}
                   alt="Modern apartment"
                   fill
                   className="object-cover"
@@ -202,7 +228,7 @@ export default function SellPage() {
               </div>
               <div className="h-32 md:h-[180px] relative">
                 <Image
-                  src="/contemporary-architectural-detail.png"
+                  src={getImageUrl(dataExplore.images?.[4].directus_files_id.id)}
                   alt="Architectural detail"
                   fill
                   className="object-cover"
@@ -218,9 +244,7 @@ export default function SellPage() {
         <h2
           className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
         >
-          Sell your properties
-          <br />
-          with us!
+          {translation?.property_sell_secondary_title}
         </h2>
 
         {/* Diamond Separator */}
@@ -234,9 +258,7 @@ export default function SellPage() {
           <p
             className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 mb-4`}
           >
-            Looking to buy or sell a property? Search the address below for a
-            Digital Property Report that highlights the market value including
-            recent sales, rental history, suburb report and more.
+            {translation?.property_sell_secondary_description}
           </p>
 
           <div className="flex flex-col md:flex-row gap-4 mt-8">
@@ -261,102 +283,7 @@ export default function SellPage() {
             <div
               className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 space-y-6`}
             >
-              <p>
-                On behalf of the Black Diamondz team we thank you for making the
-                first step in looking for a preferred agency to secure the sale
-                of your property asset.
-              </p>
-
-              <p>
-                Founded as the agency that is literally redefining the APAC
-                property market, Black Diamondz Property Concierge offers an
-                astute, innovative and a non-transactional approach to the
-                traditional real estate industry. With a diverse and passionate
-                team of property experts, we provide a bespoke service that
-                delivers exceptional value, ease and comfort to our private
-                clients throughout the sales process.
-              </p>
-
-              <p>
-                Leveraging our industry expertise, we create and advise our
-                private clients on the most appropriate, personal and engaging
-                method of the sale of their unique property. With our tested
-                method we can ensure our private clients achieve their desired
-                outcome for their primary residence, investment property or
-                holiday home.
-              </p>
-
-              <p>
-                With an outstanding track record and unparalleled success in
-                quality and ever- changing residential sales market, we ensure
-                an ease and comfort to our clients throughout the sales process.
-                With proven sales records in a wide scope of properties from
-                luxury apartments to waterfront mansions, Black Diamondz
-                Property Concierge we leverage our network of private buyers
-                locally and internationally through our established
-                international marketing channels and a private network of
-                contacts that we have worked with for decades.
-              </p>
-
-              <p>
-                At Black Diamondz Property Concierge we consider each of our
-                private client's unique requirements of their property, we use
-                our local and international expertise to ensure we update all
-                our clients with the relevant information they require to ensure
-                the best outcome for their property.
-              </p>
-
-              <p>
-                We focus on the requirements below before we list or showcase
-                their property to the market:
-              </p>
-
-              <ul className="list-disc pl-6 space-y-2">
-                <li>Information on current market conditions.</li>
-                <li>Any comparable listings within their area.</li>
-                <li>Previous sales within their area.</li>
-                <li>
-                  We create and execute innovative, engaging and inspiring
-                  marketing strategies for all forms of their property.
-                </li>
-                <li>
-                  We leverage our well-established private buyer network locally
-                  and internationally to ensure we get the best outcome.
-                </li>
-              </ul>
-
-              <p>
-                Finding the buyers for unique residences is something that Black
-                Diamondz Property Concierge has an advantage. We have
-                established connections with a vast local and international
-                database of high-net-worth private clients. Black Diamondz
-                Property Concierge has cultivated strong and trusted personal
-                relationships with our clients. This engaged client base and
-                successful professionals are drawn to us in the midst of the
-                very best local and international real estate opportunities.
-              </p>
-
-              <p>
-                At Black Diamondz Property Concierge, we have successfully sold
-                many properties at premium buyers and even offer an exclusive
-                Property Concierge Service to help interstate and international
-                buyers view our private clients properties with ease, as our
-                clients' best interests as the primary focus and with our team
-                of experts, we leverage our combined negotiation skills to allow
-                us to secure timely deals with market leading results finding
-                buyers other agencies simply don't have access to.
-              </p>
-
-              <p>
-                We thank you for the opportunity and look forward to hearing
-                further about your unique property.
-              </p>
-
-              <p>
-                Warmest Regards,
-                <br />
-                Monika Tu & The Black Diamondz Team
-              </p>
+              <p dangerouslySetInnerHTML={{ __html: translation?.property_sell_requirements || "" }} />
             </div>
 
             {/* Right Column - Contact Form */}
