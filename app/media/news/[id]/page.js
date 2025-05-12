@@ -8,6 +8,7 @@ import Footer from "@/components/footer"
 import { getImageUrl, getItems, getItem } from "@/lib/api"
 import { useParams } from "next/navigation"
 import { formatDate } from "@/lib/utils"
+import Loading from "@/components/loading"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function MediaNewsDetail() {
   const [news, setNews] = useState(null)
   const [loading, setLoading] = useState(true)
   const [language, setLanguage] = useState("en")
+  const [error, setError] = useState(null)
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0)
 
   const translation =
@@ -50,8 +52,7 @@ export default function MediaNewsDetail() {
         setNews(dataNews)
         setLoading(false)
       } catch (error) {
-        console.error("Error fetching news:", error)
-        setLoading(false)
+        setError("Error fetching news:", error)
       }
     }
 
@@ -159,7 +160,11 @@ export default function MediaNewsDetail() {
     }
   }
 
-  return (
+  return loading ? (
+    <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
+      <Loading error={error} />
+    </section>
+  ) : (
     <div className="bg-[#211f17] min-h-screen text-[#e2dbcc]">
       {/* Hero Section */}
       <div className="relative h-[768px] flex items-center justify-center overflow-hidden">
