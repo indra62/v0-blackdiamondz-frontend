@@ -110,14 +110,15 @@ export default function MediaNewsDetail() {
     }
   }
 
-  function estimateReadTime(wordCount, wpm = 200) {
+  function estimateReadTime(wordCount, language) {
+    const wpm = language === "cn" ? 500 : 200
     return Math.max(1, Math.round(wordCount / wpm))
   }
 
   const newsBodyHtml = translation?.news_body || ""
   const plainText = stripHtml(newsBodyHtml)
   const wordCount = countWordsOrChars(plainText, language)
-  const readTime = estimateReadTime(wordCount)
+  const readTime = estimateReadTime(wordCount, language)
 
   let heroMedia = null
   if (mediaList.length > 0) {
