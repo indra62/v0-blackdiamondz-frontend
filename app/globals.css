@@ -70,8 +70,20 @@
     margin-bottom: 0.25rem;
   }
 
+  .news-body::first-letter {
+    color: #E2DBCC;
+    float: left;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    font-family: Taviraj;
+    font-size: 130px;
+    font-style: normal;
+    font-weight: 275;
+    line-height: 100px;
+  }
+
   strong {
-    font-weight: bolder;
+    font-weight: 400;
   }
 }
 

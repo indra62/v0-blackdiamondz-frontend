@@ -7,81 +7,140 @@ import { Archivo } from "next/font/google";
 import Footer from "@/components/footer";
 import { getImageUrl, getItems, getItem } from "@/lib/api";
 import { useParams } from "next/navigation";
+import { formatDate } from "@/lib/utils"
 
-const archivo = Archivo({ subsets: ["latin"] });
+const archivo = Archivo({ subsets: ["latin"] })
 
 export default function MediaNewsDetail() {
-  const params = useParams();
-  const { id } = params;
+  const params = useParams()
+  const { id } = params
 
-  const [news, setNews] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [language, setLanguage] = useState("en");
+  const [news, setNews] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [language, setLanguage] = useState("en")
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0)
 
   const translation =
     news?.translations?.find((t) => t.languages_code === language) ||
-    news?.translations?.[0];
+    news?.translations?.[0]
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
     const fetchNews = async () => {
       try {
         const dataNews = await getItem("news", id, {
-          fields: ["*", "translations.*"],
-        });
+          fields: ["*.*", "translations.*", "news_media.directus_files_id.*"],
+        })
 
-        setNews(dataNews);
-        setLoading(false);
+        setNews(dataNews)
+        setLoading(false)
       } catch (error) {
-        console.error("Error fetching news:", error);
-        setLoading(false);
+        console.error("Error fetching news:", error)
+        setLoading(false)
       }
-    };
+    }
 
-    fetchNews();
-  }, []);
+    fetchNews()
+  }, [])
 
-  // If no article is provided, use a default one for preview
-  const defaultArticle = {
-    id: "australias-market-outlook-2025",
-    title: "Australia's Market Outlook 2025",
-    image: "/modern-house-exterior.png",
-    categories: ["News", "Insight"],
-    date: "8 November 2024",
-    author: "Aaron Smith",
-    wordCount: 340,
-    readTime: 8,
-    content: [
-      "As we explore the market trends in Australia, it's clear that 2025 will be a significant year due to evolving landscapes influenced by technological advancements and shifting consumer behaviors. Sectors like renewable energy and e-commerce are set to thrive, emphasizing sustainability and convenience while digital currencies and online platforms transform traditional business models.",
-      "As we delve into the market trends shaping Australia, it's evident that 2025 is poised to be a pivotal year. The landscape is rapidly evolving, driven by technological advancements and changing consumer behaviors. This transformation is not just a fleeting moment; it signifies a shift in how businesses operate and how consumers engage with products and services.",
-      "One of the most promising sectors is renewable energy. With a growing emphasis on sustainability, Australia is witnessing a surge in investments aimed at harnessing clean energy sources. This shift not only aligns with global environmental goals but also caters to a consumer base that increasingly prioritizes eco-friendly options. As we approach 2025, expect to see innovative solutions that make renewable energy more accessible and efficient.",
-      "E-commerce is another sector set to flourish in the coming years. The convenience of online shopping has reshaped consumer habits, and this trend shows no signs of slowing down. Retailers are adapting by enhancing their digital platforms, offering personalized experiences, and streamlining logistics to meet the demands of a tech-savvy audience. By 2025, the e-commerce landscape will likely be more competitive, with businesses leveraging data analytics to better understand and serve their customers.",
-      "Digital currencies are also making waves in the Australian market. As cryptocurrencies gain traction, they are transforming traditional financial systems and consumer transactions. By 2025, we can anticipate a more integrated approach to digital currencies, with businesses adopting these new payment methods to cater to a growing demographic of crypto-savvy consumers. This shift could redefine how we perceive value and conduct transactions.",
-      "Moreover, online platforms are revolutionizing traditional business models. From gig economy services to subscription-based offerings, the way we engage with products and services is changing. Companies are increasingly leveraging technologies to create seamless, user-friendly experiences that resonate with modern consumers. As we look towards 2025, the integration of these platforms will likely continue to disrupt established industries.",
-      "In conclusion, the market trends in Australia leading up to 2025 are characterized by a blend of innovation and adaptability. Sectors like renewable energy and e-commerce are not just thriving; they are setting the stage for a future where sustainability and convenience reign supreme. As businesses navigate this evolving landscape, staying attuned to these trends will be crucial for success.",
-    ],
-    highlightedQuote:
-      "By 2025, the e-commerce landscape will likely be more competitive, with businesses leveraging data analytics to better understand and serve their customers.",
-  };
+  const mediaList =
+    news?.news_media
+      ?.map((media) => {
+        const file = media.directus_files_id
+        if (!file) return null
+        if (file.type && file.type.startsWith("image/")) {
+          return {
+            type: "image",
+            url: getImageUrl(file.id, {
+              format: "webp",
+              quality: 100,
+              fit: "cover",
+            }),
+            alt: file.title || "News Image",
+          }
+        }
+        if (file.type && file.type.startsWith("video/")) {
+          return {
+            type: "video",
+            url: getImageUrl(file.id),
+            alt: file.title || "News Video",
+          }
+        }
+        return null
+      })
+      ?.filter(Boolean) || []
 
-  const displayArticle = defaultArticle;
+  const totalMedia = mediaList.length
+
+  const goToPrev = () => {
+    setCurrentMediaIndex((prev) => (prev === 0 ? totalMedia - 1 : prev - 1))
+  }
+
+  const goToNext = () => {
+    setCurrentMediaIndex((prev) => (prev === totalMedia - 1 ? 0 : prev + 1))
+  }
+
+  function stripHtml(html) {
+    if (!html) return ""
+    const tmp = document.createElement("div")
+    tmp.innerHTML = html
+    return tmp.textContent || tmp.innerText || ""
+  }
+
+  function countWords(text) {
+    return text.trim().split(/\s+/).filter(Boolean).length
+  }
+
+  function estimateReadTime(wordCount, wpm = 200) {
+    return Math.max(1, Math.round(wordCount / wpm))
+  }
+
+  const newsBodyHtml = translation?.news_body || ""
+  const plainText = stripHtml(newsBodyHtml)
+  const wordCount = countWords(plainText)
+  const readTime = estimateReadTime(wordCount)
+
+  let heroMedia = null
+  if (mediaList.length > 0) {
+    const current = mediaList[currentMediaIndex]
+    if (current.type === "image") {
+      heroMedia = (
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            backgroundImage: `url('${current.url}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center 20%",
+          }}
+        />
+      )
+    } else if (current.type === "video") {
+      heroMedia = (
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src={current.url}
+          controls
+          autoPlay={true}
+          loop
+          muted
+          style={{ background: "#000" }}
+        />
+      )
+    }
+  }
 
   return (
     <div className="bg-[#211f17] min-h-screen text-[#e2dbcc]">
       {/* Hero Section */}
-      <div
-        className="relative h-[60vh] flex items-center justify-center"
-        style={{
-          backgroundImage: `url('${displayArticle.image}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <div className="relative h-[768px] flex items-center justify-center overflow-hidden">
+        {/* Current media (image or video) */}
+        {heroMedia}
+
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8">
@@ -102,6 +161,83 @@ export default function MediaNewsDetail() {
 
           {/* Author */}
           <p className="mt-8 text-[#bd9574]">by {news?.author_name}</p>
+
+          {/* Media Navigation - now below author */}
+          {totalMedia > 1 && (
+            <div className="flex items-center justify-center gap-4 mt-16">
+              {/* Prev Button */}
+              <button
+                className={`p-2 border border-[#656565] rounded ${
+                  currentMediaIndex === 0
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:border-[#BD9574] hover:text-[#BD9574]"
+                } transition-colors`}
+                onClick={goToPrev}
+                disabled={currentMediaIndex === 0}
+                aria-label="Previous"
+                type="button"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              {/* Dot Indicators */}
+              <div className="flex gap-4">
+                {mediaList.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-3 h-3 ${
+                      index === currentMediaIndex
+                        ? "bg-[#BD9574]"
+                        : "bg-[#656565]"
+                    } transform rotate-45 cursor-pointer transition-colors`}
+                    onClick={() => setCurrentMediaIndex(index)}
+                    aria-label={`Go to media ${index + 1}`}
+                  />
+                ))}
+              </div>
+              {/* Next Button */}
+              <button
+                className={`p-2 border border-[#656565] rounded ${
+                  currentMediaIndex === totalMedia - 1
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:border-[#BD9574] hover:text-[#BD9574]"
+                } transition-colors`}
+                onClick={goToNext}
+                disabled={currentMediaIndex === totalMedia - 1}
+                aria-label="Next"
+                type="button"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 6l6 6-6 6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -126,13 +262,9 @@ export default function MediaNewsDetail() {
                 <p className="text-[#bd9574]">{news?.author_name}</p>
               </div>
               <div>
-                <p className="text-[#e2dbcc] font-semibold">
-                  {displayArticle.wordCount}
-                </p>
+                <p className="text-[#e2dbcc] font-semibold">{wordCount}</p>
                 <p className="text-[#a1a1aa] text-sm mb-2">words</p>
-                <p className="text-[#e2dbcc] font-semibold">
-                  {displayArticle.readTime}
-                </p>
+                <p className="text-[#e2dbcc] font-semibold">{readTime}</p>
                 <p className="text-[#a1a1aa] text-sm">minutes read</p>
               </div>
             </div>
@@ -141,32 +273,16 @@ export default function MediaNewsDetail() {
           {/* Main Content */}
           <div className="w-full md:w-3/4">
             <div className="prose prose-invert prose-lg max-w-none">
-              {/* First letter styling */}
-              <p className="mb-6">
-                <span className="float-left text-[#bd9574] text-8xl font-serif mr-4 mt-1 leading-none">
-                  {translation?.news_body?.charAt(0)}
-                </span>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: translation?.news_body?.slice(1),
-                  }}
-                />
-              </p>
-
               {/* Rest of the paragraphs */}
-              {translation?.news_body
-                ?.split("\n\n")
-                ?.slice(1)
-                ?.map((paragraph, index) => (
-                  <p key={index} className="mb-6 text-[#e2dbcc]">
-                    <span dangerouslySetInnerHTML={{ __html: paragraph }} />
-                  </p>
-                ))}
+              <div
+                className={`news-body mb-6 ${archivo.className} leading-[150%]`}
+                dangerouslySetInnerHTML={{ __html: translation?.news_body }}
+              />
 
               {/* Article Date */}
               <div className="flex justify-center my-12 items-center">
                 <div className="w-24 h-px bg-[#656565] mx-4"></div>
-                <p className="text-[#a1a1aa]">{news?.news_date}</p>
+                <p className="text-[#a1a1aa]">{formatDate(news?.news_date)}</p>
                 <div className="w-24 h-px bg-[#656565] mx-4"></div>
               </div>
 
@@ -200,5 +316,5 @@ export default function MediaNewsDetail() {
 
       <Footer />
     </div>
-  );
+  )
 }
