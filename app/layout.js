@@ -4,6 +4,7 @@ import { AuthProvider } from "@/hooks/useAuth"
 import { Toaster } from "react-hot-toast"
 import SocialMediaLinks from "@/components/socialMedia"
 import Header from "@/components/header"
+import { Suspense } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,7 +20,9 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} bg-[#211F17]`}>
         <AuthProvider>
           <Toaster position="top-center" reverseOrder={false} />
-          <Header />
+          <Suspense fallback={null}>
+            <Header />
+          </Suspense>
           {children}
           <SocialMediaLinks />
         </AuthProvider>
