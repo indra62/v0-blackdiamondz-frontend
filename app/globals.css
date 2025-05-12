@@ -126,6 +126,19 @@
   strong {
     font-weight: 400;
   }
+
+  .price-range-slider .range-slider__thumb {
+    background: #BD9574 !important;
+    border: 2px solid #BD9574 !important;
+  }
+  
+  .price-range-slider .range-slider__range {
+    background: #E2DBCC !important;
+  }
+  
+  .price-range-slider .range-slider__track {
+    background: #22201a !important; /* fallback for unselected track */
+  }
 }
 
 @media screen and (max-width: 768px) {
