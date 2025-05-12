@@ -1,11 +1,51 @@
-import React from "react"
-import Link from "next/link"
-import { Archivo } from "next/font/google"
-import Footer from "@/components/footer"
+"use client";
 
-const archivo = Archivo({ subsets: ["latin"] })
+import React from "react";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Archivo } from "next/font/google";
+import Footer from "@/components/footer";
+import { getImageUrl, getItems, getItem } from "@/lib/api";
+import { useParams } from "next/navigation";
 
-export default function MediaNewsDetail({ article }) {
+const archivo = Archivo({ subsets: ["latin"] });
+
+export default function MediaNewsDetail() {
+  const params = useParams();
+  const { id } = params;
+
+  const [news, setNews] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [language, setLanguage] = useState("en");
+
+  const translation =
+    news?.translations?.find((t) => t.languages_code === language) ||
+    news?.translations?.[0];
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedLanguage = localStorage.getItem("language");
+      if (storedLanguage) {
+        setLanguage(storedLanguage);
+      }
+    }
+    const fetchNews = async () => {
+      try {
+        const dataNews = await getItem("news", id, {
+          fields: ["*", "translations.*"],
+        });
+
+        setNews(dataNews);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
   // If no article is provided, use a default one for preview
   const defaultArticle = {
     id: "australias-market-outlook-2025",
@@ -27,13 +67,12 @@ export default function MediaNewsDetail({ article }) {
     ],
     highlightedQuote:
       "By 2025, the e-commerce landscape will likely be more competitive, with businesses leveraging data analytics to better understand and serve their customers.",
-  }
+  };
 
-  const displayArticle = article || defaultArticle
+  const displayArticle = defaultArticle;
 
   return (
     <div className="bg-[#211f17] min-h-screen text-[#e2dbcc]">
-
       {/* Hero Section */}
       <div
         className="relative h-[60vh] flex items-center justify-center"
@@ -45,7 +84,9 @@ export default function MediaNewsDetail({ article }) {
       >
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8">{displayArticle.title}</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8">
+            {translation?.news_title}
+          </h1>
 
           {/* Diamond divider */}
           <div className="flex items-center justify-center mb-8">
@@ -55,10 +96,12 @@ export default function MediaNewsDetail({ article }) {
           </div>
 
           {/* Intro paragraph */}
-          <p className="text-lg max-w-3xl mx-auto">{displayArticle.content[0]}</p>
+          <p className="text-lg max-w-3xl mx-auto">
+            {translation?.news_summary}
+          </p>
 
           {/* Author */}
-          <p className="mt-8 text-[#bd9574]">by {displayArticle.author}</p>
+          <p className="mt-8 text-[#bd9574]">by {news?.author_name}</p>
         </div>
       </div>
 
@@ -69,21 +112,27 @@ export default function MediaNewsDetail({ article }) {
           <div className="w-full md:w-1/4 mb-8 md:mb-0 md:pr-8">
             <div className="mb-8">
               <div className="flex items-center mb-4">
-                {displayArticle.categories.map((category, index) => (
+                {news?.news_tag.map((category, index) => (
                   <React.Fragment key={index}>
                     <span className="text-[#bd9574] text-sm">{category}</span>
-                    {index < displayArticle.categories.length - 1 && <span className="mx-2 text-[#bd9574]">|</span>}
+                    {index < news?.news_tag.length - 1 && (
+                      <span className="mx-2 text-[#bd9574]">|</span>
+                    )}
                   </React.Fragment>
                 ))}
               </div>
               <div className="mb-4">
                 <p className="text-[#a1a1aa] text-sm mb-1">Written by</p>
-                <p className="text-[#bd9574]">{displayArticle.author}</p>
+                <p className="text-[#bd9574]">{news?.author_name}</p>
               </div>
               <div>
-                <p className="text-[#e2dbcc] font-semibold">{displayArticle.wordCount}</p>
+                <p className="text-[#e2dbcc] font-semibold">
+                  {displayArticle.wordCount}
+                </p>
                 <p className="text-[#a1a1aa] text-sm mb-2">words</p>
-                <p className="text-[#e2dbcc] font-semibold">{displayArticle.readTime}</p>
+                <p className="text-[#e2dbcc] font-semibold">
+                  {displayArticle.readTime}
+                </p>
                 <p className="text-[#a1a1aa] text-sm">minutes read</p>
               </div>
             </div>
@@ -94,31 +143,30 @@ export default function MediaNewsDetail({ article }) {
             <div className="prose prose-invert prose-lg max-w-none">
               {/* First letter styling */}
               <p className="mb-6">
-                <span className="float-left text-[#bd9574] text-8xl font-serif mr-4 mt-1 leading-none">A</span>
-                {displayArticle.content[1].substring(1)}
+                <span className="float-left text-[#bd9574] text-8xl font-serif mr-4 mt-1 leading-none">
+                  {translation?.news_body?.charAt(0)}
+                </span>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: translation?.news_body?.slice(1),
+                  }}
+                />
               </p>
 
               {/* Rest of the paragraphs */}
-              {displayArticle.content.slice(2, -1).map((paragraph, index) => (
-                <p key={index} className="mb-6 text-[#e2dbcc]">
-                  {paragraph}
-                </p>
-              ))}
-
-              {/* Highlighted Quote */}
-              {displayArticle.highlightedQuote && (
-                <blockquote className="border-l-0 pl-0 my-12 text-2xl text-[#bd9574] font-light leading-relaxed">
-                  {displayArticle.highlightedQuote}
-                </blockquote>
-              )}
-
-              {/* Last paragraph */}
-              <p className="text-[#e2dbcc]">{displayArticle.content[displayArticle.content.length - 1]}</p>
+              {translation?.news_body
+                ?.split("\n\n")
+                ?.slice(1)
+                ?.map((paragraph, index) => (
+                  <p key={index} className="mb-6 text-[#e2dbcc]">
+                    <span dangerouslySetInnerHTML={{ __html: paragraph }} />
+                  </p>
+                ))}
 
               {/* Article Date */}
               <div className="flex justify-center my-12 items-center">
                 <div className="w-24 h-px bg-[#656565] mx-4"></div>
-                <p className="text-[#a1a1aa]">{displayArticle.date}</p>
+                <p className="text-[#a1a1aa]">{news?.news_date}</p>
                 <div className="w-24 h-px bg-[#656565] mx-4"></div>
               </div>
 
@@ -152,5 +200,5 @@ export default function MediaNewsDetail({ article }) {
 
       <Footer />
     </div>
-  )
+  );
 }

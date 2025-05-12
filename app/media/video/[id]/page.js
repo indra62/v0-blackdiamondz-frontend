@@ -248,7 +248,7 @@ export default function MediaVideoDetail() {
             </button>
           </div>
           {*/}
-        </div>
+        </div> 
       </div>
 
       {/* More from this Topic Section */}

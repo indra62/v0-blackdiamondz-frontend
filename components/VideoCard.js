@@ -34,16 +34,24 @@ const VideoCard = ({ video }) => {
     <div className="relative group cursor-pointer" onClick={handleClick}>
       <div className="relative w-full aspect-video overflow-hidden">
         {(() => {
-          const thumbnailSrc = getYoutubeThumbnail(video.video_url)
-          return thumbnailSrc ? (
-            <Image
-              src={thumbnailSrc}
-              alt={video.video_title || "Video Thumbnail"}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-          ) : null
+          const thumbnailSrc = getYoutubeThumbnail(video.video_url);
+          // Only render if thumbnailSrc is a non-empty string and not undefined/null
+          if (typeof thumbnailSrc === "string" && thumbnailSrc.trim() !== "") {
+            return (
+              <Image
+                src={thumbnailSrc}
+                alt={video.video_title || "Video Thumbnail"}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                onError={(e) => {
+                  e.target.src = "/placeholder.svg";
+                }}
+              />
+            );
+          }
+          // Optionally, render a fallback placeholder
+          return null;
         })()}
 
         <div className="absolute top-0 left-0 p-3">
