@@ -334,7 +334,7 @@ export default function MediaNewsDetail() {
               {/* Article Date */}
               <div className="flex justify-center my-12 items-center">
                 <div className="w-24 h-px bg-[#656565] mx-4"></div>
-                <p className="text-[#a1a1aa]">{formatDate(news?.news_date)}</p>
+                <p className="text-[#bd9574]">{formatDate(news?.news_date)}</p>
                 <div className="w-24 h-px bg-[#656565] mx-4"></div>
               </div>
 
