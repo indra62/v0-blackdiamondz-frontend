@@ -45,6 +45,8 @@ export default function TeamMemberPage() {
             fields: [
               "property_id.*.*",
               "property_id.type.translations.*",
+              "property_id.features.*",
+              "property_id.features.feature_id.*",
               "property_id.images.directus_files_id.*",
             ],
             filter: {
