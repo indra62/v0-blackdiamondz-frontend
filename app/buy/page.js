@@ -93,7 +93,7 @@ export function BuyPageContent() {
 
       // Bedroom filter
       if (bedroom !== undefined) {
-        const is6Plus = bedroom === 6
+        const is6Plus = bedroom === "6"
         filter.features = {
           _some: {
             feature_id: { slug: { _eq: "bedrooms" } },
@@ -172,7 +172,6 @@ export function BuyPageContent() {
           limit: 4,
         })
 
-        fetchProperties()
         setExplore(dataExplore_section)
         setDataExplore(dataExplore)
         setOffMarketSection(dataOffMarketSection)

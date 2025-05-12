@@ -85,12 +85,7 @@ export default function Header() {
     price_max: priceMax || "",
   })
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
-  const [selectedLanguage, setSelectedLanguage] = useState({
-    name: "English",
-    country: "UK",
-    flag: "🇬🇧",
-    value: "en",
-  })
+  const [selectedLanguage, setSelectedLanguage] = useState("en")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobileView, setIsMobileView] = useState(false)
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false)
@@ -245,7 +240,7 @@ export default function Header() {
 
   const propertyTypeOptions = dataType.map((type) => {
     const translation =
-      type.translations.find((t) => t.languages_code === selectedLanguage) ||
+      type.translations.find((t) => t.languages_code === selectedLanguage.value) ||
       type.translations[0]
     return {
       value: type.id,
@@ -634,6 +629,7 @@ export default function Header() {
       {/* Menu Overlay */}
       <Menu
         dataSocial={dataSocial}
+        dataLogo={dataLogo}
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
       />
