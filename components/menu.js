@@ -9,30 +9,30 @@
  * - Falls back to standard flow on mobile for better UX
  * - Calculates positions dynamically based on DOM elements
  */
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { X, ChevronDown } from "lucide-react";
-import { Taviraj } from "next/font/google";
-import { Archivo } from "next/font/google";
-import { useMediaQuery } from "../hooks/use-media-query";
-import { submitSubscribe } from "@/lib/api";
-import { toast, Toaster } from "react-hot-toast";
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import { X, ChevronDown } from "lucide-react"
+import { Taviraj } from "next/font/google"
+import { Archivo } from "next/font/google"
+import { useMediaQuery } from "../hooks/use-media-query"
+import { getImageUrl, submitSubscribe } from "@/lib/api"
+import { toast, Toaster } from "react-hot-toast"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 
-export default function Menu({ dataSocial, isOpen, onClose }) {
+export default function Menu({ dataSocial, dataLogo, isOpen, onClose }) {
   const [formData, setFormData] = useState({
     email: "",
-  });
-  const [contactPosition, setContactPosition] = useState(0);
-  const [newsletterPosition, setNewsletterPosition] = useState(0);
-  const [showWeChatModal, setShowWeChatModal] = useState(false);
-  const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
-  const [isMediaSubmenuOpen, setIsMediaSubmenuOpen] = useState(false);
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  })
+  const [contactPosition, setContactPosition] = useState(0)
+  const [newsletterPosition, setNewsletterPosition] = useState(0)
+  const [showWeChatModal, setShowWeChatModal] = useState(false)
+  const [subscriptionSuccess, setSubscriptionSuccess] = useState(false)
+  const [isMediaSubmenuOpen, setIsMediaSubmenuOpen] = useState(false)
+  const isMobile = useMediaQuery("(max-width: 768px)")
 
   // Calculate positions for desktop layout elements
   // This is needed to align the newsletter and contact sections with specific nav items
@@ -40,46 +40,46 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
     if (isOpen) {
       // Wait for the DOM to be fully rendered
       setTimeout(() => {
-        const contactUsLink = document.getElementById("contact-us-link");
-        const clubDiamondzLink = document.getElementById("club-diamondz-link");
+        const contactUsLink = document.getElementById("contact-us-link")
+        const clubDiamondzLink = document.getElementById("club-diamondz-link")
 
         if (contactUsLink && !isMobile) {
           // Get the position of the Contact Us link and move it one row up
-          const position = contactUsLink.getBoundingClientRect().top;
+          const position = contactUsLink.getBoundingClientRect().top
           // Move up by 40px (one row) + additional 40px (one more row) + space between sections
-          setContactPosition(position - 80 + 60); // -80px for two rows up, +60px for spacing between sections
+          setContactPosition(position - 80 + 60) // -80px for two rows up, +60px for spacing between sections
         }
 
         if (clubDiamondzLink && !isMobile) {
           // Get the position of the Club Diamondz link and move it one row up
-          const position = clubDiamondzLink.getBoundingClientRect().top;
+          const position = clubDiamondzLink.getBoundingClientRect().top
           // Move up by 40px (one row) + additional 40px (one more row)
-          setNewsletterPosition(position - 80); // Move up by 80px (two rows)
+          setNewsletterPosition(position - 80) // Move up by 80px (two rows)
         }
-      }, 100); // Small delay to ensure DOM is ready
+      }, 100) // Small delay to ensure DOM is ready
     }
-  }, [isOpen, isMobile]);
+  }, [isOpen, isMobile])
 
   // Form submission handler for newsletter signup
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       const formPayload = {
         email: formData.email,
-      };
+      }
 
-      await submitSubscribe(formPayload);
+      await submitSubscribe(formPayload)
       setFormData({
         email: "",
-      });
+      })
 
       // Show success toast
       toast.success("Subscribed!", {
@@ -91,14 +91,14 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
           padding: "16px 24px",
         },
         duration: 3000,
-      });
+      })
 
-      setSubscriptionSuccess(true);
+      setSubscriptionSuccess(true)
 
       // Clear success message after 5 seconds
       setTimeout(() => {
-        setSubscriptionSuccess(false);
-      }, 5000);
+        setSubscriptionSuccess(false)
+      }, 5000)
     } catch (error) {
       // Show error toast
       toast.error("Failed to subscribe. Please try again.", {
@@ -109,28 +109,28 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
           borderRadius: "99px",
           padding: "16px 24px",
         },
-      });
+      })
     }
-  };
+  }
 
   // WeChat modal handlers
   const openWeChatModal = (e) => {
-    e.preventDefault();
-    setShowWeChatModal(true);
-  };
+    e.preventDefault()
+    setShowWeChatModal(true)
+  }
 
   const closeWeChatModal = () => {
-    setShowWeChatModal(false);
-  };
+    setShowWeChatModal(false)
+  }
 
   const toggleMediaSubmenu = (e) => {
-    e.preventDefault();
-    setIsMediaSubmenuOpen(!isMediaSubmenuOpen);
-  };
+    e.preventDefault()
+    setIsMediaSubmenuOpen(!isMediaSubmenuOpen)
+  }
 
   // Conditional rendering based on menu state
   // Early return pattern for closed menu state
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   // Main menu overlay with responsive layout
   // Uses flex-col on mobile and standard flex on desktop
@@ -142,7 +142,13 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
           {/* Diamond Logo */}
           <Link href="/" className="text-white">
             <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/smallLogoBD-zxDglqhR7Dv3zdEHln30LxjDUQXDD7.png"
+              src={
+                getImageUrl(dataLogo?.Logo?.id, {
+                  format: "webp",
+                  quality: 80,
+                  fit: "fit",
+                }) || "/images/smallLogoBD.png"
+              }
               alt="Black Diamondz Logo"
               className="w-6 h-6"
             />
@@ -556,5 +562,5 @@ export default function Menu({ dataSocial, isOpen, onClose }) {
         </div>
       )}
     </div>
-  );
+  )
 }
