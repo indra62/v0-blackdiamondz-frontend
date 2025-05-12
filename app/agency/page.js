@@ -48,6 +48,9 @@ const customStyles = {
     ...provided,
     color: "#E2DBCC",
   }),
+  indicatorSeparator: (base) => ({
+    display: "none",
+  }),
 }
 
 const genderOptions = [

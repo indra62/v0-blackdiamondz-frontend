@@ -42,6 +42,9 @@ const customStyles = {
     ...provided,
     color: "#E2DBCC",
   }),
+  indicatorSeparator: (base) => ({
+    display: "none",
+  }),
 }
 
 export default function ContactUs() {
