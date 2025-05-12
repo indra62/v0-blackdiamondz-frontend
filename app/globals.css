@@ -59,6 +59,13 @@
     @apply text-[#BD9574] underline;
   }
 
+  .news-body blockquote {
+    @apply pl-4 text-[#BD9574] text-2xl font-['Taviraj'];
+    margin: 1rem 0;
+    padding: 0.5rem 2.5rem;
+
+  }
+
   ul {
     list-style-type: disc;
     padding-left: 1.5rem;
