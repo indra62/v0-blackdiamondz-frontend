@@ -13,30 +13,30 @@
  */
 "use client";
 
-import { useState, useEffect, use } from "react"
-import Footer from "@/components/footer"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import { Inter } from "next/font/google"
-import Image from "next/image"
-import { MapPin } from "lucide-react"
-import Paddington from "@/components/paddington"
-import PropertyImagesGallery from "@/components/property-images-gallery"
-import PropertyGridGallery from "@/components/property-grid-gallery"
-import PropertyMap from "@/components/property-map"
-import { getItem, getImageUrl, findFeature } from "@/lib/api"
+import { useState, useEffect, use } from "react";
+import Footer from "@/components/footer";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import { Inter } from "next/font/google";
+import Image from "next/image";
+import { MapPin } from "lucide-react";
+import Paddington from "@/components/paddington";
+import PropertyImagesGallery from "@/components/property-images-gallery";
+import PropertyGridGallery from "@/components/property-grid-gallery";
+import PropertyMap from "@/components/property-map";
+import { getItem, getImageUrl, findFeature } from "@/lib/api";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
-const inter = Inter({ subsets: ["latin"], weight: ["500"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
+const inter = Inter({ subsets: ["latin"], weight: ["500"] });
 
 export default function PropertyDetailPage({ params }) {
   // Unwrap the params promise using React.use()
-  const { id: propertyId } = use(params)
+  const { id: propertyId } = use(params);
 
   // You would typically fetch property data based on this ID
   // For now, we'll just log it and continue with the static content
-  console.log(`Displaying property with ID: ${propertyId}`)
+  console.log(`Displaying property with ID: ${propertyId}`);
 
   const fetchProperty = async (id) => {
     try {
@@ -52,40 +52,45 @@ export default function PropertyDetailPage({ params }) {
           "agents.*",
           "type.*.*",
         ],
-      })
-      console.log("property", data)
-      return data
+      });
+      console.log("property", data);
+      return data;
     } catch (error) {
-      console.error("Error fetching property:", error)
-      return null
+      console.error("Error fetching property:", error);
+      return null;
     }
-  }
+  };
 
   // State management for different view modes and selected images
-  const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", or "map"
-  const [selectedImageId, setSelectedImageId] = useState(1) // Default to first image
-  const [property, setProperty] = useState(null)
-  const [language, setLanguage] = useState("en")
+  const [viewMode, setViewMode] = useState("grid"); // "grid", "gallery", "gridGallery", or "map"
+  const [selectedImageId, setSelectedImageId] = useState(1); // Default to first image
+  const [property, setProperty] = useState(null);
+  const [language, setLanguage] = useState("en");
+
+  const [expanded, setExpanded] = useState(false);
+  const description = property?.description || "";
+  const showReadMore = description.length > 300;
+  const displayedText = expanded ? description : description.slice(0, 300);
 
   useEffect(() => {
-    fetchProperty(propertyId).then(setProperty)
+    fetchProperty(propertyId).then(setProperty);
 
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [propertyId])
+  }, [propertyId]);
 
   const findFeature = (feature) => {
-    if (!property || !property.features) return undefined
-    return property.features.find((f) => f.feature_id?.slug === feature)
-  }
+    if (!property || !property.features) return undefined;
+    return property.features.find((f) => f.feature_id?.slug === feature);
+  };
 
   const translation =
     property?.type?.translations?.find((t) => t.languages_code === language) ||
-    property?.type?.translations?.[0]
+    property?.type?.translations?.[0];
 
   /**
    * Toggle between different view modes (grid, gallery, gridGallery)
@@ -95,39 +100,39 @@ export default function PropertyDetailPage({ params }) {
    */
   const toggleViewMode = (event) => {
     if (viewMode === "grid") {
-      setViewMode("gallery")
+      setViewMode("gallery");
     } else if (
       viewMode === "gallery" &&
       event?.currentTarget?.dataset?.action === "grid"
     ) {
-      setViewMode("gridGallery")
+      setViewMode("gridGallery");
     } else {
-      setViewMode("grid")
+      setViewMode("grid");
     }
-  }
+  };
 
   // Update the switchToGridGallery function to accept an event parameter
   const switchToGridGallery = (event) => {
-    setViewMode("gridGallery")
-  }
+    setViewMode("gridGallery");
+  };
 
   const switchToGallery = () => {
-    setViewMode("gallery")
-  }
+    setViewMode("gallery");
+  };
 
   const showMap = () => {
-    setViewMode("map")
-  }
+    setViewMode("map");
+  };
 
   const hideMap = () => {
-    setViewMode("grid")
-  }
+    setViewMode("grid");
+  };
 
   // Handle clicking on an image in the grid gallery
   const handleGridImageClick = (imageId) => {
-    setSelectedImageId(imageId) // Store which image was clicked
-    setViewMode("gallery") // Switch to gallery view
-  }
+    setSelectedImageId(imageId); // Store which image was clicked
+    setViewMode("gallery"); // Switch to gallery view
+  };
 
   // Special case: Map view takes over the entire page
   // Return early to avoid rendering the standard layout
@@ -139,7 +144,7 @@ export default function PropertyDetailPage({ params }) {
         property={property}
         type={translation?.name}
       />
-    )
+    );
   }
 
   return (
@@ -248,7 +253,7 @@ export default function PropertyDetailPage({ params }) {
                   />
                 </svg>
                 <span className={`${archivo.className} font-light text-[14px]`}>
-                  {(findFeature && findFeature("bathrooms")?.value) ?? ""}
+                  {(findFeature && findFeature("bathrooms")?.value) ?? "0"}
                 </span>
               </div>
               <div
@@ -270,7 +275,7 @@ export default function PropertyDetailPage({ params }) {
                   />
                 </svg>
                 <span className={`${archivo.className} font-light text-[14px]`}>
-                  {(findFeature && findFeature("garages")?.value) ?? ""}
+                  {(findFeature && findFeature("garages")?.value) ?? "0"}
                 </span>
               </div>
               <div className="flex items-center gap-1 text-[#E2DBCC]">
@@ -290,7 +295,7 @@ export default function PropertyDetailPage({ params }) {
                   />
                 </svg>
                 <span className={`${archivo.className} font-light text-[14px]`}>
-                  {property?.features?.floors ?? ""}
+                  {property?.features?.floors ?? "0"}
                 </span>
               </div>
               <div className="flex items-center gap-1 text-[#E2DBCC]">
@@ -310,7 +315,7 @@ export default function PropertyDetailPage({ params }) {
                   />
                 </svg>
                 <span className={`${archivo.className} font-light text-[14px]`}>
-                  {property?.features?.rooms ?? ""}
+                  {property?.features?.rooms ?? "0"}
                 </span>
               </div>
               <div className="flex items-center gap-1 text-[#E2DBCC]">
@@ -330,7 +335,7 @@ export default function PropertyDetailPage({ params }) {
                   />
                 </svg>
                 <span className={`${archivo.className} font-light text-[14px]`}>
-                  {property?.features?.additional ?? ""}
+                  {property?.features?.additional ?? "0"}
                 </span>
               </div>
             </div>
@@ -346,12 +351,37 @@ export default function PropertyDetailPage({ params }) {
               </span>
             </button>
 
-            {/* Property Description */}
-            <p
-              className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
-            >
-              {property?.description || ""}
-            </p>
+            {/* Property Description with 'Read More' functionality */}
+            {(() => {
+              return (
+                <div>
+                  <p
+                    className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] whitespace-pre-line`}
+                  >
+                    {displayedText}
+                    {showReadMore && !expanded && "..."}
+                  </p>
+                  {showReadMore && !expanded && (
+                    <button
+                      className="text-[#bd9574] underline mt-2 cursor-pointer bg-transparent border-none p-0"
+                      onClick={() => setExpanded(true)}
+                      type="button"
+                    >
+                      Read more...
+                    </button>
+                  )}
+                  {showReadMore && expanded && (
+                    <button
+                      className="text-[#bd9574] underline mt-2 cursor-pointer bg-transparent border-none p-0"
+                      onClick={() => setExpanded(false)}
+                      type="button"
+                    >
+                      Read less...
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
           </div>
 
           {/* Property Images - Right Column */}
@@ -520,8 +550,67 @@ export default function PropertyDetailPage({ params }) {
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                          <path
-                            d="M20 2H4C2.9 2 2 2.9 2 4V20C2 21.1 2.9 22 4 22H20C21.1 22 22 21.1 22 20V4C22 2.9 21.1 2 20 2Z"
+                          <rect
+                            x="3"
+                            y="3"
+                            width="5"
+                            height="5"
+                            fill="currentColor"
+                          />
+                          <rect
+                            x="10"
+                            y="3"
+                            width="5"
+                            height="5"
+                            fill="currentColor"
+                          />
+                          <rect
+                            x="17"
+                            y="3"
+                            width="4"
+                            height="5"
+                            fill="currentColor"
+                          />
+                          <rect
+                            x="3"
+                            y="10"
+                            width="5"
+                            height="5"
+                            fill="currentColor"
+                          />
+                          <rect
+                            x="10"
+                            y="10"
+                            width="5"
+                            height="5"
+                            fill="currentColor"
+                          />
+                          <rect
+                            x="17"
+                            y="10"
+                            width="4"
+                            height="5"
+                            fill="currentColor"
+                          />
+                          <rect
+                            x="3"
+                            y="17"
+                            width="5"
+                            height="4"
+                            fill="currentColor"
+                          />
+                          <rect
+                            x="10"
+                            y="17"
+                            width="5"
+                            height="4"
+                            fill="currentColor"
+                          />
+                          <rect
+                            x="17"
+                            y="17"
+                            width="4"
+                            height="4"
                             fill="currentColor"
                           />
                         </svg>
@@ -568,5 +657,5 @@ export default function PropertyDetailPage({ params }) {
       <Paddington />
       <Footer />
     </main>
-  )
+  );
 }

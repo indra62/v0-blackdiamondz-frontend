@@ -17,6 +17,7 @@ import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
 import { getImageUrl } from "@/lib/api";
 
+
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] });
 
@@ -68,7 +69,7 @@ export default function AboutUs({ data }) {
               <span
                 className={`${archivo.className} mr-2 font-light text-base leading-6`}
               >
-                Learn more about us
+              <Link href="/our-story">Learn more about us</Link>
               </span>
               <svg
                 width="24"
