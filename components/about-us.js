@@ -63,13 +63,13 @@ export default function AboutUs({ data }) {
             </p>
 
             <Link
-              href="/about"
+              href="/our-story"
               className="inline-flex items-center text-[#BD9574] hover:text-[#e5c04b] transition-colors group border border-[#656565] hover:border-[#BD9574] px-8 py-3"
             >
               <span
                 className={`${archivo.className} mr-2 font-light text-base leading-6`}
               >
-              <Link href="/our-story">Learn more about us</Link>
+              Learn more about us
               </span>
               <svg
                 width="24"

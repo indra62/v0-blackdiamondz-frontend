@@ -72,7 +72,7 @@ export default function ExploreCity({ data }) {
                 key={city.id}
                 className="relative w-[280px] md:w-[508px] h-[460px] flex-none group cursor-pointer overflow-hidden"
               >
-              <Link href={`/buy`}>
+              <Link href={`/buy?city=${city.name}`}>
                 <Image
                   src={getImageUrl(city?.image, {
                     format: "webp",
