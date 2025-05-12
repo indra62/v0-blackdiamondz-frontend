@@ -92,8 +92,22 @@ export default function MediaNewsDetail() {
     return tmp.textContent || tmp.innerText || ""
   }
 
+  function countChineseCharacters(text) {
+    // Remove spaces and punctuation (basic)
+    const cleaned = text.replace(/[\s.,!?，。！？、]/g, "")
+    return cleaned.length
+  }
+
   function countWords(text) {
     return text.trim().split(/\s+/).filter(Boolean).length
+  }
+
+  function countWordsOrChars(text, language) {
+    if (language === "cn") {
+      return countChineseCharacters(text)
+    } else {
+      return countWords(text)
+    }
   }
 
   function estimateReadTime(wordCount, wpm = 200) {
@@ -102,7 +116,7 @@ export default function MediaNewsDetail() {
 
   const newsBodyHtml = translation?.news_body || ""
   const plainText = stripHtml(newsBodyHtml)
-  const wordCount = countWords(plainText)
+  const wordCount = countWordsOrChars(plainText, language)
   const readTime = estimateReadTime(wordCount)
 
   let heroMedia = null
