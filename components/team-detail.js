@@ -26,7 +26,12 @@ const scrollbarHideStyles = `
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
 
-export default function TeamDetail({ member, agentStatistics, agentProperties, testimonials }) {
+export default function TeamDetail({
+  member,
+  agentStatistics,
+  agentProperties,
+  testimonials,
+}) {
   const [language, setLanguage] = useState("en")
 
   const translation =
@@ -43,8 +48,9 @@ export default function TeamDetail({ member, agentStatistics, agentProperties, t
     }
   })
 
-  const translationStatistics = agentStatistics?.find((t) => t.languages_code === language) ||
-  agentStatistics?.[0]
+  const translationStatistics =
+    agentStatistics?.find((t) => t.languages_code === language) ||
+    agentStatistics?.[0]
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -99,8 +105,7 @@ export default function TeamDetail({ member, agentStatistics, agentProperties, t
               <p
                 className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}
               >
-                {member?.tagline}
-                {member?.translations?.[0]?.tagline}
+                {member?.title}
               </p>
 
               {/* Contact Buttons */}
@@ -228,22 +233,27 @@ export default function TeamDetail({ member, agentStatistics, agentProperties, t
               </div>
 
               {/* Stats */}
-              <div className="mt-8 space-y-0">
-                {translationStatistics?.statistics?.map((statistic, idx) => (
-                  <div key={idx} className="flex justify-between items-center py-4 border-t border-[#656565] ">
-                  <span
-                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
-                  >
-                    {statistic?.title}
-                  </span>
-                  <span
-                    className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
-                  >
-                    {statistic?.value}
-                  </span>
+              {translationStatistics && (
+                <div className="mt-8 space-y-0">
+                  {translationStatistics?.statistics?.map((statistic, idx) => (
+                    <div
+                      key={idx}
+                      className="flex justify-between items-center py-4 border-t border-[#656565] "
+                    >
+                      <span
+                        className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
+                      >
+                        {statistic?.title}
+                      </span>
+                      <span
+                        className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
+                      >
+                        {statistic?.value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-                ))}
-              </div>
+              )}
             </div>
 
             {/* Right Column - Agent Photo and Current Listings */}
@@ -284,98 +294,100 @@ export default function TeamDetail({ member, agentStatistics, agentProperties, t
               <TeamListing agentProperties={agentProperties} status="Sold" />
 
               {/* Testimonial Section */}
-              <div>
-                <div className="flex items-center justify-center mb-8">
-                  <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
-                  <h2
-                    className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}
-                  >
-                    Testimonial
-                  </h2>
-                  <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
-                </div>
-
-                <div className="relative">
-                  {/* Testimonial Content */}
-                  <div className="text-center mb-8">
-                    <p
-                      className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8 max-w-3xl mx-auto`}
+              {testimonials.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-center mb-8">
+                    <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
+                    <h2
+                      className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[120%] px-6`}
                     >
-                      {currentTestimonial?.translatedData?.testimony}
-                    </p>
-                    <h3
-                      className={`${taviraj.className} text-[#BD9574] text-[20px] font-normal leading-[120%] mb-2`}
-                    >
-                      {currentTestimonial?.name}
-                    </h3>
-                    <p
-                      className={`${archivo.className} text-[#BD9574] font-light text-[14px] leading-[150%]`}
-                    >
-                      {currentTestimonial?.address}
-                    </p>
+                      Testimonial
+                    </h2>
+                    <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
                   </div>
 
-                  {/* Navigation Controls */}
-                  <div className="flex justify-center items-center gap-4 mb-4">
-                    <button
-                      onClick={goToPrevTestimonial}
-                      className="w-10 h-10 flex items-center justify-center text-[#E2DBCC] hover:text-[#BD9574] transition-colors"
-                    >
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                  <div className="relative">
+                    {/* Testimonial Content */}
+                    <div className="text-center mb-8">
+                      <p
+                        className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8 max-w-3xl mx-auto`}
                       >
-                        <path
-                          d="M15 19l-7-7 7-7"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-
-                    <div className="flex gap-2">
-                      {testimonies.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => goToTestimonial(index)}
-                          className={`w-2 h-2 rounded-full ${
-                            currentTestimonialIndex === index
-                              ? "bg-[#BD9574]"
-                              : "bg-[#656565]"
-                          } transition-colors hover:bg-[#BD9574]/80`}
-                          aria-label={`Go to testimonial ${index + 1}`}
-                        />
-                      ))}
+                        {currentTestimonial?.translatedData?.testimony}
+                      </p>
+                      <h3
+                        className={`${taviraj.className} text-[#BD9574] text-[20px] font-normal leading-[120%] mb-2`}
+                      >
+                        {currentTestimonial?.name}
+                      </h3>
+                      <p
+                        className={`${archivo.className} text-[#BD9574] font-light text-[14px] leading-[150%]`}
+                      >
+                        {currentTestimonial?.address}
+                      </p>
                     </div>
 
-                    <button
-                      onClick={goToNextTestimonial}
-                      className="w-10 h-10 flex items-center justify-center text-[#E2DBCC] hover:text-[#BD9574] transition-colors"
-                    >
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                    {/* Navigation Controls */}
+                    <div className="flex justify-center items-center gap-4 mb-4">
+                      <button
+                        onClick={goToPrevTestimonial}
+                        className="w-10 h-10 flex items-center justify-center text-[#E2DBCC] hover:text-[#BD9574] transition-colors"
                       >
-                        <path
-                          d="M9 5l7 7-7 7"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15 19l-7-7 7-7"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+
+                      <div className="flex gap-2">
+                        {testimonies.map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => goToTestimonial(index)}
+                            className={`w-2 h-2 rounded-full ${
+                              currentTestimonialIndex === index
+                                ? "bg-[#BD9574]"
+                                : "bg-[#656565]"
+                            } transition-colors hover:bg-[#BD9574]/80`}
+                            aria-label={`Go to testimonial ${index + 1}`}
+                          />
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={goToNextTestimonial}
+                        className="w-10 h-10 flex items-center justify-center text-[#E2DBCC] hover:text-[#BD9574] transition-colors"
+                      >
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9 5l7 7-7 7"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
