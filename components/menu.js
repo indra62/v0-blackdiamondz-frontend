@@ -24,7 +24,13 @@ import Image from "next/image"
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 
-export default function Menu({ dataSocial, dataLogo, isOpen, onClose }) {
+export default function Menu({
+  dataSocial,
+  dataLogo,
+  isOpen,
+  onClose,
+  isAuthenticated,
+}) {
   const [formData, setFormData] = useState({
     email: "",
   })
@@ -241,16 +247,19 @@ export default function Menu({ dataSocial, dataLogo, isOpen, onClose }) {
                 </div>
               )}
 
-              <div className="w-[359px] border-t-4 border-[#BD9574] my-4"></div>
-
-              <Link
-                href="/club-diamondz"
-                id="club-diamondz-link"
-                onClick={onClose}
-                className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors mb-4`}
-              >
-                Club Diamondz
-              </Link>
+              {isAuthenticated && (
+                <>
+                  <div className="w-[359px] border-t-4 border-[#BD9574] my-4"></div>
+                  <Link
+                    href="/club-diamondz"
+                    id="club-diamondz-link"
+                    onClick={onClose}
+                    className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors mb-4`}
+                  >
+                    Club Diamondz
+                  </Link>
+                </>
+              )}
 
               <div className="w-[359px] border-t-4 border-[#BD9574] my-4"></div>
 
@@ -366,17 +375,17 @@ export default function Menu({ dataSocial, dataLogo, isOpen, onClose }) {
                   </div>
 
                   <div className="flex items-center mt-2 md:mt-0">
-                    <span
-                      className={`${archivo.className} text-[#ADADAD] font-light text-base leading-[150%] tracking-[0px]`}
-                    >
+                    <span className="text-[#A1A1AA] font-light text-[16px] font-['Archivo'] mr-1">
                       email{" "}
                     </span>
-                    <a
-                      href={`mailto:${dataSocial?.email_contact}`}
-                      className="text-[#BD9574] hover:text-[#BD9574] transition-colors font-light text-base leading-[150%]"
+                    <Link
+                      href={`mailto:${
+                        dataSocial?.email_contact || "hello@blackdiamondz.co.au"
+                      }`}
+                      className="text-[#BD9574] font-light text-[16px] hover:text-[#BD9574] transition-colors font-['Archivo']"
                     >
-                      {dataSocial?.email_contact}
-                    </a>
+                      {dataSocial?.email_contact || "hello@blackdiamondz.co.au"}
+                    </Link>
                   </div>
                 </div>
 
@@ -550,12 +559,10 @@ export default function Menu({ dataSocial, dataLogo, isOpen, onClose }) {
               <div className="flex justify-center mb-4">
                 <div className="relative w-64 h-64">
                   <Image
-                    src={
-                      getImageUrl(dataSocial?.wechat_qr_code.id, {
-                        format: "webp",
-                        quality: 80
-                      })
-                    }
+                    src={getImageUrl(dataSocial?.wechat_qr_code.id, {
+                      format: "webp",
+                      quality: 80,
+                    })}
                     alt="Black Diamondz WeChat QR Code"
                     fill
                     sizes="256px"

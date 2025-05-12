@@ -13,6 +13,7 @@ export default function TeamMemberPage() {
   const [agentData, setAgentData] = useState(null)
   const [testimonials, setTestimonials] = useState([])
   const [agentProperties, setAgentProperties] = useState(null)
+  const [agentStatistics, setAgentStatistics] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -40,6 +41,7 @@ export default function TeamMemberPage() {
         //https://staging.cms.black-diamondz.62dev.org/items/agent_properties?fields=property_id.*.*&filter[user_id][_eq]=d936be1f-638e-42be-b6cd-eccc8dc4e8be ⁠
         let dataAgentProperties = null
         let dataTestimonials = null
+        let dataStatistics = null
         if (matchedAgent && matchedAgent.id) {
           dataAgentProperties = await getItems("agent_properties", {
             fields: [
@@ -64,11 +66,21 @@ export default function TeamMemberPage() {
               },
             },
           })
+
+          dataStatistics = await getItems("agent_statistics", {
+            fields: ["*", "translations.*"],
+            filter: {
+              user_id:  { _eq: matchedAgent.id },
+            },
+          })
+
         }
         const properties = dataAgentProperties.map((item) => item.property_id)
+        const statistics = dataStatistics?.[0]?.translations.map((item) => item)
         setAgentData(matchedAgent || null)
         setAgentProperties(properties)
         setTestimonials(dataTestimonials?.[0]?.testimonials || [])
+        setAgentStatistics(statistics || [])
         setLoading(false)
       } catch (err) {
         setError("Failed to load home data:" + err.message)
@@ -86,6 +98,7 @@ export default function TeamMemberPage() {
       ) : (
         <TeamDetail
           member={agentData}
+          agentStatistics={agentStatistics}
           agentProperties={agentProperties}
           testimonials={testimonials}
         />

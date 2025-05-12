@@ -187,6 +187,13 @@ export function useAuth() {
       localStorage.setItem("access_token", response.data.data.access_token)
       localStorage.setItem("refresh_token", response.data.data.refresh_token)
 
+      document.cookie = `access_token=${
+        response.data.data.access_token
+      }; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
+      document.cookie = `refresh_token=${
+        response.data.data.refresh_token
+      }; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
+
       // Fetch user data
       const userData = await fetchUserData(response.data.data.access_token)
       setUser(userData)
@@ -215,6 +222,10 @@ export function useAuth() {
     } finally {
       localStorage.removeItem("access_token")
       localStorage.removeItem("refresh_token")
+
+      document.cookie = "access_token=; path=/; max-age=0";
+      document.cookie = "refresh_token=; path=/; max-age=0";
+
       setUser(null)
       router.push("/login")
     }

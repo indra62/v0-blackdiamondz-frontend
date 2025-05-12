@@ -26,7 +26,7 @@ const scrollbarHideStyles = `
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
 
-export default function TeamDetail({ member, agentProperties, testimonials }) {
+export default function TeamDetail({ member, agentStatistics, agentProperties, testimonials }) {
   const [language, setLanguage] = useState("en")
 
   const translation =
@@ -42,6 +42,9 @@ export default function TeamDetail({ member, agentProperties, testimonials }) {
       translatedData: translation,
     }
   })
+
+  const translationStatistics = agentStatistics?.find((t) => t.languages_code === language) ||
+  agentStatistics?.[0]
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -226,42 +229,20 @@ export default function TeamDetail({ member, agentProperties, testimonials }) {
 
               {/* Stats */}
               <div className="mt-8 space-y-0">
-                <div className="flex justify-between items-center py-4 border-t border-[#656565] ">
+                {translationStatistics?.statistics?.map((statistic, idx) => (
+                  <div key={idx} className="flex justify-between items-center py-4 border-t border-[#656565] ">
                   <span
                     className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
                   >
-                    Average sale price
+                    {statistic?.title}
                   </span>
                   <span
                     className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
                   >
-                    $ 925,000
+                    {statistic?.value}
                   </span>
                 </div>
-                <div className="flex justify-between items-center py-4 border-t border-[#656565] ">
-                  <span
-                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
-                  >
-                    Average days on market
-                  </span>
-                  <span
-                    className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
-                  >
-                    17
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-4 border-t border-b border-[#656565] ">
-                  <span
-                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
-                  >
-                    Career Record sale
-                  </span>
-                  <span
-                    className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
-                  >
-                    $ 15,250,000
-                  </span>
-                </div>
+                ))}
               </div>
             </div>
 
