@@ -9,14 +9,14 @@
  */
 "use client";
 
-import { useState, useEffect } from "react";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import ExploreCity from "@/components/explore-city";
-import OffMarket from "@/components/off-market";
-import { Heart, MapPin } from "lucide-react";
-import { getImageUrl, getItems } from "@/lib/api";
-import Link from "next/link";
+import { useState, useEffect, Suspense } from "react"
+import Header from "@/components/header"
+import Footer from "@/components/footer"
+import ExploreCity from "@/components/explore-city"
+import OffMarket from "@/components/off-market"
+import { Heart, MapPin } from "lucide-react"
+import { getImageUrl, getItems } from "@/lib/api"
+import Link from "next/link"
 import { Property } from "@/lib/component/property"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
@@ -29,7 +29,7 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
 const ITEMS_PER_PAGE = 12
 
-export default function BuyPage() {
+export function BuyPageContent() {
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(true)
   const [dataExplore, setDataExplore] = useState(null)
@@ -270,5 +270,12 @@ export default function BuyPage() {
       )}
       <Footer />
     </main>
+  )
+}
+export default function BuyPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#211f17]"></div>}>
+      <BuyPageContent />
+    </Suspense>
   )
 }
