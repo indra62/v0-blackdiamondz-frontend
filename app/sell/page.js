@@ -14,9 +14,9 @@ import Footer from "@/components/footer";
 import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
-
-import { getImageUrl, getItems, getItem } from "@/lib/api";
+import { useEffect, useState } from "react";
+import StatsHome from "@/components/stats_home";
+import { getImageUrl, getItems } from "@/lib/api";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
@@ -25,18 +25,39 @@ export default function SellPage() {
   const [loading, setLoading] = useState(true);
   const [language, setLanguage] = useState("en");
   const [dataExplore, setDataExplore] = useState([]);
+  const [statistic, setDataStatistic] = useState([]);
+  const [isMobileView, setIsMobileView] = useState(false);
 
   const translation =
     dataExplore?.translations?.find((t) => t.languages_code === language) ||
     dataExplore?.translations?.[0];
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  
+  useEffect(() => {
     const fetchDataSell = async () => {
       try {
         const dataExplore = await getItems("property_sell", {
           fields: ["*", "translations.*", "images.directus_files_id.*"],
         });
+
+        const dataStatistic_section = await getItems("statistic_section", {
+          fields: ["*", "translations.*"],
+        });
+
         setDataExplore(dataExplore);
+        setDataStatistic(dataStatistic_section);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -50,7 +71,7 @@ export default function SellPage() {
   return (
     <main className="min-h-screen bg-[#211f17]">
       {/* Hero Section */}
-      <section className="py-16 text-center">
+      <section className="pt-32 text-center">
         <h1
           className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
         >
@@ -74,118 +95,7 @@ export default function SellPage() {
       {/* Stats Section */}
       <section className="pb-16">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row">
-            {/* Black Diamondz Stats */}
-            <div className="flex-1 mb-12 md:mb-0">
-              <div className="flex items-center gap-6 mb-12 pl-24">
-                <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
-                  Black Diamondz
-                </h2>
-                <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
-                  More about Black Diamondz
-                </button>
-              </div>
-              <div className="grid grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div
-                    className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
-                  >
-                    9
-                  </div>
-                  <div
-                    className={`${archivo.className} font-light text-base leading-6 text-white`}
-                  >
-                    Project
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div
-                    className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
-                  >
-                    34
-                  </div>
-                  <div
-                    className={`${archivo.className} font-light text-base leading-6 text-white`}
-                  >
-                    Units
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div
-                    className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
-                  >
-                    9428
-                  </div>
-                  <div
-                    className={`${archivo.className} font-light text-base leading-6 text-white`}
-                  >
-                    Total SQM
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="hidden md:flex flex-col items-center mx-12">
-              <div className="flex-1 w-[1px] bg-[#656565]"></div>
-              <div className="my-4">
-                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-              </div>
-              <div className="flex-1 w-[1px] bg-[#656565]"></div>
-            </div>
-
-            {/* Australian Market Stats */}
-            <div className="flex-1">
-              <div className="flex items-center gap-6 mb-12 pl-24">
-                <h2
-                  className={`${archivo.className} font-normal text-[20px] leading-[21.76px] text-white`}
-                >
-                  Australian Market
-                </h2>
-                <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
-                  See Market Insight
-                </button>
-              </div>
-              <div className="grid grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div
-                    className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
-                  >
-                    4
-                  </div>
-                  <div
-                    className={`${archivo.className} font-light text-base leading-6 text-white`}
-                  >
-                    Project
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div
-                    className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
-                  >
-                    24
-                  </div>
-                  <div
-                    className={`${archivo.className} font-light text-base leading-6 text-white`}
-                  >
-                    Units
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div
-                    className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
-                  >
-                    7325
-                  </div>
-                  <div
-                    className={`${archivo.className} font-light text-base leading-6 text-white`}
-                  >
-                    Total SQM
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <StatsHome data={statistic} isMobileView={isMobileView} />
         </div>
       </section>
 
@@ -220,7 +130,9 @@ export default function SellPage() {
             <div className="grid grid-cols-2 gap-1">
               <div className="h-32 md:h-[180px] relative">
                 <Image
-                  src={getImageUrl(dataExplore.images?.[3].directus_files_id.id)}
+                  src={getImageUrl(
+                    dataExplore.images?.[3].directus_files_id.id
+                  )}
                   alt="Modern apartment"
                   fill
                   className="object-cover"
@@ -228,7 +140,9 @@ export default function SellPage() {
               </div>
               <div className="h-32 md:h-[180px] relative">
                 <Image
-                  src={getImageUrl(dataExplore.images?.[4].directus_files_id.id)}
+                  src={getImageUrl(
+                    dataExplore.images?.[4].directus_files_id.id
+                  )}
                   alt="Architectural detail"
                   fill
                   className="object-cover"
@@ -283,7 +197,11 @@ export default function SellPage() {
             <div
               className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 space-y-6`}
             >
-              <p dangerouslySetInnerHTML={{ __html: translation?.property_sell_requirements || "" }} />
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: translation?.property_sell_requirements || "",
+                }}
+              />
             </div>
 
             {/* Right Column - Contact Form */}
