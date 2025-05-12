@@ -340,6 +340,7 @@ export default function Header() {
             <div className="flex items-center px-6 border-r border-[#333] w-1/2">
               <div className="flex flex-col w-full">
                 <AsyncSelect
+                  instanceId="property-location-select"
                   name="location"
                   value={
                     formData.city
@@ -376,6 +377,7 @@ export default function Header() {
             <div className="flex items-center px-6 border-r border-[#333] w-1/4">
               <div className="flex flex-col w-full">
                 <Select
+                  instanceId="property-type-select"
                   name="type"
                   value={propertyTypeOptions.find(
                     (option) => option.value === formData.type
@@ -403,6 +405,7 @@ export default function Header() {
             <div className="flex items-center px-6 border-r border-[#333] w-1/4">
               <div className="flex flex-col w-full">
                 <Select
+                  instanceId="property-bedroom-select"
                   name="bedroom"
                   value={bedroomOptions.find(
                     (option) => option.value === formData.bedroom
