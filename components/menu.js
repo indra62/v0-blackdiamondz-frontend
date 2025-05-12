@@ -19,6 +19,7 @@ import { Archivo } from "next/font/google"
 import { useMediaQuery } from "../hooks/use-media-query"
 import { getImageUrl, submitSubscribe } from "@/lib/api"
 import { toast, Toaster } from "react-hot-toast"
+import Image from "next/image"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
@@ -527,7 +528,7 @@ export default function Menu({ dataSocial, dataLogo, isOpen, onClose }) {
           onClick={() => setShowWeChatModal(false)}
         >
           <div
-            className="bg-white rounded-lg max-w-md w-full p-6 relative"
+            className="bg-[#BD9574] rounded-lg max-w-md w-full p-6 relative"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -539,22 +540,31 @@ export default function Menu({ dataSocial, dataLogo, isOpen, onClose }) {
             </button>
 
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">
+              <h3 className="text-xl font-semibold mb-2 text-[#211F17]">
                 Black Diamondz WeChat
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-[#211F17] mb-4">
                 Scan this QR code with your WeChat app to connect with us
               </p>
 
               <div className="flex justify-center mb-4">
-                <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-05-06%20at%201.18.03%E2%80%AFAM-lMcvlnozp6rK10qSeGWd9cJZXmMbfx.png"
-                  alt="Black Diamondz WeChat QR Code"
-                  className="w-64 h-64 object-contain"
-                />
+                <div className="relative w-64 h-64">
+                  <Image
+                    src={
+                      getImageUrl(dataSocial?.wechat_qr_code.id, {
+                        format: "webp",
+                        quality: 80
+                      })
+                    }
+                    alt="Black Diamondz WeChat QR Code"
+                    fill
+                    sizes="256px"
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
               </div>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-[#211F17]">
                 Open WeChat, tap "+" and select "Scan" to scan this code
               </p>
             </div>
