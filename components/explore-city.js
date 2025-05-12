@@ -11,10 +11,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Taviraj } from "next/font/google";
+import { Archivo, Taviraj } from "next/font/google";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/api";
 
+const archivo = Archivo({ subsets: ["latin"], weight: ["700"] });
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] });
 
 export default function ExploreCity({ data }) {
@@ -34,11 +35,13 @@ export default function ExploreCity({ data }) {
     data?.translations?.[0];
 
   return (
-    <div className={`${taviraj.className} bg-[#211f17] `}>
+    <div className="bg-[#211f17]">
       <div className={data?.cities.length <= 3 ? "" : "pl-[40px]"}>
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8">
+          <h2
+            className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+          >
             {translation?.explore_title}
           </h2>
 
@@ -81,8 +84,10 @@ export default function ExploreCity({ data }) {
                   className="transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-8 left-8">
-                  <h3 className="font-light text-[32px] leading-[40px] text-white">
+                <div className="absolute bottom-4 left-8">
+                  <h3
+                    className={`${archivo.className} font-light text-base leading-[40px] text-[#FBF4E4]`}
+                  >
                     {city.name}
                   </h3>
                 </div>

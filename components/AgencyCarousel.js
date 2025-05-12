@@ -2,45 +2,45 @@ import React from "react"
 import Image from "next/image"
 
 /**
- * PartnerCarousel component displays partners in a horizontal scrollable carousel.
+ * AgencyCarousel component displays partners in a horizontal scrollable carousel.
  * @param {Object} props
  * @param {Array} props.partners - Array of partner objects.
  * @param {String} props.language - Current language code.
  * @param {Function} props.getImageUrl - Function to get image URL for a partner.
  * @param {Object} props.archivo - Font class object.
  */
-const PartnerCarousel = ({ partners, language, getImageUrl, archivo }) => {
+const AgencyCarousel = ({ agency, language, getImageUrl, archivo }) => {
   return (
     <div className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-full mx-auto justify-center">
-      {partners?.map((partner) => {
+      {agency?.map((agency) => {
         // Find translation for the current language or fallback
         const translation =
-          partner.translations?.find((t) => t.languages_code === language) ||
-          partner.translations?.[0]
+          agency.translations?.find((t) => t.languages_code === language) ||
+          agency.translations?.[0]
 
         // Get image URL (adjust as needed for your backend)
-        const imageUrl = partner.image
-          ? getImageUrl(partner.image.id, {
+        const imageUrl = agency.image
+          ? getImageUrl(agency.image.id, {
               format: "webp",
               quality: 100,
               fit: "cover",
             })
           : null
 
-        if (!partner.id || !imageUrl) return null
+        if (!agency.id || !imageUrl) return null
 
         return (
           <div
-            key={partner.id}
+            key={agency.id}
             className="flex flex-col items-center flex-shrink-0 w-[150.25px]"
             style={{ height: "320px" }}
           >
             <div className="w-[150.25px] h-[220.25px] flex items-center justify-center">
-              {partner.url ? (
-                <a href={partner.url} target="_blank" rel="noopener noreferrer">
+              {agency.url ? (
+                <a href={agency.url} target="_blank" rel="noopener noreferrer">
                   <Image
                     src={imageUrl}
-                    alt={translation?.name || `Partner`}
+                    alt={translation?.name || `Agency`}
                     width={150}
                     height={150}
                     className="object-contain cursor-pointer"
@@ -49,7 +49,7 @@ const PartnerCarousel = ({ partners, language, getImageUrl, archivo }) => {
               ) : (
                 <Image
                   src={imageUrl}
-                  alt={translation?.name || `Partner`}
+                  alt={translation?.name || `Agency`}
                   width={150}
                   height={150}
                   className="object-contain"
@@ -75,4 +75,4 @@ const PartnerCarousel = ({ partners, language, getImageUrl, archivo }) => {
   )
 }
 
-export default PartnerCarousel
+export default AgencyCarousel

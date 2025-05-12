@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 /**
  * Hero Component
@@ -9,16 +9,16 @@
  * @component
  */
 
-import { useEffect, useState } from "react"
-import { ChevronDown } from "lucide-react"
-import Image from "next/image"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import { getImageUrl } from "@/lib/api"
-import { useAuth } from "@/hooks/useAuth"
+import { useEffect, useState } from "react";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import { getImageUrl } from "@/lib/api";
+import { useAuth } from "@/hooks/useAuth";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["700"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["700"] });
 
 export default function Hero({ data }) {
   /**
@@ -26,33 +26,33 @@ export default function Hero({ data }) {
    * Updates scroll count based on window scroll position
    * Limited to max 100 to prevent excessive calculations
    */
-  const { user } = useAuth()
-  const [scrollCount, setScrollCount] = useState(0)
-  const [language, setLanguage] = useState("en")
-  const [heroData, setHeroData] = useState(null)
+  const { user } = useAuth();
+  const [scrollCount, setScrollCount] = useState(0);
+  const [language, setLanguage] = useState("en");
+  const [heroData, setHeroData] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const translation =
     data?.translations?.find((t) => t.languages_code === language) ||
-    data?.translations?.[0]
+    data?.translations?.[0];
 
   useEffect(() => {
     const handleScroll = () => {
-      const count = Math.min(Math.floor(window.scrollY / 10), 100)
-      setScrollCount(count)
-    }
+      const count = Math.min(Math.floor(window.scrollY / 10), 100);
+      setScrollCount(count);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
@@ -88,15 +88,15 @@ export default function Hero({ data }) {
         </h1>
 
         <div
-          className={`${archivo.className} text-white text-[16px] font-bold leading-[150%] tracking-[0px] text-center mb-2`}
+          className={`${archivo.className} text-[#E2DBCC] text-[16px] leading-[150%] tracking-[0px] text-center mb-2`}
         >
           {`${translation?.hero_greetings}`}{" "}
-          <span className="text-[#BD9574] text-[16px] font-bold leading-[150%] tracking-[0px] text-center mb-2">{`${
+          <span className="text-[#BD9574] text-[16px] leading-[150%] tracking-[0px] text-center mb-2">{`${
             user ? user?.first_name : "Guest"
           }`}</span>
         </div>
         <div
-          className={`${archivo.className} text-white text-[16px] font-bold leading-[150%] tracking-[0px] text-center mb-2`}
+          className={`${archivo.className} text-[#E2DBCC] text-[16px] leading-[150%] tracking-[0px] text-center mb-2`}
         >
           {translation?.hero_message}
         </div>
@@ -112,10 +112,10 @@ export default function Hero({ data }) {
               className="animate-pulse"
             />
           </div>
-          <div className="text-white text-sm mb-2">Scroll to start</div>
+          <div className="text-[#FBF4E4] text-base mb-2">Scroll to start</div>
           <ChevronDown className="text-[#FFD700] animate-bounce" />
         </div>
       </div>
     </div>
-  )
+  );
 }

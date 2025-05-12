@@ -16,32 +16,32 @@ const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
 export default function StatsHome({ data, isMobileView }) {
-  const [language, setLanguage] = useState("en")
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const translation =
     data?.translations?.find((t) => t.languages_code === language) ||
-    data?.translations?.[0]
+    data?.translations?.[0];
 
   return (
-    <div className={`${archivo.className} bg-[#211f17] text-white py-16`}>
+    <div className={`${archivo.className} bg-[#211f17] text-[#E2DBCC]  py-16`}>
       <div>
         <div className="flex flex-col lg:flex-row lg:justify-evenly">
           {/* Black Diamondz Stats */}
           <div className="flex flex-col justify-end mb-10 lg:mb-0">
             <div className="flex items-center gap-6 mb-12 ">
-              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
+              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-center">
                 {translation?.left_title}
               </h2>
-              <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
+              <button className="px-6 py-2 border border-[#656565] text-[#BD9574] hover:border-[#BD9574] hover:text-[#e5c04b] transition-colors font-archivo font-light text-base leading-6">
                 More about Black Diamondz
               </button>
             </div>
@@ -52,7 +52,7 @@ export default function StatsHome({ data, isMobileView }) {
                 >
                   {translation?.left_project_value}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6  ">
                   {translation?.left_project_text}
                 </div>
               </div>
@@ -62,7 +62,7 @@ export default function StatsHome({ data, isMobileView }) {
                 >
                   {translation?.left_units_value}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6  ">
                   {translation?.left_units_text}
                 </div>
               </div>
@@ -72,7 +72,7 @@ export default function StatsHome({ data, isMobileView }) {
                 >
                   {translation?.left_totalSQM_value}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6 ">
                   {translation?.left_totalSQM_text}
                 </div>
               </div>
@@ -107,10 +107,10 @@ export default function StatsHome({ data, isMobileView }) {
           {/* Australian Market Stats */}
           <div className="flex flex-col justify-end mb-10 lg:mb-0">
             <div className="flex items-center gap-6 mb-12 ">
-              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
+              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-center">
                 {translation?.right_title}
               </h2>
-              <button className="px-6 py-2 border border-[#BD9574] text-[#BD9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors font-archivo font-light text-base leading-6">
+              <button className="px-6 py-2 border border-[#656565] text-[#BD9574] hover:border-[#BD9574] hover:text-[#e5c04b] transition-colors font-archivo font-light text-base leading-6">
                 More about Australian Market
               </button>
             </div>
@@ -121,7 +121,7 @@ export default function StatsHome({ data, isMobileView }) {
                 >
                   {translation?.left_project_value}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6  ">
                   {translation?.right_project_text}
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function StatsHome({ data, isMobileView }) {
                 >
                   {translation?.right_units_value}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6">
                   {translation?.right_units_text}
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default function StatsHome({ data, isMobileView }) {
                 >
                   {translation?.right_totalSQM_value}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6">
                   {translation?.right_totalSQM_text}
                 </div>
               </div>
@@ -150,5 +150,5 @@ export default function StatsHome({ data, isMobileView }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

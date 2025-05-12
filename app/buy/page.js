@@ -22,6 +22,7 @@ import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Loading from "@/components/loading"
 import { set } from "date-fns"
+import { useSearchParams } from "next/navigation"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
@@ -29,6 +30,7 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 const ITEMS_PER_PAGE = 12
 
 export default function BuyPage() {
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState(true)
   const [dataExplore, setDataExplore] = useState(null)
   const [properties, setProperties] = useState([])
@@ -40,6 +42,11 @@ export default function BuyPage() {
   const [offMarket, setOffMarket] = useState(null)
   const [offMarketSection, setOffMarketSection] = useState(null)
   const [language, setLanguage] = useState("en")
+  const city = searchParams.get("city")
+  const type = searchParams.get("type")
+  const bedroom = searchParams.get("bedroom")
+  const priceMin = searchParams.get("price_min")
+  const priceMax = searchParams.get("price_max")
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -50,12 +57,18 @@ export default function BuyPage() {
     }
   }, [])
 
-  const fetchProperties = async (page = 0, status = "Current", type = []) => {
+  const fetchProperties = async (
+    page = 0,
+    status = "Current",
+    type = [],
+    city,
+    bedroom,
+    priceMin,
+    priceMax
+  ) => {
     try {
-      // Convert page index to Directus page number (1-based)
       const directusPage = page + 1
 
-      // Create filter based on status
       const filter = {
         is_off_market: { _eq: false },
         status:
@@ -64,10 +77,31 @@ export default function BuyPage() {
             : { _eq: "Sold", _neq: "Inactive" },
       }
 
+      // City filter
+      if (city) {
+        filter.address_suburb = { _eq: city }
+      }
+
+      // Type filter
       if (type.length > 0) {
-        // For One-to-Many relationship
-        filter.type = {
-          id: { _in: type },
+        filter.type = { id: { _in: type } }
+      }
+
+      // Price range filter
+      if (priceMin || priceMax) {
+        filter.price = {}
+        if (priceMin) filter.price._gte = Number(priceMin)
+        if (priceMax) filter.price._lte = Number(priceMax)
+      }
+
+      // Bedroom filter
+      if (bedroom !== undefined) {
+        const is6Plus = bedroom === 6
+        filter.features = {
+          _some: {
+            feature_id: { slug: { _eq: "bedrooms" } },
+            value: is6Plus ? { _gte: 6 } : { _eq: bedroom },
+          },
         }
       }
 
@@ -161,8 +195,17 @@ export default function BuyPage() {
   // (Removed duplicate toggleFavorite declaration)
 
   useEffect(() => {
-    fetchProperties()
-  }, [])
+    fetchProperties(
+      0,
+      "Current",
+      type ? [type] : [],
+      city,
+      bedroom,
+      priceMin,
+      priceMax
+    )
+    // Add dependencies as needed
+  }, [city, type, bedroom, priceMin, priceMax])
 
   const translationExplore =
     dataExplore?.translations?.find((t) => t.languages_code === language) ||
@@ -199,14 +242,22 @@ export default function BuyPage() {
 
             {/* Property Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {properties.map((property) => (
-                <Property
-                  key={property.id}
-                  property={property}
-                  taviraj={taviraj}
-                  archivo={archivo}
-                />
-              ))}
+              {properties.length > 0 ? (
+                properties.map((property) => (
+                  <Property
+                    key={property.id}
+                    property={property}
+                    taviraj={taviraj}
+                    archivo={archivo}
+                  />
+                ))
+              ) : (
+                <div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
+                  {language === "en"
+                    ? "No properties found."
+                    : "未找到任何属性。"}
+                </div>
+              )}
             </div>
           </div>
 

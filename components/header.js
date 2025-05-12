@@ -1,21 +1,89 @@
-"use client"
-import { useAuth } from "@/hooks/useAuth"
-import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
-import { ChevronDown, ArrowRight } from "lucide-react"
-import { Archivo } from "next/font/google"
-import Menu from "./menu"
-import { getItems } from "@/lib/api"
+"use client";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { ChevronDown, ArrowRight } from "lucide-react";
+import { Archivo } from "next/font/google";
+import Menu from "./menu";
+import { getImageUrl, getItems } from "@/lib/api"
 import { createPortal } from "react-dom"
+import { useDebouncedCallback } from "use-debounce"
+import AsyncSelect from "react-select/async"
+import Select from "react-select"
+import { useRouter, useSearchParams } from "next/navigation"
+import RangeSlider from "react-range-slider-input"
+import "react-range-slider-input/dist/style.css"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    backgroundColor: "transparent",
+    border: "none",
+    boxShadow: "none",
+    color: "#E2DBCC",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: "#211f17",
+    border: "1px solid rgba(101, 101, 101, 0.3)",
+  }),
+  menuPortal: (base) => ({
+    ...base,
+    zIndex: 1000, // or higher if needed
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? "#2c2a20" : "#211f17",
+    color: "#E2DBCC",
+    cursor: "pointer",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "#E2DBCC",
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "#888",
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: "#E2DBCC",
+  }),
+}
+
+const bedroomOptions = [
+  { value: 1, label: "1 Bedroom" },
+  { value: 2, label: "2 Bedrooms" },
+  { value: 3, label: "3 Bedrooms" },
+  { value: 4, label: "4 Bedrooms" },
+  { value: 5, label: "5 Bedrooms" },
+  { value: 6, label: "6+ Bedrooms" },
+]
+
 export default function Header() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const city = searchParams.get("city")
+  const type = searchParams.get("type")
+  const bedroom = searchParams.get("bedroom")
+  const priceMin = searchParams.get("price_min")
+  const priceMax = searchParams.get("price_max")
   const { logout, isAuthenticated } = useAuth()
   const [error, setError] = useState(null)
   const languageButtonRef = useRef(null)
   const [activeTab, setActiveTab] = useState("buy")
+  const [dataLogo, setDataLogo] = useState(null)
   const [dataSocial, setDataSocial] = useState(null)
+  const [dataType, setDataTypes] = useState([])
+  const [formData, setFormData] = useState({
+    city: city || "",
+    type: type || "",
+    bedroom: bedroom || "",
+    price_min: priceMin || "",
+    price_max: priceMax || "",
+  })
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
   const [selectedLanguage, setSelectedLanguage] = useState({
     name: "English",
@@ -26,6 +94,15 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobileView, setIsMobileView] = useState(false)
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false)
+  const [isValueDropdownOpen, setIsValueDropdownOpen] = useState(false)
+  const [dropdownPosition, setDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+  })
+  const valueDropdownRef = useRef()
+  const buttonRef = useRef()
+  const valueDropdownPortalRef = useRef()
 
   const languages = [
     { name: "English", country: "UK", flag: "🇬🇧", value: "en" },
@@ -33,7 +110,6 @@ export default function Header() {
   ]
 
   const toggleLanguageDropdown = () => {
-    console.log("Language button ref:", languageButtonRef.current)
     setIsLanguageDropdownOpen(!isLanguageDropdownOpen)
   }
 
@@ -50,6 +126,18 @@ export default function Header() {
 
   const toggleMobileFilters = () => {
     setIsMobileFiltersOpen(!isMobileFiltersOpen)
+  }
+
+  const handleSearch = () => {
+    const params = new URLSearchParams()
+    if (formData.city) params.set("city", formData.city)
+    if (formData.type) params.set("type", formData.type)
+    if (formData.bedroom) params.set("bedroom", formData.bedroom)
+
+    if (formData.price_min) params.set("price_min", formData.price_min)
+    if (formData.price_max) params.set("price_max", formData.price_max)
+
+    router.push(`/buy?${params.toString()}`)
   }
 
   useEffect(() => {
@@ -69,9 +157,17 @@ export default function Header() {
   useEffect(() => {
     const fetchDataSocial = async () => {
       try {
+        const dataLogo = await getItems("Global", {
+          fields: ["Logo.*"],
+        })
         const dataFooter = await getItems("footer", {
           fields: ["*.*"],
         })
+        const dataTypes = await getItems("property_types", {
+          fields: ["*.*"],
+        })
+        setDataTypes(dataTypes)
+        setDataLogo(dataLogo)
         setDataSocial(dataFooter)
       } catch (err) {
         setError("Failed to load home data:" + err.message)
@@ -93,6 +189,82 @@ export default function Header() {
     }
   }, [])
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        valueDropdownRef.current &&
+        !valueDropdownRef.current.contains(event.target) &&
+        valueDropdownPortalRef.current &&
+        !valueDropdownPortalRef.current.contains(event.target)
+      ) {
+        setIsValueDropdownOpen(false)
+      }
+    }
+    if (isValueDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [isValueDropdownOpen])
+
+  const formatPrice = (num) =>
+    num
+      ? new Intl.NumberFormat("en-AU", {
+          style: "currency",
+          currency: "AUD",
+        }).format(num)
+      : "Any"
+
+  const minPrice = formData.price_min !== "" ? Number(formData.price_min) : 0
+  const maxPrice =
+    formData.price_max !== "" ? Number(formData.price_max) : 50000000
+
+  const debouncedLoadCityOptions = useDebouncedCallback(
+    (inputValue, callback) => {
+      const fetchData = async () => {
+        try {
+          const data = await getItems("cities", {
+            fields: ["*"],
+            filter: {
+              country_id: { _in: ["14"] },
+            },
+            search: inputValue,
+            sort: ["name"],
+          })
+          callback(data)
+        } catch (error) {
+          console.error("Error fetching cities:", error)
+          callback([])
+        }
+      }
+      fetchData()
+    },
+    300
+  )
+
+  const propertyTypeOptions = dataType.map((type) => {
+    const translation =
+      type.translations.find((t) => t.languages_code === selectedLanguage) ||
+      type.translations[0]
+    return {
+      value: type.id,
+      label: translation?.name || "",
+    }
+  })
+
+  const openDropdown = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect()
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      })
+    }
+    setIsValueDropdownOpen(true)
+  }
+
   return (
     <>
       <header className={`${archivo.className} font-light sticky-header`}>
@@ -105,9 +277,15 @@ export default function Header() {
             <Link href="/">
               <div className="flex items-center justify-center">
                 <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/smallLogoBD-zxDglqhR7Dv3zdEHln30LxjDUQXDD7.png"
+                  src={
+                    getImageUrl(dataLogo?.Logo?.id, {
+                      format: "webp",
+                      quality: 80,
+                      fit: "fit",
+                    }) || "/images/smallLogoBD.png"
+                  }
                   alt="Black Diamondz Logo"
-                  className="w-6 h-6"
+                  className="w-auto h-6"
                 />
               </div>
             </Link>
@@ -142,60 +320,184 @@ export default function Header() {
           {/* Desktop Header */}
           <div className="hidden md:flex flex-col md:flex-row items-stretch">
             {/* Logo Section */}
-            <div className="flex items-center justify-between px-4 h-[60px]">
+            <div className="flex items-center justify-center px-4 h-[60px] !w-[220px] min-w-[60px] border-r border-[#333] self-stretch">
               <Link href="/">
-                <div className="flex items-center justify-center">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/smallLogoBD-zxDglqhR7Dv3zdEHln30LxjDUQXDD7.png"
-                    alt="Black Diamondz Logo"
-                    className="w-6 h-6"
-                  />
-                </div>
+                <img
+                  src={
+                    getImageUrl(dataLogo?.Logo?.id, {
+                      format: "webp",
+                      quality: 80,
+                      fit: "fit",
+                    }) || "/images/smallLogoBD.png"
+                  }
+                  alt="Black Diamondz Logo"
+                  className="w-auto h-7"
+                />
               </Link>
             </div>
 
             {/* Location Section */}
-            <div className="flex items-center px-6 border-r border-[#333] w-[220px]">
+            <div className="flex items-center px-6 border-r border-[#333] w-1/2">
               <div className="flex flex-col w-full">
-                <span className="text-[16px] leading-[150%] font-light text-[#888]">
-                  Location
-                </span>
+                <AsyncSelect
+                  name="location"
+                  value={
+                    formData.city
+                      ? {
+                          id: formData.city_id,
+                          name: formData.city,
+                        }
+                      : null
+                  }
+                  loadOptions={debouncedLoadCityOptions}
+                  onChange={(option) => {
+                    // Update both the label and ID fields
+                    setFormData((prev) => ({
+                      ...prev,
+                      city: option ? option.name : "",
+                      city_id: option ? option.id : "",
+                    }))
+                  }}
+                  getOptionLabel={(option) => option.name}
+                  getOptionValue={(option) => option.id}
+                  placeholder={"Location"}
+                  menuPortalTarget={
+                    typeof window !== "undefined" ? document.body : null
+                  }
+                  menuPosition="fixed"
+                  styles={customStyles}
+                  className={archivo.className}
+                  isClearable
+                />
               </div>
             </div>
 
             {/* Type Section */}
-            <div className="flex items-center px-6 border-r border-[#333] w-[180px]">
-              <div className="flex items-center justify-between w-full">
-                <span className="text-[16px] leading-[150%] font-light text-[#888]">
-                  Type
-                </span>
-                <ChevronDown className="h-5 w-5 text-[#888]" />
+            <div className="flex items-center px-6 border-r border-[#333] w-1/4">
+              <div className="flex flex-col w-full">
+                <Select
+                  name="type"
+                  value={propertyTypeOptions.find(
+                    (option) => option.value === formData.type
+                  )}
+                  onChange={(option) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      type: option ? option.value : "",
+                    }))
+                  }
+                  options={propertyTypeOptions}
+                  placeholder="Type"
+                  styles={customStyles}
+                  menuPortalTarget={
+                    typeof window !== "undefined" ? document.body : null
+                  }
+                  menuPosition="fixed"
+                  className={archivo.className}
+                  isClearable
+                />
               </div>
             </div>
 
             {/* Bedroom Section */}
-            <div className="flex items-center px-6 border-r border-[#333] w-[180px]">
-              <div className="flex items-center justify-between w-full">
-                <span className="text-[16px] leading-[150%] font-light text-[#888]">
-                  Bedroom
-                </span>
-                <ChevronDown className="h-5 w-5 text-[#888]" />
+            <div className="flex items-center px-6 border-r border-[#333] w-1/4">
+              <div className="flex flex-col w-full">
+                <Select
+                  name="bedroom"
+                  value={bedroomOptions.find(
+                    (option) => option.value === formData.bedroom
+                  )}
+                  onChange={(option) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      bedroom: option ? option.value : "",
+                    }))
+                  }
+                  options={bedroomOptions}
+                  placeholder="Bedroom"
+                  styles={customStyles}
+                  menuPortalTarget={
+                    typeof window !== "undefined" ? document.body : null
+                  }
+                  menuPosition="fixed"
+                  className={archivo.className}
+                  isClearable
+                />
               </div>
             </div>
 
             {/* Value Section */}
-            <div className="flex items-center px-6 border-r border-[#333] w-[180px]">
-              <div className="flex items-center justify-between w-full">
-                <span className="text-[16px] leading-[150%] font-light text-[#888]">
-                  Value
-                </span>
-                <ChevronDown className="h-5 w-5 text-[#888]" />
-              </div>
+            <div
+              className="flex items-center px-6 border-r border-[#333] w-1/4 relative"
+              ref={valueDropdownRef}
+            >
+              <button
+                ref={buttonRef}
+                type="button"
+                className="flex items-center justify-between w-full text-left"
+                onClick={openDropdown}
+              >
+                {minPrice === 0 && maxPrice === 50000000 ? (
+                  <span className="text-[16px] leading-[150%] font-light text-[#888]">
+                    Value
+                  </span>
+                ) : (
+                  <span className="text-[16px] leading-[150%] font-light text-[#E2DBCC]">
+                    {formatPrice(minPrice)} - {formatPrice(maxPrice)}
+                  </span>
+                )}
+
+                <ChevronDown className="h-5 w-5 text-[#888] ml-2" />
+              </button>
+              {isValueDropdownOpen &&
+                createPortal(
+                  <div
+                    className="z-[1000] bg-[#211f17] border border-[#333] rounded shadow-lg p-6 min-w-[240px] price-range-slider"
+                    style={{
+                      position: "absolute",
+                      top: dropdownPosition.top,
+                      left: dropdownPosition.left,
+                      width: dropdownPosition.width,
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <RangeSlider
+                      min={0}
+                      max={50000000}
+                      step={1000000}
+                      value={[minPrice, maxPrice]}
+                      onInput={([min, max]) => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          price_min: min,
+                          price_max: max,
+                        }))
+                      }}
+                    />
+                    <div className="flex justify-between mt-4 text-[#E2DBCC] text-sm">
+                      <span>{formatPrice(minPrice)}</span>
+                      <span>{formatPrice(maxPrice)}</span>
+                    </div>
+                    <button
+                      className="mt-4 w-full border border-[#BD9574] text-[#BD9574] rounded py-1 hover:bg-[#BD9574] hover:text-[#211f17] transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setIsValueDropdownOpen(false)
+                      }}
+                    >
+                      Done
+                    </button>
+                  </div>,
+                  document.body
+                )}
             </div>
 
             {/* Search Button */}
             <div className="flex items-center justify-center px-6 border-r border-[#333] w-[140px]">
-              <button className="flex items-center text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light">
+              <button
+                className="flex items-center text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                onClick={handleSearch}
+              >
                 <span className="mr-2">Search</span>
                 <ArrowRight className="h-5 w-5" />
               </button>
@@ -345,15 +647,15 @@ function PropertyFilter({
   isMobileFiltersOpen,
   isAuthenticated,
 }) {
-  const [activeFilters, setActiveFilters] = useState([])
+  const [activeFilters, setActiveFilters] = useState([]);
 
   const toggleFilter = (filterId) => {
     setActiveFilters((prev) =>
       prev.includes(filterId)
         ? prev.filter((id) => id !== filterId)
         : [...prev, filterId]
-    )
-  }
+    );
+  };
 
   return (
     <div
@@ -739,5 +1041,5 @@ function PropertyFilter({
         </div>
       )}
     </div>
-  )
+  );
 }

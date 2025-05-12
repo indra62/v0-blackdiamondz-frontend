@@ -10,6 +10,7 @@ const nextConfig = {
         pathname: "/assets/**",
       },
     ],
+    domains: ["img.youtube.com"],
   },
 };
 

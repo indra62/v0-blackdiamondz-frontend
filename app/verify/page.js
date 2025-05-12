@@ -128,13 +128,11 @@ export default function VerifyPage({ params }) {
             {/* Left side - Sydney Harbour Image */}
             <div className="hidden md:block w-1/2 relative">
               <Image
-                src={
-                  getImageUrl(data?.login_image?.id, {
-                    format: "webp",
-                    quality: 80,
-                    fit: "cover",
-                  }) || "/sydney-sunset-boats.png"
-                }
+                src={getImageUrl(data?.login_image?.id, {
+                  format: "webp",
+                  quality: 80,
+                  fit: "cover",
+                })}
                 alt="Sydney Harbour"
                 fill
                 priority

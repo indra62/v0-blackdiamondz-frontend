@@ -21,29 +21,30 @@ export default function OurStoryPage() {
   const [storyImageLink, setStoryImageLink] = useState(null);
   const [storyStory, setStoryStory] = useState(null);
   const [storyPartner, setStoryPartner] = useState(null);
-  const [error, setError] = useState(null);
+  const [listOfPartner, setListOfPartner] = useState([])
+  const [error, setError] = useState(null)
 
   const translation =
     heroData?.translations?.find((t) => t.languages_code === language) ||
-    heroData?.translations?.[0];
+    heroData?.translations?.[0]
 
   const translationStory =
     storyImageLink?.translations?.find((t) => t.languages_code === language) ||
-    storyImageLink?.translations?.[0];
+    storyImageLink?.translations?.[0]
 
   const translationStoryStory =
     storyStory?.translations?.find((t) => t.languages_code === language) ||
-    storyStory?.translations?.[0];
+    storyStory?.translations?.[0]
 
   const translationStoryPartner =
     storyPartner?.translations?.find((t) => t.languages_code === language) ||
-    storyPartner?.translations?.[0];
+    storyPartner?.translations?.[0]
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
 
@@ -51,11 +52,11 @@ export default function OurStoryPage() {
       try {
         const dataHero = await getItems("aboutUs_ourStory_section", {
           fields: ["*", "aboutUs_ourStory_heroImage.*", "translations.*"],
-        });
+        })
 
         const dataStats = await getItems("aboutUs_ourStory_stats", {
           fields: ["*", "translations.*"],
-        });
+        })
 
         const dataStoryImageLink = await getItems(
           "aboutUs_ourStory_image_link",
@@ -70,45 +71,40 @@ export default function OurStoryPage() {
               "translations.*",
             ],
           }
-        );
+        )
 
         const dataStoryStory = await getItems("aboutUs_ourStory_story", {
           fields: ["*", "translations.*"],
-        });
+        })
 
         const dataStoryPartner = await getItems("aboutUs_ourStory_partners", {
           fields: [
-            "*",
-            "partner_1.*",
-            "partner_2.*",
-            "partner_3.*",
-            "partner_4.*",
-            "partner_5.*",
-            "partner_6.*",
-            "partner_7.*",
-            "partner_8.*",
-            "translations.*",
+            "*.*",
+            "list_of_partner.image.*",
+            "list_of_partner.status.*",
+            "list_of_partner.translations.*",
           ],
-        });
+        })
 
-        setHeroData(dataHero);
-        setAboutStats(dataStats);
-        setStoryImageLink(dataStoryImageLink);
-        setStoryStory(dataStoryStory);
-        setStoryPartner(dataStoryPartner);
-        setLoading(false);
+        setHeroData(dataHero)
+        setAboutStats(dataStats)
+        setStoryImageLink(dataStoryImageLink)
+        setStoryStory(dataStoryStory)
+        setStoryPartner(dataStoryPartner)
+        setListOfPartner(dataStoryPartner?.list_of_partner)
+        setLoading(false)
       } catch (err) {
-        setError("Failed to load home data:" + err.message);
+        setError("Failed to load home data:" + err.message)
       }
-    };
-    fetchDataHome();
-  }, []);
+    }
+    fetchDataHome()
+  }, [])
 
   // component images with services
   /////////////////////////////////
   const ImagesOfServices = ({ storyImageLink, translationStory }) => {
     if (!storyImageLink) {
-      return null;
+      return null
     }
 
     // Filter only image_1 through image_4
@@ -117,14 +113,14 @@ export default function OurStoryPage() {
         key.startsWith("image_") &&
         parseInt(key.split("_")[1]) <= 4 &&
         storyImageLink[key]
-    );
+    )
 
     return (
       <>
         {imageKeys.map((imageKey) => {
-          const image = storyImageLink[imageKey];
+          const image = storyImageLink[imageKey]
           // Extract the number from imageKey (e.g., 'image_1' -> '1')
-          const imageNumber = imageKey.split("_")[1];
+          const imageNumber = imageKey.split("_")[1]
 
           return (
             <div
@@ -137,7 +133,7 @@ export default function OurStoryPage() {
                     format: "webp",
                     quality: 100,
                     fit: "cover",
-                  }) || "/placeholder.png"
+                  }) || "/placeholder.svg"
                 }
                 alt={image.title || `Story Image`}
                 fill
@@ -150,23 +146,22 @@ export default function OurStoryPage() {
                     "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
                 }}
               ></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2   ">
                 <h3
-                  className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+                  className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%]`}
                 >
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: translationStory?.[`text_${imageNumber}`] ?? "",
-                    }}
-                  />
+                  {translationStory?.[`text_${imageNumber}`]?.replace(
+                    /<[^>]+>/g,
+                    ""
+                  ) ?? ""}
                 </h3>
               </div>
             </div>
-          );
+          )
         })}
       </>
-    );
-  };
+    )
+  }
 
   return (
     <main className="min-h-screen bg-[#211f17]">
@@ -180,7 +175,7 @@ export default function OurStoryPage() {
                 format: "webp",
                 quality: 100,
                 fit: "cover",
-              }) || "/placeholder.png"
+              }) || "/placeholder.svg"
             }
             alt="Sydney Harbour with Bridge and city skyline at sunset"
             fill
@@ -197,9 +192,9 @@ export default function OurStoryPage() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+        <div className="text-[#E2DBCC] relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
           <h1
-            className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
+            className={`${taviraj.className} text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
           >
             {translation?.title}
           </h1>
@@ -212,7 +207,7 @@ export default function OurStoryPage() {
           </div>
 
           <p
-            className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
+            className={`${archivo.className}  font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
           >
             {translation?.description}
           </p>
@@ -274,7 +269,7 @@ export default function OurStoryPage() {
                 format: "webp",
                 quality: 100,
                 fit: "cover",
-              }) || "/placeholder.png"
+              }) || "/placeholder.svg"
             }
             alt="Meet Our Team"
             fill
@@ -290,13 +285,9 @@ export default function OurStoryPage() {
           ></div>
           <div className="absolute inset-0 flex items-center justify-center">
             <h3
-              className={`${taviraj.className} text-white text-[32px] font-light leading-[120%]`}
+              className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%]`}
             >
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: translationStory?.text_5 ?? "",
-                }}
-              />
+              {translationStory?.text_5?.replace(/<[^>]+>/g, "") ?? ""}
             </h3>
           </div>
         </div>
@@ -329,8 +320,8 @@ export default function OurStoryPage() {
 
           {/* Partners Grid - Single row with exact Figma dimensions */}
           <PartnerCarousel
-            storyPartner={storyPartner}
-            translationStoryPartner={translationStoryPartner}
+            partners={listOfPartner}
+            language={language}
             getImageUrl={getImageUrl}
             archivo={archivo}
           />
@@ -339,5 +330,5 @@ export default function OurStoryPage() {
 
       <Footer />
     </main>
-  );
+  )
 }

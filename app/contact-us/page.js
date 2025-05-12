@@ -306,7 +306,7 @@ export default function ContactUs() {
                 </div>
 
                 {/* Country */}
-                <div className="border border-[#656565]/30 border-t-0 p-4 relative">
+                <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
                   <AsyncSelect
                     name="country"
                     value={
@@ -340,7 +340,7 @@ export default function ContactUs() {
                 </div>
 
                 {/* City */}
-                <div className="border border-[#656565]/30 border-t-0 p-4 relative">
+                <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
                   <AsyncSelect
                     name="city"
                     value={
