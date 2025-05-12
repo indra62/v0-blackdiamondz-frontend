@@ -7,66 +7,67 @@ import { Taviraj, Archivo } from "next/font/google";
 import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import { getImageUrl, getItems } from "@/lib/api";
+import { formatDate } from "@/lib/utils"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
   variable: "--font-taviraj",
-});
+})
 
 const archivo = Archivo({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-archivo",
-});
+})
 
 export default function MediaNews() {
-  const [email, setEmail] = useState("");
-  const [language, setLanguage] = useState("en");
-  const [heroData, setHeroData] = useState(null);
-  const [newsData, setNews] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState("")
+  const [language, setLanguage] = useState("en")
+  const [heroData, setHeroData] = useState(null)
+  const [newsData, setNews] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const translation =
     heroData?.translations?.find((t) => t.languages_code === language) ||
-    heroData?.translations?.[0];
+    heroData?.translations?.[0]
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
     const fetchNews = async () => {
       try {
         const dataHero = await getItems("media_news_hero_section", {
           fields: ["*", "hero_image.*", "translations.*"],
-        });
+        })
 
         const dataNews = await getItems("news", {
           fields: ["*", "translations.*"],
-        });
+        })
 
-        setHeroData(dataHero);
-        setNews(dataNews);
-        setLoading(false);
+        setHeroData(dataHero)
+        setNews(dataNews)
+        setLoading(false)
       } catch (error) {
-        console.error("Error fetching news:", error);
-        setLoading(false);
+        console.error("Error fetching news:", error)
+        setLoading(false)
       }
-    };
+    }
 
-    fetchNews();
-  }, []);
+    fetchNews()
+  }, [])
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     // Handle newsletter subscription
-    console.log("Subscribing email:", email);
-    setEmail("");
+    console.log("Subscribing email:", email)
+    setEmail("")
     // Show success message or handle API call
-  };
+  }
 
   return (
     <div className="bg-[#211f17] min-h-screen text-[#e2dbcc]">
@@ -117,7 +118,7 @@ export default function MediaNews() {
           {newsData?.map((item) => {
             const newsTranslation =
               item.translations?.find((t) => t.languages_code === language) ||
-              item.translations?.[0];
+              item.translations?.[0]
 
             return (
               <div key={item.id} className="bg-[#1a1914] overflow-hidden">
@@ -139,30 +140,37 @@ export default function MediaNews() {
                   </div>
                   <div className="p-6">
                     <div className="flex items-center mb-3">
-  {Array.isArray(item?.news_tag) && item.news_tag.map((tag, idx) => (
-    <React.Fragment key={tag}>
-      <span className="text-[#bd9574] text-sm mr-1">{tag}</span>
-      {idx < item.news_tag.length - 1 && <span className="mx-1 text-[#bd9574]">|</span>}
-    </React.Fragment>
-  ))}
-</div>
+                      {Array.isArray(item?.news_tag) &&
+                        item.news_tag.map((tag, idx) => (
+                          <React.Fragment key={tag}>
+                            <span className="text-[#bd9574] text-sm mr-1">
+                              {tag}
+                            </span>
+                            {idx < item.news_tag.length - 1 && (
+                              <span className="mx-1 text-[#bd9574]">|</span>
+                            )}
+                          </React.Fragment>
+                        ))}
+                    </div>
                     <h3
-                      className={`${taviraj.className} text-xl font-light mb-3 hover:text-[#bd9574] transition-colors`}
+                      className={`${taviraj.className} text-xl font-light mb-3 hover:text-[#E2DBCC] transition-colors`}
                     >
                       {newsTranslation?.news_title}
                     </h3>
-                    <p className={`${archivo.className} text-sm text-[#a1a1aa]`}>
-                      {item?.news_date}
+                    <p
+                      className={`${archivo.className} text-sm text-[#bd9574]`}
+                    >
+                      {formatDate(item?.news_date)}
                     </p>
                   </div>
                 </Link>
               </div>
-            );
+            )
           })}
         </div>
       </div>
 
       <Footer />
     </div>
-  );
+  )
 }

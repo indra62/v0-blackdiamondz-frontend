@@ -3,13 +3,23 @@
 import React from "react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Archivo } from "next/font/google";
-import Footer from "@/components/footer";
-import { getImageUrl, getItems, getItem } from "@/lib/api";
-import { useParams } from "next/navigation";
+import { Archivo, Taviraj } from "next/font/google"
+import Footer from "@/components/footer"
+import { getImageUrl, getItems, getItem } from "@/lib/api"
+import { useParams } from "next/navigation"
 import { formatDate } from "@/lib/utils"
 
-const archivo = Archivo({ subsets: ["latin"] })
+const taviraj = Taviraj({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-taviraj",
+})
+
+const archivo = Archivo({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-archivo",
+})
 
 export default function MediaNewsDetail() {
   const params = useParams()
@@ -158,7 +168,9 @@ export default function MediaNewsDetail() {
 
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8">
+          <h1
+            className={`${taviraj.className}text-4xl md:text-5xl lg:text-6xl font-light mb-8`}
+          >
             {translation?.news_title}
           </h1>
 
@@ -170,12 +182,14 @@ export default function MediaNewsDetail() {
           </div>
 
           {/* Intro paragraph */}
-          <p className="text-lg max-w-3xl mx-auto">
+          <p
+            className={`${archivo.className} text-[#E2DBCC] max-w-3xl mx-auto`}
+          >
             {translation?.news_summary}
           </p>
 
           {/* Author */}
-          <p className="mt-8 text-[#bd9574]">by {news?.author_name}</p>
+          <p className="mt-8 text-[#E2DBCC]">by {news?.author_name}</p>
 
           {/* Media Navigation - now below author */}
           {totalMedia > 1 && (
@@ -265,7 +279,9 @@ export default function MediaNewsDetail() {
               <div className="flex items-center mb-4">
                 {news?.news_tag.map((category, index) => (
                   <React.Fragment key={index}>
-                    <span className="text-[#bd9574] text-sm">{category}</span>
+                    <span className={`${archivo.className} text-[#bd9574]`}>
+                      {category}
+                    </span>
                     {index < news?.news_tag.length - 1 && (
                       <span className="mx-2 text-[#bd9574]">|</span>
                     )}
@@ -273,14 +289,30 @@ export default function MediaNewsDetail() {
                 ))}
               </div>
               <div className="mb-4">
-                <p className="text-[#a1a1aa] text-sm mb-1">Written by</p>
-                <p className="text-[#bd9574]">{news?.author_name}</p>
+                <p className={`${archivo.className} text-[#bd9574] mb-1`}>
+                  Written by
+                </p>
+                <p className={`${archivo.className} text-[#E2DBCC] font-bold`}>
+                  {news?.author_name}
+                </p>
               </div>
               <div>
-                <p className="text-[#e2dbcc] font-semibold">{wordCount}</p>
-                <p className="text-[#a1a1aa] text-sm mb-2">words</p>
-                <p className="text-[#e2dbcc] font-semibold">{readTime}</p>
-                <p className="text-[#a1a1aa] text-sm">minutes read</p>
+                <p className={`${archivo.className} text-[#bd9574] font-bold`}>
+                  {wordCount}{" "}
+                  <span
+                    className={`${archivo.className} text-[#bd9574] mb-2 font-light`}
+                  >
+                    words
+                  </span>
+                </p>
+                <p className={`${archivo.className} text-[#bd9574] font-bold`}>
+                  {readTime}{" "}
+                  <span
+                    className={`${archivo.className} text-[#bd9574] font-light`}
+                  >
+                    minutes read
+                  </span>
+                </p>
               </div>
             </div>
           </div>
