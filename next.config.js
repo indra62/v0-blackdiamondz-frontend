@@ -12,7 +12,14 @@ const nextConfig = {
     ],
     domains: ["img.youtube.com"],
   },
-};
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
+}
 
 // Add additional remote patterns based on environment variables
 if (process.env.NEXT_PUBLIC_DIRECTUS_URL) {

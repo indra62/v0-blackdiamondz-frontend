@@ -10,18 +10,15 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react"
-import Header from "@/components/header"
 import Footer from "@/components/footer"
 import ExploreCity from "@/components/explore-city"
 import OffMarket from "@/components/off-market"
-import { Heart, MapPin } from "lucide-react"
 import { getImageUrl, getItems } from "@/lib/api"
 import Link from "next/link"
 import { Property } from "@/lib/component/property"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Loading from "@/components/loading"
-import { set } from "date-fns"
 import { useSearchParams } from "next/navigation"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
@@ -190,10 +187,6 @@ export function BuyPageContent() {
     // eslint-disable-next-line
   }, [])
 
-  // (Removed duplicate BuyPage export and block)
-
-  // (Removed duplicate toggleFavorite declaration)
-
   useEffect(() => {
     fetchProperties(
       0,
@@ -204,7 +197,6 @@ export function BuyPageContent() {
       priceMin,
       priceMax
     )
-    // Add dependencies as needed
   }, [city, type, bedroom, priceMin, priceMax])
 
   const translationExplore =
