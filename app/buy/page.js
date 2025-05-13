@@ -121,8 +121,6 @@ export function BuyPageContent() {
         meta: "filter_count,total_count",
       })
 
-      console.log(data)
-
       setProperties(data || [])
       const totalCount = data.meta?.filter_count || 0
       setPropertiesCount(totalCount)
