@@ -49,7 +49,7 @@ export default function OffMarket({ data, section, dark = true }) {
         {/* Header */}
         <div className="text-center mb-16">
           <h2
-            className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+            className={`${taviraj.className} text-[48px] font-light leading-[60px] tracking-[2px] mb-8 ${darkMode ? 'text-[#e2dbcc]' : 'text-[#211F17]'}` }
           >
             {translation?.offmarket_title_section}
           </h2>
