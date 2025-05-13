@@ -21,9 +21,12 @@ import Link from "next/link";
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
-export default function OffMarket({ data, section }) {
+export default function OffMarket({ data, section, dark = true }) {
+  const darkMode = dark || false;
   const { isAuthenticated } = useAuth();
   const [language, setLanguage] = useState("en");
+
+  
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -39,7 +42,9 @@ export default function OffMarket({ data, section }) {
     section?.translations?.[0];
 
   return (
-    <div className={`bg-[#211f17] text-white py-16`}>
+    <div
+  className={`py-16 ${darkMode ? 'bg-[#211f17] text-white' : 'bg-[#FBF4E4] text-black'}`}
+>
       <div className="container mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -65,11 +70,15 @@ export default function OffMarket({ data, section }) {
             }`}
           >
             {data?.map((property) => (
-              <div key={property.id} className="bg-[#211f17] overflow-hidden">
+              <div
+  key={property.id}
+  className={`${darkMode ? 'bg-[#211f17]' : 'bg-[#FBF4E4]'} overflow-hidden`}
+>
                 <Property
                   property={property}
                   taviraj={taviraj}
                   archivo={archivo}
+                  dark={dark}
                 />
               </div>
             ))}
@@ -85,7 +94,7 @@ export default function OffMarket({ data, section }) {
               </div>
               <Link
                 href="/login"
-                className="bg-[#BD9574] text-[#211f17] px-8 py-3 hover:bg-[#BD9574] transition-colors"
+                className={`bg-[#BD9574] ${darkMode ? 'text-white' : 'text-[#211f17]'} px-8 py-3 hover:bg-[#BD9574] transition-colors` }
               >
                 Login Now
               </Link>

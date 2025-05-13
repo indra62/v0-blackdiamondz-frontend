@@ -1,22 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Taviraj, Archivo } from "next/font/google"
-import { ChevronLeft, ChevronRight, Heart } from "lucide-react"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Taviraj, Archivo } from "next/font/google";
+import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { getImageUrl, getItems } from "@/lib/api";
+import { useAuth } from "@/hooks/useAuth";
+import DiamondzSection from "@/components/diamondzSection";
+import OffMarket from "@/components/off-market";
 
 const taviraj = Taviraj({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
-})
+});
 
 const archivo = Archivo({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
-})
+});
 
 // Sample data for events
 const eventUpdates = [
@@ -84,7 +88,7 @@ const eventUpdates = [
     location: "Four Seasons Hotel",
     thumbnail: "/real-estate-conference.png",
   },
-]
+];
 
 // Sample data for latest happenings
 const latestHappenings = [
@@ -93,7 +97,8 @@ const latestHappenings = [
     title: "Black Diamondz Annual Gala",
     category: "Event",
     date: "10 December 2024",
-    description: "A night of celebration with our most valued clients and partners.",
+    description:
+      "A night of celebration with our most valued clients and partners.",
     thumbnail: "/launch-event-women.png",
   },
   {
@@ -101,7 +106,8 @@ const latestHappenings = [
     title: "Luxury Market Trends 2025",
     category: "Report",
     date: "5 December 2024",
-    description: "Our analysis of upcoming trends in the luxury property market.",
+    description:
+      "Our analysis of upcoming trends in the luxury property market.",
     thumbnail: "/property-investment-graph.png",
   },
   {
@@ -125,7 +131,8 @@ const latestHappenings = [
     title: "Black Diamondz Magazine Launch",
     category: "Publication",
     date: "1 November 2024",
-    description: "Launch of our quarterly luxury lifestyle and property magazine.",
+    description:
+      "Launch of our quarterly luxury lifestyle and property magazine.",
     thumbnail: "/real-estate-woman-hat.png",
   },
   {
@@ -152,7 +159,7 @@ const latestHappenings = [
     description: "Celebrating excellence in luxury property architecture.",
     thumbnail: "/modern-garden-home.png",
   },
-]
+];
 
 // Sample data for upcoming activities
 const upcomingActivities = [
@@ -220,7 +227,7 @@ const upcomingActivities = [
     location: "Perth",
     thumbnail: "/coastal-luxury-property.png",
   },
-]
+];
 
 // Sample data for off-market properties
 const offMarketProperties = [
@@ -376,75 +383,184 @@ const offMarketProperties = [
       additional: 1,
     },
   },
-]
+];
 
 export default function ClubDiamondz() {
   // State for pagination in each section
-  const [eventPage, setEventPage] = useState(0)
-  const [happeningPage, setHappeningPage] = useState(0)
-  const [activityPage, setActivityPage] = useState(0)
-  const [offMarketPage, setOffMarketPage] = useState(0)
+  const [eventPage, setEventPage] = useState(0);
+  const [happeningPage, setHappeningPage] = useState(0);
+  const [activityPage, setActivityPage] = useState(0);
+  const [offMarket, setOffMarket] = useState(null);
+  const [offMarketSection, setOffMarketSection] = useState(null);
+  const [diamondzPage, setDiamondzPage] = useState(null);
+  const [diamondzEvent, setDiamondzEvent] = useState(null);
+  const [diamondzEventList, setDiamondzEventList] = useState(null);
+  const [language, setLanguage] = useState("en");
+  const [error, setError] = useState(null);
+
+  const { user } = useAuth();
 
   // Items per page
-  const itemsPerPage = 4
+  const itemsPerPage = 4;
 
   // Calculate total pages for each section
-  const eventPages = Math.ceil(eventUpdates.length / itemsPerPage)
-  const happeningPages = Math.ceil(latestHappenings.length / itemsPerPage)
-  const activityPages = Math.ceil(upcomingActivities.length / itemsPerPage)
-  const offMarketPages = Math.ceil(offMarketProperties.length / itemsPerPage)
+  const eventPages = Math.ceil((diamondzEventList?.length || 0) / itemsPerPage);
+  const happeningPages = Math.ceil(latestHappenings.length / itemsPerPage);
+  const activityPages = Math.ceil(upcomingActivities.length / itemsPerPage);
 
   // Get current items for each section
-  const currentEvents = eventUpdates.slice(eventPage * itemsPerPage, (eventPage + 1) * itemsPerPage)
+  const currentEvents =
+    diamondzEventList?.slice(
+      eventPage * itemsPerPage,
+      (eventPage + 1) * itemsPerPage
+    ) || [];
 
-  const currentHappenings = latestHappenings.slice(happeningPage * itemsPerPage, (happeningPage + 1) * itemsPerPage)
+  const eventsToDisplay = currentEvents.map((event) => {
+    const translation =
+      event.translations?.find((t) => t.languages_code === language) ||
+      event.translations?.[0];
+    return { ...event, translation };
+  });
 
-  const currentActivities = upcomingActivities.slice(activityPage * itemsPerPage, (activityPage + 1) * itemsPerPage)
+  const currentHappenings = latestHappenings.slice(
+    happeningPage * itemsPerPage,
+    (happeningPage + 1) * itemsPerPage
+  );
 
-  const currentOffMarketProperties = offMarketProperties.slice(
-    offMarketPage * itemsPerPage,
-    (offMarketPage + 1) * itemsPerPage,
-  )
+  const currentActivities = upcomingActivities.slice(
+    activityPage * itemsPerPage,
+    (activityPage + 1) * itemsPerPage
+  );
+
 
   // Navigation functions
   const navigateEvents = (direction) => {
     if (direction === "next") {
-      setEventPage((prev) => (prev === eventPages - 1 ? 0 : prev + 1))
+      setEventPage((prev) => (prev === eventPages - 1 ? 0 : prev + 1));
     } else {
-      setEventPage((prev) => (prev === 0 ? eventPages - 1 : prev - 1))
+      setEventPage((prev) => (prev === 0 ? eventPages - 1 : prev - 1));
     }
-  }
+  };
 
   const navigateHappenings = (direction) => {
     if (direction === "next") {
-      setHappeningPage((prev) => (prev === happeningPages - 1 ? 0 : prev + 1))
+      setHappeningPage((prev) => (prev === happeningPages - 1 ? 0 : prev + 1));
     } else {
-      setHappeningPage((prev) => (prev === 0 ? happeningPages - 1 : prev - 1))
+      setHappeningPage((prev) => (prev === 0 ? happeningPages - 1 : prev - 1));
     }
-  }
+  };
 
   const navigateActivities = (direction) => {
     if (direction === "next") {
-      setActivityPage((prev) => (prev === activityPages - 1 ? 0 : prev + 1))
+      setActivityPage((prev) => (prev === activityPages - 1 ? 0 : prev + 1));
     } else {
-      setActivityPage((prev) => (prev === 0 ? activityPages - 1 : prev - 1))
+      setActivityPage((prev) => (prev === 0 ? activityPages - 1 : prev - 1));
     }
-  }
+  };
 
-  const navigateOffMarket = (direction) => {
-    if (direction === "next") {
-      setOffMarketPage((prev) => (prev === offMarketPages - 1 ? 0 : prev + 1))
-    } else {
-      setOffMarketPage((prev) => (prev === 0 ? offMarketPages - 1 : prev - 1))
+
+  const translationDiamondzPage =
+    diamondzPage?.translations?.find((t) => t.languages_code === language) ||
+    diamondzPage?.translations?.[0];
+
+  const translationDiamondzEvent =
+    diamondzEvent?.translations?.find((t) => t.languages_code === language) ||
+    diamondzEvent?.translations?.[0];
+
+  const translationDiamondzEventList =
+    diamondzEventList?.translations?.find(
+      (t) => t.languages_code === language
+    ) || diamondzEventList?.translations?.[0];
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedLanguage = localStorage.getItem("language");
+      if (storedLanguage) {
+        setLanguage(storedLanguage);
+      }
     }
-  }
+    const fetchDataClubDiamondz = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+
+        const dataDiamondzPage = await getItems(
+          "diamondz_page",
+          {
+            fields: ["*", "translations.*"],
+          },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        );
+
+        const dataEventUpdates = await getItems(
+          "diamondz_event",
+          {
+            fields: ["*", "translations.*"],
+          },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        );
+
+        const dataEventList = await getItems(
+          "event_list",
+          {
+            fields: ["*", "translations.*"],
+          },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        );
+
+        const dataOffMarketSection = await getItems("offMarket_section", {
+          fields: ["*", "translations.*"],
+        })
+
+        const dataOffMarketProperties = await getItems("properties", {
+          fields: [
+            "*",
+            "translations.*",
+            "images.directus_files_id.*",
+            "plans.*",
+            "videos.*",
+            "features.feature_id.*",
+            "features.value",
+            "agents.*",
+            "type.*.*",
+          ],
+          filter: {
+            is_off_market: { _eq: true },
+            status: { _nin: ["Sold", "Inactive"] },
+          },
+          limit: 4,
+        })
+
+        setDiamondzPage(dataDiamondzPage);
+        setDiamondzEvent(dataEventUpdates);
+        setDiamondzEventList(dataEventList);
+        setOffMarketSection(dataOffMarketSection)
+        setOffMarket(dataOffMarketProperties)
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to load home data:" + err.message);
+      }
+    };
+    fetchDataClubDiamondz();
+  }, []);
 
   // Event card component
   const EventCard = ({ item }) => (
     <div className="relative group cursor-pointer">
       <div className="relative w-full aspect-video overflow-hidden">
         <Image
-          src={item.thumbnail || "/placeholder.svg"}
+          src={
+            getImageUrl(item.event_thumbnail, {
+              format: "webp",
+              quality: 100,
+              fit: "cover",
+            }) || "/placeholder.svg"
+          }
           alt={item.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -452,15 +568,14 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-sm font-light">{item.category}</div>
+        <div className="text-[#BD9574] text-sm font-light">{item.tags}</div>
         <h3 className="text-[#211f17] text-lg font-light mt-1 line-clamp-2 group-hover:text-[#BD9574] transition-colors">
-          {item.title}
+          {item?.translation?.event_title}
         </h3>
-        <div className="text-[#656565] text-sm mt-1">{item.date}</div>
-        <div className="text-[#656565] text-sm">{item.location}</div>
+        <div className="text-[#656565] text-sm mt-1">{item?.event_date}</div>
       </div>
     </div>
-  )
+  );
 
   // Latest Happening card component
   const HappeningCard = ({ item }) => (
@@ -480,10 +595,12 @@ export default function ClubDiamondz() {
           {item.title}
         </h3>
         <div className="text-[#656565] text-sm mt-1">{item.date}</div>
-        <p className="text-[#656565] text-sm mt-2 line-clamp-2">{item.description}</p>
+        <p className="text-[#656565] text-sm mt-2 line-clamp-2">
+          {item.description}
+        </p>
       </div>
     </div>
-  )
+  );
 
   // Activity card component
   const ActivityCard = ({ item }) => (
@@ -506,7 +623,7 @@ export default function ClubDiamondz() {
         <div className="text-[#656565] text-sm">{item.location}</div>
       </div>
     </div>
-  )
+  );
 
   const OffMarketPropertyCard = ({ property }) => (
     <div className="bg-white overflow-hidden shadow-sm">
@@ -524,7 +641,9 @@ export default function ClubDiamondz() {
 
       {/* Property Type and Location with Heart Icon */}
       <div className="flex justify-between items-center mb-2 px-4">
-        <div className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%]`}>
+        <div
+          className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%]`}
+        >
           {property.type} | {property.location}
         </div>
         <button className="text-[#656565] hover:text-[#BD9574] transition-colors">
@@ -533,27 +652,41 @@ export default function ClubDiamondz() {
       </div>
 
       {/* Property Name */}
-      <h3 className={`${taviraj.className} text-[#211f17] text-[32px] font-light leading-[40px] mb-2 px-4`}>
+      <h3
+        className={`${taviraj.className} text-[#211f17] text-[32px] font-light leading-[40px] mb-2 px-4`}
+      >
         {property.name}
       </h3>
 
       {/* Address */}
-      <div className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%] mb-1 px-4`}>
+      <div
+        className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%] mb-1 px-4`}
+      >
         {property.address}
       </div>
-      <div className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%] mb-4 px-4`}>
+      <div
+        className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%] mb-4 px-4`}
+      >
         {property.city}, {property.postcode}
       </div>
 
       {/* Price */}
-      <div className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] mb-6 px-4`}>
+      <div
+        className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] mb-6 px-4`}
+      >
         Auction: $ {property.price}
       </div>
 
       {/* Property Features */}
       <div className="flex flex-wrap items-center gap-4 mb-6 px-4">
         <div className="flex items-center gap-1 text-[#656565]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
               stroke="#656565"
@@ -562,10 +695,18 @@ export default function ClubDiamondz() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>{property.features.bedrooms}</span>
+          <span className={`${archivo.className} font-light text-[14px]`}>
+            {property.features.bedrooms}
+          </span>
         </div>
         <div className="flex items-center gap-1 text-[#656565]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M4 12h16a1 1 0 011 1v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2a1 1 0 011-1zm4-9v5m4-2v2m4-4v7"
               stroke="#656565"
@@ -574,10 +715,18 @@ export default function ClubDiamondz() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>{property.features.bathrooms}</span>
+          <span className={`${archivo.className} font-light text-[14px]`}>
+            {property.features.bathrooms}
+          </span>
         </div>
         <div className="flex items-center gap-1 text-[#656565]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M5 17h14M5 17a2 2 0 01-2-2V9m2 8a2 2 0 002 2h10a2 2 0 002-2M5 17V7a2 2 0 012-2h10a2 2 0 012 2v10m0 0V9m0 0H3"
               stroke="#656565"
@@ -585,10 +734,18 @@ export default function ClubDiamondz() {
               strokeLinecap="round"
             />
           </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>{property.features.parking}</span>
+          <span className={`${archivo.className} font-light text-[14px]`}>
+            {property.features.parking}
+          </span>
         </div>
         <div className="flex items-center gap-1 text-[#656565]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M3 21h18M9 8h1m5 0h1M9 16h1m5 0h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"
               stroke="#656565"
@@ -597,10 +754,18 @@ export default function ClubDiamondz() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>{property.features.floors}</span>
+          <span className={`${archivo.className} font-light text-[14px]`}>
+            {property.features.floors}
+          </span>
         </div>
         <div className="flex items-center gap-1 text-[#656565]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M4 21V8a2 2 0 012-2h12a2 2 0 012 2v13M2 10h20M10 2v6m4-6v6"
               stroke="#656565"
@@ -609,10 +774,18 @@ export default function ClubDiamondz() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>{property.features.rooms}</span>
+          <span className={`${archivo.className} font-light text-[14px]`}>
+            {property.features.rooms}
+          </span>
         </div>
         <div className="flex items-center gap-1 text-[#656565]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
               stroke="#656565"
@@ -621,14 +794,22 @@ export default function ClubDiamondz() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>{property.features.additional}</span>
+          <span className={`${archivo.className} font-light text-[14px]`}>
+            {property.features.additional}
+          </span>
         </div>
       </div>
 
       {/* Action Buttons */}
       <div className="grid grid-cols-2 gap-0">
         <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-r-0 border-[#656565]/20 hover:bg-[#f7ede0] transition-colors">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M9 20l-5.447-5.447a8 8 0 1113.894 0L12 20l-3-3z"
               stroke="#BD9574"
@@ -644,10 +825,18 @@ export default function ClubDiamondz() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`${archivo.className} font-light text-[16px]`}>See map</span>
+          <span className={`${archivo.className} font-light text-[16px]`}>
+            See map
+          </span>
         </button>
         <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-[#656565]/20 hover:bg-[#f7ede0] transition-colors">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M12 11a4 4 0 100-8 4 4 0 000 8zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"
               stroke="#BD9574"
@@ -656,63 +845,13 @@ export default function ClubDiamondz() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`${archivo.className} font-light text-[16px]`}>Agent</span>
+          <span className={`${archivo.className} font-light text-[16px]`}>
+            Agent
+          </span>
         </button>
       </div>
     </div>
-  )
-
-  // Section component with pagination
-  const SectionWithPagination = ({ title, items, currentPage, totalPages, onNavigate, CardComponent }) => (
-    <div className="py-16 px-4 bg-[#FBF4E4]">
-      <div className="container mx-auto">
-        {/* Section Heading with Diamond Separator */}
-        <div className="text-center mb-16">
-          <h2 className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-8`}>{title}</h2>
-          <div className="flex items-center justify-center gap-4">
-            <div className="w-24 h-[1px] bg-[#bd9574]"></div>
-            <div className="w-2 h-2 bg-[#bd9574] rotate-45"></div>
-            <div className="w-24 h-[1px] bg-[#bd9574]"></div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {items.map((item) => (
-            <CardComponent key={item.id} item={item} />
-          ))}
-        </div>
-
-        <div className="flex justify-between mt-8">
-          <div className="flex space-x-4">
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <button
-                key={index}
-                className={`w-3 h-3 transform rotate-45 ${index === currentPage ? "bg-[#BD9574]" : "bg-[#656565]/50"}`}
-                aria-label={`Go to page ${index + 1}`}
-                onClick={() => onNavigate(index)}
-              />
-            ))}
-          </div>
-          <div className="flex space-x-4">
-            <button
-              className="w-10 h-10 border border-[#656565] flex items-center justify-center text-[#656565] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
-              aria-label="Previous items"
-              onClick={() => onNavigate("prev")}
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              className="w-10 h-10 border border-[#656565] flex items-center justify-center text-[#656565] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
-              aria-label="Next items"
-              onClick={() => onNavigate("next")}
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  );
 
   return (
     <div className="bg-[#FBF4E4]">
@@ -724,12 +863,25 @@ export default function ClubDiamondz() {
         {/* Right Column - Image */}
         <div className="relative">
           <Image
-            src="/placeholder.svg"
+            src={
+              getImageUrl(diamondzPage?.hero_background, {
+                format: "webp",
+                quality: 100,
+                fit: "cover",
+              }) || "/placeholder.svg"
+            }
             alt="Club Diamondz Luxury Fashion"
             fill
             priority
             className="object-cover"
           />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to right, #FBF4E4 0%, #FBF4E4 0%, rgba(251,244,228,0.0) 70%, rgba(251,244,228,0.0) 100%)",
+            }}
+          ></div>
         </div>
 
         {/* Content Overlay - Positioned on top of both columns */}
@@ -737,12 +889,15 @@ export default function ClubDiamondz() {
           <div className="container mx-auto h-full">
             <div className="flex flex-col justify-center h-full max-w-xl px-8 md:px-16">
               <p className={`${archivo.className} text-[#211f17] text-xl mb-4`}>
-                Hello, <span className="text-[#bd9574]">George</span>
+                Hello,{" "}
+                <span className="text-[#bd9574]">
+                  {user ? user?.first_name : "Guest"}
+                </span>
               </p>
               <h1
                 className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-8 whitespace-nowrap`}
               >
-                Welcome to Club Diamondz
+                {translationDiamondzPage?.hero_title}
               </h1>
 
               {/* Diamond Separator */}
@@ -752,16 +907,19 @@ export default function ClubDiamondz() {
                 <div className="w-24 h-[1px] bg-[#bd9574]"></div>
               </div>
 
-              <p className={`${archivo.className} text-[#211f17] text-lg mb-10 max-w-xl`}>
-                Black Diamondz Group seamlessly merges global expertise with local insight, offering bespoke luxury
-                property and lifestyle solutions that redefine how you live and invest.
+              <p
+                className={`${archivo.className} text-[#211f17] text-lg mb-10 max-w-xl`}
+              >
+                {translationDiamondzPage?.hero_description}
               </p>
 
               <Link
                 href="/join-club"
                 className="inline-flex items-center border border-[#bd9574] text-[#bd9574] px-8 py-4 hover:bg-[#bd9574] hover:text-[#fbf4e4] transition-colors self-start"
               >
-                <span className={`${archivo.className} mr-2`}>Join the Club !</span>
+                <span className={`${archivo.className} mr-2`}>
+                  Join the Club !
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -785,22 +943,38 @@ export default function ClubDiamondz() {
       {/* News Highlight Section */}
       <div className="relative h-[400px] w-full">
         <Image
-          src="/placeholder.svg"
+          src={
+            getImageUrl(diamondzPage?.news_background, {
+              format: "webp",
+              quality: 100,
+              fit: "cover",
+            }) || "/placeholder.svg"
+          }
           alt="Sydney Harbour"
           fill
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-[#211f17]/20"></div>
+
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(0deg, rgba(251, 244, 228, 0.6), rgba(251, 244, 228, 0.6)), linear-gradient(180deg, #FBF4E4 0%, rgba(251,244,228,0) 25%, rgba(251,244,228,0) 75%, #FBF4E4 100%)",
+          }}
+        ></div>
 
         {/* Content Overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h2 className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-6`}>
-            News Highlight Section
+          <h2
+            className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-6`}
+          >
+            {translationDiamondzPage?.highlight_title}
           </h2>
-          <p className={`${archivo.className} text-[#211f17] text-lg max-w-2xl mb-10 mx-auto`}>
-            Black Diamondz Group seamlessly merges global expertise with local insight, offering bespoke luxury property
-            and lifestyle solutions that redefine how you live and invest.
+          <p
+            className={`${archivo.className} text-[#211f17] text-lg max-w-2xl mb-10 mx-auto`}
+          >
+            {translationDiamondzPage?.highlight_description}
           </p>
           <div className="inline-block border border-[#211f17]">
             <Link
@@ -828,130 +1002,57 @@ export default function ClubDiamondz() {
       </div>
 
       {/* Event Updates Section */}
-      <SectionWithPagination
-        title="Event Updates"
-        items={currentEvents}
+      <DiamondzSection
+        title={translationDiamondzEvent?.title}
+        items={eventsToDisplay}
         currentPage={eventPage}
         totalPages={eventPages}
         onNavigate={(direction) => {
           if (typeof direction === "number") {
-            setEventPage(direction)
+            setEventPage(direction);
           } else {
-            navigateEvents(direction)
+            navigateEvents(direction);
           }
         }}
         CardComponent={EventCard}
       />
 
       {/* Upcoming Activities Section */}
-      <SectionWithPagination
+      <DiamondzSection
         title="Upcoming Activities"
         items={currentActivities}
         currentPage={activityPage}
         totalPages={activityPages}
         onNavigate={(direction) => {
           if (typeof direction === "number") {
-            setActivityPage(direction)
+            setActivityPage(direction);
           } else {
-            navigateActivities(direction)
+            navigateActivities(direction);
           }
         }}
         CardComponent={ActivityCard}
       />
 
       {/* Off-Market Properties Section */}
-      <div className="py-16 px-4 bg-[#FBF4E4]">
-        <div className="container mx-auto">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h2 className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-8`}>
-              Off-Market Properties
-            </h2>
-            <div className="flex items-center justify-center gap-4">
-              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-              <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-            </div>
-          </div>
-
-          {/* Properties Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {currentOffMarketProperties.map((property) => (
-              <OffMarketPropertyCard key={property.id} property={property} />
-            ))}
-          </div>
-
-          {/* Pagination and Explore All */}
-          <div className="flex flex-col md:flex-row justify-between items-center mt-12">
-            <div className="flex space-x-4 mb-6 md:mb-0">
-              {Array.from({ length: offMarketPages }).map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-3 h-3 transform rotate-45 ${
-                    index === offMarketPage ? "bg-[#BD9574]" : "bg-[#656565]/50"
-                  }`}
-                  aria-label={`Go to page ${index + 1}`}
-                  onClick={() => setOffMarketPage(index)}
-                />
-              ))}
-            </div>
-
-            <Link
-              href="/properties"
-              className="inline-flex items-center border border-[#bd9574] text-[#bd9574] px-8 py-3 hover:bg-[#bd9574] hover:text-[#fbf4e4] transition-colors mb-6 md:mb-0"
-            >
-              <span className={`${archivo.className} mr-2`}>Explore All Properties</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </Link>
-
-            <div className="flex space-x-4">
-              <button
-                className="w-10 h-10 border border-[#656565] flex items-center justify-center text-[#656565] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
-                aria-label="Previous items"
-                onClick={() => navigateOffMarket("prev")}
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                className="w-10 h-10 border border-[#656565] flex items-center justify-center text-[#656565] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
-                aria-label="Next items"
-                onClick={() => navigateOffMarket("next")}
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="px-[40px]">
+                  <OffMarket data={offMarket} section={offMarketSection} dark={false} />
+                </div>
 
       {/* Latest Happenings Section */}
-      <SectionWithPagination
+      <DiamondzSection
         title="Latest Happenings"
         items={currentHappenings}
         currentPage={happeningPage}
         totalPages={happeningPages}
         onNavigate={(direction) => {
           if (typeof direction === "number") {
-            setHappeningPage(direction)
+            setHappeningPage(direction);
           } else {
-            navigateHappenings(direction)
+            navigateHappenings(direction);
           }
         }}
         CardComponent={HappeningCard}
       />
     </div>
-  )
+  );
 }
