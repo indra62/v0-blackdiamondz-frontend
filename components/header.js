@@ -76,7 +76,7 @@ export default function Header() {
   const { logout, isAuthenticated } = useAuth()
   const [error, setError] = useState(null)
   const languageButtonRef = useRef(null)
-  const [activeTab, setActiveTab] = useState("buy")
+  const [activeTab, setActiveTab] = useState(null)
   const [dataLogo, setDataLogo] = useState(null)
   const [dataSocial, setDataSocial] = useState(null)
   const [dataType, setDataTypes] = useState([])
