@@ -11,6 +11,7 @@
 import { useState, useEffect } from "react";
 import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
+import Link from "next/link";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
@@ -42,7 +43,7 @@ export default function StatsHome({ data, isMobileView }) {
                 {translation?.left_title}
               </h2>
               <button className="px-6 py-2 border border-[#656565] text-[#BD9574] hover:border-[#BD9574] hover:text-[#e5c04b] transition-colors font-archivo font-light text-base leading-6">
-                More about Black Diamondz
+              <Link href="/our-story">More about Black Diamondz</Link>  
               </button>
             </div>
             <div className="grid grid-cols-3 w-full gap-8">

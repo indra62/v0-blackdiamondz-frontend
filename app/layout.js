@@ -19,12 +19,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} bg-[#211F17]`}>
         <AuthProvider>
-          <Toaster position="top-center" reverseOrder={false} />
           <Suspense fallback={null}>
+            <Toaster position="top-center" reverseOrder={false} />
             <Header />
+            {children}
+            <SocialMediaLinks />
           </Suspense>
-          {children}
-          <SocialMediaLinks />
         </AuthProvider>
       </body>
     </html>

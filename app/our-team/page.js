@@ -30,6 +30,10 @@ export default function OurTeamPage() {
     teamFounderData?.translations?.find((t) => t.languages_code === language) ||
     teamFounderData?.translations?.[0];
 
+    const translationSupport =
+    supportData?.translations?.find((t) => t.languages_code === language) ||
+    supportData?.translations?.[0];
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedLanguage = localStorage.getItem("language");
@@ -41,7 +45,7 @@ export default function OurTeamPage() {
     const fetchDataHome = async () => {
       try {
         const dataHero = await getItems("aboutUs_team_hero", {
-          fields: ["*", "hero_image.*", "translations.*"],
+          fields: ["*", "hero_image.*", "translations.*", "secondary_image.*"],
         });
 
         const dataTeamFounder = await getItems("aboutUs_team_founder", {
@@ -404,22 +408,24 @@ export default function OurTeamPage() {
             {/* Background Image */}
             <div className="absolute inset-0">
               {/* Only render the Image if a valid src is provided */}
-              {false ? (
                 <Image
-                  src={undefined}
+                  src={getImageUrl(heroData?.secondary_image?.id, {
+                  format: "webp",
+                  quality: 100,
+                  fit: "cover",
+                })}
                   alt="Business professionals shaking hands"
                   fill
                   className="object-cover"
                 />
-              ) : null}
-              <div className="absolute inset-0 bg-[#211f17]/50"></div>
+              <div className="w-full h-96 left-0 top-0 absolute bg-gradient-to-b from-[#211f17] via-[#211f17]/20 to-[#211f17]" />
             </div>
 
             {/* Content */}
             <div className="relative h-full flex flex-col items-center justify-center">
               <Link href="/our-story" className="cursor-pointer">
-                <h2 className="font-serif text-[64px] font-light text-[#E2DBCC] tracking-wide hover:text-[#BD9574] transition-colors">
-                  Explore Our Story
+                <h2 className="font-['Taviraj'] text-5xl font-light text-[#E2DBCC] tracking-wide hover:text-[#BD9574] transition-colors">
+                  {translation?.secondary_title}
                 </h2>
               </Link>
             </div>
@@ -430,7 +436,7 @@ export default function OurTeamPage() {
             <div className="container mx-auto px-4">
               {/* Heading */}
               <h2 className="font-serif text-[48px] font-light text-[#E2DBCC] text-center mb-8">
-                Support
+                {translationSupport?.title}
               </h2>
 
               {/* Diamond Separator */}
@@ -444,9 +450,7 @@ export default function OurTeamPage() {
               <p
                 className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] max-w-3xl mx-auto mb-16 text-center`}
               >
-                The Black Diamondz team appreciates your interest in finding the
-                right agency to help you sell your property. Our dedicated team
-                members are here to guide you through every step of the process.
+                {translationSupport?.description}
               </p>
 
               {/* Team Members Section with Pagination */}

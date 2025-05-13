@@ -100,7 +100,7 @@ export default function Footer() {
             {/* Left Column - Logo and Copyright */}
             <div className="flex flex-col items-center">
               {/* Logo - Using the CMS image */}
-              <div className="mb-8">
+              <div className="mb-8 mt-16">
                 <div className="flex flex-col items-center">
                   <div className="mb-4 relative w-[400px] h-14">
                     <Image

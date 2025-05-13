@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { Archivo, Taviraj } from "next/font/google";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/api";
+import Link from "next/link";
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["700"] });
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] });
@@ -71,6 +72,7 @@ export default function ExploreCity({ data }) {
                 key={city.id}
                 className="relative w-[280px] md:w-[508px] h-[460px] flex-none group cursor-pointer overflow-hidden"
               >
+              <Link href={`/buy?city=${city.name}`}>
                 <Image
                   src={getImageUrl(city?.image, {
                     format: "webp",
@@ -91,6 +93,7 @@ export default function ExploreCity({ data }) {
                     {city.name}
                   </h3>
                 </div>
+                </Link>
               </div>
             ))}
           </div>

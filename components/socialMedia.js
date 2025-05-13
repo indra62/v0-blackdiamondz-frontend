@@ -197,8 +197,8 @@ export default function SocialMediaLinks() {
                     src={
                       getImageUrl(data?.wechat_qr_code.id, {
                         format: "webp",
-                        quality: 80 || "/placeholder.svg",
-                      }) || "/placeholder.svg"
+                        quality: 80
+                      })
                     }
                     alt="Black Diamondz WeChat QR Code"
                     fill

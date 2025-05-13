@@ -74,7 +74,7 @@ export default function Paddington() {
     </section>
   ) : (
     <>
-      <section className="py-16">
+      <section className="pb-16 pt-0">
         <div className="container mx-auto px-4">
           <h2
             className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}

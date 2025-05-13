@@ -48,6 +48,9 @@ const customStyles = {
     ...provided,
     color: "#E2DBCC",
   }),
+  indicatorSeparator: (base) => ({
+    display: "none",
+  }),
 }
 
 const genderOptions = [
@@ -356,6 +359,7 @@ export default function AgencyPage() {
                       {/* Country */}
                       <div className="border border-[#656565]/30 px-2 py-4 border-t-0 relative">
                         <AsyncSelect
+                          instanceId="agency-country-select"
                           name="country"
                           value={
                             formData.country_id
@@ -388,6 +392,7 @@ export default function AgencyPage() {
                       {/* City */}
                       <div className="border border-[#656565]/30 px-2 py-4 border-l-0 border-t-0 relative">
                         <AsyncSelect
+                          instanceId="agency-city-select"
                           name="city"
                           value={
                             formData.city_id

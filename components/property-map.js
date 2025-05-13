@@ -19,7 +19,7 @@ export default function PropertyMap({ onClose, property, type }) {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-maps-script',
-    googleMapsApiKey: 'AIzaSyAU7qoKGLlzkWmLTUOOXyv48tLOGljBXm0'
+    googleMapsApiKey: 'AIzaSyBQ7mtgk24xxFbuz7eS2KE93QRu3JzDLr0'
   })
 
   const handleMapTypeChange = (type) => {

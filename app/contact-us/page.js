@@ -42,6 +42,9 @@ const customStyles = {
     ...provided,
     color: "#E2DBCC",
   }),
+  indicatorSeparator: (base) => ({
+    display: "none",
+  }),
 }
 
 export default function ContactUs() {
@@ -308,6 +311,7 @@ export default function ContactUs() {
                 {/* Country */}
                 <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
                   <AsyncSelect
+                    instanceId="contact-us-country-select"
                     name="country"
                     value={
                       formData.country
@@ -342,6 +346,7 @@ export default function ContactUs() {
                 {/* City */}
                 <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
                   <AsyncSelect
+                    instanceId="contact-us-city-select"
                     name="city"
                     value={
                       formData.city

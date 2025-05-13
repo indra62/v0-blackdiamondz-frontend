@@ -1,10 +1,10 @@
-"use client";
-import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { ChevronDown, ArrowRight } from "lucide-react";
-import { Archivo } from "next/font/google";
-import Menu from "./menu";
+"use client"
+import { useAuth } from "@/hooks/useAuth"
+import { useEffect, useRef, useState } from "react"
+import Link from "next/link"
+import { ChevronDown, ArrowRight } from "lucide-react"
+import { Archivo } from "next/font/google"
+import Menu from "./menu"
 import { getImageUrl, getItems } from "@/lib/api"
 import { createPortal } from "react-dom"
 import { useDebouncedCallback } from "use-debounce"
@@ -51,6 +51,9 @@ const customStyles = {
     ...provided,
     color: "#E2DBCC",
   }),
+  indicatorSeparator: (base) => ({
+    display: "none",
+  }),
 }
 
 const bedroomOptions = [
@@ -85,12 +88,7 @@ export default function Header() {
     price_max: priceMax || "",
   })
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
-  const [selectedLanguage, setSelectedLanguage] = useState({
-    name: "English",
-    country: "UK",
-    flag: "🇬🇧",
-    value: "en",
-  })
+  const [selectedLanguage, setSelectedLanguage] = useState("en")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobileView, setIsMobileView] = useState(false)
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false)
@@ -103,6 +101,11 @@ export default function Header() {
   const valueDropdownRef = useRef()
   const buttonRef = useRef()
   const valueDropdownPortalRef = useRef()
+  const [hasMounted, setHasMounted] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   const languages = [
     { name: "English", country: "UK", flag: "🇬🇧", value: "en" },
@@ -245,8 +248,9 @@ export default function Header() {
 
   const propertyTypeOptions = dataType.map((type) => {
     const translation =
-      type.translations.find((t) => t.languages_code === selectedLanguage) ||
-      type.translations[0]
+      type.translations.find(
+        (t) => t.languages_code === selectedLanguage.value
+      ) || type.translations[0]
     return {
       value: type.id,
       label: translation?.name || "",
@@ -431,7 +435,7 @@ export default function Header() {
 
             {/* Value Section */}
             <div
-              className="flex items-center px-6 border-r border-[#333] w-1/4 relative"
+              className="flex items-center px-6 border-r border-[#333] w-1/3 relative"
               ref={valueDropdownRef}
             >
               <button
@@ -508,20 +512,24 @@ export default function Header() {
 
             {/* Login Button */}
             <div className="flex items-center justify-center px-6 border-r border-[#333] w-[120px]">
-              {isAuthenticated ? (
-                <button
-                  onClick={logout}
-                  className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                >
-                  Logout
-                </button>
+              {hasMounted ? (
+                isAuthenticated ? (
+                  <button
+                    onClick={logout}
+                    className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                  >
+                    Login
+                  </Link>
+                )
               ) : (
-                <Link
-                  href="/login"
-                  className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                >
-                  Login
-                </Link>
+                <span style={{ visibility: "hidden" }}>Login</span>
               )}
             </div>
 
@@ -634,7 +642,9 @@ export default function Header() {
       {/* Menu Overlay */}
       <Menu
         dataSocial={dataSocial}
+        dataLogo={dataLogo}
         isOpen={isMenuOpen}
+        isAuthenticated={isAuthenticated}
         onClose={() => setIsMenuOpen(false)}
       />
     </>
@@ -650,15 +660,15 @@ function PropertyFilter({
   isMobileFiltersOpen,
   isAuthenticated,
 }) {
-  const [activeFilters, setActiveFilters] = useState([]);
+  const [activeFilters, setActiveFilters] = useState([])
 
   const toggleFilter = (filterId) => {
     setActiveFilters((prev) =>
       prev.includes(filterId)
         ? prev.filter((id) => id !== filterId)
         : [...prev, filterId]
-    );
-  };
+    )
+  }
 
   return (
     <div
@@ -877,7 +887,7 @@ function PropertyFilter({
               </svg>
             </button>
             <div className="flex items-center justify-center px-8 py-4 border-[#333] border-l">
-              {isAuthenticated ? (
+              {hasMounted ? ( isAuthenticated ? (
                 <button
                   onClick={logout}
                   className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
@@ -891,6 +901,8 @@ function PropertyFilter({
                 >
                   Login
                 </Link>
+              )) : (
+                <span style={{ visibility: "hidden" }}>Login</span>
               )}
             </div>
           </>
@@ -1044,5 +1056,5 @@ function PropertyFilter({
         </div>
       )}
     </div>
-  );
+  )
 }
