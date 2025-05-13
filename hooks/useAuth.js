@@ -29,6 +29,19 @@ function onRefreshed(token) {
   refreshSubscribers = []
 }
 
+// Cookie helper functions
+const setCookie = (name, value, days = 7) => {
+  const date = new Date()
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
+  const expires = "expires=" + date.toUTCString()
+  const secure = window.location.protocol === "https:" ? "; Secure" : ""
+  document.cookie = `${name}=${value}; ${expires}; path=/; SameSite=Lax${secure}`
+}
+
+const deleteCookie = (name) => {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+}
+
 // Auth Provider Component
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -140,13 +153,19 @@ export function AuthProvider({ children }) {
         mode: "json",
       })
 
+      // Update both localStorage and cookies
       localStorage.setItem("access_token", response.data.data.access_token)
       localStorage.setItem("refresh_token", response.data.data.refresh_token)
+      setCookie("access_token", response.data.data.access_token)
+      setCookie("refresh_token", response.data.data.refresh_token)
 
       return response.data.data
     } catch (err) {
+      // Clear both storage methods on error
       localStorage.removeItem("access_token")
       localStorage.removeItem("refresh_token")
+      deleteCookie("access_token")
+      deleteCookie("refresh_token")
       setUser(null)
       throw err
     }
@@ -192,6 +211,8 @@ export function useAuth() {
       // Store tokens
       localStorage.setItem("access_token", response.data.data.access_token)
       localStorage.setItem("refresh_token", response.data.data.refresh_token)
+      setCookie("access_token", response.data.data.access_token)
+      setCookie("refresh_token", response.data.data.refresh_token)
 
       // Fetch user data
       const userData = await fetchUserData(response.data.data.access_token)
@@ -221,6 +242,8 @@ export function useAuth() {
     } finally {
       localStorage.removeItem("access_token")
       localStorage.removeItem("refresh_token")
+      deleteCookie("access_token")
+      deleteCookie("refresh_token")
       setUser(null)
       router.push("/login")
     }

@@ -147,7 +147,7 @@ export default function Menu({
       <div className="container mx-auto px-4 py-6 h-full flex flex-col">
         <div className="flex justify-between items-center mb-12">
           {/* Diamond Logo */}
-          <Link href="/" className="text-white">
+          <Link href="/" className="text-white" onClick={onClose}>
             <img
               src={
                 getImageUrl(dataLogo?.Logo?.id, {
@@ -247,9 +247,8 @@ export default function Menu({
                 </div>
               )}
 
-              {isAuthenticated && (
-                <>
-                  <div className="w-[359px] border-t-4 border-[#BD9574] my-4"></div>
+              
+                  <div className="w-[359px] border-t-4 border-[#BD9574] my-8"></div>
                   <Link
                     href="/club-diamondz"
                     id="club-diamondz-link"
@@ -258,8 +257,7 @@ export default function Menu({
                   >
                     Club Diamondz
                   </Link>
-                </>
-              )}
+                
 
               <div className="w-[359px] border-t-4 border-[#BD9574] my-4"></div>
 
