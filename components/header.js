@@ -66,6 +66,10 @@ const bedroomOptions = [
 ]
 
 export default function Header() {
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
   const router = useRouter()
   const searchParams = useSearchParams()
   const city = searchParams.get("city")
@@ -101,11 +105,6 @@ export default function Header() {
   const valueDropdownRef = useRef()
   const buttonRef = useRef()
   const valueDropdownPortalRef = useRef()
-  const [hasMounted, setHasMounted] = useState(false)
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
 
   const languages = [
     { name: "English", country: "UK", flag: "🇬🇧", value: "en" },
@@ -660,6 +659,10 @@ function PropertyFilter({
   isMobileFiltersOpen,
   isAuthenticated,
 }) {
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
   const [activeFilters, setActiveFilters] = useState([])
 
   const toggleFilter = (filterId) => {
