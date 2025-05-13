@@ -57,5 +57,11 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    'text-[#9A795F]',
+    'text-[#BD9574]',
+    'text-[#211F17]',
+    'border-[#211F17]',
+  ],
   plugins: [require("tailwindcss-animate")],
 }

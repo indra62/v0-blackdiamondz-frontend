@@ -1,26 +1,27 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Taviraj, Archivo } from "next/font/google";
-import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
-import { getImageUrl, getItems } from "@/lib/api";
-import { useAuth } from "@/hooks/useAuth";
-import DiamondzSection from "@/components/diamondzSection";
-import OffMarket from "@/components/off-market";
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { Taviraj, Archivo } from "next/font/google"
+import { ChevronLeft, ChevronRight, Heart } from "lucide-react"
+import { getImageUrl, getItems } from "@/lib/api"
+import { useAuth } from "@/hooks/useAuth"
+import DiamondzSection from "@/components/diamondzSection"
+import OffMarket from "@/components/off-market"
+import Loading from "@/components/loading"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
-});
+})
 
 const archivo = Archivo({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
-});
+})
 
 // Sample data for events
 const eventUpdates = [
@@ -88,7 +89,7 @@ const eventUpdates = [
     location: "Four Seasons Hotel",
     thumbnail: "/real-estate-conference.png",
   },
-];
+]
 
 // Sample data for latest happenings
 const latestHappenings = [
@@ -159,7 +160,7 @@ const latestHappenings = [
     description: "Celebrating excellence in luxury property architecture.",
     thumbnail: "/modern-garden-home.png",
   },
-];
+]
 
 // Sample data for upcoming activities
 const upcomingActivities = [
@@ -227,7 +228,7 @@ const upcomingActivities = [
     location: "Perth",
     thumbnail: "/coastal-luxury-property.png",
   },
-];
+]
 
 // Sample data for off-market properties
 const offMarketProperties = [
@@ -383,105 +384,104 @@ const offMarketProperties = [
       additional: 1,
     },
   },
-];
+]
 
 export default function ClubDiamondz() {
   // State for pagination in each section
-  const [eventPage, setEventPage] = useState(0);
-  const [happeningPage, setHappeningPage] = useState(0);
-  const [activityPage, setActivityPage] = useState(0);
-  const [offMarket, setOffMarket] = useState(null);
-  const [offMarketSection, setOffMarketSection] = useState(null);
-  const [diamondzPage, setDiamondzPage] = useState(null);
-  const [diamondzEvent, setDiamondzEvent] = useState(null);
-  const [diamondzEventList, setDiamondzEventList] = useState(null);
-  const [language, setLanguage] = useState("en");
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true)
+  const [eventPage, setEventPage] = useState(0)
+  const [happeningPage, setHappeningPage] = useState(0)
+  const [activityPage, setActivityPage] = useState(0)
+  const [offMarket, setOffMarket] = useState(null)
+  const [offMarketSection, setOffMarketSection] = useState(null)
+  const [diamondzPage, setDiamondzPage] = useState(null)
+  const [diamondzEvent, setDiamondzEvent] = useState(null)
+  const [diamondzEventList, setDiamondzEventList] = useState(null)
+  const [language, setLanguage] = useState("en")
+  const [error, setError] = useState(null)
 
-  const { user } = useAuth();
+  const { user } = useAuth()
 
   // Items per page
-  const itemsPerPage = 4;
+  const itemsPerPage = 4
 
   // Calculate total pages for each section
-  const eventPages = Math.ceil((diamondzEventList?.length || 0) / itemsPerPage);
-  const happeningPages = Math.ceil(latestHappenings.length / itemsPerPage);
-  const activityPages = Math.ceil(upcomingActivities.length / itemsPerPage);
+  const eventPages = Math.ceil((diamondzEventList?.length || 0) / itemsPerPage)
+  const happeningPages = Math.ceil(latestHappenings.length / itemsPerPage)
+  const activityPages = Math.ceil(upcomingActivities.length / itemsPerPage)
 
   // Get current items for each section
   const currentEvents =
     diamondzEventList?.slice(
       eventPage * itemsPerPage,
       (eventPage + 1) * itemsPerPage
-    ) || [];
+    ) || []
 
   const eventsToDisplay = currentEvents.map((event) => {
     const translation =
       event.translations?.find((t) => t.languages_code === language) ||
-      event.translations?.[0];
-    return { ...event, translation };
-  });
+      event.translations?.[0]
+    return { ...event, translation }
+  })
 
   const currentHappenings = latestHappenings.slice(
     happeningPage * itemsPerPage,
     (happeningPage + 1) * itemsPerPage
-  );
+  )
 
   const currentActivities = upcomingActivities.slice(
     activityPage * itemsPerPage,
     (activityPage + 1) * itemsPerPage
-  );
-
+  )
 
   // Navigation functions
   const navigateEvents = (direction) => {
     if (direction === "next") {
-      setEventPage((prev) => (prev === eventPages - 1 ? 0 : prev + 1));
+      setEventPage((prev) => (prev === eventPages - 1 ? 0 : prev + 1))
     } else {
-      setEventPage((prev) => (prev === 0 ? eventPages - 1 : prev - 1));
+      setEventPage((prev) => (prev === 0 ? eventPages - 1 : prev - 1))
     }
-  };
+  }
 
   const navigateHappenings = (direction) => {
     if (direction === "next") {
-      setHappeningPage((prev) => (prev === happeningPages - 1 ? 0 : prev + 1));
+      setHappeningPage((prev) => (prev === happeningPages - 1 ? 0 : prev + 1))
     } else {
-      setHappeningPage((prev) => (prev === 0 ? happeningPages - 1 : prev - 1));
+      setHappeningPage((prev) => (prev === 0 ? happeningPages - 1 : prev - 1))
     }
-  };
+  }
 
   const navigateActivities = (direction) => {
     if (direction === "next") {
-      setActivityPage((prev) => (prev === activityPages - 1 ? 0 : prev + 1));
+      setActivityPage((prev) => (prev === activityPages - 1 ? 0 : prev + 1))
     } else {
-      setActivityPage((prev) => (prev === 0 ? activityPages - 1 : prev - 1));
+      setActivityPage((prev) => (prev === 0 ? activityPages - 1 : prev - 1))
     }
-  };
-
+  }
 
   const translationDiamondzPage =
     diamondzPage?.translations?.find((t) => t.languages_code === language) ||
-    diamondzPage?.translations?.[0];
+    diamondzPage?.translations?.[0]
 
   const translationDiamondzEvent =
     diamondzEvent?.translations?.find((t) => t.languages_code === language) ||
-    diamondzEvent?.translations?.[0];
+    diamondzEvent?.translations?.[0]
 
   const translationDiamondzEventList =
     diamondzEventList?.translations?.find(
       (t) => t.languages_code === language
-    ) || diamondzEventList?.translations?.[0];
+    ) || diamondzEventList?.translations?.[0]
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
     const fetchDataClubDiamondz = async () => {
       try {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("access_token")
 
         const dataDiamondzPage = await getItems(
           "diamondz_page",
@@ -491,7 +491,7 @@ export default function ClubDiamondz() {
           {
             Authorization: `Bearer ${token}`,
           }
-        );
+        )
 
         const dataEventUpdates = await getItems(
           "diamondz_event",
@@ -501,7 +501,7 @@ export default function ClubDiamondz() {
           {
             Authorization: `Bearer ${token}`,
           }
-        );
+        )
 
         const dataEventList = await getItems(
           "event_list",
@@ -511,7 +511,7 @@ export default function ClubDiamondz() {
           {
             Authorization: `Bearer ${token}`,
           }
-        );
+        )
 
         const dataOffMarketSection = await getItems("offMarket_section", {
           fields: ["*", "translations.*"],
@@ -536,18 +536,18 @@ export default function ClubDiamondz() {
           limit: 4,
         })
 
-        setDiamondzPage(dataDiamondzPage);
-        setDiamondzEvent(dataEventUpdates);
-        setDiamondzEventList(dataEventList);
+        setDiamondzPage(dataDiamondzPage)
+        setDiamondzEvent(dataEventUpdates)
+        setDiamondzEventList(dataEventList)
         setOffMarketSection(dataOffMarketSection)
         setOffMarket(dataOffMarketProperties)
-        setLoading(false);
+        setLoading(false)
       } catch (err) {
-        setError("Failed to load home data:" + err.message);
+        setError("Failed to load home data:" + err.message)
       }
-    };
-    fetchDataClubDiamondz();
-  }, []);
+    }
+    fetchDataClubDiamondz()
+  }, [])
 
   // Event card component
   const EventCard = ({ item }) => (
@@ -561,7 +561,7 @@ export default function ClubDiamondz() {
               fit: "cover",
             }) || "/placeholder.svg"
           }
-          alt={item.title}
+          alt={item?.translation?.event_title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -575,7 +575,7 @@ export default function ClubDiamondz() {
         <div className="text-[#656565] text-sm mt-1">{item?.event_date}</div>
       </div>
     </div>
-  );
+  )
 
   // Latest Happening card component
   const HappeningCard = ({ item }) => (
@@ -600,7 +600,7 @@ export default function ClubDiamondz() {
         </p>
       </div>
     </div>
-  );
+  )
 
   // Activity card component
   const ActivityCard = ({ item }) => (
@@ -623,7 +623,7 @@ export default function ClubDiamondz() {
         <div className="text-[#656565] text-sm">{item.location}</div>
       </div>
     </div>
-  );
+  )
 
   const OffMarketPropertyCard = ({ property }) => (
     <div className="bg-white overflow-hidden shadow-sm">
@@ -851,9 +851,14 @@ export default function ClubDiamondz() {
         </button>
       </div>
     </div>
-  );
+  )
 
   return (
+    loading ? (
+      <section className="flex justify-center items-center h-[800px] bg-[#FBF4E4]">
+        <Loading error={error} dark={false} />
+      </section>
+    ) : (
     <div className="bg-[#FBF4E4]">
       {/* Hero Section - Two Column Layout */}
       <div className="relative grid grid-cols-1 md:grid-cols-2 min-h-[600px]">
@@ -1009,9 +1014,9 @@ export default function ClubDiamondz() {
         totalPages={eventPages}
         onNavigate={(direction) => {
           if (typeof direction === "number") {
-            setEventPage(direction);
+            setEventPage(direction)
           } else {
-            navigateEvents(direction);
+            navigateEvents(direction)
           }
         }}
         CardComponent={EventCard}
@@ -1025,9 +1030,9 @@ export default function ClubDiamondz() {
         totalPages={activityPages}
         onNavigate={(direction) => {
           if (typeof direction === "number") {
-            setActivityPage(direction);
+            setActivityPage(direction)
           } else {
-            navigateActivities(direction);
+            navigateActivities(direction)
           }
         }}
         CardComponent={ActivityCard}
@@ -1035,8 +1040,8 @@ export default function ClubDiamondz() {
 
       {/* Off-Market Properties Section */}
       <div className="px-[40px]">
-                  <OffMarket data={offMarket} section={offMarketSection} dark={false} />
-                </div>
+        <OffMarket data={offMarket} section={offMarketSection} dark={false} />
+      </div>
 
       {/* Latest Happenings Section */}
       <DiamondzSection
@@ -1046,13 +1051,13 @@ export default function ClubDiamondz() {
         totalPages={happeningPages}
         onNavigate={(direction) => {
           if (typeof direction === "number") {
-            setHappeningPage(direction);
+            setHappeningPage(direction)
           } else {
-            navigateHappenings(direction);
+            navigateHappenings(direction)
           }
         }}
         CardComponent={HappeningCard}
       />
-    </div>
-  );
+    </div>)
+  )
 }

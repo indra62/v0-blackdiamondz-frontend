@@ -6,50 +6,54 @@
  *
  * @component
  */
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Taviraj } from "next/font/google";
-import { Archivo } from "next/font/google";
-import Image from "next/image";
-import { Heart } from "lucide-react";
-import { getImageUrl } from "@/lib/api";
-import { Property } from "@/lib/component/property";
-import { useAuth } from "@/hooks/useAuth";
-import Link from "next/link";
+import { useState, useEffect } from "react"
+import { Taviraj } from "next/font/google"
+import { Archivo } from "next/font/google"
+import Image from "next/image"
+import { Heart } from "lucide-react"
+import { getImageUrl } from "@/lib/api"
+import { Property } from "@/lib/component/property"
+import { useAuth } from "@/hooks/useAuth"
+import Link from "next/link"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 
 export default function OffMarket({ data, section, dark = true }) {
-  const darkMode = dark || false;
-  const { isAuthenticated } = useAuth();
-  const [language, setLanguage] = useState("en");
-
-  
+  const darkMode = dark || false
+  const { isAuthenticated } = useAuth()
+  const [language, setLanguage] = useState("en")
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
-  }, []);
+  }, [])
 
   const translation =
     section?.translations?.find((t) => t.languages_code === language) ||
-    section?.translations?.[0];
+    section?.translations?.[0]
 
   return (
     <div
-  className={`py-16 ${darkMode ? 'bg-[#211f17] text-white' : 'bg-[#FBF4E4] text-black'}`}
->
+      className={`py-16 ${
+        darkMode ? "bg-[#211f17] text-white" : "bg-[#FBF4E4] text-black"
+      }`}
+    >
       <div className="container mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
           <h2
-            className={`${taviraj.className} text-[48px] font-light leading-[60px] tracking-[2px] mb-8 ${darkMode ? 'text-[#e2dbcc]' : 'text-[#211F17]'}` }
+            className={`${
+              taviraj.className
+            } text-[48px] font-light leading-[60px] tracking-[2px] mb-8 ${
+              darkMode ? "text-[#e2dbcc]" : "text-[#211F17]"
+            }`}
           >
             {translation?.offmarket_title_section}
           </h2>
@@ -71,9 +75,11 @@ export default function OffMarket({ data, section, dark = true }) {
           >
             {data?.map((property) => (
               <div
-  key={property.id}
-  className={`${darkMode ? 'bg-[#211f17]' : 'bg-[#FBF4E4]'} overflow-hidden`}
->
+                key={property.id}
+                className={`${
+                  darkMode ? "bg-[#211f17]" : "bg-[#FBF4E4]"
+                } overflow-hidden`}
+              >
                 <Property
                   property={property}
                   taviraj={taviraj}
@@ -94,7 +100,9 @@ export default function OffMarket({ data, section, dark = true }) {
               </div>
               <Link
                 href="/login"
-                className={`bg-[#BD9574] ${darkMode ? 'text-white' : 'text-[#211f17]'} px-8 py-3 hover:bg-[#BD9574] transition-colors` }
+                className={`bg-[#BD9574] ${
+                  darkMode ? "text-white" : "text-[#211f17]"
+                } px-8 py-3 hover:bg-[#BD9574] transition-colors`}
               >
                 Login Now
               </Link>
@@ -103,5 +111,5 @@ export default function OffMarket({ data, section, dark = true }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
