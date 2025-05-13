@@ -435,7 +435,7 @@ export default function Header() {
 
             {/* Value Section */}
             <div
-              className="flex items-center px-6 border-r border-[#333] w-1/4 relative"
+              className="flex items-center px-6 border-r border-[#333] w-1/3 relative"
               ref={valueDropdownRef}
             >
               <button
