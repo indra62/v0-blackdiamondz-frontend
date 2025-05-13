@@ -62,6 +62,12 @@ module.exports = {
     'text-[#BD9574]',
     'text-[#211F17]',
     'border-[#211F17]',
+    'bg-[#FBF4E4]',
+    'bg-[#211f17]',
+    'text-[#A1A1AA]',
+    'bg-[#BD9574]',
+    'bg-[#E2DBCC]',
+
   ],
   plugins: [require("tailwindcss-animate")],
 }

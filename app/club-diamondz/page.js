@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth"
 import DiamondzSection from "@/components/diamondzSection"
 import OffMarket from "@/components/off-market"
 import Loading from "@/components/loading"
+import Footer from "@/components/footer"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
@@ -853,78 +854,142 @@ export default function ClubDiamondz() {
     </div>
   )
 
-  return (
-    loading ? (
-      <section className="flex justify-center items-center h-[800px] bg-[#FBF4E4]">
-        <Loading error={error} dark={false} />
-      </section>
-    ) : (
-    <div className="bg-[#FBF4E4]">
-      {/* Hero Section - Two Column Layout */}
-      <div className="relative grid grid-cols-1 md:grid-cols-2 min-h-[600px]">
-        {/* Left Column - Beige Background */}
-        <div className="bg-[#fbf4e4]"></div>
+  return loading ? (
+    <section className="flex justify-center items-center h-[800px] bg-[#FBF4E4]">
+      <Loading error={error} dark={false} />
+    </section>
+  ) : (
+    <>
+      <div className="bg-[#FBF4E4]">
+        {/* Hero Section - Two Column Layout */}
+        <div className="relative grid grid-cols-1 md:grid-cols-2 min-h-[600px]">
+          {/* Left Column - Beige Background */}
+          <div className="bg-[#fbf4e4]"></div>
 
-        {/* Right Column - Image */}
-        <div className="relative">
+          {/* Right Column - Image */}
+          <div className="relative">
+            <Image
+              src={
+                getImageUrl(diamondzPage?.hero_background, {
+                  format: "webp",
+                  quality: 100,
+                  fit: "cover",
+                }) || "/placeholder.svg"
+              }
+              alt="Club Diamondz Luxury Fashion"
+              fill
+              priority
+              className="object-cover"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to right, #FBF4E4 0%, #FBF4E4 0%, rgba(251,244,228,0.0) 70%, rgba(251,244,228,0.0) 100%)",
+              }}
+            ></div>
+          </div>
+
+          {/* Content Overlay - Positioned on top of both columns */}
+          <div className="absolute inset-0 z-10">
+            <div className="container mx-auto h-full">
+              <div className="flex flex-col justify-center h-full max-w-xl px-8 md:px-16">
+                <p
+                  className={`${archivo.className} text-[#211f17] text-xl mb-4`}
+                >
+                  Hello,{" "}
+                  <span className="text-[#bd9574]">
+                    {user ? user?.first_name : "Guest"}
+                  </span>
+                </p>
+                <h1
+                  className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-8 whitespace-nowrap`}
+                >
+                  {translationDiamondzPage?.hero_title}
+                </h1>
+
+                {/* Diamond Separator */}
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-24 h-[1px] bg-[#bd9574]"></div>
+                  <div className="w-2 h-2 bg-[#bd9574] rotate-45"></div>
+                  <div className="w-24 h-[1px] bg-[#bd9574]"></div>
+                </div>
+
+                <p
+                  className={`${archivo.className} text-[#211f17] text-lg mb-10 max-w-xl`}
+                >
+                  {translationDiamondzPage?.hero_description}
+                </p>
+
+                <Link
+                  href="/join-club"
+                  className="inline-flex items-center border border-[#bd9574] text-[#bd9574] px-8 py-4 hover:bg-[#bd9574] hover:text-[#fbf4e4] transition-colors self-start"
+                >
+                  <span className={`${archivo.className} mr-2`}>
+                    Join the Club !
+                  </span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* News Highlight Section */}
+        <div className="relative h-[400px] w-full">
           <Image
             src={
-              getImageUrl(diamondzPage?.hero_background, {
+              getImageUrl(diamondzPage?.news_background, {
                 format: "webp",
                 quality: 100,
                 fit: "cover",
               }) || "/placeholder.svg"
             }
-            alt="Club Diamondz Luxury Fashion"
+            alt="Sydney Harbour"
             fill
             priority
             className="object-cover"
           />
+
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to right, #FBF4E4 0%, #FBF4E4 0%, rgba(251,244,228,0.0) 70%, rgba(251,244,228,0.0) 100%)",
+                "linear-gradient(0deg, rgba(251, 244, 228, 0.6), rgba(251, 244, 228, 0.6)), linear-gradient(180deg, #FBF4E4 0%, rgba(251,244,228,0) 25%, rgba(251,244,228,0) 75%, #FBF4E4 100%)",
             }}
           ></div>
-        </div>
 
-        {/* Content Overlay - Positioned on top of both columns */}
-        <div className="absolute inset-0 z-10">
-          <div className="container mx-auto h-full">
-            <div className="flex flex-col justify-center h-full max-w-xl px-8 md:px-16">
-              <p className={`${archivo.className} text-[#211f17] text-xl mb-4`}>
-                Hello,{" "}
-                <span className="text-[#bd9574]">
-                  {user ? user?.first_name : "Guest"}
-                </span>
-              </p>
-              <h1
-                className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-8 whitespace-nowrap`}
-              >
-                {translationDiamondzPage?.hero_title}
-              </h1>
-
-              {/* Diamond Separator */}
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-24 h-[1px] bg-[#bd9574]"></div>
-                <div className="w-2 h-2 bg-[#bd9574] rotate-45"></div>
-                <div className="w-24 h-[1px] bg-[#bd9574]"></div>
-              </div>
-
-              <p
-                className={`${archivo.className} text-[#211f17] text-lg mb-10 max-w-xl`}
-              >
-                {translationDiamondzPage?.hero_description}
-              </p>
-
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+            <h2
+              className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-6`}
+            >
+              {translationDiamondzPage?.highlight_title}
+            </h2>
+            <p
+              className={`${archivo.className} text-[#211f17] text-lg max-w-2xl mb-10 mx-auto`}
+            >
+              {translationDiamondzPage?.highlight_description}
+            </p>
+            <div className="inline-block border border-[#211f17]">
               <Link
-                href="/join-club"
-                className="inline-flex items-center border border-[#bd9574] text-[#bd9574] px-8 py-4 hover:bg-[#bd9574] hover:text-[#fbf4e4] transition-colors self-start"
+                href="/media/news"
+                className={`${archivo.className} inline-flex items-center text-[#211f17] px-8 py-3 hover:bg-[#211f17] hover:text-[#fbf4e4] transition-colors`}
               >
-                <span className={`${archivo.className} mr-2`}>
-                  Join the Club !
-                </span>
+                <span className="mr-2">Read More</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -943,121 +1008,61 @@ export default function ClubDiamondz() {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* News Highlight Section */}
-      <div className="relative h-[400px] w-full">
-        <Image
-          src={
-            getImageUrl(diamondzPage?.news_background, {
-              format: "webp",
-              quality: 100,
-              fit: "cover",
-            }) || "/placeholder.svg"
-          }
-          alt="Sydney Harbour"
-          fill
-          priority
-          className="object-cover"
+        {/* Event Updates Section */}
+        <DiamondzSection
+          title={translationDiamondzEvent?.title}
+          items={eventsToDisplay}
+          currentPage={eventPage}
+          totalPages={eventPages}
+          onNavigate={(direction) => {
+            if (typeof direction === "number") {
+              setEventPage(direction)
+            } else {
+              navigateEvents(direction)
+            }
+          }}
+          CardComponent={EventCard}
         />
 
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(0deg, rgba(251, 244, 228, 0.6), rgba(251, 244, 228, 0.6)), linear-gradient(180deg, #FBF4E4 0%, rgba(251,244,228,0) 25%, rgba(251,244,228,0) 75%, #FBF4E4 100%)",
+        {/* Upcoming Activities Section */}
+        <DiamondzSection
+          title="Upcoming Activities"
+          items={currentActivities}
+          currentPage={activityPage}
+          totalPages={activityPages}
+          onNavigate={(direction) => {
+            if (typeof direction === "number") {
+              setActivityPage(direction)
+            } else {
+              navigateActivities(direction)
+            }
           }}
-        ></div>
+          CardComponent={ActivityCard}
+        />
 
-        {/* Content Overlay */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h2
-            className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-6`}
-          >
-            {translationDiamondzPage?.highlight_title}
-          </h2>
-          <p
-            className={`${archivo.className} text-[#211f17] text-lg max-w-2xl mb-10 mx-auto`}
-          >
-            {translationDiamondzPage?.highlight_description}
-          </p>
-          <div className="inline-block border border-[#211f17]">
-            <Link
-              href="/media/news"
-              className={`${archivo.className} inline-flex items-center text-[#211f17] px-8 py-3 hover:bg-[#211f17] hover:text-[#fbf4e4] transition-colors`}
-            >
-              <span className="mr-2">Read More</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </Link>
-          </div>
+        {/* Latest Happenings Section */}
+        <DiamondzSection
+          title="Latest Happenings"
+          items={currentHappenings}
+          currentPage={happeningPage}
+          totalPages={happeningPages}
+          onNavigate={(direction) => {
+            if (typeof direction === "number") {
+              setHappeningPage(direction)
+            } else {
+              navigateHappenings(direction)
+            }
+          }}
+          CardComponent={HappeningCard}
+        />
+
+        {/* Off-Market Properties Section */}
+        <div className="px-[40px]">
+          <OffMarket data={offMarket} section={offMarketSection} dark={false} />
         </div>
       </div>
-
-      {/* Event Updates Section */}
-      <DiamondzSection
-        title={translationDiamondzEvent?.title}
-        items={eventsToDisplay}
-        currentPage={eventPage}
-        totalPages={eventPages}
-        onNavigate={(direction) => {
-          if (typeof direction === "number") {
-            setEventPage(direction)
-          } else {
-            navigateEvents(direction)
-          }
-        }}
-        CardComponent={EventCard}
-      />
-
-      {/* Upcoming Activities Section */}
-      <DiamondzSection
-        title="Upcoming Activities"
-        items={currentActivities}
-        currentPage={activityPage}
-        totalPages={activityPages}
-        onNavigate={(direction) => {
-          if (typeof direction === "number") {
-            setActivityPage(direction)
-          } else {
-            navigateActivities(direction)
-          }
-        }}
-        CardComponent={ActivityCard}
-      />
-
-      {/* Off-Market Properties Section */}
-      <div className="px-[40px]">
-        <OffMarket data={offMarket} section={offMarketSection} dark={false} />
-      </div>
-
-      {/* Latest Happenings Section */}
-      <DiamondzSection
-        title="Latest Happenings"
-        items={currentHappenings}
-        currentPage={happeningPage}
-        totalPages={happeningPages}
-        onNavigate={(direction) => {
-          if (typeof direction === "number") {
-            setHappeningPage(direction)
-          } else {
-            navigateHappenings(direction)
-          }
-        }}
-        CardComponent={HappeningCard}
-      />
-    </div>)
+      <Footer dark={false} />
+    </>
   )
 }
