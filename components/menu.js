@@ -147,7 +147,7 @@ export default function Menu({
       <div className="container mx-auto px-4 py-6 h-full flex flex-col">
         <div className="flex justify-between items-center mb-12">
           {/* Diamond Logo */}
-          <Link href="/" className="text-white">
+          <Link href="/" className="text-white" onClick={onClose}>
             <img
               src={
                 getImageUrl(dataLogo?.Logo?.id, {
