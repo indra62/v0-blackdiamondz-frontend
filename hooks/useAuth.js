@@ -1,4 +1,3 @@
-// hooks/useAuth.js
 "use client"
 
 import { useState, useEffect, createContext, useContext } from "react"
@@ -9,7 +8,7 @@ const API_URL =
   process.env.NEXT_PUBLIC_DIRECTUS_URL ||
   "https://staging.cms.black-diamondz.62dev.org"
 
-// Create axios instance with interceptor for token refresh
+// Create axios instance
 const api = axios.create({
   baseURL: API_URL,
 })
@@ -17,13 +16,24 @@ const api = axios.create({
 // Create Auth Context
 const AuthContext = createContext(null)
 
+// --- Token Refresh Logic ---
+let isRefreshing = false
+let refreshSubscribers = []
+
+function subscribeTokenRefresh(cb) {
+  refreshSubscribers.push(cb)
+}
+
+function onRefreshed(token) {
+  refreshSubscribers.forEach((cb) => cb(token))
+  refreshSubscribers = []
+}
+
 // Auth Provider Component
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [refreshPromise, setRefreshPromise] = useState(null)
 
   // Setup axios interceptor for token refresh
   useEffect(() => {
@@ -36,37 +46,32 @@ export function AuthProvider({ children }) {
         if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true
 
-          // If we're already refreshing, wait for that to complete
+          // If already refreshing, queue the request
           if (isRefreshing) {
-            try {
-              await refreshPromise
-              // After refresh, update the token in the request
-              originalRequest.headers[
-                "Authorization"
-              ] = `Bearer ${localStorage.getItem("access_token")}`
-              return api(originalRequest)
-            } catch (refreshError) {
-              return Promise.reject(refreshError)
-            }
+            return new Promise((resolve, reject) => {
+              subscribeTokenRefresh((token) => {
+                originalRequest.headers["Authorization"] = `Bearer ${token}`
+                resolve(api(originalRequest))
+              })
+            })
           }
 
-          // Start a new refresh process
+          isRefreshing = true
           try {
-            setIsRefreshing(true)
-            const refreshProcess = refreshToken()
-            setRefreshPromise(refreshProcess)
-
-            await refreshProcess
-            // After refresh, update the token in the request
-            originalRequest.headers[
-              "Authorization"
-            ] = `Bearer ${localStorage.getItem("access_token")}`
+            const { access_token } = await refreshToken()
+            localStorage.setItem("access_token", access_token)
+            onRefreshed(access_token)
+            originalRequest.headers["Authorization"] = `Bearer ${access_token}`
             return api(originalRequest)
           } catch (refreshError) {
+            // Logout user, clear tokens, or redirect to login
+            localStorage.removeItem("access_token")
+            localStorage.removeItem("refresh_token")
+            setUser(null)
+            setError("Session expired. Please log in again.")
             return Promise.reject(refreshError)
           } finally {
-            setIsRefreshing(false)
-            setRefreshPromise(null)
+            isRefreshing = false
           }
         }
 
@@ -77,7 +82,7 @@ export function AuthProvider({ children }) {
     return () => {
       api.interceptors.response.eject(interceptor)
     }
-  }, [isRefreshing, refreshPromise])
+  }, [])
 
   useEffect(() => {
     // Check for existing session on mount
@@ -156,6 +161,7 @@ export function AuthProvider({ children }) {
         setUser,
         setError,
         refreshToken,
+        api, // Export the api instance if you want to use it elsewhere
       }}
     >
       {children}
@@ -187,13 +193,6 @@ export function useAuth() {
       localStorage.setItem("access_token", response.data.data.access_token)
       localStorage.setItem("refresh_token", response.data.data.refresh_token)
 
-      document.cookie = `access_token=${
-        response.data.data.access_token
-      }; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
-      document.cookie = `refresh_token=${
-        response.data.data.refresh_token
-      }; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
-
       // Fetch user data
       const userData = await fetchUserData(response.data.data.access_token)
       setUser(userData)
@@ -222,10 +221,6 @@ export function useAuth() {
     } finally {
       localStorage.removeItem("access_token")
       localStorage.removeItem("refresh_token")
-
-      document.cookie = "access_token=; path=/; max-age=0";
-      document.cookie = "refresh_token=; path=/; max-age=0";
-
       setUser(null)
       router.push("/login")
     }
