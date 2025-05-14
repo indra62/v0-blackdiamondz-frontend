@@ -7,9 +7,9 @@
  *
  * @page
  */
-"use client";
+"use client"
 
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect, Suspense, useRef  } from "react"
 import Footer from "@/components/footer"
 import ExploreCity from "@/components/explore-city"
 import OffMarket from "@/components/off-market"
@@ -31,9 +31,9 @@ export function BuyPageContent() {
   const [loading, setLoading] = useState(true)
   const [dataExplore, setDataExplore] = useState(null)
   const [properties, setProperties] = useState([])
-  const [favorites, setFavorites] = useState([])
-  const [propertiesCount, setPropertiesCount] = useState(0)
-  const [propertiesTotalPages, setPropertiesTotalPages] = useState(1)
+  // const [propertiesCount, setPropertiesCount] = useState(0)
+  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0)
+  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0)
   const [error, setError] = useState(null)
   const [explore, setExplore] = useState(null)
   const [offMarket, setOffMarket] = useState(null)
@@ -44,6 +44,21 @@ export function BuyPageContent() {
   const bedroom = searchParams.get("bedroom")
   const priceMin = searchParams.get("price_min")
   const priceMax = searchParams.get("price_max")
+  const [isMobileView, setIsMobileView] = useState(false)
+  const gridRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 768)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -70,7 +85,7 @@ export function BuyPageContent() {
         is_off_market: { _eq: false },
         status:
           status === "Current"
-            ? { _nin: ["Sold", "Inactive"] }
+            ? { _eq: "Current" }
             : { _eq: "Sold", _neq: "Inactive" },
       }
 
@@ -103,27 +118,32 @@ export function BuyPageContent() {
       }
 
       // Fetch properties with pagination
-      const data = await getItems("properties", {
-        fields: [
-          "*",
-          "translations.*",
-          "images.directus_files_id.*",
-          "plans.*",
-          "videos.*",
-          "features.feature_id.*",
-          "features.value",
-          "agents.*",
-          "type.*.*",
-        ],
-        filter,
-        limit: ITEMS_PER_PAGE,
-        page: directusPage,
-        meta: "filter_count,total_count",
-      })
+      const data = await getItems(
+        "properties",
+        {
+          fields: [
+            "*",
+            "translations.*",
+            "images.directus_files_id.*",
+            "plans.*",
+            "videos.*",
+            "features.feature_id.*",
+            "features.value",
+            "agents.*",
+            "type.*.*",
+          ],
+          filter,
+          limit: ITEMS_PER_PAGE,
+          page: directusPage,
+          meta: "filter_count,total_count",
+        },
+        {},
+        true
+      )
 
-      setProperties(data || [])
+      setProperties(data?.data || [])
       const totalCount = data.meta?.filter_count || 0
-      setPropertiesCount(totalCount)
+      // setPropertiesCount(totalCount)
       setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE))
       return data
     } catch (err) {
@@ -133,11 +153,18 @@ export function BuyPageContent() {
     }
   }
 
-  const toggleFavorite = (id) => {
-    setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
-    )
+  const handlePropertyPageChange = (page) => {
+    if (page >= 0 && page < propertiesTotalPages) {
+      setPropertiesCurrentPage(page)
+      fetchProperties(page, "Current", [type])
+    }
   }
+
+  useEffect(() => {
+    if (gridRef.current) {
+      gridRef.current.scrollIntoView({ top: -80, behavior: "smooth" });
+    }
+  }, [propertiesCurrentPage]);
 
   useEffect(() => {
     const fetchDataBuy = async () => {
@@ -210,7 +237,7 @@ export function BuyPageContent() {
         <>
           <div className="container mx-auto px-4 py-16">
             {/* Heading */}
-            <div className="flex flex-col items-center text-center mb-12">
+            <div ref={gridRef} className="flex flex-col items-center text-center mb-12">
               <h2
                 className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
               >
@@ -232,14 +259,91 @@ export function BuyPageContent() {
             {/* Property Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {properties.length > 0 ? (
-                properties.map((property) => (
-                  <Property
-                    key={property.id}
-                    property={property}
-                    taviraj={taviraj}
-                    archivo={archivo}
-                  />
-                ))
+                <>
+                  {properties.map((property) => (
+                    <Property
+                      key={property.id}
+                      property={property}
+                      taviraj={taviraj}
+                      archivo={archivo}
+                    />
+                  ))}
+
+                  {propertiesTotalPages > 1 && (
+                    <div
+                      className={`flex items-center justify-between mt-12 col-span-4`}
+                    >
+                      {!isMobileView && (
+                        <div className="flex gap-8">
+                          {Array.from({ length: propertiesTotalPages }, (_, index) => (
+                            <div
+                              key={index}
+                              className={`w-3 h-3 ${
+                                index === propertiesCurrentPage
+                                  ? "bg-[#BD9574]"
+                                  : "bg-[#656565]"
+                              } transform rotate-45 cursor-pointer`}
+                              onClick={() => handlePropertyPageChange(index)}
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-4 text-white">
+                        <button
+                          className={`p-2 border border-[#656565] rounded ${
+                            propertiesCurrentPage === 0
+                              ? "opacity-50 cursor-not-allowed"
+                              : "hover:border-[#BD9574] hover:text-[#BD9574]"
+                          } transition-colors`}
+                          onClick={() => handlePropertyPageChange(propertiesCurrentPage - 1)}
+                          disabled={propertiesCurrentPage === 0}
+                        >
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M15 18l-6-6 6-6"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          className={`p-2 border border-[#656565] rounded ${
+                            propertiesCurrentPage === propertiesTotalPages - 1
+                              ? "opacity-50 cursor-not-allowed"
+                              : "hover:border-[#BD9574] hover:text-[#BD9574]"
+                          } transition-colors`}
+                          onClick={() => handlePropertyPageChange(propertiesCurrentPage + 1)}
+                          disabled={propertiesCurrentPage === propertiesTotalPages - 1}
+                        >
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M9 6l6 6-6 6"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
                   {language === "en"

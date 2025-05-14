@@ -32,14 +32,9 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "700", "600
 const inter = Inter({ subsets: ["latin"], weight: ["500"] })
 
 export default function PropertyDetailPage({ params }) {
-  // Unwrap the params promise using React.use()
   const { id: propertyId } = use(params)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
-  // You would typically fetch property data based on this ID
-  // For now, we'll just log it and continue with the static content
-  console.log(`Displaying property with ID: ${propertyId}`)
 
   const fetchProperty = async (id) => {
     try {
@@ -56,7 +51,6 @@ export default function PropertyDetailPage({ params }) {
           "type.*.*",
         ],
       })
-      console.log("property", data)
       return data
     } catch (error) {
       setError("Error fetching property:", error)

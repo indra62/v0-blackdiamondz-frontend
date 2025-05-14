@@ -63,7 +63,7 @@ export default function Home() {
         is_off_market: { _eq: false },
         status:
           status === "Current"
-            ? { _nin: ["Sold", "Inactive"] }
+            ? { _eq: "Current" }
             : { _eq: "Sold", _neq: "Inactive" },
       }
 
@@ -98,14 +98,14 @@ export default function Home() {
         limit: ITEMS_PER_PAGE,
         page: directusPage,
         meta: "filter_count,total_count",
-      })
+      }, {}, true)
 
       // Update properties state
-      setProperties(data || [])
+      setProperties(data?.data || [])
 
       // Calculate total pages
-      const totalCount = data.meta?.filter_count || 0
-      setPropertiesCount(totalCount)
+      const totalCount = data?.meta?.filter_count || 0
+      // setPropertiesCount(totalCount)
       setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE))
 
       return data
@@ -214,7 +214,6 @@ export default function Home() {
           <div className="px-[40px]">
             <Properties
               data={properties}
-              properties={properties}
               currentPage={propertiesCurrentPage}
               totalPages={propertiesTotalPages}
               onPageChange={handlePropertyPageChange}

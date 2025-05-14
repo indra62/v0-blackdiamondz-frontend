@@ -190,7 +190,6 @@ const propertyTab = [
 
 export default function Properties({
   data,
-  properties,
   showFilters = true,
   showNavigation = true,
   propertyCount = 4,
@@ -205,7 +204,6 @@ export default function Properties({
   const [selectedFilters, setSelectedFilters] = useState(["Current"]);
   const [selectedType, setSelectedType] = useState([]);
   const [activeTab, setActiveTab] = useState("Current");
-  const [favorites, setFavorites] = useState([]);
   const [language, setLanguage] = useState("en");
 
   useEffect(() => {
@@ -246,14 +244,6 @@ export default function Properties({
     if (onTypeChange) {
       onTypeChange(updatedTypes); // Only pass the updated types
     }
-  };
-
-  const toggleFavorite = (propertyId) => {
-    setFavorites((prev) =>
-      prev.includes(propertyId)
-        ? prev.filter((id) => id !== propertyId)
-        : [...prev, propertyId]
-    );
   };
 
   return (
@@ -340,7 +330,7 @@ export default function Properties({
           <div className={`flex items-center justify-between mt-12`}>
             {!isMobileView && (
               <div className="flex gap-8">
-                {Array.from({ length: totalPages + 1 }, (_, index) => (
+                {Array.from({ length: totalPages}, (_, index) => (
                   <div
                     key={index}
                     className={`w-3 h-3 ${

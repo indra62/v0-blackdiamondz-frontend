@@ -66,10 +66,10 @@ const bedroomOptions = [
 ]
 
 export default function Header() {
-  const [hasMounted, setHasMounted] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false)
   useEffect(() => {
-    setHasMounted(true);
-  }, []);
+    setHasMounted(true)
+  }, [])
   const router = useRouter()
   const searchParams = useSearchParams()
   const city = searchParams.get("city")
@@ -139,7 +139,17 @@ export default function Header() {
     if (formData.price_min) params.set("price_min", formData.price_min)
     if (formData.price_max) params.set("price_max", formData.price_max)
 
-    router.push(`/buy?${params.toString()}`)
+    const hasParams = Array.from(params).length > 0
+    if (hasParams) {
+      router.push(`/buy?${params.toString()}`)
+    } else {
+      if (router.pathname !== "/buy") {
+        router.push("/buy")
+      } else {
+        // Refresh the page
+        router.replace(router.asPath)
+      }
+    }
   }
 
   useEffect(() => {
@@ -659,10 +669,10 @@ function PropertyFilter({
   isMobileFiltersOpen,
   isAuthenticated,
 }) {
-  const [hasMounted, setHasMounted] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false)
   useEffect(() => {
-    setHasMounted(true);
-  }, []);
+    setHasMounted(true)
+  }, [])
   const [activeFilters, setActiveFilters] = useState([])
 
   const toggleFilter = (filterId) => {
@@ -890,21 +900,23 @@ function PropertyFilter({
               </svg>
             </button>
             <div className="flex items-center justify-center px-8 py-4 border-[#333] border-l">
-              {hasMounted ? ( isAuthenticated ? (
-                <button
-                  onClick={logout}
-                  className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                >
-                  Logout
-                </button>
+              {hasMounted ? (
+                isAuthenticated ? (
+                  <button
+                    onClick={logout}
+                    className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                  >
+                    Login
+                  </Link>
+                )
               ) : (
-                <Link
-                  href="/login"
-                  className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                >
-                  Login
-                </Link>
-              )) : (
                 <span style={{ visibility: "hidden" }}>Login</span>
               )}
             </div>
