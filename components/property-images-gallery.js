@@ -8,41 +8,6 @@ import { getImageUrl } from "@/lib/api";
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
-// Sample property images
-const propertyImages = [
-  {
-    id: 1,
-    src: "/luxury-beachfront-property.png",
-    alt: "Luxury cliff-side villa with infinity pool overlooking ocean",
-  },
-  {
-    id: 2,
-    src: "/luxury-beachfront-property.png",
-    alt: "Luxury beachfront property aerial view",
-  },
-  {
-    id: 3,
-    src: "/luxury-beachfront-property.png",
-    alt: "Luxury bedroom with ocean view",
-  },
-  {
-    id: 4,
-    src: "/luxury-beachfront-property.png",
-    alt: "Luxury property spa interior",
-  },
-  {
-    id: 5,
-    src: "/luxury-ocean-view-interior.png",
-    alt: "Luxury property interior with ocean view",
-  },
-  {
-    id: 6,
-    src: "/luxury-beachfront-aerial.png",
-    alt: "Luxury beachfront aerial view",
-  },
-  // Add more images as needed
-];
-
 export default function PropertyImagesGallery({
   onClose,
   onGridView,
@@ -50,7 +15,7 @@ export default function PropertyImagesGallery({
   initialImageId = 1,
 }) {
   // Find the index of the image with the given ID, or default to 0
-  const initialIndex = propertyImages.findIndex(
+  const initialIndex = property?.images.findIndex(
     (img) => img.id === initialImageId
   );
   const [currentIndex, setCurrentIndex] = useState(
