@@ -24,73 +24,6 @@ const archivo = Archivo({
   display: "swap",
 })
 
-// Sample data for events
-const eventUpdates = [
-  {
-    id: 1,
-    title: "Sydney Luxury Property Showcase",
-    category: "Property",
-    date: "15 January 2025",
-    location: "Sydney Opera House",
-    thumbnail: "/luxury-event-lights.png",
-  },
-  {
-    id: 2,
-    title: "Exclusive Wine Tasting Evening",
-    category: "Lifestyle",
-    date: "22 January 2025",
-    location: "The Rocks, Sydney",
-    thumbnail: "/luxury-event-crowd.png",
-  },
-  {
-    id: 3,
-    title: "Investment Strategies Masterclass",
-    category: "Finance",
-    date: "5 February 2025",
-    location: "Four Seasons Hotel",
-    thumbnail: "/real-estate-conference.png",
-  },
-  {
-    id: 4,
-    title: "Architectural Excellence Awards",
-    category: "Design",
-    date: "18 February 2025",
-    location: "Museum of Contemporary Art",
-    thumbnail: "/real-estate-conference-stage.png",
-  },
-  {
-    id: 5,
-    title: "Luxury Home Tour",
-    category: "Property",
-    date: "3 March 2025",
-    location: "Eastern Suburbs, Sydney",
-    thumbnail: "/modern-home-couple.png",
-  },
-  {
-    id: 6,
-    title: "Investment Property Seminar",
-    category: "Finance",
-    date: "12 March 2025",
-    location: "Hilton Hotel Sydney",
-    thumbnail: "/property-investment-graph.png",
-  },
-  {
-    id: 7,
-    title: "Exclusive Art Exhibition",
-    category: "Lifestyle",
-    date: "25 March 2025",
-    location: "Museum of Contemporary Art",
-    thumbnail: "/launch-event-women.png",
-  },
-  {
-    id: 8,
-    title: "Property Market Outlook 2025",
-    category: "Finance",
-    date: "8 April 2025",
-    location: "Four Seasons Hotel",
-    thumbnail: "/real-estate-conference.png",
-  },
-]
 
 // Sample data for latest happenings
 const latestHappenings = [
@@ -163,229 +96,6 @@ const latestHappenings = [
   },
 ]
 
-// Sample data for upcoming activities
-const upcomingActivities = [
-  {
-    id: 1,
-    title: "Melbourne Property Tour",
-    category: "Tour",
-    date: "10 March 2025",
-    location: "Melbourne CBD",
-    thumbnail: "/modern-home-couple.png",
-  },
-  {
-    id: 2,
-    title: "Art Collection Investment Seminar",
-    category: "Seminar",
-    date: "25 March 2025",
-    location: "Art Gallery of NSW",
-    thumbnail: "/japanese-inspired-home.png",
-  },
-  {
-    id: 3,
-    title: "Luxury Yacht Experience",
-    category: "Lifestyle",
-    date: "8 April 2025",
-    location: "Sydney Harbour",
-    thumbnail: "/tudor-luxury-home.png",
-  },
-  {
-    id: 4,
-    title: "International Property Showcase",
-    category: "Exhibition",
-    date: "20 April 2025",
-    location: "International Convention Centre",
-    thumbnail: "/modern-garden-home.png",
-  },
-  {
-    id: 5,
-    title: "Gold Coast Property Weekend",
-    category: "Tour",
-    date: "5 May 2025",
-    location: "Gold Coast",
-    thumbnail: "/luxury-beachfront-property.png",
-  },
-  {
-    id: 6,
-    title: "Fine Dining Experience",
-    category: "Lifestyle",
-    date: "15 May 2025",
-    location: "Quay Restaurant, Sydney",
-    thumbnail: "/luxury-event-lights.png",
-  },
-  {
-    id: 7,
-    title: "Luxury Home Styling Workshop",
-    category: "Workshop",
-    date: "28 May 2025",
-    location: "Black Diamondz HQ",
-    thumbnail: "/luxury-interior.png",
-  },
-  {
-    id: 8,
-    title: "Perth Property Investment Tour",
-    category: "Tour",
-    date: "10 June 2025",
-    location: "Perth",
-    thumbnail: "/coastal-luxury-property.png",
-  },
-]
-
-// Sample data for off-market properties
-const offMarketProperties = [
-  {
-    id: 1,
-    type: "House",
-    location: "Beachfront",
-    name: "Anandes Hotel",
-    address: "5408/101 Middle Street",
-    city: "Sydney",
-    postcode: "2000",
-    price: "730.000",
-    image: "/images/anandes-hotel.png",
-    features: {
-      bedrooms: 3,
-      bathrooms: 5,
-      parking: 1,
-      floors: 6,
-      rooms: 8,
-      additional: 2,
-    },
-  },
-  {
-    id: 2,
-    type: "Apartment",
-    location: "City View",
-    name: "Pacific Plaza",
-    address: "2309/45 Business Avenue",
-    city: "Melbourne",
-    postcode: "3000",
-    price: "730.000",
-    image: "/images/pacific-plaza.png",
-    features: {
-      bedrooms: 2,
-      bathrooms: 2,
-      parking: 1,
-      floors: 4,
-      rooms: 3,
-      additional: 1,
-    },
-  },
-  {
-    id: 3,
-    type: "Villa",
-    location: "Mountain View",
-    name: "Sunrise Retreat",
-    address: "1254/78 Serenity Way",
-    city: "Brisbane",
-    postcode: "4000",
-    price: "730.000",
-    image: "/images/sunrise-retreat.png",
-    features: {
-      bedrooms: 4,
-      bathrooms: 3,
-      parking: 2,
-      floors: 5,
-      rooms: 6,
-      additional: 3,
-    },
-  },
-  {
-    id: 4,
-    type: "Penthouse",
-    location: "Ocean View",
-    name: "Azure Heights",
-    address: "601/15 Waterfront Avenue",
-    city: "Gold Coast",
-    postcode: "4217",
-    price: "730.000",
-    image: "/images/azure-heights.png",
-    features: {
-      bedrooms: 5,
-      bathrooms: 4,
-      parking: 3,
-      floors: 7,
-      rooms: 9,
-      additional: 4,
-    },
-  },
-  {
-    id: 5,
-    type: "House",
-    location: "Hillside",
-    name: "Emerald Estate",
-    address: "42 Hillcrest Road",
-    city: "Sydney",
-    postcode: "2000",
-    price: "950.000",
-    image: "/modern-house-exterior.png",
-    features: {
-      bedrooms: 4,
-      bathrooms: 3,
-      parking: 2,
-      floors: 2,
-      rooms: 7,
-      additional: 1,
-    },
-  },
-  {
-    id: 6,
-    type: "Apartment",
-    location: "Waterfront",
-    name: "Harbor View",
-    address: "15 Marina Boulevard",
-    city: "Melbourne",
-    postcode: "3000",
-    price: "820.000",
-    image: "/contemporary-house.png",
-    features: {
-      bedrooms: 3,
-      bathrooms: 2,
-      parking: 1,
-      floors: 1,
-      rooms: 4,
-      additional: 1,
-    },
-  },
-  {
-    id: 7,
-    type: "Villa",
-    location: "Countryside",
-    name: "Tranquil Haven",
-    address: "88 Rural Lane",
-    city: "Brisbane",
-    postcode: "4000",
-    price: "1.200.000",
-    image: "/luxury-beachfront-property.png",
-    features: {
-      bedrooms: 5,
-      bathrooms: 4,
-      parking: 3,
-      floors: 2,
-      rooms: 8,
-      additional: 2,
-    },
-  },
-  {
-    id: 8,
-    type: "Penthouse",
-    location: "City Center",
-    name: "Metropolitan Heights",
-    address: "120 Central Avenue",
-    city: "Perth",
-    postcode: "6000",
-    price: "1.500.000",
-    image: "/modern-apartment-building.png",
-    features: {
-      bedrooms: 4,
-      bathrooms: 3,
-      parking: 2,
-      floors: 1,
-      rooms: 6,
-      additional: 1,
-    },
-  },
-]
 
 export default function ClubDiamondz() {
   // State for pagination in each section
@@ -397,7 +107,9 @@ export default function ClubDiamondz() {
   const [offMarketSection, setOffMarketSection] = useState(null)
   const [diamondzPage, setDiamondzPage] = useState(null)
   const [diamondzEvent, setDiamondzEvent] = useState(null)
+  const [diamondzEventUpcoming, setDiamondzEventUpcoming] = useState(null)
   const [diamondzEventList, setDiamondzEventList] = useState(null)
+  const [diamondzEventUpcomingList, setDiamondzEventUpcomingList] = useState(null)
   const [language, setLanguage] = useState("en")
   const [error, setError] = useState(null)
 
@@ -409,7 +121,7 @@ export default function ClubDiamondz() {
   // Calculate total pages for each section
   const eventPages = Math.ceil((diamondzEventList?.length || 0) / itemsPerPage)
   const happeningPages = Math.ceil(latestHappenings.length / itemsPerPage)
-  const activityPages = Math.ceil(upcomingActivities.length / itemsPerPage)
+  const activityPages = Math.ceil((diamondzEventUpcomingList?.length || 0) / itemsPerPage)
 
   // Get current items for each section
   const currentEvents =
@@ -430,10 +142,19 @@ export default function ClubDiamondz() {
     (happeningPage + 1) * itemsPerPage
   )
 
-  const currentActivities = upcomingActivities.slice(
-    activityPage * itemsPerPage,
-    (activityPage + 1) * itemsPerPage
-  )
+  //upcoming events
+  const currentActivities = diamondzEventUpcomingList?.slice(
+    eventPage * itemsPerPage,
+    (eventPage + 1) * itemsPerPage
+  ) || []
+
+  const upcomingEventsToDisplay = currentActivities.map((event) => {
+    const translation =
+      event.translations?.find((t) => t.languages_code === language) ||
+      event.translations?.[0]
+    return { ...event, translation }
+  })
+
 
   // Navigation functions
   const navigateEvents = (direction) => {
@@ -514,6 +235,26 @@ export default function ClubDiamondz() {
           }
         )
 
+        const dataEventUpcoming = await getItems(
+          "diamondz_upcoming_activities",
+          {
+            fields: ["*", "translations.*"],
+          },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        )
+
+        const dataEventUpcomingList = await getItems(
+          "activities_list",
+          {
+            fields: ["*", "translations.*"],
+          },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        )
+
         const dataOffMarketSection = await getItems("offMarket_section", {
           fields: ["*", "translations.*"],
         })
@@ -540,6 +281,8 @@ export default function ClubDiamondz() {
         setDiamondzPage(dataDiamondzPage)
         setDiamondzEvent(dataEventUpdates)
         setDiamondzEventList(dataEventList)
+        setDiamondzEventUpcoming(dataEventUpcoming)
+        setDiamondzEventUpcomingList(dataEventUpcomingList)
         setOffMarketSection(dataOffMarketSection)
         setOffMarket(dataOffMarketProperties)
         setLoading(false)
@@ -608,19 +351,25 @@ export default function ClubDiamondz() {
     <div className="relative group cursor-pointer">
       <div className="relative w-full aspect-video overflow-hidden">
         <Image
-          src={item.thumbnail || "/placeholder.svg"}
-          alt={item.title}
+        src={
+          getImageUrl(item.activity_thumbnail, {
+            format: "webp",
+            quality: 100,
+            fit: "cover",
+          }) || "/placeholder.svg"
+        }
+          alt={item?.translation?.activity_title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-sm font-light">{item.category}</div>
+        <div className="text-[#BD9574] text-sm font-light">{item.tags}</div>
         <h3 className="text-[#211f17] text-lg font-light mt-1 line-clamp-2 group-hover:text-[#BD9574] transition-colors">
-          {item.title}
+        {item?.translation?.activity_title}
         </h3>
-        <div className="text-[#656565] text-sm mt-1">{item.date}</div>
+        <div className="text-[#656565] text-sm mt-1">{item.activity_date}</div>
         <div className="text-[#656565] text-sm">{item.location}</div>
       </div>
     </div>
@@ -1028,7 +777,7 @@ export default function ClubDiamondz() {
         {/* Upcoming Activities Section */}
         <DiamondzSection
           title="Upcoming Activities"
-          items={currentActivities}
+          items={upcomingEventsToDisplay}
           currentPage={activityPage}
           totalPages={activityPages}
           onNavigate={(direction) => {

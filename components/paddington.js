@@ -6,31 +6,43 @@
  *
  * @component
  */
-"use client"
-import { getItems } from "@/lib/api"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import { useEffect, useState } from "react"
-import Loading from "./loading"
+"use client";
+import { getItems } from "@/lib/api";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import { useEffect, useState } from "react";
+import Loading from "./loading";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
 
 export default function Paddington() {
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [data, setData] = useState(null)
-  const [stats, setStats] = useState([])
-  const [language, setLanguage] = useState("en")
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+  const [stats, setStats] = useState([]);
+  const [language, setLanguage] = useState("en");
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
+
+
+  useEffect(() => {
+    const fetchSuggestions = async (query = "QLD") => {
+      const res = await fetch(`/api/corelogic-suggest?q=${encodeURIComponent(query)}`);
+      const data = await res.json();
+      console.log("CoreLogic suggestions:", JSON.stringify(data, null, 2));
+    };
+    fetchSuggestions("QLD");
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,31 +54,31 @@ export default function Paddington() {
             "stats.svg.*",
             "stats.translations.*",
           ],
-        })
+        });
 
-        setData(data)
-        setStats(data?.stats || [])
-        setLoading(false)
+        setData(data);
+        setStats(data?.stats || []);
+        setLoading(false);
       } catch (err) {
-        setError("Failed to paddington data:" + err.message)
+        setError("Failed to paddington data:" + err.message);
       }
-    }
-    fetchData()
-  }, [])
+    };
+    fetchData();
+  }, []);
 
   const translationData =
     data?.translations?.find((t) => t.languages_code === language) ||
-    data?.translations?.[0]
+    data?.translations?.[0];
 
   const translatedStats = stats.map((stat) => {
     const translation =
       stat.translations?.find((t) => t.languages_code === language) ||
-      stat.translations?.[0]
+      stat.translations?.[0];
     return {
       ...stat,
       translatedData: translation,
-    }
-  })
+    };
+  });
 
   return loading ? (
     <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
@@ -124,5 +136,5 @@ export default function Paddington() {
         </div>
       </section>
     </>
-  )
+  );
 }
