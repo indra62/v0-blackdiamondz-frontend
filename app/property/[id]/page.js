@@ -189,7 +189,7 @@ export default function PropertyDetailPage({ params }) {
           <div className="container mx-auto px-4">
             {/* Breadcrumb */}
             <div className="py-6">
-              <div className="text-[#e2dbcc] text-sm">
+              <div className={`${archivo.className} text-[#e2dbcc] text-[16px] font-light`}>
                 <span>{translation?.name || ""}</span>
               </div>
             </div>

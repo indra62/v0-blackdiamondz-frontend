@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
 
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api"
+import Loading from "./loading"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
@@ -18,8 +19,8 @@ export default function PropertyMap({ onClose, property, type }) {
   // The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
 
   const { isLoaded } = useJsApiLoader({
-    id: 'google-maps-script',
-    googleMapsApiKey: 'AIzaSyBQ7mtgk24xxFbuz7eS2KE93QRu3JzDLr0'
+    id: "google-maps-script",
+    googleMapsApiKey: "AIzaSyBQ7mtgk24xxFbuz7eS2KE93QRu3JzDLr0",
   })
 
   const handleMapTypeChange = (type) => {
@@ -27,33 +28,34 @@ export default function PropertyMap({ onClose, property, type }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-[#211f17] z-50 flex flex-col">
+    <div className="relative bg-[#211f17] z-50 flex flex-col px-10">
       {/* Property Info - Updated with correct font sizes */}
       <div className="container mx-auto px-4 py-6">
-        <div className="text-[#e2dbcc] text-[14px] mb-4">
+        <div
+          className={`${archivo.className} text-[#e2dbcc] text-[16px] leading-[150%] mb-4`}
+        >
           <span>{type}</span>
         </div>
 
         <div className="flex justify-between items-start">
           <div>
             <h1
-              className={`${taviraj.className} text-[#bd9574] text-[64px] font-light leading-[125%] tracking-[0px] mb-0`}
+              className={`${taviraj.className} text-[#bd9574] text-[32px] font-light leading-[125%] tracking-[0px] mb-0`}
             >
-              {property?.name || "Sunny Vista"}
+              {property?.name || ""}
             </h1>
           </div>
           <div className="text-right">
             <p
               className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
             >
-              {property?.address_street + ", " + property?.address_suburb ||
-                "5408/101 Bathurst Street, Sydney, 2000."}
+              {property?.address_street + ", " + property?.address_suburb || ""}
             </p>
             <p
               className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
             >
               {property?.address_state + ", " + property?.address_postcode ||
-                "Sydney, 2000"}
+                ""}
             </p>
           </div>
         </div>
@@ -62,7 +64,7 @@ export default function PropertyMap({ onClose, property, type }) {
       {/* Map Container */}
       <div className="flex-1 relative">
         {/* Map Image - Different based on selected map type */}
-        <div className="h-full w-full">
+        <div className="h-[500px] w-full">
           {
             /* Only render Google Map after API is loaded */
             console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
@@ -94,16 +96,16 @@ export default function PropertyMap({ onClose, property, type }) {
                     : { lat: -33.8688, lng: 151.2093 }
                 }
                 icon={{
-                  url: "/smallLogoBD.png",
+                  url: "map-pointer.png",
                   scaledSize: { width: 32, height: 32 },
                   anchor: { x: 16, y: 32 },
                 }}
               />
             </GoogleMap>
           ) : (
-            <div className="flex items-center justify-center h-full w-full">
-              Loading Map...
-            </div>
+            <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
+              <Loading />
+            </section>
           )}
         </div>
       </div>
