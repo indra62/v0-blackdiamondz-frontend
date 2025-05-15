@@ -298,7 +298,7 @@ export function useAuth() {
         },
       })
 
-      return userResponse.data.data
+      return userResponse.data
     } catch (err) {
       console.error("Error fetching user data:", err)
       throw new Error("Failed to fetch user data")

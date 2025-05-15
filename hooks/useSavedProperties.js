@@ -6,11 +6,13 @@ import api from "@/lib/api"; // Make sure this exports the axios instance
 export function useSavedProperties() {
   const { user } = useAuth();
   const [savedPropertyIds, setSavedPropertyIds] = useState([]);
+  const [savedPropertyUniqueIds, setSavedPropertyUniqueIds] = useState([]);
 
   // Fetch saved properties
   useEffect(() => {
     if (!user?.id) {
       setSavedPropertyIds([]);
+      setSavedPropertyUniqueIds([]);
       return;
     }
 
@@ -30,9 +32,13 @@ export function useSavedProperties() {
         );
         if (isMounted && data) {
           setSavedPropertyIds(data.map((item) => item.property_id));
+          setSavedPropertyUniqueIds(data.map((item) => item.unique_id));
         }
       } catch (err) {
-        if (isMounted) setSavedPropertyIds([]);
+        if (isMounted) {
+          setSavedPropertyIds([])
+          setSavedPropertyUniqueIds([])
+        };
       }
     })();
 
@@ -42,7 +48,7 @@ export function useSavedProperties() {
   }, [user]);
 
   // Save property function
-  const saveProperty = async (propertyId) => {
+  const saveProperty = async (propertyId, uniqueId) => {
     const token = localStorage.getItem("access_token");
     try {
       await api.post(
@@ -50,6 +56,7 @@ export function useSavedProperties() {
         {
           user_id: user.id,
           property_id: propertyId,
+          unique_id: uniqueId
         },
         {
           headers: {
@@ -58,6 +65,7 @@ export function useSavedProperties() {
         }
       );
       setSavedPropertyIds((prev) => [...prev, propertyId]);
+      setSavedPropertyUniqueIds((prev) => [...prev, uniqueId]);
     } catch (error) {
       console.error("Error saving property", error);
       throw error;
@@ -65,7 +73,7 @@ export function useSavedProperties() {
   };
 
   // Delete saved property function
-  const deleteSavedProperty = async (propertyId) => {
+  const deleteSavedProperty = async (propertyId, uniqueId) => {
     const token = localStorage.getItem("access_token");
     try {
       await api.delete(
@@ -81,11 +89,12 @@ export function useSavedProperties() {
         }
       );
       setSavedPropertyIds((prev) => prev.filter((id) => id !== propertyId));
+      setSavedPropertyUniqueIds((prev) => prev.filter((id) => id !== uniqueId));
     } catch (error) {
       console.error("Error deleting saved property", error);
       throw error;
     }
   };
 
-  return [savedPropertyIds, saveProperty, deleteSavedProperty];
+  return [savedPropertyIds, savedPropertyUniqueIds, saveProperty, deleteSavedProperty];
 }
