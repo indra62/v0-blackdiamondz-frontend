@@ -68,7 +68,7 @@ export default function OffMarket({ data, section, dark = true }) {
 
         {/* Properties Grid with conditional blur */}
         <div className="relative">
-        {data?.length > 0 ? (
+        {data?.length > 0 && (
           <>
           <div
             className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ${
@@ -92,35 +92,34 @@ export default function OffMarket({ data, section, dark = true }) {
             ))}
           </div>
           </>
-        ) : (
-          <>
-            {isAuthenticated && (
-              <div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
-                {language === "en"
-                  ? "No properties found."
-                  : "未找到任何属性。"}
-              </div>
-            )}
-            {/* Login overlay for non-authenticated users */}
-            {!isAuthenticated && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-                <div
-                  className={`${taviraj.className} text-[#e2dbcc] text-2xl mb-6 text-center`}
-                >
-                  Login to view our exclusive off-market properties
-                </div>
-                <Link
-                  href="/login"
-                  className={`bg-[#BD9574] ${
-                    darkMode ? "text-white" : "text-[#211f17]"
-                  } px-8 py-3 hover:bg-[#BD9574] transition-colors`}
-                >
-                  Login Now
-                </Link>
-              </div>
-            )}
-          </>
         )}
+        <>
+        {isAuthenticated && (
+          <div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
+            {language === "en"
+              ? "No properties found."
+              : "未找到任何属性。"}
+          </div>
+        )}
+        {/* Login overlay for non-authenticated users */}
+        {!isAuthenticated && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+            <div
+              className={`${taviraj.className} text-[#e2dbcc] text-2xl mb-6 text-center`}
+            >
+              Login to view our exclusive off-market properties
+            </div>
+            <Link
+              href="/login"
+              className={`bg-[#BD9574] ${
+                darkMode ? "text-white" : "text-[#211f17]"
+              } px-8 py-3 hover:bg-[#BD9574] transition-colors`}
+            >
+              Login Now
+            </Link>
+          </div>
+        )}
+      </>
       </div>
       </div>
     </div>
