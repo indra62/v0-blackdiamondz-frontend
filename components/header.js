@@ -2,7 +2,7 @@
 import { useAuth } from "@/hooks/useAuth"
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { ChevronDown, ArrowRight } from "lucide-react"
+import { ChevronDown, ArrowRight, Heart } from "lucide-react"
 import { Archivo } from "next/font/google"
 import Menu from "./menu"
 import { getImageUrl, getItems } from "@/lib/api"
@@ -10,7 +10,7 @@ import { createPortal } from "react-dom"
 import { useDebouncedCallback } from "use-debounce"
 import AsyncSelect from "react-select/async"
 import Select from "react-select"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import RangeSlider from "react-range-slider-input"
 import "react-range-slider-input/dist/style.css"
 
@@ -27,7 +27,10 @@ const customStyles = {
   menu: (provided) => ({
     ...provided,
     backgroundColor: "#211f17",
+    overflowY: "auto",
     border: "1px solid rgba(101, 101, 101, 0.3)",
+    WebkitOverflowScrolling: "touch",
+    zIndex: 1000,
   }),
   menuPortal: (base) => ({
     ...base,
@@ -71,6 +74,7 @@ export default function Header() {
     setHasMounted(true)
   }, [])
   const router = useRouter()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
   const city = searchParams.get("city")
   const type = searchParams.get("type")
@@ -80,7 +84,13 @@ export default function Header() {
   const { logout, isAuthenticated } = useAuth()
   const [error, setError] = useState(null)
   const languageButtonRef = useRef(null)
-  const [activeTab, setActiveTab] = useState("buy")
+  const activeTab = pathname.startsWith("/buy")
+    ? "buy"
+    : pathname.startsWith("/sell")
+    ? "sell"
+    : pathname.startsWith("/saved-properties")
+    ? "saved-properties"
+    : ""
   const [dataLogo, setDataLogo] = useState(null)
   const [dataSocial, setDataSocial] = useState(null)
   const [dataType, setDataTypes] = useState([])
@@ -150,6 +160,7 @@ export default function Header() {
         router.replace(router.asPath)
       }
     }
+    setIsMobileFiltersOpen(false)
   }
 
   useEffect(() => {
@@ -374,7 +385,7 @@ export default function Header() {
                   }}
                   getOptionLabel={(option) => option.name}
                   getOptionValue={(option) => option.id}
-                  placeholder={"Location"}
+                  placeholder={"Search Location"}
                   menuPortalTarget={
                     typeof window !== "undefined" ? document.body : null
                   }
@@ -382,6 +393,12 @@ export default function Header() {
                   styles={customStyles}
                   className={archivo.className}
                   isClearable
+                  components={{
+                    DropdownIndicator: () => null,
+                  }}
+                  noOptionsMessage={({ inputValue }) =>
+                    inputValue ? `No location found` : null
+                  }
                 />
               </div>
             </div>
@@ -615,11 +632,17 @@ export default function Header() {
         {/* Secondary Navigation - Property Filter */}
         <PropertyFilter
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
           isMobileView={isMobileView}
           toggleMobileFilters={toggleMobileFilters}
           isMobileFiltersOpen={isMobileFiltersOpen}
           isAuthenticated={isAuthenticated}
+          logout={logout}
+          formData={formData}
+          setFormData={setFormData}
+          propertyTypeOptions={propertyTypeOptions}
+          debouncedLoadCityOptions={debouncedLoadCityOptions}
+          formatPrice={formatPrice}
+          handleSearch={handleSearch}
         />
       </header>
 
@@ -663,11 +686,17 @@ export default function Header() {
 // Property Filter Component
 function PropertyFilter({
   activeTab,
-  setActiveTab,
   isMobileView,
   toggleMobileFilters,
   isMobileFiltersOpen,
   isAuthenticated,
+  logout,
+  formData,
+  setFormData,
+  propertyTypeOptions,
+  debouncedLoadCityOptions,
+  formatPrice,
+  handleSearch
 }) {
   const [hasMounted, setHasMounted] = useState(false)
   useEffect(() => {
@@ -692,23 +721,43 @@ function PropertyFilter({
         <div className="flex">
           <Link
             href="/buy"
-            className={`px-8 py-4 text-sm font-light border-r border-[#333] ${
+            className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
               activeTab === "buy" ? "text-[#BD9574]" : "text-[#656565]"
             }`}
-            onClick={() => setActiveTab("buy")}
           >
             Buy
           </Link>
           <Link
             href="/sell"
-            className={`px-8 py-4 text-sm font-light border-r border-[#333] ${
+            className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
               activeTab === "sell" ? "text-[#BD9574]" : "text-[#656565]"
             }`}
-            onClick={() => setActiveTab("sell")}
           >
             Sell
           </Link>
         </div>
+        {isAuthenticated && (
+          <Link
+            href="/saved-properties"
+            className={`flex justify-center items-center w-full px-6 py-4 text-sm font-light ${
+              isMobileView ? "" : "border-r"
+            }  border-[#333] ${
+              activeTab === "saved-properties"
+                ? "text-[#BD9574]"
+                : "text-[#656565]"
+            }`}
+          >
+            <Heart
+              className={`${
+                activeTab === "saved-properties"
+                  ? "fill-[#BD9574] stroke-[#BD9574]"
+                  : "fill-transparent stroke-[#656565]"
+              }`}
+              strokeWidth={1.5}
+              size={24}
+            />
+          </Link>
+        )}
         {/* Desktop Property Filters */}
         {!isMobileView && (
           <div className="hidden md:flex items-stretch text-[#656565]">
@@ -881,44 +930,75 @@ function PropertyFilter({
         {/* Filters button - Only on mobile */}
         {isMobileView && (
           <>
-            <button
-              onClick={toggleMobileFilters}
-              className="text-[#BD9574] px-8 py-4 text-sm font-light"
-            >
-              <svg
-                width="24px"
-                height="24px"
-                viewBox="0 0 0.45 0.45"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 0.075h0.45m-0.36 0.15h0.27m-0.21 0.15h0.15"
-                  stroke="currentColor"
-                  strokeWidth="0.03"
-                />
-              </svg>
-            </button>
-            <div className="flex items-center justify-center px-8 py-4 border-[#333] border-l">
-              {hasMounted ? (
-                isAuthenticated ? (
-                  <button
-                    onClick={logout}
-                    className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+            <div className="flex items-center">
+              <div className="flex items-center justify-center px-7 py-4 border-[#333] border-l">
+                <button
+                  onClick={toggleMobileFilters}
+                  className="text-[#BD9574] text-sm font-light"
+                >
+                  <svg
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 0.45 0.45"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Logout
-                  </button>
+                    <path
+                      d="M0 0.075h0.45m-0.36 0.15h0.27m-0.21 0.15h0.15"
+                      stroke="currentColor"
+                      strokeWidth="0.03"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="flex items-center justify-center px-7 py-4 border-[#333] border-l">
+                {hasMounted ? (
+                  isAuthenticated ? (
+                    <button
+                      onClick={logout}
+                      className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                    >
+                      <svg
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 0.72 0.72"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="0.06"
+                          d="M0.6 0.36H0.314M0.54 0.45 0.63 0.36 0.54 0.27M0.39 0.21V0.18A0.06 0.06 0 0 0 0.33 0.12H0.18A0.06 0.06 0 0 0 0.12 0.18v0.36A0.06 0.06 0 0 0 0.18 0.6h0.15a0.06 0.06 0 0 0 0.06 -0.06V0.51"
+                        />
+                      </svg>
+                    </button>
+                  ) : (
+                    <Link
+                      href="/login"
+                      className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+                    >
+                      <svg
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 0.72 0.72"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M0.24 0.18a0.12 0.12 0 0 1 0.12 -0.12h0.166A0.136 0.136 0 0 1 0.66 0.196v0.33a0.136 0.136 0 0 1 -0.136 0.136H0.36a0.12 0.12 0 0 1 -0.12 -0.12V0.511a0.03 0.03 0 1 1 0.06 0v0.03a0.06 0.06 0 0 0 0.06 0.06h0.166A0.076 0.076 0 0 0 0.601 0.526V0.196A0.076 0.076 0 0 0 0.526 0.12H0.36a0.06 0.06 0 0 0 -0.06 0.06v0.03a0.03 0.03 0 0 1 -0.06 0zm0.128 0.068a0.03 0.03 0 0 1 0.042 0l0.09 0.09a0.03 0.03 0 0 1 0 0.042L0.41 0.47A0.03 0.03 0 0 1 0.368 0.428L0.408 0.39H0.15a0.03 0.03 0 1 1 0 -0.06H0.408L0.37 0.292a0.03 0.03 0 0 1 0 -0.042"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </Link>
+                  )
                 ) : (
-                  <Link
-                    href="/login"
-                    className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                  >
-                    Login
-                  </Link>
-                )
-              ) : (
-                <span style={{ visibility: "hidden" }}>Login</span>
-              )}
+                  <span style={{ visibility: "hidden" }}>Login</span>
+                )}
+              </div>
             </div>
           </>
         )}
@@ -926,48 +1006,145 @@ function PropertyFilter({
 
       {/* Mobile Filters Panel - Shows when toggled */}
       {isMobileView && isMobileFiltersOpen && (
-        <div className="border-t border-[#333] overflow-x-auto hide-scrollbar">
-          <div className="border-t border-[#333] px-4 py-3">
+        <div className="bg-[#211F17]/90 w-full border-t border-[#333] overflow-x-auto hide-scrollbar">
+          <div className="backdrop-blur-md border-t border-[#333] px-4 py-3">
             <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col">
+              <div className="flex flex-col col-span-2">
                 <span className="text-[14px] text-[#888] mb-1">Location</span>
-                <button className="flex justify-between items-center text-[#BD9574] border border-[#333] rounded px-3 py-2">
-                  <span>Any</span>
-                  <ChevronDown className="h-4 w-4" />
-                </button>
+                <AsyncSelect
+                  instanceId="property-location-select-mobile"
+                  name="location"
+                  value={
+                    formData.city
+                      ? {
+                          id: formData.city_id,
+                          name: formData.city,
+                        }
+                      : null
+                  }
+                  loadOptions={debouncedLoadCityOptions}
+                  onChange={(option) => {
+                    // Update both the label and ID fields
+                    setFormData((prev) => ({
+                      ...prev,
+                      city: option ? option.name : "",
+                      city_id: option ? option.id : "",
+                    }))
+                  }}
+                  getOptionLabel={(option) => option.name}
+                  getOptionValue={(option) => option.id}
+                  placeholder={"Search.."}
+                  menuPortalTarget={document.body}
+                  menuPosition="absolute"
+                  styles={customStyles}
+                  className={archivo.className}
+                  isClearable
+                  components={{
+                    DropdownIndicator: () => null,
+                  }}
+                  noOptionsMessage={({ inputValue }) =>
+                    inputValue ? `No location found` : null
+                  }
+                />
               </div>
 
               <div className="flex flex-col">
                 <span className="text-[14px] text-[#888] mb-1">Type</span>
-                <button className="flex justify-between items-center text-[#BD9574] border border-[#333] rounded px-3 py-2">
-                  <span>Any</span>
-                  <ChevronDown className="h-4 w-4" />
-                </button>
+                <Select
+                  instanceId="property-type-select-mobile"
+                  name="type"
+                  value={propertyTypeOptions.find(
+                    (option) => option.value === formData.type
+                  )}
+                  onChange={(option) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      type: option ? option.value : "",
+                    }))
+                  }
+                  options={propertyTypeOptions}
+                  placeholder="Any"
+                  styles={customStyles}
+                  menuPortalTarget={document.body}
+                  menuPosition="absolute"
+                  className={`${archivo.className}`}
+                  isClearable
+                  isSearchable={false}
+                />
               </div>
 
               <div className="flex flex-col">
                 <span className="text-[14px] text-[#888] mb-1">Bedroom</span>
-                <button className="flex justify-between items-center text-[#BD9574] border border-[#333] rounded px-3 py-2">
-                  <span>Any</span>
-                  <ChevronDown className="h-4 w-4" />
-                </button>
+                <Select
+                  instanceId="property-bedroom-select-mobile"
+                  name="type"
+                  value={bedroomOptions.find(
+                    (option) => option.value === formData.bedroom
+                  )}
+                  onChange={(option) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      bedroom: option ? option.value : "",
+                    }))
+                  }
+                  options={bedroomOptions}
+                  placeholder="Any"
+                  styles={customStyles}
+                  menuPortalTarget={document.body}
+                  menuPosition="absolute"
+                  className={`${archivo.className}`}
+                  isClearable
+                  isSearchable={false}
+                />
               </div>
 
               <div className="flex flex-col">
                 <span className="text-[14px] text-[#888] mb-1">Value</span>
-                <button className="flex justify-between items-center text-[#BD9574] border border-[#333] rounded px-3 py-2">
-                  <span>Any</span>
-                  <ChevronDown className="h-4 w-4" />
-                </button>
+                <input
+                  name="price_min"
+                  type="number"
+                  min={0}
+                  step={1000}
+                  placeholder="Min"
+                  value={formData.price_min}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      price_min: e.target.value,
+                    }))
+                  }
+                  isClearable={true}
+                  className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[14px] text-[#888] mb-1 invisible">
+                  Max Value
+                </span>
+                <input
+                  name="price_max"
+                  type="number"
+                  min={0}
+                  step={1000}
+                  placeholder="Max"
+                  value={formData.price_max}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      price_max: e.target.value,
+                    }))
+                  }
+                  className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
+                />
               </div>
             </div>
 
-            <button className="w-full flex items-center justify-center mt-3 py-2 border border-[#BD9574] text-[#BD9574] rounded">
+            <button onClick={handleSearch} className="w-full flex items-center justify-center mt-3 py-2 border border-[#BD9574] text-[#BD9574] rounded">
               <span className="mr-2">Search</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
-          <div className="flex">
+          <div className="flex backdrop-blur-md z-[980]">
             <button
               onClick={() => toggleFilter("city")}
               className={`flex flex-col items-center justify-center px-4 py-2 ${
