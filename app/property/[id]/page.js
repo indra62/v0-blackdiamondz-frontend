@@ -64,6 +64,9 @@ export default function PropertyDetailPage({ params }) {
   const [property, setProperty] = useState(null)
   const [allMedia, setAllMedia] = useState([])
   const [language, setLanguage] = useState("en")
+  const [imageAlbum, setImageAlbum] = useState([])
+  const [plansAlbum, setPlansAlbum] = useState([])
+  const [album, setAlbum] = useState([]);
 
   const [expanded, setExpanded] = useState(false)
   const description = property?.description || ""
@@ -74,7 +77,10 @@ export default function PropertyDetailPage({ params }) {
     fetchProperty(propertyId).then((data) => {
       setProperty(data)
       const combinedMedia = (data?.images || []).concat(data?.plans || []);
+      setImageAlbum(data?.images || [])
+      setPlansAlbum(data?.plans || [])
       setAllMedia(combinedMedia)
+      setAlbum(combinedMedia);
       setLoading(false)
     })
 
@@ -119,10 +125,6 @@ export default function PropertyDetailPage({ params }) {
     setViewMode("gridGallery")
   }
 
-  const switchToGallery = () => {
-    setViewMode("gallery")
-  }
-
   const showMap = () => {
     setViewMode("map")
   }
@@ -130,6 +132,24 @@ export default function PropertyDetailPage({ params }) {
   const hideMap = () => {
     setViewMode("grid")
   }
+
+  const handleShowImages = () => {
+    setAlbum(imageAlbum);
+    setSelectedImageId(0)
+    setViewMode("gallery");
+  };
+  
+  const handleShowPlans = () => {
+    setAlbum(plansAlbum);
+    setSelectedImageId(0)
+    setViewMode("gallery");
+  };
+  
+  const handleShowAllMedia = () => {
+    setAlbum(allMedia);
+    setSelectedImageId(0)
+    setViewMode("gallery");
+  };
 
   // Handle clicking on an image in the grid gallery
   const handleGridImageClick = (imageId) => {
@@ -537,7 +557,7 @@ export default function PropertyDetailPage({ params }) {
                       {/* Row 3: Icons and All Media Button */}
                       <div className="flex items-center justify-end mt-4">
                         <div className="flex items-center gap-6 mr-6">
-                          <div className="flex items-center gap-2 text-[#bd9574]">
+                          <div className="flex items-center gap-2 text-[#bd9574]" title="Images" onClick={handleShowImages}>
                             <svg
                               width="24"
                               height="24"
@@ -557,7 +577,7 @@ export default function PropertyDetailPage({ params }) {
                             </span>
                           </div>
                           {property?.video && (
-                          <div className="flex items-center gap-2 text-[#bd9574]">
+                          <div className="flex items-center gap-2 text-[#bd9574]" title="Video">
                             <svg
                               width="24"
                               height="24"
@@ -577,7 +597,7 @@ export default function PropertyDetailPage({ params }) {
                             </span>
                           </div>
                           )}
-                          <div className="flex items-center gap-2 text-[#bd9574]">
+                          <div className="flex items-center gap-2 text-[#bd9574]" title="Floor Plans" onClick={handleShowPlans}>
                             <svg
                               width="24"
                               height="24"
@@ -658,7 +678,7 @@ export default function PropertyDetailPage({ params }) {
                         </div>
                         {/* Update the button onClick handler to pass the event */}
                         <button
-                          onClick={(e) => toggleViewMode(e)}
+                          onClick={handleShowAllMedia}
                           className="px-6 py-3 border border-[#bd9574] text-[#bd9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
                         >
                           View All Media
@@ -673,7 +693,7 @@ export default function PropertyDetailPage({ params }) {
                       onClose={toggleViewMode}
                       onGridView={switchToGridGallery}
                       initialImageId={selectedImageId}
-                      property={allMedia}
+                      album={album}
                     />
                   </div>
                 ) : (
@@ -682,7 +702,7 @@ export default function PropertyDetailPage({ params }) {
                     <PropertyGridGallery
                       onClose={() => setViewMode("grid")}
                       onImageClick={handleGridImageClick}
-                      property={allMedia}
+                      album={album}
                     />
                   </div>
                 )}

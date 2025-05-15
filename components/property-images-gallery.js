@@ -12,17 +12,17 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 export default function PropertyImagesGallery({
   onClose,
   onGridView,
-  property,
+  album,
   initialImageId = 0,
 }) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   // Find the index of the image with the given ID, or default to 0
-  const initialIndex = property.findIndex((img, idx) => idx === initialImageId)
+  const initialIndex = album.findIndex((img, idx) => idx === initialImageId)
   const [currentIndex, setCurrentIndex] = useState(
     initialIndex >= 0 ? initialIndex : 0
   )
 
-  const totalImages = property.length
+  const totalImages = album.length
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : totalImages - 1))
@@ -46,11 +46,11 @@ export default function PropertyImagesGallery({
       {/* Main Image - Full Height */}
       <div className="relative h-[500px] w-full">
         <Image
-          src={getImageUrl(property?.[currentIndex]?.directus_files_id?.id, {
+          src={getImageUrl(album?.[currentIndex]?.directus_files_id?.id, {
             quality: 80,
             fit: "cover",
           })}
-          alt={property?.[currentIndex]?.directus_files_id?.title}
+          alt={album?.[currentIndex]?.directus_files_id?.title}
           fill
           className="object-cover cursor-zoom-in"
           priority
@@ -150,15 +150,15 @@ export default function PropertyImagesGallery({
                 <TransformComponent wrapperClass="flex items-center justify-center cursor-grab">
                   <Image
                     src={getImageUrl(
-                      property?.[currentIndex]?.directus_files_id?.id,
+                      album?.[currentIndex]?.directus_files_id?.id,
                       { quality: 100 }
                     )}
-                    alt={property?.[currentIndex]?.directus_files_id?.title}
+                    alt={album?.[currentIndex]?.directus_files_id?.title}
                     width={
-                      property?.[currentIndex]?.directus_files_id?.width || 1200
+                      album?.[currentIndex]?.directus_files_id?.width || 1200
                     }
                     height={
-                      property?.[currentIndex]?.directus_files_id?.height || 800
+                      album?.[currentIndex]?.directus_files_id?.height || 800
                     }
                     className="object-contain max-h-[90vh] max-w-[90vw] bg-[#211f17]/60"
                     priority
