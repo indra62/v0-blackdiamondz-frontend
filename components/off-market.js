@@ -68,7 +68,7 @@ export default function OffMarket({ data, section, dark = true }) {
 
         {/* Properties Grid with conditional blur */}
         <div className="relative">
-        {data?.length > 0 && (
+        {data?.length > 0 ? (
           <>
           <div
             className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ${
@@ -92,14 +92,16 @@ export default function OffMarket({ data, section, dark = true }) {
             ))}
           </div>
           </>
-        )}
-        <>
-        {isAuthenticated && (
-          <div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
-            {language === "en"
-              ? "No properties found."
-              : "未找到任何属性。"}
-          </div>
+        ) : (
+          <>
+            {isAuthenticated && (
+              <div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
+                {language === "en"
+                  ? "No properties found."
+                  : "未找到任何属性。"}
+              </div>
+            )}
+          </>
         )}
         {/* Login overlay for non-authenticated users */}
         {!isAuthenticated && (
@@ -119,7 +121,6 @@ export default function OffMarket({ data, section, dark = true }) {
             </Link>
           </div>
         )}
-      </>
       </div>
       </div>
     </div>
