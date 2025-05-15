@@ -5,91 +5,6 @@ import { getImageUrl } from "@/lib/api";
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 
-// Sample property images - we'll create a larger set for the grid view
-const propertyImages = [
-  {
-    id: 1,
-    src: "/luxury-beachfront-property.png",
-    alt: "Luxury cliff-side villa with infinity pool overlooking ocean",
-  },
-  {
-    id: 2,
-    src: "/luxury-beachfront-property.png",
-    alt: "Luxury beachfront property aerial view",
-  },
-  {
-    id: 3,
-    src: "/luxury-ocean-bedroom.png",
-    alt: "Luxury bedroom with ocean view",
-  },
-  {
-    id: 4,
-    src: "/luxury-spa-interior.png",
-    alt: "Luxury property spa interior",
-  },
-  {
-    id: 5,
-    src: "/luxury-ocean-view-interior.png",
-    alt: "Luxury property interior with ocean view",
-  },
-  {
-    id: 6,
-    src: "/luxury-beachfront-aerial.png",
-    alt: "Luxury beachfront aerial view",
-  },
-  // Additional images for the grid
-  {
-    id: 7,
-    src: "/placeholder.svg?key=y3q35",
-    alt: "Luxury modern bedroom with white bedding",
-  },
-  {
-    id: 8,
-    src: "/placeholder.svg?key=xffzz",
-    alt: "Luxury staircase with natural light",
-  },
-  {
-    id: 9,
-    src: "/placeholder.svg?key=7nm1p",
-    alt: "Luxury dining area with wooden table",
-  },
-  {
-    id: 10,
-    src: "/placeholder.svg?key=sri8f",
-    alt: "Luxury bathroom with blue tile detail",
-  },
-  {
-    id: 11,
-    src: "/placeholder.svg?key=il8zy",
-    alt: "Luxury bedroom with ocean view and curtains",
-  },
-  {
-    id: 12,
-    src: "/placeholder.svg?key=fz5z2",
-    alt: "Luxury wardrobe with elegant doors",
-  },
-  {
-    id: 13,
-    src: "/placeholder.svg?key=urcbu",
-    alt: "Luxury bar area with wooden stools",
-  },
-  {
-    id: 14,
-    src: "/placeholder.svg?key=4rk74",
-    alt: "Luxury blue mosaic tile detail",
-  },
-  {
-    id: 15,
-    src: "/placeholder.svg?key=a0jeg",
-    alt: "Luxury restaurant sign at night",
-  },
-  {
-    id: 16,
-    src: "/placeholder.svg?key=9nghn",
-    alt: "Luxury white tower by the beach",
-  },
-]
-
 export default function PropertyGridGallery({ onClose, onImageClick, property }) {
   // Function to handle image click - defaults to onClose if onImageClick is not provided
   const handleImageClick = (imageId) => {
@@ -116,7 +31,7 @@ export default function PropertyGridGallery({ onClose, onImageClick, property })
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-2">
         {property?.images.slice(0, property?.images?.length).map((image) => (
           <div
-            key={image.id}
+            key={`property-image-grid-${image.directus_files_id.id}`}
             className="relative aspect-[3/2] cursor-pointer transition-opacity hover:opacity-90"
             onClick={() => handleImageClick(image.id)}
           >
@@ -126,7 +41,7 @@ export default function PropertyGridGallery({ onClose, onImageClick, property })
                 quality: 80,
                 fit: "cover",
               }
-            )} alt={image.alt} fill className="object-cover" />
+            )} alt={image.directus_files_id?.title} fill className="object-cover" />
           </div>
         ))}
       </div>

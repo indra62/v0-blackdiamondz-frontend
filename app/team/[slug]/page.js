@@ -45,6 +45,8 @@ export default function TeamMemberPage() {
         if (matchedAgent && matchedAgent.id) {
           dataAgentProperties = await getItems("agent_properties", {
             fields: [
+              "*",
+              "agent_id.user_id",
               "property_id.*.*",
               "property_id.type.translations.*",
               "property_id.features.*",
@@ -52,8 +54,10 @@ export default function TeamMemberPage() {
               "property_id.images.directus_files_id.*",
             ],
             filter: {
-              user_id: {
-                _eq: matchedAgent.id,
+              agent_id: {
+                user_id: {
+                  _eq: matchedAgent.id,
+                },
               },
             },
           })
@@ -70,10 +74,9 @@ export default function TeamMemberPage() {
           dataStatistics = await getItems("agent_statistics", {
             fields: ["*", "translations.*"],
             filter: {
-              user_id:  { _eq: matchedAgent.id },
+              user_id: { _eq: matchedAgent.id },
             },
           })
-
         }
         const properties = dataAgentProperties.map((item) => item.property_id)
         const statistics = dataStatistics?.[0]?.translations.map((item) => item)

@@ -9,7 +9,7 @@
  */
 "use client"
 
-import { useState, useEffect, Suspense, useRef  } from "react"
+import { useState, useEffect, Suspense, useRef } from "react"
 import Footer from "@/components/footer"
 import ExploreCity from "@/components/explore-city"
 import OffMarket from "@/components/off-market"
@@ -20,14 +20,15 @@ import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Loading from "@/components/loading"
 import { useSearchParams } from "next/navigation"
+import { useAuth } from "@/hooks/useAuth"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 
 const ITEMS_PER_PAGE = 12
 
-export function BuyPageContent() {
-  const searchParams = useSearchParams()
+export function SavedPropertyPage() {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true)
   const [dataExplore, setDataExplore] = useState(null)
   const [properties, setProperties] = useState([])
@@ -39,13 +40,8 @@ export function BuyPageContent() {
   const [offMarket, setOffMarket] = useState(null)
   const [offMarketSection, setOffMarketSection] = useState(null)
   const [language, setLanguage] = useState("en")
-  const city = searchParams.get("city")
-  const type = searchParams.get("type")
-  const bedroom = searchParams.get("bedroom")
-  const priceMin = searchParams.get("price_min")
-  const priceMax = searchParams.get("price_max")
   const [isMobileView, setIsMobileView] = useState(false)
-  const gridRef = useRef(null);
+  const gridRef = useRef(null)
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,77 +67,43 @@ export function BuyPageContent() {
 
   const fetchProperties = async (
     page = 0,
-    status = "Current",
-    type = [],
-    city,
-    bedroom,
-    priceMin,
-    priceMax
   ) => {
     try {
+      const token = localStorage.getItem("access_token")
       const directusPage = page + 1
-
+      console.log(user)
       const filter = {
-        is_off_market: { _eq: false },
-        status:
-          status === "Current"
-            ? { _eq: "Current" }
-            : { _eq: "Sold", _neq: "Inactive" },
-      }
-
-      // City filter
-      if (city) {
-        filter.address_suburb = { _eq: city }
-      }
-
-      // Type filter
-      if (type.length > 0) {
-        filter.type = { id: { _in: type } }
-      }
-
-      // Price range filter
-      if (priceMin || priceMax) {
-        filter.price = {}
-        if (priceMin) filter.price._gte = Number(priceMin)
-        if (priceMax) filter.price._lte = Number(priceMax)
-      }
-
-      // Bedroom filter
-      if (bedroom !== undefined) {
-        const is6Plus = bedroom === "6"
-        filter.features = {
-          _some: {
-            feature_id: { slug: { _eq: "bedrooms" } },
-            value: is6Plus ? { _gte: 6 } : { _eq: bedroom },
-          },
-        }
+        user_id: { _eq: user.id },
       }
 
       // Fetch properties with pagination
       const data = await getItems(
-        "properties",
+        "saved_properties",
         {
           fields: [
             "*",
-            "translations.*",
-            "images.directus_files_id.*",
-            "plans.*",
-            "videos.*",
-            "features.feature_id.*",
-            "features.value",
-            "agents.*",
-            "type.*.*",
+            "property_id.*",
+            "property_id.translations.*",
+            "property_id.images.directus_files_id.*",
+            "property_id.plans.*",
+            "property_id.videos.*",
+            "property_id.features.feature_id.*",
+            "property_id.features.value",
+            "property_id.agents.*",
+            "property_id.type.*.*",
           ],
           filter,
           limit: ITEMS_PER_PAGE,
           page: directusPage,
           meta: "filter_count,total_count",
         },
-        {},
+        {
+          Authorization: `Bearer ${token}`,
+        },
         true
       )
 
-      setProperties(data?.data || [])
+      setProperties(data?.data?.map((_data) => _data?.property_id) || [])
       const totalCount = data.meta?.filter_count || 0
       // setPropertiesCount(totalCount)
       setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE))
@@ -156,15 +118,15 @@ export function BuyPageContent() {
   const handlePropertyPageChange = (page) => {
     if (page >= 0 && page < propertiesTotalPages) {
       setPropertiesCurrentPage(page)
-      fetchProperties(page, "Current", [type])
+      fetchProperties(page)
     }
   }
 
   useEffect(() => {
     if (gridRef.current) {
-      gridRef.current.scrollIntoView({ top: -80, behavior: "smooth" });
+      gridRef.current.scrollIntoView({ top: -80, behavior: "smooth" })
     }
-  }, [propertiesCurrentPage]);
+  }, [propertiesCurrentPage])
 
   useEffect(() => {
     const fetchDataBuy = async () => {
@@ -197,6 +159,7 @@ export function BuyPageContent() {
           limit: 4,
         })
 
+        fetchProperties()
         setExplore(dataExplore_section)
         setDataExplore(dataExplore)
         setOffMarketSection(dataOffMarketSection)
@@ -211,22 +174,6 @@ export function BuyPageContent() {
     // eslint-disable-next-line
   }, [])
 
-  useEffect(() => {
-    fetchProperties(
-      0,
-      "Current",
-      type ? [type] : [],
-      city,
-      bedroom,
-      priceMin,
-      priceMax
-    )
-  }, [city, type, bedroom, priceMin, priceMax])
-
-  const translationExplore =
-    dataExplore?.translations?.find((t) => t.languages_code === language) ||
-    dataExplore?.translations?.[0]
-
   return (
     <main className="min-h-screen bg-[#211f17]">
       {loading ? (
@@ -237,11 +184,14 @@ export function BuyPageContent() {
         <>
           <div className="container mx-auto px-4 py-16">
             {/* Heading */}
-            <div ref={gridRef} className="flex flex-col items-center text-center mb-12">
+            <div
+              ref={gridRef}
+              className="flex flex-col items-center text-center mb-12"
+            >
               <h2
                 className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
               >
-                {translationExplore?.property_buy_title}
+                {language === "en" ?  "Saved Properties" : "已保存的属性"}
               </h2>
               <div className="flex justify-center mb-6">
                 <div className="w-24 h-px bg-[#bd9574] relative">
@@ -252,7 +202,9 @@ export function BuyPageContent() {
               <div
                 className={`${archivo.className} text-[#e2dbcc] text-base mb-6 text-center max-w-[732px]`}
               >
-                {translationExplore?.property_buy_description}
+                {language === "en" ?
+                "Effortlessly revisit the properties you love. All your saved homes are collected here for easy access and future reference."
+                : "轻松重温您心仪的房源。所有您收藏的房源都集中在这里，方便您随时查阅和参考。"}
               </div>
             </div>
 
@@ -275,17 +227,20 @@ export function BuyPageContent() {
                     >
                       {!isMobileView && (
                         <div className="flex gap-8">
-                          {Array.from({ length: propertiesTotalPages }, (_, index) => (
-                            <div
-                              key={index}
-                              className={`w-3 h-3 ${
-                                index === propertiesCurrentPage
-                                  ? "bg-[#BD9574]"
-                                  : "bg-[#656565]"
-                              } transform rotate-45 cursor-pointer`}
-                              onClick={() => handlePropertyPageChange(index)}
-                            />
-                          ))}
+                          {Array.from(
+                            { length: propertiesTotalPages },
+                            (_, index) => (
+                              <div
+                                key={index}
+                                className={`w-3 h-3 ${
+                                  index === propertiesCurrentPage
+                                    ? "bg-[#BD9574]"
+                                    : "bg-[#656565]"
+                                } transform rotate-45 cursor-pointer`}
+                                onClick={() => handlePropertyPageChange(index)}
+                              />
+                            )
+                          )}
                         </div>
                       )}
 
@@ -296,7 +251,9 @@ export function BuyPageContent() {
                               ? "opacity-50 cursor-not-allowed"
                               : "hover:border-[#BD9574] hover:text-[#BD9574]"
                           } transition-colors`}
-                          onClick={() => handlePropertyPageChange(propertiesCurrentPage - 1)}
+                          onClick={() =>
+                            handlePropertyPageChange(propertiesCurrentPage - 1)
+                          }
                           disabled={propertiesCurrentPage === 0}
                         >
                           <svg
@@ -321,8 +278,12 @@ export function BuyPageContent() {
                               ? "opacity-50 cursor-not-allowed"
                               : "hover:border-[#BD9574] hover:text-[#BD9574]"
                           } transition-colors`}
-                          onClick={() => handlePropertyPageChange(propertiesCurrentPage + 1)}
-                          disabled={propertiesCurrentPage === propertiesTotalPages - 1}
+                          onClick={() =>
+                            handlePropertyPageChange(propertiesCurrentPage + 1)
+                          }
+                          disabled={
+                            propertiesCurrentPage === propertiesTotalPages - 1
+                          }
                         >
                           <svg
                             width="24"
@@ -365,10 +326,10 @@ export function BuyPageContent() {
     </main>
   )
 }
-export default function BuyPage() {
+export default function SavedProperty() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-[#211f17]"></div>}>
-      <BuyPageContent />
+      <SavedPropertyPage />
     </Suspense>
   )
 }

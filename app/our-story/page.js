@@ -1,26 +1,26 @@
-"use client";
-import Header from "@/components/header";
-import Stats from "@/components/stats";
-import Footer from "@/components/footer";
-import Image from "next/image";
-import PartnerCarousel from "@/components/PartnerCarousel";
-import { Taviraj } from "next/font/google";
-import { Archivo } from "next/font/google";
-import Loading from "@/components/loading";
-import { useEffect, useState } from "react";
-import { getImageUrl, getItems } from "@/lib/api";
+"use client"
+import Stats from "@/components/stats"
+import Footer from "@/components/footer"
+import Image from "next/image"
+import PartnerCarousel from "@/components/PartnerCarousel"
+import { Taviraj } from "next/font/google"
+import { Archivo } from "next/font/google"
+import Loading from "@/components/loading"
+import { useEffect, useState } from "react"
+import { getImageUrl, getItems } from "@/lib/api"
+import Link from "next/link"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
 
 export default function OurStoryPage() {
-  const [loading, setLoading] = useState(true);
-  const [language, setLanguage] = useState("en");
-  const [heroData, setHeroData] = useState(null);
-  const [aboutStats, setAboutStats] = useState(null);
-  const [storyImageLink, setStoryImageLink] = useState(null);
-  const [storyStory, setStoryStory] = useState(null);
-  const [storyPartner, setStoryPartner] = useState(null);
+  const [loading, setLoading] = useState(true)
+  const [language, setLanguage] = useState("en")
+  const [heroData, setHeroData] = useState(null)
+  const [aboutStats, setAboutStats] = useState(null)
+  const [storyImageLink, setStoryImageLink] = useState(null)
+  const [storyStory, setStoryStory] = useState(null)
+  const [storyPartner, setStoryPartner] = useState(null)
   const [listOfPartner, setListOfPartner] = useState([])
   const [error, setError] = useState(null)
 
@@ -112,7 +112,8 @@ export default function OurStoryPage() {
       (key) =>
         key.startsWith("image_") &&
         parseInt(key.split("_")[1]) <= 4 &&
-        storyImageLink[key]
+        storyImageLink[key] &&
+        !key.endsWith("_link")
     )
 
     return (
@@ -126,6 +127,10 @@ export default function OurStoryPage() {
             <div
               key={image.id}
               className="relative h-[480px] md:h-[680px] group overflow-hidden"
+            >
+            <Link
+              href={`/`+storyImageLink?.[`image_${imageNumber}_link`]}
+              className="absolute inset-0"
             >
               <Image
                 src={
@@ -156,6 +161,7 @@ export default function OurStoryPage() {
                   ) ?? ""}
                 </h3>
               </div>
+            </Link>
             </div>
           )
         })}
@@ -165,169 +171,180 @@ export default function OurStoryPage() {
 
   return (
     <main className="min-h-screen bg-[#211f17]">
-      {/* Hero Section */}
-      <section className="relative h-screen">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src={
-              getImageUrl(heroData?.aboutUs_ourStory_heroImage?.id, {
-                format: "webp",
-                quality: 100,
-                fit: "cover",
-              }) || "/placeholder.svg"
-            }
-            alt="Sydney Harbour with Bridge and city skyline at sunset"
-            fill
-            priority
-            className="object-cover"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, rgba(33, 31, 23, 0) 80.08%, #211F17 100%)",
-            }}
-          ></div>
-        </div>
+      {loading ? (
+        <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
+          <Loading error={error} />
+        </section>
+      ) : (
+        <>
+          {/* Hero Section */}
+          <section className="relative h-screen">
+            {/* Background Image */}
+            <div className="absolute inset-0">
+              <Image
+                src={
+                  getImageUrl(heroData?.aboutUs_ourStory_heroImage?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  }) || "/placeholder.svg"
+                }
+                alt="Sydney Harbour with Bridge and city skyline at sunset"
+                fill
+                priority
+                className="object-cover"
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, rgba(33, 31, 23, 0) 80.08%, #211F17 100%)",
+                }}
+              ></div>
+            </div>
 
-        {/* Hero Content */}
-        <div className="text-[#E2DBCC] relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
-          <h1
-            className={`${taviraj.className} text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
-          >
-            {translation?.title}
-          </h1>
+            {/* Hero Content */}
+            <div className="text-[#E2DBCC] relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+              <h1
+                className={`${taviraj.className} text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
+              >
+                {translation?.title}
+              </h1>
 
-          {/* Diamond Separator */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-            <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-            <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-          </div>
+              {/* Diamond Separator */}
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+              </div>
 
-          <p
-            className={`${archivo.className}  font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
-          >
-            {translation?.description}
-          </p>
-        </div>
+              <p
+                className={`${archivo.className}  font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
+              >
+                {translation?.description}
+              </p>
+            </div>
 
-        {/* Scroll Indicator */}
-        {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            {/* Scroll Indicator */}
+            {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <div className="flex flex-col items-center">
             <div className="w-1 h-16 bg-gradient-to-b from-[#BD9574] to-transparent"></div>
           </div>
         </div> */}
-      </section>
+          </section>
 
-      {/* Stats Section */}
-      <Stats data={aboutStats} />
+          {/* Stats Section */}
+          <Stats data={aboutStats} />
 
-      {/* Services Section */}
-      <section className="py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4">
-          <ImagesOfServices
-            storyImageLink={storyImageLink}
-            translationStory={translationStory}
-          />
-        </div>
-      </section>
-
-      {/* Beyond Selling Properties Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            {/* Left Column */}
-            <div className="md:w-[305px] place-self-end ">
-              <h2
-                className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[180%] tracking-[0%] mb-8`}
-              >
-                {translationStoryStory?.story_1}
-              </h2>
+          {/* Services Section */}
+          <section className="py-16">
+            <div className="grid grid-cols-1 md:grid-cols-4">
+              <ImagesOfServices
+                storyImageLink={storyImageLink}
+                translationStory={translationStory}
+              />
             </div>
+          </section>
 
-            {/* Right Column */}
-            <div className="md:w-[305px] ">
-              <p
-                className={`${archivo.className} text-[#BD9574] font-light text-base leading-[180%] tracking-[0px] mb-6`}
-              >
-                {translationStoryStory?.story_2}
-              </p>
+          {/* Beyond Selling Properties Section */}
+          <section className="py-16">
+            <div className="container mx-auto px-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                {/* Left Column */}
+                <div className="md:w-[305px] place-self-end ">
+                  <h2
+                    className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[180%] tracking-[0%] mb-8`}
+                  >
+                    {translationStoryStory?.story_1}
+                  </h2>
+                </div>
+
+                {/* Right Column */}
+                <div className="md:w-[305px] ">
+                  <p
+                    className={`${archivo.className} text-[#BD9574] font-light text-base leading-[180%] tracking-[0px] mb-6`}
+                  >
+                    {translationStoryStory?.story_2}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Meet Our Team Section - Updated to match Figma design */}
-      <section className="relative">
-        {/* Banner Image with Text Overlay */}
-        <div className="relative h-[300px] md:h-[450px] w-full overflow-hidden">
-          <Image
-            src={
-              getImageUrl(storyImageLink?.image_5?.id, {
-                format: "webp",
-                quality: 100,
-                fit: "cover",
-              }) || "/placeholder.svg"
-            }
-            alt="Meet Our Team"
-            fill
-            priority
-            className="object-cover"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
-            }}
-          ></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <h3
-              className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%]`}
+          {/* Meet Our Team Section - Updated to match Figma design */}
+          <section className="relative">
+            {/* Banner Image with Text Overlay */}
+            <div className="relative h-[300px] md:h-[450px] w-full overflow-hidden">
+            <Link
+              href={`/`+storyImageLink?.image_5_link}
             >
-              {translationStory?.text_5?.replace(/<[^>]+>/g, "") ?? ""}
-            </h3>
-          </div>
-        </div>
+            <Image
+                src={
+                  getImageUrl(storyImageLink?.image_5?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  }) || "/placeholder.svg"
+                }
+                alt="Meet Our Team"
+                fill
+                priority
+                className="object-cover"
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
+                }}
+              ></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <h3
+                  className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%]`}
+                >
+                  {translationStory?.text_5?.replace(/<[^>]+>/g, "") ?? ""}
+                </h3>
+              </div>
+            </Link>
+            </div>
 
-        {/* Team Content */}
-        <div className="bg-[#211f17] py-4"></div>
-      </section>
+            {/* Team Content */}
+            <div className="bg-[#211f17] py-4"></div>
+          </section>
 
-      {/* Partners Section */}
-      <section className="py-16 bg-[#211f17]">
-        <div className="container mx-auto px-4 text-center">
-          <h2
-            className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%] mb-8`}
-          >
-            {translationStoryPartner?.title}
-          </h2>
+          {/* Partners Section */}
+          <section className="py-16 bg-[#211f17]">
+            <div className="container mx-auto px-4 text-center">
+              <h2
+                className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%] mb-8`}
+              >
+                {translationStoryPartner?.title}
+              </h2>
 
-          {/* Diamond Separator */}
-          <div className="flex items-center justify-center gap-4 mb-12">
-            <div className="w-36 h-[1px] bg-[#BD9574]"></div>
-            <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-            <div className="w-36 h-[1px] bg-[#BD9574]"></div>
-          </div>
+              {/* Diamond Separator */}
+              <div className="flex items-center justify-center gap-4 mb-12">
+                <div className="w-36 h-[1px] bg-[#BD9574]"></div>
+                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+                <div className="w-36 h-[1px] bg-[#BD9574]"></div>
+              </div>
 
-          <p
-            className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-[150%] max-w-3xl mx-auto mb-16`}
-          >
-            {translationStoryPartner?.description}
-          </p>
+              <p
+                className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-[150%] max-w-3xl mx-auto mb-16`}
+              >
+                {translationStoryPartner?.description}
+              </p>
 
-          {/* Partners Grid - Single row with exact Figma dimensions */}
-          <PartnerCarousel
-            partners={listOfPartner}
-            language={language}
-            getImageUrl={getImageUrl}
-            archivo={archivo}
-          />
-        </div>
-      </section>
-
+              {/* Partners Grid - Single row with exact Figma dimensions */}
+              <PartnerCarousel
+                partners={listOfPartner}
+                language={language}
+                getImageUrl={getImageUrl}
+                archivo={archivo}
+              />
+            </div>
+          </section>
+        </>
+      )}
       <Footer />
     </main>
   )

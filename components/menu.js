@@ -142,7 +142,7 @@ export default function Menu({
   // Main menu overlay with responsive layout
   // Uses flex-col on mobile and standard flex on desktop
   return (
-    <div className="fixed inset-0 bg-[#211f17] z-[1001] overflow-y-auto">
+    <div className="fixed inset-0 bg-[#211f17]/80 z-[1001] backdrop-blur-2xl overflow-y-auto">
       <Toaster position="top-center" reverseOrder={false} />
       <div className="container mx-auto px-4 py-6 h-full flex flex-col">
         <div className="flex justify-between items-center mb-12">
@@ -170,52 +170,52 @@ export default function Menu({
           </button>
         </div>
 
-        <div className={`${isMobile ? "flex flex-col" : "flex"}`}>
+        <div className={`${isMobile ? "flex flex-col" : "flex flex-row justify-between"}`}>
           {/* Left Side - Navigation */}
           <div className={`${isMobile ? "w-full" : "flex-1"}`}>
-            <nav className="grid grid-cols-1 content-start gap-y-4">
+            <nav className="flex flex-col content-start w-[359px] gap-4">
               <Link
                 href="/buy"
                 onClick={onClose}
-                className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
               >
                 Buy
               </Link>
               <Link
                 href="/sell"
                 onClick={onClose}
-                className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors mb-4`}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
               >
                 Sell
               </Link>
 
-              <div className="w-[359px] border-t-4 border-[#BD9574] my-4"></div>
+              <div className="w-[359px] border-t-[1px] border-[#BD9574] my-1"></div>
 
               <Link
                 href="/our-story"
                 onClick={onClose}
-                className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
               >
                 Our Story
               </Link>
               <Link
                 href="/our-team"
                 onClick={onClose}
-                className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
               >
                 Our Team
               </Link>
               <Link
                 href="/agency"
                 onClick={onClose}
-                className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
               >
                 Agency
               </Link>
-              <div className="flex items-center justify-between w-full">
+              <div className="flex items-center justify-between w-full px-5">
                 <button
                   onClick={toggleMediaSubmenu}
-                  className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors text-left`}
+                  className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors text-left`}
                 >
                   Media
                 </button>
@@ -229,50 +229,48 @@ export default function Menu({
               </div>
 
               {isMediaSubmenuOpen && (
-                <div className="ml-6 mt-4 mb-2 flex flex-col gap-3">
+                <div className="ml-10 flex flex-col gap-3">
                   <Link
                     href="/media/video"
                     onClick={onClose}
-                    className={`${taviraj.className} text-[#BD9574] text-[22px] leading-none font-normal hover:text-white transition-colors`}
+                    className={`${taviraj.className} text-[#BD9574] text-[22px] leading-[40px] font-normal hover:text-white transition-colors`}
                   >
                     Video
                   </Link>
                   <Link
                     href="/media/news"
                     onClick={onClose}
-                    className={`${taviraj.className} text-[#BD9574] text-[22px] leading-none font-normal hover:text-white transition-colors`}
+                    className={`${taviraj.className} text-[#BD9574] text-[22px] leading-[40px] font-normal hover:text-white transition-colors`}
                   >
                     News
                   </Link>
                 </div>
               )}
 
-              
-                  <div className="w-[359px] border-t-4 border-[#BD9574] my-8"></div>
-                  <Link
-                    href="/club-diamondz"
-                    id="club-diamondz-link"
-                    onClick={onClose}
-                    className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors mb-4`}
-                  >
-                    Club Diamondz
-                  </Link>
-                
+              <div className="w-[359px] border-t-[1px] border-[#BD9574] my-1"></div>
+              <Link
+                href="/club-diamondz"
+                id="club-diamondz-link"
+                onClick={onClose}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
+              >
+                Club Diamondz
+              </Link>
 
-              <div className="w-[359px] border-t-4 border-[#BD9574] my-4"></div>
+              <div className="w-[359px] border-t-[1px] border-[#BD9574] my-1"></div>
 
               <Link
                 href="/contact-us"
                 id="contact-us-link"
                 onClick={onClose}
-                className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
               >
                 Contact Us
               </Link>
               <Link
                 href="/privacy-policy"
                 onClick={onClose}
-                className={`${taviraj.className} text-white text-[28px] leading-none font-normal hover:text-[#BD9574] transition-colors`}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
               >
                 Privacy Policy
               </Link>
@@ -282,7 +280,7 @@ export default function Menu({
           {/* Right Side - Newsletter and Contact */}
           <div
             className={isMobile ? "w-full mt-12" : ""}
-            style={!isMobile ? { width: "633px", marginLeft: "8px" } : {}}
+            style={!isMobile ? { width: "633px"} : {}}
           >
             {/* Newsletter - Aligned with Club Diamondz */}
             <div
@@ -291,8 +289,7 @@ export default function Menu({
                   ? {
                       position: "absolute",
                       top: newsletterPosition ? newsletterPosition : "auto",
-                      width: "633px",
-                      marginLeft: "8px",
+                      width: "633px"
                     }
                   : {}
               }
@@ -341,8 +338,7 @@ export default function Menu({
                   ? {
                       position: "absolute",
                       top: contactPosition ? contactPosition : "auto",
-                      width: "633px",
-                      marginLeft: "8px",
+                      width: "633px"
                     }
                   : {}
               }
