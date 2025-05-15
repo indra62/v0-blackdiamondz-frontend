@@ -213,7 +213,9 @@ export default function PropertyDetailPage({ params }) {
                 </p>
 
                 {/* Property Features */}
+                
                 <div className="flex flex-wrap items-center gap-4 mb-6">
+                  {findFeature("bedrooms")?.value > 0 && (
                   <div className="flex items-center gap-1" title="Bedrooms">
                     <svg
                       width="22"
@@ -235,6 +237,8 @@ export default function PropertyDetailPage({ params }) {
                         : 0}
                     </span>
                   </div>
+                      )}
+                  {findFeature("bathrooms")?.value > 0 && (
                   <div className="flex items-center gap-1" title="Bathrooms">
                     <svg
                       width="22"
@@ -259,7 +263,9 @@ export default function PropertyDetailPage({ params }) {
                         : 0}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1" title="Garages">
+                  )}
+                  {(findFeature("garages")?.value > 0 || findFeature("carports")?.value > 0) && (
+                    <div className="flex items-center gap-1" title="Garages">
                     <svg
                       width="22"
                       height="23"
@@ -287,10 +293,11 @@ export default function PropertyDetailPage({ params }) {
                     <span
                       className={`${archivo.className} font-light text-[#E2DBCC] text-[14px]`}
                     >
-                      {findFeature("garages")?.value ||
-                        findFeature("carports")?.value}
+                    {Number(findFeature("garages")?.value || 0) + Number(findFeature("carports")?.value || 0)}
                     </span>
                   </div>
+                  )}
+                  {findFeature("pool")?.value > 0 && (
                   <div className="flex items-center gap-1" title="Pool">
                     <svg
                       width="22"
@@ -314,6 +321,8 @@ export default function PropertyDetailPage({ params }) {
                       {findFeature("pool")?.value || 0}
                     </span>
                   </div>
+                  )}
+                  {findFeature("study")?.value > 0 && (
                   <div className="flex items-center gap-1" title="Study">
                     <svg
                       width="22"
@@ -336,6 +345,8 @@ export default function PropertyDetailPage({ params }) {
                       {findFeature("study")?.value || 0}
                     </span>
                   </div>
+                  )}
+                  {findFeature("openSpaces")?.value > 0 && (
                   <div className="flex items-center gap-1" title="Open Spaces">
                     <svg
                       width="22"
@@ -355,6 +366,7 @@ export default function PropertyDetailPage({ params }) {
                       {findFeature("openSpaces")?.value}
                     </span>
                   </div>
+                  )}
                 </div>
 
                 {/* Map Button */}
