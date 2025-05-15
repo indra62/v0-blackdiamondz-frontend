@@ -40,7 +40,7 @@ export default function Paddington() {
       const data = await res.json();
       console.log("CoreLogic suggestions:", JSON.stringify(data, null, 2));
     };
-    fetchSuggestions("QLD");
+    fetchSuggestions("old");
   }, []);
 
 

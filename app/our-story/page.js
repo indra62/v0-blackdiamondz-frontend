@@ -8,6 +8,7 @@ import { Archivo } from "next/font/google"
 import Loading from "@/components/loading"
 import { useEffect, useState } from "react"
 import { getImageUrl, getItems } from "@/lib/api"
+import Link from "next/link"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
@@ -111,7 +112,8 @@ export default function OurStoryPage() {
       (key) =>
         key.startsWith("image_") &&
         parseInt(key.split("_")[1]) <= 4 &&
-        storyImageLink[key]
+        storyImageLink[key] &&
+        !key.endsWith("_link")
     )
 
     return (
@@ -125,6 +127,10 @@ export default function OurStoryPage() {
             <div
               key={image.id}
               className="relative h-[480px] md:h-[680px] group overflow-hidden"
+            >
+            <Link
+              href={`/`+storyImageLink?.[`image_${imageNumber}_link`]}
+              className="absolute inset-0"
             >
               <Image
                 src={
@@ -155,6 +161,7 @@ export default function OurStoryPage() {
                   ) ?? ""}
                 </h3>
               </div>
+            </Link>
             </div>
           )
         })}
@@ -268,7 +275,10 @@ export default function OurStoryPage() {
           <section className="relative">
             {/* Banner Image with Text Overlay */}
             <div className="relative h-[300px] md:h-[450px] w-full overflow-hidden">
-              <Image
+            <Link
+              href={`/`+storyImageLink?.image_5_link}
+            >
+            <Image
                 src={
                   getImageUrl(storyImageLink?.image_5?.id, {
                     format: "webp",
@@ -295,6 +305,7 @@ export default function OurStoryPage() {
                   {translationStory?.text_5?.replace(/<[^>]+>/g, "") ?? ""}
                 </h3>
               </div>
+            </Link>
             </div>
 
             {/* Team Content */}
