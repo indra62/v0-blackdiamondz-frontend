@@ -744,7 +744,7 @@ export default function PropertyDetailPage({ params }) {
                   Close
                 </button>
                 {/* Responsive Video Container */}
-                <div className="relative w-full max-w-4xl aspect-video bg-black rounded-lg overflow-hidden shadow-lg">
+                <div className="relative w-full max-w-[1200px] aspect-video bg-black rounded-lg overflow-hidden shadow-lg">
                   <iframe
                     src={property.video.replace("watch?v=", "embed/")}
                     title="YouTube video player"
