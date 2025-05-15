@@ -114,7 +114,7 @@ export default function ClubDiamondz() {
   const [error, setError] = useState(null)
 
   const { user } = useAuth()
-
+  console.log("user in ClubDiamondz:", user?.first_name);
   // Items per page
   const itemsPerPage = 4
 
@@ -646,9 +646,9 @@ export default function ClubDiamondz() {
                 <p
                   className={`${archivo.className} text-[#211f17] text-xl mb-4`}
                 >
-                  Hello,{" "}
+                  Hello,
                   <span className="text-[#bd9574]">
-                    {user ? user?.first_name : "Guest"}
+                    {user?.first_name ? user?.first_name : "Guest"}
                   </span>
                 </p>
                 <h1

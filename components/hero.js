@@ -92,7 +92,7 @@ export default function Hero({ data }) {
         >
           {`${translation?.hero_greetings}`}{" "}
           <span className="text-[#BD9574] text-[16px] leading-[150%] tracking-[0px] text-center mb-2">{`${
-            user ? user?.first_name : "Guest"
+            user?.first_name ? user?.first_name : "Guest"
           }`}</span>
         </div>
         <div
