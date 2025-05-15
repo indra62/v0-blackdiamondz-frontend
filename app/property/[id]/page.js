@@ -43,7 +43,7 @@ export default function PropertyDetailPage({ params }) {
           "*",
           "translations.*",
           "images.directus_files_id.*",
-          "plans.*",
+          "plans.directus_files_id.*",
           "videos.*",
           "features.feature_id.*",
           "features.value",
@@ -60,8 +60,9 @@ export default function PropertyDetailPage({ params }) {
 
   // State management for different view modes and selected images
   const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", or "map"
-  const [selectedImageId, setSelectedImageId] = useState(1) // Default to first image
+  const [selectedImageId, setSelectedImageId] = useState(0) // Default to first image
   const [property, setProperty] = useState(null)
+  const [allMedia, setAllMedia] = useState([])
   const [language, setLanguage] = useState("en")
 
   const [expanded, setExpanded] = useState(false)
@@ -72,6 +73,8 @@ export default function PropertyDetailPage({ params }) {
   useEffect(() => {
     fetchProperty(propertyId).then((data) => {
       setProperty(data)
+      const combinedMedia = (data?.images || []).concat(data?.plans || []);
+      setAllMedia(combinedMedia)
       setLoading(false)
     })
 
@@ -553,6 +556,7 @@ export default function PropertyDetailPage({ params }) {
                               {property?.images?.length}
                             </span>
                           </div>
+                          {property?.video && (
                           <div className="flex items-center gap-2 text-[#bd9574]">
                             <svg
                               width="24"
@@ -569,9 +573,10 @@ export default function PropertyDetailPage({ params }) {
                             <span
                               className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                             >
-                              3
+                              {property?.video ? 1 : 0}
                             </span>
                           </div>
+                          )}
                           <div className="flex items-center gap-2 text-[#bd9574]">
                             <svg
                               width="24"
@@ -647,7 +652,7 @@ export default function PropertyDetailPage({ params }) {
                             <span
                               className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                             >
-                              2
+                              {property?.plans?.length}
                             </span>
                           </div>
                         </div>
@@ -668,7 +673,7 @@ export default function PropertyDetailPage({ params }) {
                       onClose={toggleViewMode}
                       onGridView={switchToGridGallery}
                       initialImageId={selectedImageId}
-                      property={property}
+                      property={allMedia}
                     />
                   </div>
                 ) : (
@@ -677,7 +682,7 @@ export default function PropertyDetailPage({ params }) {
                     <PropertyGridGallery
                       onClose={() => setViewMode("grid")}
                       onImageClick={handleGridImageClick}
-                      property={property}
+                      property={allMedia}
                     />
                   </div>
                 )}

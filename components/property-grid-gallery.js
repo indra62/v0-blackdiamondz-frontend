@@ -29,11 +29,11 @@ export default function PropertyGridGallery({ onClose, onImageClick, property })
     <div className="relative h-full bg-black overflow-y-auto">
       {/* Grid of Images */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-2">
-        {property?.images.slice(0, property?.images?.length).map((image) => (
+        {property.slice(0, property.length).map((image, idx) => (
           <div
             key={`property-image-grid-${image.directus_files_id.id}`}
             className="relative aspect-[3/2] cursor-pointer transition-opacity hover:opacity-90"
-            onClick={() => handleImageClick(image.id)}
+            onClick={() => handleImageClick(idx)}
           >
             <Image src={getImageUrl(
               image.directus_files_id.id,
