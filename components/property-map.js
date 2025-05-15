@@ -96,7 +96,7 @@ export default function PropertyMap({ onClose, property, type }) {
                     : { lat: -33.8688, lng: 151.2093 }
                 }
                 icon={{
-                  url: "map-pointer.png",
+                  url: "https://main.blackdiamondz.62dev.net/map-pointer.png",
                   scaledSize: { width: 32, height: 32 },
                   anchor: { x: 16, y: 32 },
                 }}
