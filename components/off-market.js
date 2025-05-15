@@ -68,33 +68,37 @@ export default function OffMarket({ data, section, dark = true }) {
 
         {/* Properties Grid with conditional blur */}
         <div className="relative">
-          {data && data.length > 0 ? (
-            <div
-              className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ${
-                !isAuthenticated ? "blur-md pointer-events-none" : ""
-              }`}
-            >
-              {data.map((property) => (
-                <div
-                  key={property.id}
-                  className={`${
-                    darkMode ? "bg-[#211f17]" : "bg-[#FBF4E4]"
-                  } overflow-hidden`}
-                >
-                  <Property
-                    property={property}
-                    taviraj={taviraj}
-                    archivo={archivo}
-                    dark={dark}
-                  />
+        {data?.length > 0 ? (
+          <>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ${
+              !isAuthenticated ? "blur-md pointer-events-none" : ""
+            }`}
+          >
+            {data?.map((property) => (
+              <div
+                key={property.id}
+                className={`${
+                  darkMode ? "bg-[#211f17]" : "bg-[#FBF4E4]"
+                } overflow-hidden`}
+              >
+                <Property
+                  property={property}
+                  taviraj={taviraj}
+                  archivo={archivo}
+                  dark={dark}
+                />
+              </div>
+            ))}
+          </div>
+          </>
+        ) : (
+          <div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
+                  {language === "en"
+                    ? "No properties found."
+                    : "未找到任何属性。"}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center min-h-[300px] w-full text-center text-gray-500">
-              No properties found.
-            </div>
-          )}
+        )}
 
           {/* Login overlay for non-authenticated users */}
           {!isAuthenticated && (
