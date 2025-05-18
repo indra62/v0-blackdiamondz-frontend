@@ -224,7 +224,7 @@ export default function PropertyDetailPage({ params }) {
                   className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-4`}
                 >
                   {property?.address_suburb}, {property?.address_state}{" "}
-                  {property?.address_postcode}
+                  {property?.address_postcode.toString().padStart(4, "0")}
                 </p>
 
                 <p className="mb-6">

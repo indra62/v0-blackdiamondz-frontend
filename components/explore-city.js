@@ -8,32 +8,32 @@
  *
  * @component
  */
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Archivo, Taviraj } from "next/font/google";
-import Image from "next/image";
-import { getImageUrl } from "@/lib/api";
-import Link from "next/link";
+import { useState, useEffect } from "react"
+import { Archivo, Taviraj } from "next/font/google"
+import Image from "next/image"
+import { getImageUrl } from "@/lib/api"
+import Link from "next/link"
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["700"] });
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["700"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
 
 export default function ExploreCity({ data }) {
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("en")
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
-  }, []);
+  }, [])
 
   const translation =
     data?.translations?.find((t) => t.languages_code === language) ||
-    data?.translations?.[0];
+    data?.translations?.[0]
 
   return (
     <div className="bg-[#211f17]">
@@ -67,38 +67,43 @@ export default function ExploreCity({ data }) {
               data?.cities.length <= 3 ? "w-fit mx-auto" : "w-max pl-[40px]"
             }`}
           >
-            {data?.cities.map((city) => (
-              <div
-                key={city.id}
-                className="relative w-[280px] md:w-[508px] h-[460px] flex-none group cursor-pointer overflow-hidden"
-              >
-              <Link href={`/buy?city=${city.name}`}>
-                <Image
-                  src={getImageUrl(city?.image, {
-                    format: "webp",
-                    quality: 80,
-                    fit: "cover",
-                  })}
-                  alt={`${city.name} cityscape`}
-                  fill
-                  sizes="(max-width: 768px) 280px, 508px"
-                  style={{ objectFit: "cover" }}
-                  className="transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-8">
-                  <h3
-                    className={`${archivo.className} font-light text-base leading-[40px] text-[#FBF4E4]`}
-                  >
-                    {city.name}
-                  </h3>
+            {data?.cities.map((city) => {
+              const rangesParam = city.ranges
+                .map((r) => `${r.start}-${r.end}`)
+                .join(",")
+              return (
+                <div
+                  key={city.id}
+                  className="relative w-[280px] md:w-[508px] h-[460px] flex-none group cursor-pointer overflow-hidden"
+                >
+                  <Link href={`/buy?ranges=${encodeURIComponent(rangesParam)}`}>
+                    <Image
+                      src={getImageUrl(city?.image, {
+                        format: "webp",
+                        quality: 100,
+                        fit: "cover",
+                      })}
+                      alt={`${city.name} cityscape`}
+                      fill
+                      sizes="(max-width: 768px) 280px, 508px"
+                      style={{ objectFit: "cover" }}
+                      className="transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-4 left-8">
+                      <h3
+                        className={`${archivo.className} font-light text-base leading-[40px] text-[#FBF4E4]`}
+                      >
+                        {city.name}
+                      </h3>
+                    </div>
+                  </Link>
                 </div>
-                </Link>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
