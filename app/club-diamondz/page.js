@@ -11,6 +11,7 @@ import DiamondzSection from "@/components/diamondzSection"
 import OffMarket from "@/components/off-market"
 import Loading from "@/components/loading"
 import Footer from "@/components/footer"
+import { formatDate } from "@/lib/utils"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
@@ -114,7 +115,6 @@ export default function ClubDiamondz() {
   const [error, setError] = useState(null)
 
   const { user, isAuthenticated } = useAuth()
-  console.log("user in ClubDiamondz:", user?.first_name);
   // Items per page
   const itemsPerPage = 4
 
@@ -297,11 +297,11 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-sm font-light">{item.tags}</div>
-        <h3 className="text-[#211f17] text-lg font-light mt-1 line-clamp-2 group-hover:text-[#BD9574] transition-colors">
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.tags}</div>
+        <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
           {item?.translation?.event_title}
         </h3>
-        <div className="text-[#656565] text-sm mt-1">{item?.event_date}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item?.event_date)}</div>
       </div>
     </div>
   )
@@ -319,12 +319,12 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-sm font-light">{item.category}</div>
-        <h3 className="text-[#211f17] text-lg font-light mt-1 line-clamp-2 group-hover:text-[#BD9574] transition-colors">
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.category}</div>
+        <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
           {item.title}
         </h3>
-        <div className="text-[#656565] text-sm mt-1">{item.date}</div>
-        <p className="text-[#656565] text-sm mt-2 line-clamp-2">
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item.date)}</div>
+        <p className="text-[#BD9574] text-sm mt-2 line-clamp-2">
           {item.description}
         </p>
       </div>
@@ -350,12 +350,12 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-sm font-light">{item.tags}</div>
-        <h3 className="text-[#211f17] text-lg font-light mt-1 line-clamp-2 group-hover:text-[#BD9574] transition-colors">
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.tags}</div>
+        <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
         {item?.translation?.activity_title}
         </h3>
-        <div className="text-[#656565] text-sm mt-1">{item.activity_date}</div>
-        <div className="text-[#656565] text-sm">{item.location}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item.activity_date)}</div>
+        <div className="text-[#BD9574] text-[16px]">{item.location}</div>
       </div>
     </div>
   )
@@ -381,7 +381,7 @@ export default function ClubDiamondz() {
         >
           {property.type} | {property.location}
         </div>
-        <button className="text-[#656565] hover:text-[#BD9574] transition-colors">
+        <button className="text-[#BD9574] hover:text-[#BD9574] transition-colors">
           <Heart className="w-5 h-5" />
         </button>
       </div>
@@ -596,7 +596,7 @@ export default function ClubDiamondz() {
     <>
       <div className="bg-[#FBF4E4]">
         {/* Hero Section - Two Column Layout */}
-        <div className="relative grid grid-cols-1 md:grid-cols-2 min-h-[600px]">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 min-h-[800px]">
           {/* Left Column - Beige Background */}
           <div className="bg-[#fbf4e4]"></div>
 
@@ -633,14 +633,13 @@ export default function ClubDiamondz() {
                 >
                   Hello,
                   <span className="text-[#bd9574]">
-                    {user?.first_name ? user?.first_name : "Guest"}
+                    {user?.first_name ? " " + user?.first_name : " Guest"}
                   </span>
                 </p>
                 <h1
                   className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-8 whitespace-nowrap`}
-                >
-                  {translationDiamondzPage?.hero_title}
-                </h1>
+                  dangerouslySetInnerHTML={{ __html: translationDiamondzPage?.hero_title || "" }}
+                />
 
                 {/* Diamond Separator */}
                 <div className="flex items-center gap-4 mb-8">
@@ -656,7 +655,7 @@ export default function ClubDiamondz() {
                 </p>
 
                 <Link
-                  href="/signup"
+                  href="/signup?joinclub=true"
                   className="inline-flex items-center border border-[#bd9574] text-[#bd9574] px-8 py-4 hover:bg-[#bd9574] hover:text-[#fbf4e4] transition-colors self-start"
                 >
                   <span className={`${archivo.className} mr-2`}>
@@ -775,7 +774,7 @@ export default function ClubDiamondz() {
           CardComponent={ActivityCard}
         />
 
-        {/* Latest Happenings Section */}
+        {/* Latest Happenings Section 
         <DiamondzSection
           title="Latest Happenings"
           items={currentHappenings}
@@ -789,7 +788,7 @@ export default function ClubDiamondz() {
             }
           }}
           CardComponent={HappeningCard}
-        />
+        />*/}
 
         {/* Off-Market Properties Section */}
         <div className="px-[40px]">

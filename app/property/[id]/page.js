@@ -20,10 +20,12 @@ import { Archivo } from "next/font/google"
 import { Inter } from "next/font/google"
 import Image from "next/image"
 import { MapPin } from "lucide-react"
+import { AgentIcon } from "@/components/icons/AgentIcon";
 import Paddington from "@/components/paddington"
 import PropertyImagesGallery from "@/components/property-images-gallery"
 import PropertyGridGallery from "@/components/property-grid-gallery"
 import PropertyMap from "@/components/property-map"
+import PropertyAgents from "@/components/property-agents";
 import { getItem, getImageUrl, findFeature } from "@/lib/api"
 import Loading from "@/components/loading"
 
@@ -50,7 +52,7 @@ export default function PropertyDetailPage({ params }) {
           "videos.*",
           "features.feature_id.*",
           "features.value",
-          "agents.*",
+          "agents.agent_id.user_id.*",
           "type.*.*",
         ],
       })
@@ -62,7 +64,7 @@ export default function PropertyDetailPage({ params }) {
   }
 
   // State management for different view modes and selected images
-  const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", or "map"
+  const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", "map", or "agents"
   const [selectedImageId, setSelectedImageId] = useState(0) // Default to first image
   const [property, setProperty] = useState(null)
   const [allMedia, setAllMedia] = useState([])
@@ -133,6 +135,10 @@ export default function PropertyDetailPage({ params }) {
     setViewMode("map")
   }
 
+  const showAgents = () => {
+    setViewMode("agents")
+  }
+
   const hideMap = () => {
     setViewMode("grid")
   }
@@ -177,6 +183,16 @@ export default function PropertyDetailPage({ params }) {
       />
     )
   }
+  // Special case: Agents view takes over the entire page
+  if (viewMode === "agents") {
+    return (
+      <PropertyAgents
+        onClose={hideMap}
+        property={property}
+        type={translation?.name}
+      />
+    )
+  }
 
   return (
     <main className="min-h-screen bg-[#211f17]">
@@ -197,7 +213,7 @@ export default function PropertyDetailPage({ params }) {
             </div>
 
             {/* Main Property Content */}
-            <div className="flex mb-16">
+            <div className="flex">
               {/* Left Column - Property Info */}
               <div
                 style={{
@@ -409,6 +425,7 @@ export default function PropertyDetailPage({ params }) {
                 </div>
 
                 {/* Map Button */}
+                <div className="grid grid-cols-2 gap-0"> 
                 <button
                   onClick={showMap}
                   className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
@@ -416,8 +433,20 @@ export default function PropertyDetailPage({ params }) {
                   <MapPin size={20} />
                   <span className={`${archivo.className} font-light text-base`}>
                     See map
-                  </span>
+                  </span> 
                 </button>
+                <button
+                  onClick={showAgents}
+                  className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
+                >
+                  <AgentIcon width="22" height="22" color="currentColor" />
+                  <span className={`${archivo.className} font-light text-base`}>
+                    Agents
+                  </span> 
+                </button>
+                </div>
+                
+                
 
                 {/* Property Description with 'Read More' functionality */}
                 {(() => {
@@ -721,7 +750,8 @@ export default function PropertyDetailPage({ params }) {
               </div>
             )}
           </div>
-          <Paddington />
+          
+          {/* <Paddington /> */}
         </>
       )}
       <Footer />

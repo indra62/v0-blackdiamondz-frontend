@@ -28,7 +28,7 @@ const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
 const ITEMS_PER_PAGE = 12
 
 export function SavedPropertyPage() {
-  const { user } = useAuth();
+  const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [dataExplore, setDataExplore] = useState(null)
   const [properties, setProperties] = useState([])
@@ -42,6 +42,7 @@ export function SavedPropertyPage() {
   const [language, setLanguage] = useState("en")
   const [isMobileView, setIsMobileView] = useState(false)
   const gridRef = useRef(null)
+  const refreshSavedProperties = () => fetchProperties(propertiesCurrentPage)
 
   useEffect(() => {
     const handleResize = () => {
@@ -65,13 +66,10 @@ export function SavedPropertyPage() {
     }
   }, [])
 
-  const fetchProperties = async (
-    page = 0,
-  ) => {
+  const fetchProperties = async (page = 0) => {
     try {
       const token = localStorage.getItem("access_token")
       const directusPage = page + 1
-      console.log(user)
       const filter = {
         user_id: { _eq: user.id },
       }
@@ -103,7 +101,7 @@ export function SavedPropertyPage() {
         true
       )
 
-      setProperties(data?.data?.map((_data) => _data?.property_id) || [])
+      setProperties(data?.data || [])
       const totalCount = data.meta?.filter_count || 0
       // setPropertiesCount(totalCount)
       setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE))
@@ -191,7 +189,7 @@ export function SavedPropertyPage() {
               <h2
                 className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
               >
-                {language === "en" ?  "Saved Properties" : "已保存的属性"}
+                {language === "en" ? "Saved Properties" : "已保存的属性"}
               </h2>
               <div className="flex justify-center mb-6">
                 <div className="w-24 h-px bg-[#bd9574] relative">
@@ -202,9 +200,9 @@ export function SavedPropertyPage() {
               <div
                 className={`${archivo.className} text-[#e2dbcc] text-base mb-6 text-center max-w-[732px]`}
               >
-                {language === "en" ?
-                "Effortlessly revisit the properties you love. All your saved homes are collected here for easy access and future reference."
-                : "轻松重温您心仪的房源。所有您收藏的房源都集中在这里，方便您随时查阅和参考。"}
+                {language === "en"
+                  ? "Effortlessly revisit the properties you love. All your saved homes are collected here for easy access and future reference."
+                  : "轻松重温您心仪的房源。所有您收藏的房源都集中在这里，方便您随时查阅和参考。"}
               </div>
             </div>
 
@@ -212,12 +210,14 @@ export function SavedPropertyPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {properties.length > 0 ? (
                 <>
-                  {properties.map((property) => (
+                  {properties.map((savedProp) => (
                     <Property
-                      key={property.id}
-                      property={property}
+                      key={savedProp.id}
+                      property={savedProp.property_id}
+                      savedPropertyId={savedProp.id}
                       taviraj={taviraj}
                       archivo={archivo}
+                      refreshSavedProperties={refreshSavedProperties}
                     />
                   ))}
 

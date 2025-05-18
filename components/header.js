@@ -1089,7 +1089,6 @@ function PropertyFilter({
                       price_min: e.target.value,
                     }))
                   }
-                  isClearable={true}
                   className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
                 />
               </div>

@@ -25,7 +25,8 @@ export default function TeamListing({ agentProperties, status }) {
         <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
       </div>
 
-      <div className="grid grid-cols-3 space-x-6 pb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
         {currentListings.map((property) => {
           return (
             <Property
