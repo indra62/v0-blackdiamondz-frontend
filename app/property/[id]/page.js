@@ -189,7 +189,9 @@ export default function PropertyDetailPage({ params }) {
           <div className="container mx-auto px-4">
             {/* Breadcrumb */}
             <div className="py-6">
-              <div className={`${archivo.className} text-[#e2dbcc] text-[16px] font-light`}>
+              <div
+                className={`${archivo.className} text-[#e2dbcc] text-[16px] font-light`}
+              >
                 <span>{translation?.name || ""}</span>
               </div>
             </div>
@@ -222,7 +224,7 @@ export default function PropertyDetailPage({ params }) {
                   className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-4`}
                 >
                   {property?.address_suburb}, {property?.address_state}{" "}
-                  {property?.address_postcode}
+                  {property?.address_postcode.toString().padStart(4, "0")}
                 </p>
 
                 <p className="mb-6">
@@ -491,7 +493,7 @@ export default function PropertyDetailPage({ params }) {
                               )}
                               alt="Luxury bedroom with ocean view"
                               fill
-                              className="object-cover"
+                              className="transition-transform duration-700 hover:scale-110"
                             />
                           )}
                         </div>
@@ -507,7 +509,7 @@ export default function PropertyDetailPage({ params }) {
                               )}
                               alt="Luxury property spa interior"
                               fill
-                              className="object-cover"
+                              className="transition-transform duration-700 hover:scale-110"
                             />
                           )}
                         </div>
@@ -545,17 +547,17 @@ export default function PropertyDetailPage({ params }) {
                             )}
                             alt="Luxury property interior with ocean view"
                             fill
-                            className="object-cover"
+                            className="transition-transform duration-700 hover:scale-110"
                           />
                         )}
                       </div>
 
                       {/* Row 2: Image */}
                       <div className="relative h-40">
-                        {property?.images?.[4] && (
+                        {property?.plans?.[0] && (
                           <Image
                             src={getImageUrl(
-                              property?.images?.[4]?.directus_files_id?.id,
+                              property?.plans?.[0]?.directus_files_id?.id,
                               {
                                 quality: 80,
                                 fit: "cover",
@@ -563,7 +565,7 @@ export default function PropertyDetailPage({ params }) {
                             )}
                             alt="Luxury beachfront aerial view"
                             fill
-                            className="object-cover"
+                            className="object-cover transition-transform duration-700 hover:scale-110"
                           />
                         )}
                       </div>
@@ -577,19 +579,37 @@ export default function PropertyDetailPage({ params }) {
                             onClick={handleShowImages}
                           >
                             <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
+                              width="23"
+                              height="22"
+                              viewBox="0 0 23 22"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
                               <path
-                                d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H17.5L13.96 12.29Z"
-                                fill="currentColor"
+                                d="M8.55014 10.1999C9.43376 10.1999 10.1501 9.48359 10.1501 8.59994C10.1501 7.71632 9.43376 7 8.55014 7C7.66651 7 6.9502 7.71632 6.9502 8.59994C6.9502 9.48359 7.66651 10.1999 8.55014 10.1999Z"
+                                stroke="currentColor"
+                                strokeWwidth="1.56"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M7.39844 18.2002C11.8542 8.5205 15.5581 6.82456 19.75 13.1044"
+                                stroke="currentColor"
+                                strokeWidth="1.56"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M16.5505 3.7998H6.95086C5.18361 3.7998 3.75098 5.23244 3.75098 6.99969V14.9994C3.75098 16.7666 5.18361 18.1993 6.95086 18.1993H16.5505C18.3177 18.1993 19.7504 16.7666 19.7504 14.9994V6.99969C19.7504 5.23244 18.3177 3.7998 16.5505 3.7998Z"
+                                stroke="currentColor"
+                                strokeWidth="1.56"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                             </svg>
+
                             <span
-                              className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+                              className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                             >
                               {property?.images?.length}
                             </span>
@@ -601,19 +621,22 @@ export default function PropertyDetailPage({ params }) {
                               onClick={handleVideoClick}
                             >
                               <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
+                                width="23"
+                                height="22"
+                                viewBox="0 0 23 22"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
-                                  d="M17 10.5V7C17 6.45 16.55 6 16 6H4C3.45 6 3 6.45 3 7V17C3 17.55 3.45 18 4 18H16C16.55 18 17 17.55 17 17V13.5L21 17.5V6.5L17 10.5Z"
-                                  fill="currentColor"
+                                  d="M14.75 9.16667L18.9236 7.08033C19.0633 7.01052 19.2185 6.97756 19.3746 6.98458C19.5306 6.99161 19.6823 7.03839 19.8151 7.12049C19.948 7.20258 20.0577 7.31727 20.1338 7.45367C20.2099 7.59006 20.2499 7.74364 20.25 7.89983V14.1002C20.2499 14.2564 20.2099 14.4099 20.1338 14.5463C20.0577 14.6827 19.948 14.7974 19.8151 14.8795C19.6823 14.9616 19.5306 15.0084 19.3746 15.0154C19.2185 15.0224 19.0633 14.9895 18.9236 14.9197L14.75 12.8333V9.16667ZM3.75 7.33333C3.75 6.8471 3.94315 6.38079 4.28697 6.03697C4.63079 5.69315 5.0971 5.5 5.58333 5.5H12.9167C13.4029 5.5 13.8692 5.69315 14.213 6.03697C14.5568 6.38079 14.75 6.8471 14.75 7.33333V14.6667C14.75 15.1529 14.5568 15.6192 14.213 15.963C13.8692 16.3068 13.4029 16.5 12.9167 16.5H5.58333C5.0971 16.5 4.63079 16.3068 4.28697 15.963C3.94315 15.6192 3.75 15.1529 3.75 14.6667V7.33333Z"
+                                  stroke="currentColor"
+                                  strokeWidth="1.56"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
                                 />
                               </svg>
                               <span
-                                className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+                                className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                               >
                                 {property?.video ? 1 : 0}
                               </span>
@@ -625,78 +648,19 @@ export default function PropertyDetailPage({ params }) {
                             onClick={handleShowPlans}
                           >
                             <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
+                              width="23"
+                              height="22"
+                              viewBox="0 0 23 22"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <rect
-                                x="3"
-                                y="3"
-                                width="5"
-                                height="5"
-                                fill="currentColor"
-                              />
-                              <rect
-                                x="10"
-                                y="3"
-                                width="5"
-                                height="5"
-                                fill="currentColor"
-                              />
-                              <rect
-                                x="17"
-                                y="3"
-                                width="4"
-                                height="5"
-                                fill="currentColor"
-                              />
-                              <rect
-                                x="3"
-                                y="10"
-                                width="5"
-                                height="5"
-                                fill="currentColor"
-                              />
-                              <rect
-                                x="10"
-                                y="10"
-                                width="5"
-                                height="5"
-                                fill="currentColor"
-                              />
-                              <rect
-                                x="17"
-                                y="10"
-                                width="4"
-                                height="5"
-                                fill="currentColor"
-                              />
-                              <rect
-                                x="3"
-                                y="17"
-                                width="5"
-                                height="4"
-                                fill="currentColor"
-                              />
-                              <rect
-                                x="10"
-                                y="17"
-                                width="5"
-                                height="4"
-                                fill="currentColor"
-                              />
-                              <rect
-                                x="17"
-                                y="17"
-                                width="4"
-                                height="4"
+                              <path
+                                d="M12.592 2.84199C12.592 2.66297 12.5209 2.49128 12.3943 2.3647C12.2677 2.23811 12.096 2.16699 11.917 2.16699C11.738 2.16699 11.5663 2.23811 11.4397 2.3647C11.3131 2.49128 11.242 2.66297 11.242 2.84199V4.41699H6.51699V2.84199C6.51699 2.66297 6.44588 2.49128 6.31929 2.3647C6.1927 2.23811 6.02101 2.16699 5.84199 2.16699C5.66297 2.16699 5.49128 2.23811 5.3647 2.3647C5.23811 2.49128 5.16699 2.66297 5.16699 2.84199V4.41699H3.59199C3.41297 4.41699 3.24128 4.48811 3.1147 4.6147C2.98811 4.74128 2.91699 4.91297 2.91699 5.09199C2.91699 5.27101 2.98811 5.4427 3.1147 5.56929C3.24128 5.69588 3.41297 5.76699 3.59199 5.76699H5.16699V10.492H3.59199C3.41297 10.492 3.24128 10.5631 3.1147 10.6897C2.98811 10.8163 2.91699 10.988 2.91699 11.167C2.91699 11.346 2.98811 11.5177 3.1147 11.6443C3.24128 11.7709 3.41297 11.842 3.59199 11.842H5.16699V16.567H3.59199C3.41297 16.567 3.24128 16.6381 3.1147 16.7647C2.98811 16.8913 2.91699 17.063 2.91699 17.242C2.91699 17.421 2.98811 17.5927 3.1147 17.7193C3.24128 17.8459 3.41297 17.917 3.59199 17.917H5.16699V19.492C5.16699 19.671 5.23811 19.8427 5.3647 19.9693C5.49128 20.0959 5.66297 20.167 5.84199 20.167C6.02101 20.167 6.1927 20.0959 6.31929 19.9693C6.44588 19.8427 6.51699 19.671 6.51699 19.492V17.917H11.242V19.492C11.242 19.671 11.3131 19.8427 11.4397 19.9693C11.5663 20.0959 11.738 20.167 11.917 20.167C12.096 20.167 12.2677 20.0959 12.3943 19.9693C12.5209 19.8427 12.592 19.671 12.592 19.492V17.917H17.317V19.492C17.317 19.671 17.3881 19.8427 17.5147 19.9693C17.6413 20.0959 17.813 20.167 17.992 20.167C18.171 20.167 18.3427 20.0959 18.4693 19.9693C18.5959 19.8427 18.667 19.671 18.667 19.492V17.917H20.242C20.421 17.917 20.5927 17.8459 20.7193 17.7193C20.8459 17.5927 20.917 17.421 20.917 17.242C20.917 17.063 20.8459 16.8913 20.7193 16.7647C20.5927 16.6381 20.421 16.567 20.242 16.567H18.667V11.842H20.242C20.421 11.842 20.5927 11.7709 20.7193 11.6443C20.8459 11.5177 20.917 11.346 20.917 11.167C20.917 10.988 20.8459 10.8163 20.7193 10.6897C20.5927 10.5631 20.421 10.492 20.242 10.492H18.667V5.76699H20.242C20.421 5.76699 20.5927 5.69588 20.7193 5.56929C20.8459 5.4427 20.917 5.27101 20.917 5.09199C20.917 4.91297 20.8459 4.74128 20.7193 4.6147C20.5927 4.48811 20.421 4.41699 20.242 4.41699H18.667V2.84199C18.667 2.66297 18.5959 2.49128 18.4693 2.3647C18.3427 2.23811 18.171 2.16699 17.992 2.16699C17.813 2.16699 17.6413 2.23811 17.5147 2.3647C17.3881 2.49128 17.317 2.66297 17.317 2.84199V4.41699H12.592V2.84199ZM17.317 16.567H12.592V11.842H17.317V16.567ZM11.242 16.567H6.51699V11.842H11.242V16.567ZM6.51699 10.492V5.76699H11.242V10.492H6.51699ZM17.317 10.492H12.592V5.76699H17.317V10.492Z"
                                 fill="currentColor"
                               />
                             </svg>
                             <span
-                              className={`${archivo.className} font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+                              className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                             >
                               {property?.plans?.length}
                             </span>

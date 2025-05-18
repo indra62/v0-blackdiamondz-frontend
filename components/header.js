@@ -88,8 +88,6 @@ export default function Header() {
     ? "buy"
     : pathname.startsWith("/sell")
     ? "sell"
-    : pathname.startsWith("/saved-properties")
-    ? "saved-properties"
     : ""
   const [dataLogo, setDataLogo] = useState(null)
   const [dataSocial, setDataSocial] = useState(null)
@@ -736,28 +734,6 @@ function PropertyFilter({
             Sell
           </Link>
         </div>
-        {isAuthenticated && (
-          <Link
-            href="/saved-properties"
-            className={`flex justify-center items-center w-full px-6 py-4 text-sm font-light ${
-              isMobileView ? "" : "border-r"
-            }  border-[#333] ${
-              activeTab === "saved-properties"
-                ? "text-[#BD9574]"
-                : "text-[#656565]"
-            }`}
-          >
-            <Heart
-              className={`${
-                activeTab === "saved-properties"
-                  ? "fill-[#BD9574] stroke-[#BD9574]"
-                  : "fill-transparent stroke-[#656565]"
-              }`}
-              strokeWidth={1.5}
-              size={24}
-            />
-          </Link>
-        )}
         {/* Desktop Property Filters */}
         {!isMobileView && (
           <div className="hidden md:flex items-stretch text-[#656565]">

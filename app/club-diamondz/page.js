@@ -113,7 +113,7 @@ export default function ClubDiamondz() {
   const [language, setLanguage] = useState("en")
   const [error, setError] = useState(null)
 
-  const { user } = useAuth()
+  const { user, isAuthenticated } = useAuth()
   console.log("user in ClubDiamondz:", user?.first_name);
   // Items per page
   const itemsPerPage = 4
@@ -209,9 +209,6 @@ export default function ClubDiamondz() {
           "diamondz_page",
           {
             fields: ["*", "translations.*"],
-          },
-          {
-            Authorization: `Bearer ${token}`,
           }
         )
 
@@ -219,9 +216,6 @@ export default function ClubDiamondz() {
           "diamondz_event",
           {
             fields: ["*", "translations.*"],
-          },
-          {
-            Authorization: `Bearer ${token}`,
           }
         )
 
@@ -229,9 +223,6 @@ export default function ClubDiamondz() {
           "event_list",
           {
             fields: ["*", "translations.*"],
-          },
-          {
-            Authorization: `Bearer ${token}`,
           }
         )
 
@@ -239,9 +230,6 @@ export default function ClubDiamondz() {
           "diamondz_upcoming_activities",
           {
             fields: ["*", "translations.*"],
-          },
-          {
-            Authorization: `Bearer ${token}`,
           }
         )
 
@@ -249,9 +237,6 @@ export default function ClubDiamondz() {
           "activities_list",
           {
             fields: ["*", "translations.*"],
-          },
-          {
-            Authorization: `Bearer ${token}`,
           }
         )
 
@@ -671,7 +656,7 @@ export default function ClubDiamondz() {
                 </p>
 
                 <Link
-                  href="/join-club"
+                  href="/signup"
                   className="inline-flex items-center border border-[#bd9574] text-[#bd9574] px-8 py-4 hover:bg-[#bd9574] hover:text-[#fbf4e4] transition-colors self-start"
                 >
                   <span className={`${archivo.className} mr-2`}>
