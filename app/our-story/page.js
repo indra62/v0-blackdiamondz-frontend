@@ -6,12 +6,70 @@ import PartnerCarousel from "@/components/PartnerCarousel"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Loading from "@/components/loading"
-import { useEffect, useState } from "react"
+import { useRef, useState, useEffect } from "react";
 import { getImageUrl, getItems } from "@/lib/api"
 import Link from "next/link"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+
+// ExpandableText component for 'Read more.../Read less...' functionality
+
+function ExpandableText({ text, className, lineCount = 10 }) {
+  const [expanded, setExpanded] = useState(false);
+  const [needsClamp, setNeedsClamp] = useState(false);
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    if (textRef.current) {
+      const lineHeight = parseFloat(getComputedStyle(textRef.current).lineHeight);
+      const lines = textRef.current.offsetHeight / lineHeight;
+      setNeedsClamp(lines > lineCount);
+    }
+  }, [text, lineCount]);
+
+  return (
+    <>
+      <p
+        ref={textRef}
+        className={
+          className + (!expanded && needsClamp ? ` line-clamp-${lineCount}` : "")
+        }
+        style={
+          !expanded && needsClamp
+            ? {
+                display: "-webkit-box",
+                WebkitLineClamp: lineCount,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }
+            : {}
+        }
+      >
+        {text}
+      </p>
+      {needsClamp && !expanded && (
+        <button
+          className="text-[#BD9574] underline text-sm"
+          onClick={() => setExpanded(true)}
+          type="button"
+        >
+          Read more...
+        </button>
+      )}
+      {needsClamp && expanded && (
+        <button
+          className="text-[#BD9574] underline text-sm"
+          onClick={() => setExpanded(false)}
+          type="button"
+        >
+          Read less...
+        </button>
+      )}
+    </>
+  );
+}
+
 
 export default function OurStoryPage() {
   const [loading, setLoading] = useState(true)
@@ -249,23 +307,25 @@ export default function OurStoryPage() {
           {/* Beyond Selling Properties Section */}
           <section className="py-16">
             <div className="container mx-auto px-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
                 {/* Left Column */}
-                <div className="md:w-[305px] place-self-end ">
+                <div className="md:w-[505px] self-start ml-auto">
                   <h2
-                    className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[180%] tracking-[0%] mb-8`}
+                    className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[180%] tracking-[0%] mb-8 text-right`}
                   >
                     <span dangerouslySetInnerHTML={{ __html: translationStoryStory?.story_1 || '' }} />
                   </h2>
                 </div>
 
                 {/* Right Column */}
-                <div className="md:w-[305px] ">
-                  <p
-                    className={`${archivo.className} text-[#BD9574] font-light text-base leading-[180%] tracking-[0px] mb-6`}
-                  >
-                    <span dangerouslySetInnerHTML={{ __html: translationStoryStory?.story_2 || '' }} />
-                  </p>
+                <div className="md:w-[505px] self-start">
+                  {/* Read More/Less logic for story_2 */}
+                  <ExpandableText
+  text={translationStoryStory?.story_2?.replace(/<[^>]+>/g, "") || ''}
+  className={`${archivo.className} text-[#BD9574] font-light text-base leading-[180%] tracking-[0px] mb-6`}
+  lineCount={12}
+/>
+
                 </div>
               </div>
             </div>
