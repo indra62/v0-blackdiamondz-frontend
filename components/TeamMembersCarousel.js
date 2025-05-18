@@ -7,7 +7,7 @@ export default function TeamMembersCarousel({ data }) {
   if (!data?.agents || !Array.isArray(data.agents)) return null; // safeguard
   const [currentPage, setCurrentPage] = useState(0);
 
-  const ITEMS_PER_PAGE = 8;
+  const ITEMS_PER_PAGE = 7;
   const totalPages = Math.ceil(data.agents.length / ITEMS_PER_PAGE);
 
   // Navigation functions

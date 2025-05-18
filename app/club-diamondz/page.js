@@ -596,7 +596,7 @@ export default function ClubDiamondz() {
     <>
       <div className="bg-[#FBF4E4]">
         {/* Hero Section - Two Column Layout */}
-        <div className="relative grid grid-cols-1 md:grid-cols-2 min-h-[600px]">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 min-h-[800px]">
           {/* Left Column - Beige Background */}
           <div className="bg-[#fbf4e4]"></div>
 
@@ -638,9 +638,8 @@ export default function ClubDiamondz() {
                 </p>
                 <h1
                   className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-8 whitespace-nowrap`}
-                >
-                  {translationDiamondzPage?.hero_title}
-                </h1>
+                  dangerouslySetInnerHTML={{ __html: translationDiamondzPage?.hero_title || "" }}
+                />
 
                 {/* Diamond Separator */}
                 <div className="flex items-center gap-4 mb-8">
@@ -775,7 +774,7 @@ export default function ClubDiamondz() {
           CardComponent={ActivityCard}
         />
 
-        {/* Latest Happenings Section */}
+        {/* Latest Happenings Section 
         <DiamondzSection
           title="Latest Happenings"
           items={currentHappenings}
@@ -789,7 +788,7 @@ export default function ClubDiamondz() {
             }
           }}
           CardComponent={HappeningCard}
-        />
+        />*/}
 
         {/* Off-Market Properties Section */}
         <div className="px-[40px]">

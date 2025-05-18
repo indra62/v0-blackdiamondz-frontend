@@ -262,7 +262,7 @@ export default function Menu({
                 onClick={onClose}
                 className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
               >
-                Saved Properties
+                Favourites
               </Link>
               )}
               
