@@ -197,7 +197,7 @@ export default function PropertyDetailPage({ params }) {
             </div>
 
             {/* Main Property Content */}
-            <div className="flex mb-16">
+            <div className="flex">
               {/* Left Column - Property Info */}
               <div
                 style={{
@@ -721,7 +721,8 @@ export default function PropertyDetailPage({ params }) {
               </div>
             )}
           </div>
-          <Paddington />
+          
+          {/* <Paddington /> */}
         </>
       )}
       <Footer />
