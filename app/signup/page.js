@@ -262,7 +262,7 @@ export function Signup() {
                   )}
 
                   {success ? (
-                    <div className="text-center text-[#E2DBCC] p-4 border border-[#BD9574]">
+                    <div className={`font-['Archivo'] ${isJoinClub ? "text-[#211f17] border-[#211f17]" : "text-[#E2DBCC] border-[#BD9574]" } text-center  p-4 border `}>
                       <p className="mb-4">
                         Registration successful! Please check your email to
                         verify your account.
