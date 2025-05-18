@@ -8,8 +8,7 @@ export function useSavedProperties() {
   const [savedProperties, setSavedProperties] = useState([]) // Array of { id, property_id, unique_id }
   const [savedPropertyIds, setSavedPropertyIds] = useState([])
   const [savedPropertyUniqueIds, setSavedPropertyUniqueIds] = useState([])
-
-  console.log(user)
+  
   // Fetch saved properties
   useEffect(() => {
     if (!user?.id) {
