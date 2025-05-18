@@ -233,14 +233,14 @@ export default function Menu({
                   <Link
                     href="/media/video"
                     onClick={onClose}
-                    className={`${taviraj.className} text-[#BD9574] text-[22px] leading-[40px] font-normal hover:text-white transition-colors`}
+                    className={`${taviraj.className} text-white text-[22px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors`}
                   >
                     Video
                   </Link>
                   <Link
                     href="/media/news"
                     onClick={onClose}
-                    className={`${taviraj.className} text-[#BD9574] text-[22px] leading-[40px] font-normal hover:text-white transition-colors`}
+                    className={`${taviraj.className} text-white text-[22px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors`}
                   >
                     News
                   </Link>
@@ -256,6 +256,16 @@ export default function Menu({
               >
                 Club Diamondz
               </Link>
+              {isAuthenticated && (
+                <Link
+                href="/saved-properties"
+                onClick={onClose}
+                className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
+              >
+                Saved Properties
+              </Link>
+              )}
+              
 
               <div className="w-[359px] border-t-[1px] border-[#BD9574] my-1"></div>
 
