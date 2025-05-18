@@ -68,6 +68,50 @@
 
   .news-body p {
     @apply text-[#E2DBCC] text-base font-light font-['Archivo'] leading-normal;
+  
+  }
+
+  .dangerous h1 {
+    @apply text-3xl font-['Archivo'];
+    @apply font-bold;
+  }
+
+  .dangerous h2 {
+    @apply text-xl font-['Archivo'];
+    @apply font-bold;
+  }
+
+  .dangerous h3 {
+    @apply text-lg font-['Archivo'];
+    @apply font-bold;
+  }
+
+  .dangerous h4 {
+    @apply text-base font-['Archivo'];
+    @apply font-bold;
+  }
+
+  .dangerous h5 {
+    @apply text-sm font-['Archivo'];
+    @apply font-bold;
+  }
+
+  .dangerous a {
+    @apply underline font-['Archivo'];
+  }
+
+  .dangerous blockquote {
+    @apply pl-4 text-2xl font-['Taviraj'];
+    margin: 1rem 0;
+    padding: 0.5rem 2.5rem;
+  }
+
+  .dangerous b {
+    @apply text-base font-bold font-['Archivo'];
+  }
+
+  .dangerous p {
+    @apply text-base font-light font-['Archivo'] leading-normal;
 
   }
 

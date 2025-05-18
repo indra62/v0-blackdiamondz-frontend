@@ -655,7 +655,7 @@ export default function ClubDiamondz() {
                 </p>
 
                 <Link
-                  href="/signup"
+                  href="/signup?joinclub=true"
                   className="inline-flex items-center border border-[#bd9574] text-[#bd9574] px-8 py-4 hover:bg-[#bd9574] hover:text-[#fbf4e4] transition-colors self-start"
                 >
                   <span className={`${archivo.className} mr-2`}>
