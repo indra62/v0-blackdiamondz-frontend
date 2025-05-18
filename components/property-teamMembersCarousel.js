@@ -3,9 +3,12 @@ import Image from "next/image";
 import { useState } from "react";
 import { getImageUrl } from "@/lib/api";
 
-export default function TeamMembersCarousel({ data }) {
+export default function PropertyTeamMembersCarousel({ data }) {
   if (!data?.agents || !Array.isArray(data.agents)) return null; // safeguard
   const [currentPage, setCurrentPage] = useState(0);
+
+
+  console.log("nandha", JSON.stringify(data));
 
   const ITEMS_PER_PAGE = 7;
   const totalPages = Math.ceil(data.agents.length / ITEMS_PER_PAGE);
@@ -33,7 +36,6 @@ export default function TeamMembersCarousel({ data }) {
 
   return (
     <>
-    halooo
       {/* Team Grid - Single Row with Overflow */}
       <div className="flex overflow-x-auto pb-8 gap-6 max-w-[1200px] mx-auto hide-scrollbar">
         {currentTeamMembers.map((member, idx) => (
@@ -41,31 +43,31 @@ export default function TeamMembersCarousel({ data }) {
             key={member?.id || idx}
             href={
               "/team/" +
-              member?.first_name?.toLowerCase().replace(/\s+/g, "-") +
+              member?.agent_id?.user_id?.first_name?.toLowerCase().replace(/\s+/g, "-") +
               "-" +
-              member?.last_name?.toLowerCase().replace(/\s+/g, "-")
+              member?.agent_id?.user_id?.last_name?.toLowerCase().replace(/\s+/g, "-")
             }
             className="flex-none w-[150px] group cursor-pointer"
           >
             <div className="relative w-[150px] h-[200px] mb-4 overflow-hidden">
               <Image
                 src={
-                  getImageUrl(member?.avatar?.id, {
+                  getImageUrl(member?.agent_id?.user_id?.avatar, {
                     format: "webp",
                     quality: 100,
                     fit: "cover",
                   }) || "/placeholder.svg"
                 }
-                alt={member?.first_name}
+                alt={member?.agent_id?.user_id?.first_name}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
             <h4 className="text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-1 text-center group-hover:text-[#BD9574] transition-colors">
-              {member?.first_name + " " + member?.last_name}
+              {member?.agent_id?.user_id?.first_name + " " + member?.agent_id?.user_id?.last_name}
             </h4>
             <p className="text-[#BD9574] font-light text-[14px] leading-[150%] text-center">
-              {member?.title || ""}
+              {member?.agent_id?.user_id?.title || ""}
             </p>
           </Link>
         ))}

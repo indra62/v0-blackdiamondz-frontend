@@ -177,7 +177,7 @@ export function BuyPageContent() {
             "videos.*",
             "features.feature_id.*",
             "features.value",
-            "agents.*",
+            "agents.agent_id.user_id.*",
             "type.*.*",
           ],
           filter,
@@ -233,7 +233,7 @@ export function BuyPageContent() {
             "videos.*",
             "features.feature_id.*",
             "features.value",
-            "agents.*",
+            "agents.agent_id.user_id.*",
             "type.*.*",
           ],
           filter: {

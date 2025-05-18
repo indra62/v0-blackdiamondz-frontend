@@ -70,7 +70,6 @@ export function SavedPropertyPage() {
     try {
       const token = localStorage.getItem("access_token")
       const directusPage = page + 1
-      console.log(user)
       const filter = {
         user_id: { _eq: user.id },
       }

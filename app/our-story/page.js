@@ -255,7 +255,7 @@ export default function OurStoryPage() {
                   <h2
                     className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[180%] tracking-[0%] mb-8`}
                   >
-                    {translationStoryStory?.story_1}
+                    <span dangerouslySetInnerHTML={{ __html: translationStoryStory?.story_1 || '' }} />
                   </h2>
                 </div>
 
@@ -264,7 +264,7 @@ export default function OurStoryPage() {
                   <p
                     className={`${archivo.className} text-[#BD9574] font-light text-base leading-[180%] tracking-[0px] mb-6`}
                   >
-                    {translationStoryStory?.story_2}
+                    <span dangerouslySetInnerHTML={{ __html: translationStoryStory?.story_2 || '' }} />
                   </p>
                 </div>
               </div>
