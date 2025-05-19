@@ -238,23 +238,8 @@ export default function PropertyDetailPage({ params }) {
                   {property?.address_postcode.toString().padStart(4, "0")}
                 </p>
 
-                <p className="mb-6">
-                  <span
-                    className={`${archivo.className} text-[#e2dbcc] font-light text-[16px] leading-[150%] tracking-[0px]`}
-                  >
-                    {property?.is_auction ? "Auction:" : ""}
-                  </span>{" "}
-                  <span
-                    className={`${archivo.className} text-[#bd9574] font-bold text-[16px] leading-[150%] tracking-[0px]`}
-                  >
-                    {property?.is_display_price
-                      ? property.price.toLocaleString("en-AU", {
-                          style: "currency",
-                          currency: "AUD",
-                          minimumFractionDigits: 0,
-                        })
-                      : "Request for Price"}
-                  </span>
+                <p className={`${archivo.className} text-[#bd9574] font-bold text-[16px] leading-[150%] tracking-[0px] mb-6`}>
+                    {property?.price_view || ""}
                 </p>
 
                 {/* Property Features */}
