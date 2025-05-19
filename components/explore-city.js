@@ -16,8 +16,8 @@ import Image from "next/image"
 import { getImageUrl } from "@/lib/api"
 import Link from "next/link"
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["700"] })
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function ExploreCity({ data }) {
   const [language, setLanguage] = useState("en")

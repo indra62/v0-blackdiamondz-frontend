@@ -18,8 +18,8 @@ import { useDebouncedCallback } from "use-debounce"
 import AsyncSelect from "react-select/async"
 import Select from "react-select"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 const priceRangeOption = [
   { label: "Less than $5,000,000", value: 1 },

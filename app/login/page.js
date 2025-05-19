@@ -17,7 +17,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function LoginPage() {
   const [errors, setErrors] = useState(null)

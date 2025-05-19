@@ -11,13 +11,13 @@ import { formatDate } from "@/lib/utils"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-taviraj",
 })
 
 const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-archivo",
 })
 
