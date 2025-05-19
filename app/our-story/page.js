@@ -358,7 +358,7 @@ export default function OurStoryPage() {
                     "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, #211F17 0%, rgba(33, 31, 23, 0) 25%, rgba(33, 31, 23, 0) 75%, #211F17 100%)",
                 }}
               ></div>
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center px-4">
                 <h3
                   className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[120%]`}
                 >

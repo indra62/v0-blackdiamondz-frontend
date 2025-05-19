@@ -235,173 +235,151 @@ export default function OurTeamPage() {
           </section>
 
           {/* Team Gallery */}
-          <section className="pt-16 pb-0 bg-[#211f17]">
-            <div className="container mx-auto px-4">
-              {/* Using HTML table for precise layout control */}
-              <table
-                className="mx-auto border-separate"
-                style={{ borderSpacing: "2px" }}
-              >
-                <tbody>
-                  <tr>
-                    <td style={{ width: "200px", height: "200px", padding: 0 }}>
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getImageUrl(
-                            teamFounderData?.founder_image_1?.id,
-                            {
-                              format: "webp",
-                              quality: 100,
-                              fit: "cover",
-                            }
-                          )}
-                          alt="Team member in red dress"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </td>
-                    <td style={{ width: "200px", height: "200px", padding: 0 }}>
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getImageUrl(
-                            teamFounderData?.founder_image_2?.id,
-                            {
-                              format: "webp",
-                              quality: 100,
-                              fit: "cover",
-                            }
-                          )}
-                          alt="Team members meeting clients"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </td>
-                    <td
-                      rowSpan={2}
-                      style={{ width: "300px", height: "402px", padding: 0 }}
-                    >
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getImageUrl(
-                            teamFounderData?.founder_image_3?.id,
-                            {
-                              format: "webp",
-                              quality: 100,
-                              fit: "cover",
-                            }
-                          )}
-                          alt="Female agent in red dress"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </td>
-                    <td
-                      rowSpan={2}
-                      style={{ width: "300px", height: "402px", padding: 0 }}
-                    >
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getImageUrl(
-                            teamFounderData?.founder_image_4?.id,
-                            {
-                              format: "webp",
-                              quality: 100,
-                              fit: "cover",
-                            }
-                          )}
-                          alt="Team members with clients"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </td>
-                    <td style={{ width: "402px", height: "200px", padding: 0 }}>
-                      <div className="flex w-full h-full">
-                        <div
-                          className="relative w-1/2 h-full"
-                          style={{ marginRight: "1px" }}
-                        >
-                          <Image
-                            src={getImageUrl(
-                              teamFounderData?.founder_image_5?.id,
-                              {
-                                format: "webp",
-                                quality: 100,
-                                fit: "cover",
-                              }
-                            )}
-                            alt="Director portrait 1"
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div
-                          className="relative w-1/2 h-full"
-                          style={{ marginLeft: "1px" }}
-                        >
-                          <Image
-                            src={getImageUrl(
-                              teamFounderData?.founder_image_6?.id,
-                              {
-                                format: "webp",
-                                quality: 100,
-                                fit: "cover",
-                              }
-                            )}
-                            alt="Director portrait 2"
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      colSpan={2}
-                      style={{ width: "402px", height: "200px", padding: 0 }}
-                    >
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getImageUrl(
-                            teamFounderData?.founder_image_7?.id,
-                            {
-                              format: "webp",
-                              quality: 100,
-                              fit: "cover",
-                            }
-                          )}
-                          alt="Modern house exterior"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </td>
-                    <td style={{ width: "200px", height: "200px", padding: 0 }}>
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getImageUrl(
-                            teamFounderData?.founder_image_8?.id,
-                            {
-                              format: "webp",
-                              quality: 100,
-                              fit: "cover",
-                            }
-                          )}
-                          alt="Luxury property exterior"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+<section className="pt-16 pb-0 bg-[#211f17]">
+  <div className="container mx-auto px-4">
+    {/* Desktop/Tablet Table Layout (unchanged) */}
+    <div className="hidden md:block">
+      <table className="mx-auto border-separate" style={{ borderSpacing: "2px" }}>
+        <tbody>
+          <tr>
+            <td style={{ width: "200px", height: "200px", padding: 0 }}>
+              <div className="relative w-full h-full">
+                <Image
+                  src={getImageUrl(teamFounderData?.founder_image_1?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  })}
+                  alt="Team member in red dress"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </td>
+            <td style={{ width: "200px", height: "200px", padding: 0 }}>
+              <div className="relative w-full h-full">
+                <Image
+                  src={getImageUrl(teamFounderData?.founder_image_2?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  })}
+                  alt="Team members meeting clients"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </td>
+            <td rowSpan={2} style={{ width: "300px", height: "402px", padding: 0 }}>
+              <div className="relative w-full h-full">
+                <Image
+                  src={getImageUrl(teamFounderData?.founder_image_3?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  })}
+                  alt="Female agent in red dress"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </td>
+            <td rowSpan={2} style={{ width: "300px", height: "402px", padding: 0 }}>
+              <div className="relative w-full h-full">
+                <Image
+                  src={getImageUrl(teamFounderData?.founder_image_4?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  })}
+                  alt="Team members with clients"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </td>
+            <td style={{ width: "402px", height: "200px", padding: 0 }}>
+              <div className="flex w-full h-full">
+                <div className="relative w-1/2 h-full" style={{ marginRight: "1px" }}>
+                  <Image
+                    src={getImageUrl(teamFounderData?.founder_image_5?.id, {
+                      format: "webp",
+                      quality: 100,
+                      fit: "cover",
+                    })}
+                    alt="Director portrait 1"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="relative w-1/2 h-full" style={{ marginLeft: "1px" }}>
+                  <Image
+                    src={getImageUrl(teamFounderData?.founder_image_6?.id, {
+                      format: "webp",
+                      quality: 100,
+                      fit: "cover",
+                    })}
+                    alt="Director portrait 2"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={2} style={{ width: "402px", height: "200px", padding: 0 }}>
+              <div className="relative w-full h-full">
+                <Image
+                  src={getImageUrl(teamFounderData?.founder_image_7?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  })}
+                  alt="Modern house exterior"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </td>
+            <td style={{ width: "200px", height: "200px", padding: 0 }}>
+              <div className="relative w-full h-full">
+                <Image
+                  src={getImageUrl(teamFounderData?.founder_image_8?.id, {
+                    format: "webp",
+                    quality: 100,
+                    fit: "cover",
+                  })}
+                  alt="Luxury property exterior"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {/* Mobile stacked gallery */}
+    <div className="md:hidden flex flex-col gap-2">
+      {[1,2,3,4,5,6,7,8].map((idx) => (
+        <div key={idx} className="relative w-full h-[400px]">
+          <Image
+            src={getImageUrl(teamFounderData?.[`founder_image_${idx}`]?.id, {
+              format: "webp",
+              quality: 100,
+              fit: "cover",
+            })}
+            alt={`Team gallery image ${idx}`}
+            fill
+            className="object-cover"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
 
           {/* Explore Our Story Section */}
           <section className="relative h-[365px] w-full overflow-hidden">

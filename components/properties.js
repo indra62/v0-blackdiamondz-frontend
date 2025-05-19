@@ -314,7 +314,7 @@ export default function Properties({
         )} */}
 
         {/* Properties Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {data.map((property) => (
             <Property
               key={property.id}

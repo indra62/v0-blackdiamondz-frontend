@@ -601,7 +601,7 @@ export default function ClubDiamondz() {
           <div className="bg-[#fbf4e4]"></div>
 
           {/* Right Column - Image */}
-          <div className="relative">
+          <div className="relative min-h-screen md:h-[400px] w-full">
             <Image
               src={
                 getImageUrl(diamondzPage?.hero_background, {

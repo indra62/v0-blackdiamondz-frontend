@@ -33,7 +33,6 @@ export default function TeamMembersCarousel({ data }) {
 
   return (
     <>
-    halooo
       {/* Team Grid - Single Row with Overflow */}
       <div className="flex overflow-x-auto pb-8 gap-6 max-w-[1200px] mx-auto hide-scrollbar">
         {currentTeamMembers.map((member, idx) => (

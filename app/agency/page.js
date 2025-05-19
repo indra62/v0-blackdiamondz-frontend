@@ -281,7 +281,9 @@ export default function AgencyPage() {
           </section>
 
           {/* Stats Section */}
-          <StatsHome data={dataStatistic} isMobileView={isMobileView} />
+          <div className={isMobileView ? "px-8" : ""}>
+            <StatsHome data={dataStatistic} isMobileView={isMobileView} />
+          </div>
 
           {/* Property Concierge Section */}
           <section className="py-16 bg-[#211f17]">
