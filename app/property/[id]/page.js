@@ -29,7 +29,7 @@ import PropertyAgents from "@/components/property-agents";
 import { getItem, getImageUrl, findFeature } from "@/lib/api";
 import Loading from "@/components/loading";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const archivo = Archivo({
   subsets: ["latin"],
   weight: ["300", "400", "700", "600"],
