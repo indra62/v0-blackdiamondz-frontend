@@ -23,8 +23,8 @@ const scrollbarHideStyles = `
   }
 `
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function TeamDetail({
   member,
@@ -276,7 +276,7 @@ export default function TeamDetail({
                 </div>
 
                 {/* Text Overlay - Positioned in the middle-right area */}
-                <div className="absolute top-1/2 right-28 transform -translate-y-1/2 max-w-[400px]  p-6">
+                <div className="absolute bottom-4 md:top-1/2 right-8 transform md:-translate-y-1/2 max-w-[400px] p-6">
                   <p
                     className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
                   >

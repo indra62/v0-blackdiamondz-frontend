@@ -13,8 +13,8 @@ import { Archivo } from "next/font/google";
 import { useEffect, useState } from "react";
 import Loading from "./loading";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
 export default function Paddington() {
   const [error, setError] = useState(null);

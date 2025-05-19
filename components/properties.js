@@ -21,8 +21,8 @@ import { Property } from "@/lib/component/property";
  * @param {number} props.propertyCount - Number of properties to display
  */
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
 const propertyTab = [
   { id: "buy", label: "Buy", type: "text", value: "Current" },
@@ -314,7 +314,7 @@ export default function Properties({
         )} */}
 
         {/* Properties Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {data.map((property) => (
             <Property
               key={property.id}

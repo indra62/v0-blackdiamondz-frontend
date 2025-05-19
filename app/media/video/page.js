@@ -10,7 +10,7 @@ import Loading from "@/components/loading"
 import { getImageUrl, getItems } from "@/lib/api"
 import VideoSection from "@/components/VideoSection"
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function MediaVideo() {
   const [heroData, setHeroData] = useState(null)

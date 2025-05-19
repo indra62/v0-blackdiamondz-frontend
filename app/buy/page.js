@@ -7,52 +7,52 @@
  *
  * @page
  */
-"use client"
+"use client";
 
-import { useState, useEffect, Suspense, useRef, useMemo } from "react"
-import Footer from "@/components/footer"
-import ExploreCity from "@/components/explore-city"
-import OffMarket from "@/components/off-market"
-import { getImageUrl, getItems } from "@/lib/api"
-import Link from "next/link"
-import { Property } from "@/lib/component/property"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import Loading from "@/components/loading"
-import { useSearchParams } from "next/navigation"
+import { useState, useEffect, Suspense, useRef, useMemo } from "react";
+import Footer from "@/components/footer";
+import ExploreCity from "@/components/explore-city";
+import OffMarket from "@/components/off-market";
+import { getImageUrl, getItems } from "@/lib/api";
+import Link from "next/link";
+import { Property } from "@/lib/component/property";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import Loading from "@/components/loading";
+import { useSearchParams } from "next/navigation";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
-const ITEMS_PER_PAGE = 12
+const ITEMS_PER_PAGE = 12;
 
 export function BuyPageContent() {
-  const searchParams = useSearchParams()
-  const [loading, setLoading] = useState(true)
-  const [dataExplore, setDataExplore] = useState(null)
-  const [properties, setProperties] = useState([])
-  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0)
-  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0)
-  const [error, setError] = useState(null)
-  const [explore, setExplore] = useState(null)
-  const [offMarket, setOffMarket] = useState(null)
-  const [offMarketSection, setOffMarketSection] = useState(null)
-  const [language, setLanguage] = useState("en")
-  const city = searchParams.get("city")
-  const type = searchParams.get("type")
-  const bedroom = searchParams.get("bedroom")
-  const priceMin = searchParams.get("price_min")
-  const priceMax = searchParams.get("price_max")
-  const rangesParam = searchParams.get("ranges")
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(true);
+  const [dataExplore, setDataExplore] = useState(null);
+  const [properties, setProperties] = useState([]);
+  const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0);
+  const [propertiesTotalPages, setPropertiesTotalPages] = useState(0);
+  const [error, setError] = useState(null);
+  const [explore, setExplore] = useState(null);
+  const [offMarket, setOffMarket] = useState(null);
+  const [offMarketSection, setOffMarketSection] = useState(null);
+  const [language, setLanguage] = useState("en");
+  const city = searchParams.get("city");
+  const type = searchParams.get("type");
+  const bedroom = searchParams.get("bedroom");
+  const priceMin = searchParams.get("price_min");
+  const priceMax = searchParams.get("price_max");
+  const rangesParam = searchParams.get("ranges");
   const ranges =
     rangesParam && rangesParam.length > 0
       ? rangesParam.split(",").map((r) => {
-          const [start, end] = r.split("-").map(Number)
-          return { start, end }
+          const [start, end] = r.split("-").map(Number);
+          return { start, end };
         })
-      : []
-  const [isMobileView, setIsMobileView] = useState(false)
-  const gridRef = useRef(null)
+      : [];
+  const [isMobileView, setIsMobileView] = useState(false);
+  const gridRef = useRef(null);
   const prevFilters = useRef({
     city,
     type,
@@ -60,11 +60,11 @@ export function BuyPageContent() {
     priceMin,
     priceMax,
     rangesParam,
-  })
+  });
 
   useEffect(() => {
     // Compare each primitive filter value
-    const prev = prevFilters.current
+    const prev = prevFilters.current;
     if (
       prev.city !== city ||
       prev.type !== type ||
@@ -73,7 +73,7 @@ export function BuyPageContent() {
       prev.priceMax !== priceMax ||
       prev.rangesParam !== rangesParam
     ) {
-      setPropertiesCurrentPage(0)
+      setPropertiesCurrentPage(0);
       prevFilters.current = {
         city,
         type,
@@ -81,32 +81,32 @@ export function BuyPageContent() {
         priceMin,
         priceMax,
         rangesParam,
-      }
+      };
     }
     // eslint-disable-next-line
-  }, [city, type, bedroom, priceMin, priceMax, rangesParam])
+  }, [city, type, bedroom, priceMin, priceMax, rangesParam]);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth < 768)
-    }
+      setIsMobileView(window.innerWidth < 768);
+    };
 
-    handleResize()
-    window.addEventListener("resize", handleResize)
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [])
+  }, []);
 
   const fetchProperties = async (
     page = 0,
@@ -119,7 +119,7 @@ export function BuyPageContent() {
     ranges
   ) => {
     try {
-      const directusPage = page + 1
+      const directusPage = page + 1;
 
       const filter = {
         is_off_market: { _eq: false },
@@ -128,7 +128,7 @@ export function BuyPageContent() {
             ? { _eq: "Current" }
             : { _eq: "Sold", _neq: "Inactive" },
       };
-      
+
       if (city) {
         filter.address_suburb = { _eq: city };
       }
@@ -152,7 +152,7 @@ export function BuyPageContent() {
           },
         };
       }
-      
+
       if (ranges.length > 0) {
         filter._or = [
           ...(filter._or || []),
@@ -187,43 +187,43 @@ export function BuyPageContent() {
         },
         {},
         true
-      )
+      );
 
-      setProperties(data?.data || [])
-      const totalCount = data.meta?.filter_count || 0
-      setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE))
-      return data
+      setProperties(data?.data || []);
+      const totalCount = data.meta?.filter_count || 0;
+      setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE));
+      return data;
     } catch (err) {
-      console.error("Error fetching properties:", err)
-      setError("Failed to load properties")
-      return { data: [] }
+      console.error("Error fetching properties:", err);
+      setError("Failed to load properties");
+      return { data: [] };
     }
-  }
+  };
 
   const handlePropertyPageChange = (page) => {
     if (page >= 0 && page < propertiesTotalPages) {
-      setPropertiesCurrentPage(page)
+      setPropertiesCurrentPage(page);
     }
-  }
+  };
 
   useEffect(() => {
     if (gridRef.current) {
-      gridRef.current.scrollIntoView({ top: -80, behavior: "smooth" })
+      gridRef.current.scrollIntoView({ top: -80, behavior: "smooth" });
     }
-  }, [propertiesCurrentPage])
+  }, [propertiesCurrentPage]);
 
   useEffect(() => {
     const fetchDataBuy = async () => {
       try {
         const dataExplore = await getItems("property_buy", {
           fields: ["*", "translations.*", "cities.*"],
-        })
+        });
         const dataExplore_section = await getItems("explore_section", {
           fields: ["*", "translations.*", "cities.*"],
-        })
+        });
         const dataOffMarketSection = await getItems("offMarket_section", {
           fields: ["*", "translations.*"],
-        })
+        });
         const dataOffMarketProperties = await getItems("properties", {
           fields: [
             "*",
@@ -241,21 +241,21 @@ export function BuyPageContent() {
             status: { _nin: ["Sold", "Inactive"] },
           },
           limit: 4,
-        })
+        });
 
-        setExplore(dataExplore_section)
-        setDataExplore(dataExplore)
-        setOffMarketSection(dataOffMarketSection)
-        setOffMarket(dataOffMarketProperties)
-        setLoading(false)
+        setExplore(dataExplore_section);
+        setDataExplore(dataExplore);
+        setOffMarketSection(dataOffMarketSection);
+        setOffMarket(dataOffMarketProperties);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error)
-        setError("Failed to load data")
+        console.error("Error fetching data:", error);
+        setError("Failed to load data");
       }
-    }
-    fetchDataBuy()
+    };
+    fetchDataBuy();
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   useEffect(() => {
     fetchProperties(
@@ -267,7 +267,7 @@ export function BuyPageContent() {
       priceMin,
       priceMax,
       ranges
-    )
+    );
     // eslint-disable-next-line
   }, [
     propertiesCurrentPage,
@@ -277,11 +277,11 @@ export function BuyPageContent() {
     priceMin,
     priceMax,
     rangesParam,
-  ])
+  ]);
 
   const translationExplore =
     dataExplore?.translations?.find((t) => t.languages_code === language) ||
-    dataExplore?.translations?.[0]
+    dataExplore?.translations?.[0];
 
   return (
     <main className="min-h-screen bg-[#211f17]">
@@ -329,9 +329,7 @@ export function BuyPageContent() {
                   ))}
 
                   {propertiesTotalPages > 1 && (
-                    <div
-                      className={`flex items-center justify-between mt-12 col-span-4`}
-                    >
+                    <div className="flex items-center justify-between mt-12 w-full md:col-span-2 lg:col-span-4">
                       {!isMobileView && (
                         <div className="flex gap-8">
                           {Array.from(
@@ -431,12 +429,12 @@ export function BuyPageContent() {
       )}
       <Footer />
     </main>
-  )
+  );
 }
 export default function BuyPage() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-[#211f17]"></div>}>
       <BuyPageContent />
     </Suspense>
-  )
+  );
 }

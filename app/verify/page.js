@@ -15,7 +15,7 @@ import { useEffect, useState, Suspense } from "react"
 import Loading from "@/components/loading"
 import { useSearchParams } from "next/navigation"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 // Component to handle the search params
 function VerificationContent() {

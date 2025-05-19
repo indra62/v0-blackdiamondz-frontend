@@ -3,7 +3,7 @@ import Image from "next/image"
 import { Archivo } from "next/font/google"
 import { getImageUrl } from "@/lib/api";
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function PropertyGridGallery({ onClose, onImageClick, album }) {
   // Function to handle image click - defaults to onClose if onImageClick is not provided

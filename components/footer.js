@@ -18,7 +18,7 @@ import { toast } from "react-hot-toast"
 import { getImageUrl, getItems, submitSubscribe } from "@/lib/api"
 import Image from "next/image"
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const currentyear = new Date().getFullYear()
 
 export default function Footer({dark = true}) {

@@ -14,7 +14,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import RangeSlider from "react-range-slider-input"
 import "react-range-slider-input/dist/style.css"
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 const customStyles = {
   control: (provided) => ({

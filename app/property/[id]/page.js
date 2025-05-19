@@ -11,35 +11,35 @@
  * @param {Object} props.params - Route parameters
  * @param {string} props.params.id - Property ID from the URL
  */
-"use client"
+"use client";
 
-import { useState, useEffect, use } from "react"
-import Footer from "@/components/footer"
-import { Taviraj } from "next/font/google"
-import { Archivo } from "next/font/google"
-import { Inter } from "next/font/google"
-import Image from "next/image"
-import { MapPin } from "lucide-react"
+import { useState, useEffect, use } from "react";
+import Footer from "@/components/footer";
+import { Taviraj } from "next/font/google";
+import { Archivo } from "next/font/google";
+import { Inter } from "next/font/google";
+import Image from "next/image";
+import { MapPin } from "lucide-react";
 import { AgentIcon } from "@/components/icons/AgentIcon";
-import Paddington from "@/components/paddington"
-import PropertyImagesGallery from "@/components/property-images-gallery"
-import PropertyGridGallery from "@/components/property-grid-gallery"
-import PropertyMap from "@/components/property-map"
+import Paddington from "@/components/paddington";
+import PropertyImagesGallery from "@/components/property-images-gallery";
+import PropertyGridGallery from "@/components/property-grid-gallery";
+import PropertyMap from "@/components/property-map";
 import PropertyAgents from "@/components/property-agents";
-import { getItem, getImageUrl, findFeature } from "@/lib/api"
-import Loading from "@/components/loading"
+import { getItem, getImageUrl, findFeature } from "@/lib/api";
+import Loading from "@/components/loading";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "600"],
-})
-const inter = Inter({ subsets: ["latin"], weight: ["500"] })
+  weight: ["300", "400", "500", "600", "700"],
+});
+const inter = Inter({ subsets: ["latin"], weight: ["500"] });
 
 export default function PropertyDetailPage({ params }) {
-  const { id: propertyId } = use(params)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const { id: propertyId } = use(params);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchProperty = async (id) => {
     try {
@@ -55,57 +55,57 @@ export default function PropertyDetailPage({ params }) {
           "agents.agent_id.user_id.*",
           "type.*.*",
         ],
-      })
-      return data
+      });
+      return data;
     } catch (error) {
-      setError("Error fetching property:", error)
-      return null
+      setError("Error fetching property:", error);
+      return null;
     }
-  }
+  };
 
   // State management for different view modes and selected images
-  const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", "map", or "agents"
-  const [selectedImageId, setSelectedImageId] = useState(0) // Default to first image
-  const [property, setProperty] = useState(null)
-  const [allMedia, setAllMedia] = useState([])
-  const [language, setLanguage] = useState("en")
-  const [imageAlbum, setImageAlbum] = useState([])
-  const [plansAlbum, setPlansAlbum] = useState([])
-  const [album, setAlbum] = useState([])
-  const [videoLightboxOpen, setVideoLightboxOpen] = useState(false)
+  const [viewMode, setViewMode] = useState("grid"); // "grid", "gallery", "gridGallery", "map", or "agents"
+  const [selectedImageId, setSelectedImageId] = useState(0); // Default to first image
+  const [property, setProperty] = useState(null);
+  const [allMedia, setAllMedia] = useState([]);
+  const [language, setLanguage] = useState("en");
+  const [imageAlbum, setImageAlbum] = useState([]);
+  const [plansAlbum, setPlansAlbum] = useState([]);
+  const [album, setAlbum] = useState([]);
+  const [videoLightboxOpen, setVideoLightboxOpen] = useState(false);
 
-  const [expanded, setExpanded] = useState(false)
-  const description = property?.description || ""
-  const showReadMore = description.length > 300
-  const displayedText = expanded ? description : description.slice(0, 300)
+  const [expanded, setExpanded] = useState(false);
+  const description = property?.description || "";
+  const showReadMore = description.length > 300;
+  const displayedText = expanded ? description : description.slice(0, 300);
 
   useEffect(() => {
     fetchProperty(propertyId).then((data) => {
-      setProperty(data)
-      const combinedMedia = (data?.images || []).concat(data?.plans || [])
-      setImageAlbum(data?.images || [])
-      setPlansAlbum(data?.plans || [])
-      setAllMedia(combinedMedia)
-      setAlbum(combinedMedia)
-      setLoading(false)
-    })
+      setProperty(data);
+      const combinedMedia = (data?.images || []).concat(data?.plans || []);
+      setImageAlbum(data?.images || []);
+      setPlansAlbum(data?.plans || []);
+      setAllMedia(combinedMedia);
+      setAlbum(combinedMedia);
+      setLoading(false);
+    });
 
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language")
+      const storedLanguage = localStorage.getItem("language");
       if (storedLanguage) {
-        setLanguage(storedLanguage)
+        setLanguage(storedLanguage);
       }
     }
-  }, [propertyId])
+  }, [propertyId]);
 
   const findFeature = (feature) => {
-    if (!property || !property.features) return undefined
-    return property.features.find((f) => f.feature_id?.slug === feature)
-  }
+    if (!property || !property.features) return undefined;
+    return property.features.find((f) => f.feature_id?.slug === feature);
+  };
 
   const translation =
     property?.type?.translations?.find((t) => t.languages_code === language) ||
-    property?.type?.translations?.[0]
+    property?.type?.translations?.[0];
 
   /**
    * Toggle between different view modes (grid, gallery, gridGallery)
@@ -115,61 +115,61 @@ export default function PropertyDetailPage({ params }) {
    */
   const toggleViewMode = (event) => {
     if (viewMode === "grid") {
-      setViewMode("gallery")
+      setViewMode("gallery");
     } else if (
       viewMode === "gallery" &&
       event?.currentTarget?.dataset?.action === "grid"
     ) {
-      setViewMode("gridGallery")
+      setViewMode("gridGallery");
     } else {
-      setViewMode("grid")
+      setViewMode("grid");
     }
-  }
+  };
 
   // Update the switchToGridGallery function to accept an event parameter
   const switchToGridGallery = (event) => {
-    setViewMode("gridGallery")
-  }
+    setViewMode("gridGallery");
+  };
 
   const showMap = () => {
-    setViewMode("map")
-  }
+    setViewMode("map");
+  };
 
   const showAgents = () => {
-    setViewMode("agents")
-  }
+    setViewMode("agents");
+  };
 
   const hideMap = () => {
-    setViewMode("grid")
-  }
+    setViewMode("grid");
+  };
 
   const handleShowImages = () => {
-    setAlbum(imageAlbum)
-    setSelectedImageId(0)
-    setViewMode("gallery")
-  }
+    setAlbum(imageAlbum);
+    setSelectedImageId(0);
+    setViewMode("gallery");
+  };
 
   const handleShowPlans = () => {
-    setAlbum(plansAlbum)
-    setSelectedImageId(0)
-    setViewMode("gallery")
-  }
+    setAlbum(plansAlbum);
+    setSelectedImageId(0);
+    setViewMode("gallery");
+  };
 
   const handleShowAllMedia = () => {
-    setAlbum(allMedia)
-    setSelectedImageId(0)
-    setViewMode("gallery")
-  }
+    setAlbum(allMedia);
+    setSelectedImageId(0);
+    setViewMode("gallery");
+  };
 
   const handleVideoClick = () => {
-    setVideoLightboxOpen(true)
-  }
+    setVideoLightboxOpen(true);
+  };
 
   // Handle clicking on an image in the grid gallery
   const handleGridImageClick = (imageId) => {
-    setSelectedImageId(imageId) // Store which image was clicked
-    setViewMode("gallery") // Switch to gallery view
-  }
+    setSelectedImageId(imageId); // Store which image was clicked
+    setViewMode("gallery"); // Switch to gallery view
+  };
 
   // Special case: Map view takes over the entire page
   // Return early to avoid rendering the standard layout
@@ -181,7 +181,7 @@ export default function PropertyDetailPage({ params }) {
         property={property}
         type={translation?.name}
       />
-    )
+    );
   }
   // Special case: Agents view takes over the entire page
   if (viewMode === "agents") {
@@ -191,7 +191,7 @@ export default function PropertyDetailPage({ params }) {
         property={property}
         type={translation?.name}
       />
-    )
+    );
   }
 
   return (
@@ -213,16 +213,11 @@ export default function PropertyDetailPage({ params }) {
             </div>
 
             {/* Main Property Content */}
-            <div className="flex">
+            <div className="flex flex-col md:flex-row">
               {/* Left Column - Property Info */}
               <div
-                style={{
-                  width: 420,
-                  maxWidth: "420px",
-                  gap: "20px",
-                  paddingRight: "20px",
-                  paddingBottom: "60px",
-                }}
+                className="w-full md:w-[420px] md:max-w-[420px] pr-0 md:pr-5 pb-8 md:pb-[60px] mb-8 md:mb-0"
+                style={{ gap: "20px" }}
               >
                 {/* Property Title */}
                 <h1
@@ -243,23 +238,8 @@ export default function PropertyDetailPage({ params }) {
                   {property?.address_postcode.toString().padStart(4, "0")}
                 </p>
 
-                <p className="mb-6">
-                  <span
-                    className={`${archivo.className} text-[#e2dbcc] font-light text-[16px] leading-[150%] tracking-[0px]`}
-                  >
-                    {property?.is_auction ? "Auction:" : ""}
-                  </span>{" "}
-                  <span
-                    className={`${archivo.className} text-[#bd9574] font-bold text-[16px] leading-[150%] tracking-[0px]`}
-                  >
-                    {property?.is_display_price
-                      ? property.price.toLocaleString("en-AU", {
-                          style: "currency",
-                          currency: "AUD",
-                          minimumFractionDigits: 0,
-                        })
-                      : "Request for Price"}
-                  </span>
+                <p className={`${archivo.className} text-[#bd9574] font-bold text-[16px] leading-[150%] tracking-[0px] mb-6`}>
+                    {property?.price_view || ""}
                 </p>
 
                 {/* Property Features */}
@@ -425,28 +405,30 @@ export default function PropertyDetailPage({ params }) {
                 </div>
 
                 {/* Map Button */}
-                <div className="grid grid-cols-2 gap-0"> 
-                <button
-                  onClick={showMap}
-                  className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
-                >
-                  <MapPin size={20} />
-                  <span className={`${archivo.className} font-light text-base`}>
-                    See map
-                  </span> 
-                </button>
-                <button
-                  onClick={showAgents}
-                  className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
-                >
-                  <AgentIcon width="22" height="22" color="currentColor" />
-                  <span className={`${archivo.className} font-light text-base`}>
-                    Agents
-                  </span> 
-                </button>
+                <div className="grid grid-cols-2 gap-0">
+                  <button
+                    onClick={showMap}
+                    className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
+                  >
+                    <MapPin size={20} />
+                    <span
+                      className={`${archivo.className} font-light text-base`}
+                    >
+                      See map
+                    </span>
+                  </button>
+                  <button
+                    onClick={showAgents}
+                    className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
+                  >
+                    <AgentIcon width="22" height="22" color="currentColor" />
+                    <span
+                      className={`${archivo.className} font-light text-base`}
+                    >
+                      Agents
+                    </span>
+                  </button>
                 </div>
-                
-                
 
                 {/* Property Description with 'Read More' functionality */}
                 {(() => {
@@ -477,19 +459,19 @@ export default function PropertyDetailPage({ params }) {
                         </button>
                       )}
                     </div>
-                  )
+                  );
                 })()}
               </div>
 
               {/* Property Images - Right Column */}
               <div className="flex-1">
                 {viewMode === "grid" ? (
-                  /* Grid View - Original Layout */
-                  <div className="grid grid-cols-2" style={{ gap: "8px" }}>
+                  /* Grid View - Responsive Layout */
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {/* Column 1 (Left) */}
                     <div className="flex flex-col gap-2">
                       {/* Row 1: Large Image */}
-                      <div className="relative h-64">
+                      <div className="relative h-56 md:h-64">
                         {property?.images?.[0] && (
                           <Image
                             src={getImageUrl(
@@ -510,7 +492,7 @@ export default function PropertyDetailPage({ params }) {
 
                       {/* Row 2: Two Half-Size Images */}
                       <div className="grid grid-cols-2 gap-2">
-                        <div className="relative h-40">
+                        <div className="relative h-32 md:h-40">
                           {property?.images?.[1] && (
                             <Image
                               src={getImageUrl(
@@ -526,7 +508,7 @@ export default function PropertyDetailPage({ params }) {
                             />
                           )}
                         </div>
-                        <div className="relative h-40">
+                        <div className="relative h-32 md:h-40">
                           {property?.images?.[2] && (
                             <Image
                               src={getImageUrl(
@@ -564,7 +546,7 @@ export default function PropertyDetailPage({ params }) {
                     {/* Column 2 (Right) */}
                     <div className="flex flex-col gap-2">
                       {/* Row 1: Image */}
-                      <div className="relative h-64">
+                      <div className="relative h-56 md:h-64">
                         {property?.images?.[3] && (
                           <Image
                             src={getImageUrl(
@@ -582,7 +564,7 @@ export default function PropertyDetailPage({ params }) {
                       </div>
 
                       {/* Row 2: Image */}
-                      <div className="relative h-40">
+                      <div className="relative h-32 md:h-40">
                         {property?.plans?.[0] && (
                           <Image
                             src={getImageUrl(
@@ -750,11 +732,11 @@ export default function PropertyDetailPage({ params }) {
               </div>
             )}
           </div>
-          
+
           {/* <Paddington /> */}
         </>
       )}
       <Footer />
     </main>
-  )
+  );
 }
