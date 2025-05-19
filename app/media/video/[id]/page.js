@@ -10,7 +10,7 @@ import { getImageUrl, getItems, getItem } from "@/lib/api";
 import { useParams } from "next/navigation";
 import VideoSection from "@/components/VideoSection";
 
-const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-archivo" });
 
 export default function MediaVideoDetail() {
   const params = useParams();

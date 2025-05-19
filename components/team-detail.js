@@ -24,7 +24,7 @@ const scrollbarHideStyles = `
 `
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function TeamDetail({
   member,
