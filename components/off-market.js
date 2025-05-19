@@ -18,8 +18,8 @@ import { Property } from "@/lib/component/property"
 import { useAuth } from "@/hooks/useAuth"
 import Link from "next/link"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function OffMarket({ data, section, dark = true }) {
   const darkMode = dark || false

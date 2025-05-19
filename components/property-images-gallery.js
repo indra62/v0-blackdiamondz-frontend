@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight, Grid } from "lucide-react"
 import { Archivo } from "next/font/google"
 import { getImageUrl } from "@/lib/api"
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function PropertyImagesGallery({
   onClose,

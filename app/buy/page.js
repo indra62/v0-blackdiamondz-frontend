@@ -21,8 +21,8 @@ import { Archivo } from "next/font/google";
 import Loading from "@/components/loading";
 import { useSearchParams } from "next/navigation";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
 const ITEMS_PER_PAGE = 12;
 

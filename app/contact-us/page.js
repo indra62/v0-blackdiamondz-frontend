@@ -8,8 +8,8 @@ import toast from "react-hot-toast"
 import AsyncSelect from "react-select/async"
 import { useDebouncedCallback } from "use-debounce"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 const customStyles = {
   control: (provided) => ({

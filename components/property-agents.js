@@ -8,8 +8,8 @@ import PropertyTeamMembersCarousel from "@/components/property-teamMembersCarous
 
 
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function PropertyAgents({ onClose, property, type }) {
 

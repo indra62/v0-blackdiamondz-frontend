@@ -10,8 +10,8 @@ import { useRef, useState, useEffect } from "react";
 import { getImageUrl, getItems } from "@/lib/api"
 import Link from "next/link"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 // ExpandableText component for 'Read more.../Read less...' functionality
 

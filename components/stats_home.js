@@ -13,8 +13,8 @@ import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
 import Link from "next/link";
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["400"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] });
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
 export default function StatsHome({ data, isMobileView }) {
   const [language, setLanguage] = useState("en");

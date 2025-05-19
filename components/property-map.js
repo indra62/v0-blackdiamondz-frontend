@@ -8,8 +8,8 @@ import Image from "next/image"
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api"
 import Loading from "./loading"
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400"] })
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
+const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function PropertyMap({ onClose, property, type }) {
   const [mapType, setMapType] = useState("Map")
