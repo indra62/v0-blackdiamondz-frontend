@@ -42,7 +42,7 @@ export default function Stats({ data }) {
                 {translation?.left_title}
               </h2>
             </div>
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
@@ -92,7 +92,7 @@ export default function Stats({ data }) {
                 {translation?.right_title}
               </h2>
             </div>
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
