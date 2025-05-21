@@ -19,8 +19,34 @@ import Link from "next/link"
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
+import { useRef } from "react"
+
 export default function ExploreCity({ data }) {
   const [language, setLanguage] = useState("en")
+  const showNavigation = true
+  const scrollRef = useRef(null)
+
+  // Helper to detect mobile width
+  const getImageWidth = () => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth <= 768 ? 280 : 508
+    }
+    return 508
+  }
+
+  const handleScrollRight = () => {
+    if (scrollRef.current) {
+      const scrollAmount = getImageWidth()
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" })
+    }
+  }
+
+  const handleScrollLeft = () => {
+    if (scrollRef.current) {
+      const scrollAmount = getImageWidth()
+      scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" })
+    }
+  }
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -55,7 +81,10 @@ export default function ExploreCity({ data }) {
         </div>
 
         {/* Container with fixed width to show 3 full images + 250px of the fourth */}
-        <div className="overflow-x-auto pl-2 pb-8 max-w-full md:max-w-[calc(508px * 3 + 270px +12px)] scrollbar-thin">
+        <div
+          ref={scrollRef}
+          className="overflow-x-auto pl-2 pb-8 max-w-full md:max-w-[calc(508px * 3 + 270px +12px)] scrollbar-thin"
+        >
           <div
             className={`flex items-center gap-6  ${
               data?.cities.length <= 3 ? "w-fit mx-auto" : "w-max pl-[40px]"
@@ -97,6 +126,56 @@ export default function ExploreCity({ data }) {
             })}
           </div>
         </div>
+        {/* Navigation - only show if showNavigation prop is true */}
+        {showNavigation && (
+          <div className="flex items-center justify-end mt-12">
+            <div className="flex items-center gap-4">
+              <button
+                className={`p-2 border border-[#656565] rounded hover:border-[#BD9574] hover:text-[#BD9574] transition-colors`}
+                onClick={handleScrollLeft}
+                disabled={false}
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              <button
+                className={`p-2 border border-[#656565] rounded hover:border-[#BD9574] hover:text-[#BD9574] transition-colors`}
+                onClick={handleScrollRight}
+                disabled={false}
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 6l6 6-6 6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
