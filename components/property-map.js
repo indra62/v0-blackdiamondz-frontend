@@ -1,145 +1,119 @@
 "use client"
 
-import { useState, useMemo } from "react"
+
+import { useState, useMemo, useEffect } from "react"
 import { Archivo, Taviraj } from "next/font/google"
 import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
 
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api"
 import Loading from "./loading"
+import { getItems } from "@/lib/api"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 const mapStyles = [
-  {
-    "featureType": "all",
-    "elementType": "geometry",
-    "stylers": [
-      { "color": "#1a1a1a" }
-    ]
-  },
-  {
-    "featureType": "all",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      { "color": "#c9b18d" }
-    ]
-  },
-  {
-    "featureType": "all",
-    "elementType": "labels.text.stroke",
-    "stylers": [
-      { "color": "#000000" },
-      { "lightness": 13 }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "geometry.fill",
-    "stylers": [
-      { "color": "#000000" }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      { "color": "#144b53" },
-      { "lightness": 14 },
-      { "weight": 1.4 }
-    ]
-  },
-  {
-    "featureType": "landscape",
-    "elementType": "all",
-    "stylers": [
-      { "color": "#121212" }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "geometry",
-    "stylers": [
-      { "color": "#1e1e1e" },
-      { "lightness": 5 }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "geometry.fill",
-    "stylers": [
-      { "color": "#c9b18d" },
-      { "lightness": -25 }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      { "color": "#c9b18d" },
-      { "lightness": -40 },
-      { "weight": 0.2 }
-    ]
-  },
-  {
-    "featureType": "road.arterial",
-    "elementType": "geometry",
-    "stylers": [
-      { "color": "#2c2c2c" },
-      { "lightness": -20 }
-    ]
-  },
-  {
-    "featureType": "road.local",
-    "elementType": "geometry",
-    "stylers": [
-      { "color": "#262626" },
-      { "lightness": -17 }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "elementType": "all",
-    "stylers": [
-      { "color": "#1e1e1e" },
-      { "lightness": -10 }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "all",
-    "stylers": [
-      { "color": "#021019" },
-      { "lightness": 10 }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "geometry.fill",
-    "stylers": [
-      { "color": "#0e1621" }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "geometry.fill",
-    "stylers": [
-      { "color": "#1a1a1a" },
-      { "lightness": 5 }
-    ]
-  },
-  {
-    "featureType": "poi.business",
-    "stylers": [
-      { "visibility": "simplified" }
-    ]
-  }
+	{
+		featureType: "all",
+		elementType: "geometry",
+		stylers: [{ color: "#191714" }],
+	},
+	{
+		featureType: "all",
+		elementType: "labels.text.fill",
+		stylers: [{ color: "#c9b18d" }],
+	},
+	{
+		featureType: "all",
+		elementType: "labels.text.stroke",
+		stylers: [{ color: "#101010" }, { lightness: 13 }],
+	},
+	{
+		featureType: "administrative",
+		elementType: "geometry.fill",
+		stylers: [{ color: "#23201b" }],
+	},
+	{
+		featureType: "administrative",
+		elementType: "geometry.stroke",
+		stylers: [{ color: "#3d2c1e" }, { lightness: 14 }, { weight: 1.4 }],
+	},
+	{
+		featureType: "landscape",
+		elementType: "all",
+		stylers: [{ color: "#23201b" }],
+	},
+	{
+		featureType: "poi",
+		elementType: "geometry",
+		stylers: [{ color: "#23201b" }, { lightness: 5 }],
+	},
+	{
+		featureType: "poi.park",
+		elementType: "geometry.fill",
+		stylers: [{ color: "#24231b" }, { lightness: 5 }],
+	},
+	{
+		featureType: "road.highway",
+		elementType: "geometry.fill",
+		stylers: [{ color: "#bfa170" }, { lightness: -10 }],
+	},
+	{
+		featureType: "road.highway",
+		elementType: "geometry.stroke",
+		stylers: [{ color: "#bfa170" }, { lightness: -30 }, { weight: 0.2 }],
+	},
+	{
+		featureType: "road.arterial",
+		elementType: "geometry",
+		stylers: [{ color: "#28251c" }, { lightness: -10 }],
+	},
+	{
+		featureType: "road.local",
+		elementType: "geometry",
+		stylers: [{ color: "#23201b" }, { lightness: -10 }],
+	},
+	{
+		featureType: "transit",
+		elementType: "all",
+		stylers: [{ color: "#23201b" }, { lightness: -10 }],
+	},
+	{
+		featureType: "water",
+		elementType: "all",
+		stylers: [{ color: "#252c33" }, { lightness: 10 }],
+	},
+	{
+		featureType: "water",
+		elementType: "geometry.fill",
+		stylers: [{ color: "#252c33" }],
+	},
+	{
+		featureType: "poi.business",
+		stylers: [{ visibility: "simplified" }],
+	},
+	{
+		featureType: "transit",
+		elementType: "all",
+		stylers: [{ visibility: "off" }],
+	},
+	{
+		featureType: "transit.line",
+		elementType: "all",
+		stylers: [{ visibility: "off" }],
+	},
+	{
+		featureType: "transit.station",
+		elementType: "all",
+		stylers: [{ visibility: "off" }],
+	},
 ];
 
 export default function PropertyMap({ onClose, property, type }) {
   const [mapType, setMapType] = useState("Map")
-
+  const [otherProperty, setOtherProperty] = useState([]);
+  const [error, setError] = useState(null);
   // NOTE: To use Google Maps, you must set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
   // Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
   // The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
@@ -153,101 +127,134 @@ export default function PropertyMap({ onClose, property, type }) {
     setMapType(type)
   }
 
+  useEffect(() => {
+		if (!property?.id) return;
+		const fetchOtherProperty = async () => {
+			try {
+				const data = await getItems("properties", {
+					fields: ["id", "geo_lat", "geo_lon"],
+					filter: {
+						status: { _eq: "Current" },
+						id: { _neq: property.id },
+					},
+					limit: -1,
+				});
+				setOtherProperty(data);
+			} catch (error) {
+				setError("Error fetching property: " + error.message);
+			}
+		};
+		fetchOtherProperty();
+	}, [property?.id]);
+
   return (
-    <div className="relative bg-[#211f17] z-50 flex flex-col px-10">
-      {/* Property Info - Updated with correct font sizes */}
-      <div className="container mx-auto px-4 py-6">
-        <div
-          className={`${archivo.className} text-[#e2dbcc] text-[16px] leading-[150%] mb-4`}
-        >
-          <span>{type}</span>
-        </div>
+		<div className="relative bg-[#211f17] z-50 flex flex-col px-10">
+			{/* Property Info - Updated with correct font sizes */}
+			<div className="container mx-auto px-4 py-6">
+				<div
+					className={`${archivo.className} text-[#e2dbcc] text-[16px] leading-[150%] mb-4`}
+				>
+					<span>{type}</span>
+				</div>
 
-        <div className="flex justify-between items-start">
-          <div>
-            <h1
-              className={`${taviraj.className} text-[#bd9574] text-[32px] font-light leading-[125%] tracking-[0px] mb-0`}
-            >
-              {property?.name || ""}
-            </h1>
-          </div>
-          <div className="text-right">
-            <p
-              className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
-            >
-              {property?.address_street + ", " + property?.address_suburb || ""}
-            </p>
-            <p
-              className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
-            >
-              {property?.address_state + ", " + property?.address_postcode.toString().padStart(4, "0") ||
-                ""}
-            </p>
-          </div>
-        </div>
-      </div>
+				<div className="flex justify-between items-start">
+					<div>
+						<h1
+							className={`${taviraj.className} text-[#bd9574] text-[32px] font-light leading-[125%] tracking-[0px] mb-0`}
+						>
+							{property?.name || ""}
+						</h1>
+					</div>
+					<div className="text-right">
+						<p
+							className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
+						>
+							{property?.address_street + ", " + property?.address_suburb || ""}
+						</p>
+						<p
+							className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+						>
+							{property?.address_state +
+								", " +
+								property?.address_postcode.toString().padStart(4, "0") || ""}
+						</p>
+					</div>
+				</div>
+			</div>
 
-      {/* Map Container */}
-      <div className="flex-1 relative">
-        {/* Map Image - Different based on selected map type */}
-        <div className="h-[500px] w-full">
-          {
-            /* Only render Google Map after API is loaded */
-            console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
-          }
-          {isLoaded ? (
-            <GoogleMap
-              mapContainerStyle={{ width: "100%", height: "100%" }}
-              center={
-                property?.geo_lat && property?.geo_lon
-                  ? { lat: property?.geo_lat, lng: property?.geo_lon }
-                  : { lat: -33.8688, lng: 151.2093 }
-              }
-              zoom={16}
-              mapTypeId={mapType === "Satellite" ? "satellite" : "roadmap"}
-              options={{
-                disableDefaultUI: true,
-                zoomControl: true,
-                fullscreenControl: true,
-                streetViewControl: true,
-                mapTypeControl: true,
-                scaleControl: true,
-                styles: mapStyles,
-              }}
-            >
-              {/* Custom Black Diamondz Pin Marker */}
-              <Marker
-                position={
-                  property?.geo_lat && property?.geo_lon
-                    ? { lat: property?.geo_lat, lng: property?.geo_lon }
-                    : { lat: -33.8688, lng: 151.2093 }
-                }
-                icon={{
-                  url: "/map-pointer.png",
-                  scaledSize: { width: 42, height: 42 },
-                  anchor: { x: 16, y: 32 },
-                }}
-              />
-            </GoogleMap>
-          ) : (
-            <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
-              <Loading />
-            </section>
-          )}
-        </div>
-      </div>
+			{/* Map Container */}
+			<div className="flex-1 relative">
+				{/* Map Image - Different based on selected map type */}
+				<div className="h-[500px] w-full">
+					{
+						/* Only render Google Map after API is loaded */
+						console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
+					}
+					{isLoaded ? (
+						<GoogleMap
+							mapContainerStyle={{ width: "100%", height: "100%" }}
+							center={
+								property?.geo_lat && property?.geo_lon
+									? { lat: property?.geo_lat, lng: property?.geo_lon }
+									: { lat: -33.8688, lng: 151.2093 }
+							}
+							zoom={16}
+							mapTypeId={mapType === "Satellite" ? "satellite" : "roadmap"}
+							options={{
+								disableDefaultUI: true,
+								zoomControl: true,
+								fullscreenControl: true,
+								streetViewControl: true,
+								mapTypeControl: true,
+								scaleControl: true,
+								styles: mapStyles,
+							}}
+						>
+							{/* Custom Black Diamondz Pin Marker */}
+							<Marker
+								position={
+									property?.geo_lat && property?.geo_lon
+										? { lat: property?.geo_lat, lng: property?.geo_lon }
+										: { lat: -33.8688, lng: 151.2093 }
+								}
+								icon={{
+									url: "/map-pointer-invert.png",
+									scaledSize: { width: 80, height: 80 }, // Make it bigger!
+									anchor: { x: 40, y: 80 }, // Adjust anchor to bottom center
+								}}
+							/>
 
-      {/* Back Button - Moved below the map */}
-      <div className="py-6 flex justify-center bg-[#211f17]">
-        <button
-          onClick={onClose}
-          className="flex items-center justify-center gap-2 px-8 py-3 border border-[#656565] text-[#bd9574] hover:bg-[#2c2920] transition-colors"
-          id="go-back-button"
-        >
-          <ArrowLeft size={20} />
-          <span className={`${archivo.className} font-light`}>Go Back</span>
-        </button>
-      </div>
-    </div>
-  )
+							{otherProperty.map((item) => (
+								<Marker
+									key={item.id}
+									position={{ lat: item.geo_lat, lng: item.geo_lon }}
+									icon={{
+										url: "/map-pointer.png", // Use a different icon if you want
+										scaledSize: { width: 50, height: 50 },
+										anchor: { x: 25, y: 50 },
+									}}
+								/>
+							))}
+						</GoogleMap>
+					) : (
+						<section className="flex justify-center items-center h-[800px] bg-[#211f17]">
+							<Loading />
+						</section>
+					)}
+				</div>
+			</div>
+
+			{/* Back Button - Moved below the map */}
+			<div className="py-6 flex justify-center bg-[#211f17]">
+				<button
+					onClick={onClose}
+					className="flex items-center justify-center gap-2 px-8 py-3 border border-[#656565] text-[#bd9574] hover:bg-[#2c2920] transition-colors"
+					id="go-back-button"
+				>
+					<ArrowLeft size={20} />
+					<span className={`${archivo.className} font-light`}>Go Back</span>
+				</button>
+			</div>
+		</div>
+	);
 }
