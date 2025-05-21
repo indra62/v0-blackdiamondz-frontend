@@ -11,6 +11,132 @@ import Loading from "./loading"
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
+const mapStyles = [
+  {
+    "featureType": "all",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#1a1a1a" }
+    ]
+  },
+  {
+    "featureType": "all",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#c9b18d" }
+    ]
+  },
+  {
+    "featureType": "all",
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      { "color": "#000000" },
+      { "lightness": 13 }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#000000" }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      { "color": "#144b53" },
+      { "lightness": 14 },
+      { "weight": 1.4 }
+    ]
+  },
+  {
+    "featureType": "landscape",
+    "elementType": "all",
+    "stylers": [
+      { "color": "#121212" }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#1e1e1e" },
+      { "lightness": 5 }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#c9b18d" },
+      { "lightness": -25 }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      { "color": "#c9b18d" },
+      { "lightness": -40 },
+      { "weight": 0.2 }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#2c2c2c" },
+      { "lightness": -20 }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#262626" },
+      { "lightness": -17 }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "all",
+    "stylers": [
+      { "color": "#1e1e1e" },
+      { "lightness": -10 }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "all",
+    "stylers": [
+      { "color": "#021019" },
+      { "lightness": 10 }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#0e1621" }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "color": "#1a1a1a" },
+      { "lightness": 5 }
+    ]
+  },
+  {
+    "featureType": "poi.business",
+    "stylers": [
+      { "visibility": "simplified" }
+    ]
+  }
+];
+
 export default function PropertyMap({ onClose, property, type }) {
   const [mapType, setMapType] = useState("Map")
 
@@ -86,6 +212,7 @@ export default function PropertyMap({ onClose, property, type }) {
                 streetViewControl: true,
                 mapTypeControl: true,
                 scaleControl: true,
+                styles: mapStyles,
               }}
             >
               {/* Custom Black Diamondz Pin Marker */}
@@ -96,8 +223,8 @@ export default function PropertyMap({ onClose, property, type }) {
                     : { lat: -33.8688, lng: 151.2093 }
                 }
                 icon={{
-                  url: "https://main.blackdiamondz.62dev.net/map-pointer.png",
-                  scaledSize: { width: 32, height: 32 },
+                  url: "/map-pointer.png",
+                  scaledSize: { width: 42, height: 42 },
                   anchor: { x: 16, y: 32 },
                 }}
               />

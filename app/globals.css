@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom scrollbar for horizontal scroll containers */
+.scrollbar-thin {
+  scrollbar-color: #BD9574 #f1f1f1;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  height: 8px;
+  background: #000000;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #BD9574;
+  border-radius: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #a37d54;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

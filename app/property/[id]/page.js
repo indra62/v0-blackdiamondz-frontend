@@ -143,15 +143,15 @@ export default function PropertyDetailPage({ params }) {
     setViewMode("grid");
   };
 
-  const handleShowImages = () => {
+  const handleShowImages = (imageIndex = 0) => {
     setAlbum(imageAlbum);
-    setSelectedImageId(0);
+    setSelectedImageId(typeof imageIndex === "number" ? imageIndex : 0);
     setViewMode("gallery");
   };
 
-  const handleShowPlans = () => {
+  const handleShowPlans = (planIndex = 0) => {
     setAlbum(plansAlbum);
-    setSelectedImageId(0);
+    setSelectedImageId(typeof planIndex === "number" ? planIndex : 0);
     setViewMode("gallery");
   };
 
@@ -473,6 +473,9 @@ export default function PropertyDetailPage({ params }) {
                       {/* Row 1: Large Image */}
                       <div className="relative h-56 md:h-64">
                         {property?.images?.[0] && (
+                          <div
+                            onClick={() => handleShowImages(0)}
+                          >
                           <Image
                             src={getImageUrl(
                               property?.images?.[0]?.directus_files_id?.id,
@@ -487,6 +490,7 @@ export default function PropertyDetailPage({ params }) {
                             style={{ objectFit: "cover" }}
                             className="transition-transform duration-700 hover:scale-110"
                           />
+                          </div>
                         )}
                       </div>
 
@@ -494,6 +498,9 @@ export default function PropertyDetailPage({ params }) {
                       <div className="grid grid-cols-2 gap-2">
                         <div className="relative h-32 md:h-40">
                           {property?.images?.[1] && (
+                            <div
+                              onClick={() => handleShowImages(1)}
+                            >
                             <Image
                               src={getImageUrl(
                                 property?.images?.[1]?.directus_files_id?.id,
@@ -506,11 +513,15 @@ export default function PropertyDetailPage({ params }) {
                               fill
                               className="transition-transform duration-700 hover:scale-110"
                             />
+                            </div>
                           )}
                         </div>
                         <div className="relative h-32 md:h-40">
                           {property?.images?.[2] && (
-                            <Image
+                            <div
+                              onClick={() => handleShowImages(2)}
+                            > 
+                              <Image
                               src={getImageUrl(
                                 property?.images?.[2]?.directus_files_id?.id,
                                 {
@@ -522,6 +533,7 @@ export default function PropertyDetailPage({ params }) {
                               fill
                               className="transition-transform duration-700 hover:scale-110"
                             />
+                            </div>
                           )}
                         </div>
                       </div>
@@ -548,6 +560,9 @@ export default function PropertyDetailPage({ params }) {
                       {/* Row 1: Image */}
                       <div className="relative h-56 md:h-64">
                         {property?.images?.[3] && (
+                          <div
+                            onClick={() => handleShowImages(3)}
+                          >
                           <Image
                             src={getImageUrl(
                               property?.images?.[3]?.directus_files_id?.id,
@@ -560,12 +575,16 @@ export default function PropertyDetailPage({ params }) {
                             fill
                             className="transition-transform duration-700 hover:scale-110"
                           />
+                          </div>
                         )}
                       </div>
 
                       {/* Row 2: Image */}
                       <div className="relative h-32 md:h-40">
                         {property?.plans?.[0] && (
+                          <div
+                            onClick={() => handleShowPlans(0)}
+                          >
                           <Image
                             src={getImageUrl(
                               property?.plans?.[0]?.directus_files_id?.id,
@@ -578,6 +597,7 @@ export default function PropertyDetailPage({ params }) {
                             fill
                             className="object-cover transition-transform duration-700 hover:scale-110"
                           />
+                          </div>
                         )}
                       </div>
 
@@ -618,7 +638,7 @@ export default function PropertyDetailPage({ params }) {
                                 strokeLinejoin="round"
                               />
                             </svg>
-
+                            Photos
                             <span
                               className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                             >
@@ -646,6 +666,7 @@ export default function PropertyDetailPage({ params }) {
                                   strokeLinejoin="round"
                                 />
                               </svg>
+                              Video
                               <span
                                 className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                               >
@@ -659,17 +680,15 @@ export default function PropertyDetailPage({ params }) {
                             onClick={handleShowPlans}
                           >
                             <svg
-                              width="23"
-                              height="22"
+                              width="18"
+                              height="18"
                               viewBox="0 0 23 22"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <path
-                                d="M12.592 2.84199C12.592 2.66297 12.5209 2.49128 12.3943 2.3647C12.2677 2.23811 12.096 2.16699 11.917 2.16699C11.738 2.16699 11.5663 2.23811 11.4397 2.3647C11.3131 2.49128 11.242 2.66297 11.242 2.84199V4.41699H6.51699V2.84199C6.51699 2.66297 6.44588 2.49128 6.31929 2.3647C6.1927 2.23811 6.02101 2.16699 5.84199 2.16699C5.66297 2.16699 5.49128 2.23811 5.3647 2.3647C5.23811 2.49128 5.16699 2.66297 5.16699 2.84199V4.41699H3.59199C3.41297 4.41699 3.24128 4.48811 3.1147 4.6147C2.98811 4.74128 2.91699 4.91297 2.91699 5.09199C2.91699 5.27101 2.98811 5.4427 3.1147 5.56929C3.24128 5.69588 3.41297 5.76699 3.59199 5.76699H5.16699V10.492H3.59199C3.41297 10.492 3.24128 10.5631 3.1147 10.6897C2.98811 10.8163 2.91699 10.988 2.91699 11.167C2.91699 11.346 2.98811 11.5177 3.1147 11.6443C3.24128 11.7709 3.41297 11.842 3.59199 11.842H5.16699V16.567H3.59199C3.41297 16.567 3.24128 16.6381 3.1147 16.7647C2.98811 16.8913 2.91699 17.063 2.91699 17.242C2.91699 17.421 2.98811 17.5927 3.1147 17.7193C3.24128 17.8459 3.41297 17.917 3.59199 17.917H5.16699V19.492C5.16699 19.671 5.23811 19.8427 5.3647 19.9693C5.49128 20.0959 5.66297 20.167 5.84199 20.167C6.02101 20.167 6.1927 20.0959 6.31929 19.9693C6.44588 19.8427 6.51699 19.671 6.51699 19.492V17.917H11.242V19.492C11.242 19.671 11.3131 19.8427 11.4397 19.9693C11.5663 20.0959 11.738 20.167 11.917 20.167C12.096 20.167 12.2677 20.0959 12.3943 19.9693C12.5209 19.8427 12.592 19.671 12.592 19.492V17.917H17.317V19.492C17.317 19.671 17.3881 19.8427 17.5147 19.9693C17.6413 20.0959 17.813 20.167 17.992 20.167C18.171 20.167 18.3427 20.0959 18.4693 19.9693C18.5959 19.8427 18.667 19.671 18.667 19.492V17.917H20.242C20.421 17.917 20.5927 17.8459 20.7193 17.7193C20.8459 17.5927 20.917 17.421 20.917 17.242C20.917 17.063 20.8459 16.8913 20.7193 16.7647C20.5927 16.6381 20.421 16.567 20.242 16.567H18.667V11.842H20.242C20.421 11.842 20.5927 11.7709 20.7193 11.6443C20.8459 11.5177 20.917 11.346 20.917 11.167C20.917 10.988 20.8459 10.8163 20.7193 10.6897C20.5927 10.5631 20.421 10.492 20.242 10.492H18.667V5.76699H20.242C20.421 5.76699 20.5927 5.69588 20.7193 5.56929C20.8459 5.4427 20.917 5.27101 20.917 5.09199C20.917 4.91297 20.8459 4.74128 20.7193 4.6147C20.5927 4.48811 20.421 4.41699 20.242 4.41699H18.667V2.84199C18.667 2.66297 18.5959 2.49128 18.4693 2.3647C18.3427 2.23811 18.171 2.16699 17.992 2.16699C17.813 2.16699 17.6413 2.23811 17.5147 2.3647C17.3881 2.49128 17.317 2.66297 17.317 2.84199V4.41699H12.592V2.84199ZM17.317 16.567H12.592V11.842H17.317V16.567ZM11.242 16.567H6.51699V11.842H11.242V16.567ZM6.51699 10.492V5.76699H11.242V10.492H6.51699ZM17.317 10.492H12.592V5.76699H17.317V10.492Z"
-                                fill="currentColor"
-                              />
+                            <path d="M22 2V22H2V11H4V20H9V14H11V20H20V11H17V9H20V4H11V9H14V11H9V4H4V8H2V2H22Z" fill="currentColor"></path>
                             </svg>
+                            Floorplan
                             <span
                               className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                             >

@@ -55,7 +55,7 @@ export default function ExploreCity({ data }) {
         </div>
 
         {/* Container with fixed width to show 3 full images + 250px of the fourth */}
-        <div className="overflow-x-auto pl-2 pb-8 max-w-full md:max-w-[calc(508px * 3 + 270px +12px)]">
+        <div className="overflow-x-auto pl-2 pb-8 max-w-full md:max-w-[calc(508px * 3 + 270px +12px)] scrollbar-thin">
           <div
             className={`flex items-center gap-6  ${
               data?.cities.length <= 3 ? "w-fit mx-auto" : "w-max pl-[40px]"
