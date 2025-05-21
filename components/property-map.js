@@ -6,9 +6,9 @@ import { Archivo, Taviraj } from "next/font/google"
 import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
 
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api"
+import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api"
 import Loading from "./loading"
-import { getItems } from "@/lib/api"
+import { getImageUrl, getItems } from "@/lib/api"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
@@ -114,6 +114,7 @@ export default function PropertyMap({ onClose, property, type }) {
   const [mapType, setMapType] = useState("Map")
   const [otherProperty, setOtherProperty] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   // NOTE: To use Google Maps, you must set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
   // Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
   // The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
@@ -132,8 +133,19 @@ export default function PropertyMap({ onClose, property, type }) {
 		const fetchOtherProperty = async () => {
 			try {
 				const data = await getItems("properties", {
-					fields: ["id", "geo_lat", "geo_lon"],
+					fields: [
+						"id",
+						"geo_lat",
+						"geo_lon",
+						"name",
+						"address_street",
+						"address_suburb",
+						"address_state",
+						"address_postcode",
+						"images.directus_files_id.*",
+					],
 					filter: {
+            is_off_market: { _eq: false },
 						status: { _eq: "Current" },
 						id: { _neq: property.id },
 					},
@@ -212,29 +224,89 @@ export default function PropertyMap({ onClose, property, type }) {
 						>
 							{/* Custom Black Diamondz Pin Marker */}
 							<Marker
-								position={
-									property?.geo_lat && property?.geo_lon
-										? { lat: property?.geo_lat, lng: property?.geo_lon }
-										: { lat: -33.8688, lng: 151.2093 }
-								}
+								position={{ lat: property.geo_lat, lng: property.geo_lon }}
 								icon={{
 									url: "/map-pointer-invert.png",
-									scaledSize: { width: 80, height: 80 }, // Make it bigger!
-									anchor: { x: 40, y: 80 }, // Adjust anchor to bottom center
+									scaledSize: { width: 80, height: 80 },
+									anchor: { x: 40, y: 80 },
 								}}
+								onClick={() =>
+									setSelectedProperty({ ...property, isMain: true })
+								}
 							/>
-
 							{otherProperty.map((item) => (
 								<Marker
 									key={item.id}
 									position={{ lat: item.geo_lat, lng: item.geo_lon }}
 									icon={{
-										url: "/map-pointer.png", // Use a different icon if you want
+										url: "/map-pointer.png",
 										scaledSize: { width: 50, height: 50 },
 										anchor: { x: 25, y: 50 },
 									}}
+									onClick={() => setSelectedProperty(item)}
 								/>
 							))}
+							{selectedProperty && (
+								<InfoWindow
+									position={{
+										lat: selectedProperty.geo_lat,
+										lng: selectedProperty.geo_lon,
+									}}
+									onCloseClick={() => setSelectedProperty(null)}
+								>
+									<div style={{ minWidth: 220 }}>
+										{/* Image at the top */}
+										{selectedProperty.images?.length > 0 &&
+											selectedProperty.images[0]?.directus_files_id?.id && (
+												<img
+													src={getImageUrl(selectedProperty.images[0].directus_files_id.id)}
+													alt={selectedProperty.name}
+													style={{
+														width: "100%",
+														maxHeight: 120,
+														objectFit: "cover",
+														borderRadius: 8,
+														marginBottom: 8,
+													}}
+												/>
+											)}
+										<div
+											style={{
+												fontWeight: "bold",
+												color: "#bd9574",
+												marginBottom: 4,
+											}}
+										>
+											{selectedProperty.name || "Property"}
+										</div>
+										<div
+											style={{ color: "#333", fontSize: 14, marginBottom: 6 }}
+										>
+											{selectedProperty.address_street
+												? `${selectedProperty.address_street}, ${selectedProperty.address_suburb}`
+												: ""}
+											<br />
+											{selectedProperty.address_state
+												? `${
+														selectedProperty.address_state
+												  }, ${selectedProperty.address_postcode
+														?.toString()
+														.padStart(4, "0")}`
+												: ""}
+										</div>
+										<a
+											href={`/property/${selectedProperty.id}`}
+											style={{
+												color: "#bd9574",
+												textDecoration: "underline",
+												fontWeight: 500,
+											}}
+										>
+											View Details
+										</a>
+									</div>
+								</InfoWindow>
+							)}
 						</GoogleMap>
 					) : (
 						<section className="flex justify-center items-center h-[800px] bg-[#211f17]">
