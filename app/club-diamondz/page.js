@@ -245,23 +245,23 @@ export default function ClubDiamondz() {
         })
 
         const dataOffMarketProperties = await getItems("properties", {
-          fields: [
-            "*",
-            "translations.*",
-            "images.directus_files_id.*",
-            "plans.*",
-            "videos.*",
-            "features.feature_id.*",
-            "features.value",
-            "agents.*",
-            "type.*.*",
-          ],
-          filter: {
-            is_off_market: { _eq: true },
-            status: { _nin: ["Sold", "Inactive"] },
-          },
-          limit: 4,
-        })
+					fields: [
+						"*",
+						"translations.*",
+						"images.directus_files_id.*",
+						"plans.*",
+						"videos.*",
+						"features.feature_id.*",
+						"features.value",
+						"agents.*",
+						"type.*.*",
+					],
+					filter: {
+						is_off_market: { _eq: true },
+						status: { _eq: "Offmarket" },
+					},
+					limit: 4,
+				});
 
         setDiamondzPage(dataDiamondzPage)
         setDiamondzEvent(dataEventUpdates)

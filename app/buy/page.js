@@ -225,23 +225,23 @@ export function BuyPageContent() {
           fields: ["*", "translations.*"],
         });
         const dataOffMarketProperties = await getItems("properties", {
-          fields: [
-            "*",
-            "translations.*",
-            "images.directus_files_id.*",
-            "plans.*",
-            "videos.*",
-            "features.feature_id.*",
-            "features.value",
-            "agents.agent_id.user_id.*",
-            "type.*.*",
-          ],
-          filter: {
-            is_off_market: { _eq: true },
-            status: { _nin: ["Sold", "Inactive"] },
-          },
-          limit: 4,
-        });
+					fields: [
+						"*",
+						"translations.*",
+						"images.directus_files_id.*",
+						"plans.*",
+						"videos.*",
+						"features.feature_id.*",
+						"features.value",
+						"agents.agent_id.user_id.*",
+						"type.*.*",
+					],
+					filter: {
+						is_off_market: { _eq: true },
+						status: { _eq: "Offmarket" },
+					},
+					limit: 4,
+				});
 
         setExplore(dataExplore_section);
         setDataExplore(dataExplore);
