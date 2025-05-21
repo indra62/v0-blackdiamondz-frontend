@@ -1,17 +1,27 @@
-"use client"
+"use client";
 
+import { useState, useMemo, useEffect, useRef } from "react";
+import { Archivo, Taviraj } from "next/font/google";
+import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
 
-import { useState, useMemo, useEffect } from "react"
-import { Archivo, Taviraj } from "next/font/google"
-import { ArrowLeft } from "lucide-react"
-import Image from "next/image"
+import {
+	GoogleMap,
+	Marker,
+	InfoWindow,
+	useJsApiLoader,
+} from "@react-google-maps/api";
+import Loading from "./loading";
+import { getImageUrl, getItems } from "@/lib/api";
 
-import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api"
-import Loading from "./loading"
-import { getImageUrl, getItems } from "@/lib/api"
-
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const archivo = Archivo({
+	subsets: ["latin"],
+	weight: ["300", "400", "500", "600", "700"],
+});
+const taviraj = Taviraj({
+	subsets: ["latin"],
+	weight: ["300", "400", "500", "600", "700"],
+});
 
 const mapStyles = [
 	{
@@ -110,27 +120,23 @@ const mapStyles = [
 	},
 ];
 
-export default function PropertyMap({ onClose, property, type }) {
-  const [mapType, setMapType] = useState("Map")
-  const [otherProperty, setOtherProperty] = useState([]);
-  const [error, setError] = useState(null);
-  const [selectedProperty, setSelectedProperty] = useState(null);
-  // NOTE: To use Google Maps, you must set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
-  // Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
-  // The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
+export default function BuyMap() {
+  const [mapType, setMapType] = useState("Map");
+	const [property, setProperty] = useState([]);
+	const [error, setError] = useState(null);
+	const [selectedProperty, setSelectedProperty] = useState(null);
+  const mapRef = useRef(null);
+	// NOTE: To use Google Maps, you must set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
+	// Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
+	// The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
 
-  const { isLoaded } = useJsApiLoader({
-    id: "google-maps-script",
-    googleMapsApiKey: "AIzaSyBQ7mtgk24xxFbuz7eS2KE93QRu3JzDLr0",
-  })
+	const { isLoaded } = useJsApiLoader({
+		id: "google-maps-script",
+		googleMapsApiKey: "AIzaSyBQ7mtgk24xxFbuz7eS2KE93QRu3JzDLr0",
+	});
 
-  const handleMapTypeChange = (type) => {
-    setMapType(type)
-  }
-
-  useEffect(() => {
-		if (!property?.id) return;
-		const fetchOtherProperty = async () => {
+	useEffect(() => {
+		const fetchProperty = async () => {
 			try {
 				const data = await getItems("properties", {
 					fields: [
@@ -142,74 +148,51 @@ export default function PropertyMap({ onClose, property, type }) {
 						"address_suburb",
 						"address_state",
 						"address_postcode",
-						"images.directus_files_id.*",
+						"images.directus_files_id.id",
 					],
 					filter: {
-            is_off_market: { _eq: false },
+						is_off_market: { _eq: false },
 						status: { _eq: "Current" },
-						id: { _neq: property.id },
 					},
 					limit: -1,
 				});
-				setOtherProperty(data);
+				setProperty(data);
 			} catch (error) {
 				setError("Error fetching property: " + error.message);
 			}
 		};
-		fetchOtherProperty();
-	}, [property?.id]);
+		fetchProperty();
+	}, []);
 
-  return (
-		<div className="relative bg-[#211f17] z-50 flex flex-col px-10">
-			{/* Property Info - Updated with correct font sizes */}
-			<div className="container mx-auto px-4 py-6">
-				<div
-					className={`${archivo.className} text-[#e2dbcc] text-[16px] leading-[150%] mb-4`}
-				>
-					<span>{type}</span>
-				</div>
+  useEffect(() => {
+		if (!isLoaded || property.length === 0 || !mapRef.current) return;
 
-				<div className="flex justify-between items-start">
-					<div>
-						<h1
-							className={`${taviraj.className} text-[#bd9574] text-[32px] font-light leading-[125%] tracking-[0px] mb-0`}
-						>
-							{property?.name || ""}
-						</h1>
-					</div>
-					<div className="text-right">
-						<p
-							className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
-						>
-							{property?.address_street + ", " + property?.address_suburb || ""}
-						</p>
-						<p
-							className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
-						>
-							{property?.address_state +
-								", " +
-								property?.address_postcode.toString().padStart(4, "0") || ""}
-						</p>
-					</div>
-				</div>
-			</div>
+		const lats = property.map((p) => p.geo_lat).filter((lat) => lat != null);
+		const lngs = property.map((p) => p.geo_lon).filter((lng) => lng != null);
 
-			{/* Map Container */}
+		if (lats.length === 0 || lngs.length === 0) return;
+
+		const bounds = new window.google.maps.LatLngBounds();
+
+		property.forEach((p) => {
+			if (p.geo_lat != null && p.geo_lon != null) {
+				bounds.extend({ lat: p.geo_lat, lng: p.geo_lon });
+			}
+		});
+
+		mapRef.current.fitBounds(bounds);
+	}, [isLoaded, property]);
+
+	return (
+		<div className="relative bg-[#211f17] z-50 flex flex-col rounded-md">
 			<div className="flex-1 relative">
-				{/* Map Image - Different based on selected map type */}
 				<div className="h-[500px] w-full">
-					{
-						/* Only render Google Map after API is loaded */
-						console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
-					}
 					{isLoaded ? (
 						<GoogleMap
 							mapContainerStyle={{ width: "100%", height: "100%" }}
-							center={
-								property?.geo_lat && property?.geo_lon
-									? { lat: property?.geo_lat, lng: property?.geo_lon }
-									: { lat: -33.8688, lng: 151.2093 }
-							}
+							onLoad={(map) => {
+								mapRef.current = map;
+							}}
 							zoom={16}
 							mapTypeId={mapType === "Satellite" ? "satellite" : "roadmap"}
 							options={{
@@ -222,24 +205,12 @@ export default function PropertyMap({ onClose, property, type }) {
 								styles: mapStyles,
 							}}
 						>
-							{/* Custom Black Diamondz Pin Marker */}
-							<Marker
-								position={{ lat: property.geo_lat, lng: property.geo_lon }}
-								icon={{
-									url: "/map-pointer-invert.png",
-									scaledSize: { width: 80, height: 80 },
-									anchor: { x: 40, y: 80 },
-								}}
-								onClick={() =>
-									setSelectedProperty({ ...property, isMain: true })
-								}
-							/>
-							{otherProperty.map((item) => (
+							{property.map((item) => (
 								<Marker
 									key={item.id}
 									position={{ lat: item.geo_lat, lng: item.geo_lon }}
 									icon={{
-										url: "/map-pointer.png",
+										url: "/map-pointer-invert.png",
 										scaledSize: { width: 50, height: 50 },
 										anchor: { x: 25, y: 50 },
 									}}
@@ -259,7 +230,9 @@ export default function PropertyMap({ onClose, property, type }) {
 										{selectedProperty.images?.length > 0 &&
 											selectedProperty.images[0]?.directus_files_id?.id && (
 												<img
-													src={getImageUrl(selectedProperty.images[0].directus_files_id.id)}
+													src={getImageUrl(
+														selectedProperty.images[0].directus_files_id.id
+													)}
 													alt={selectedProperty.name}
 													style={{
 														width: "100%",
@@ -314,18 +287,6 @@ export default function PropertyMap({ onClose, property, type }) {
 						</section>
 					)}
 				</div>
-			</div>
-
-			{/* Back Button - Moved below the map */}
-			<div className="py-6 flex justify-center bg-[#211f17]">
-				<button
-					onClick={onClose}
-					className="flex items-center justify-center gap-2 px-8 py-3 border border-[#656565] text-[#bd9574] hover:bg-[#2c2920] transition-colors"
-					id="go-back-button"
-				>
-					<ArrowLeft size={20} />
-					<span className={`${archivo.className} font-light`}>Go Back</span>
-				</button>
 			</div>
 		</div>
 	);

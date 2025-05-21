@@ -12,6 +12,7 @@
 import { useState, useEffect, Suspense, useRef, useMemo } from "react";
 import Footer from "@/components/footer";
 import ExploreCity from "@/components/explore-city";
+import BuyMap from "@/components/buy-map";
 import OffMarket from "@/components/off-market";
 import { getImageUrl, getItems } from "@/lib/api";
 import Link from "next/link";
@@ -284,152 +285,155 @@ export function BuyPageContent() {
     dataExplore?.translations?.[0];
 
   return (
-    <main className="min-h-screen bg-[#211f17]">
-      {loading ? (
-        <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
-          <Loading error={error} />
-        </section>
-      ) : (
-        <>
-          <div className="container mx-auto px-4 py-16">
-            {/* Heading */}
-            <div
-              ref={gridRef}
-              className="flex flex-col items-center text-center mb-12"
-            >
-              <h2
-                className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
-              >
-                {translationExplore?.property_buy_title}
-              </h2>
-              <div className="flex justify-center mb-6">
-                <div className="w-24 h-px bg-[#bd9574] relative">
-                  <div className="absolute w-2 h-2 bg-[#bd9574] rotate-45 -top-[3px] left-1/2 transform -translate-x-1/2"></div>
-                </div>
+		<main className="min-h-screen bg-[#211f17]">
+			{loading ? (
+				<section className="flex justify-center items-center h-[800px] bg-[#211f17]">
+					<Loading error={error} />
+				</section>
+			) : (
+				<>
+					<div className="container mx-auto px-4 py-16">
+						{/* Heading */}
+						<div
+							ref={gridRef}
+							className="flex flex-col items-center text-center mb-12"
+						>
+							<h2
+								className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+							>
+								{translationExplore?.property_buy_title}
+							</h2>
+							<div className="flex justify-center mb-6">
+								<div className="w-24 h-px bg-[#bd9574] relative">
+									<div className="absolute w-2 h-2 bg-[#bd9574] rotate-45 -top-[3px] left-1/2 transform -translate-x-1/2"></div>
+								</div>
+							</div>
+
+							<div
+								className={`${archivo.className} text-[#e2dbcc] text-base mb-6 text-center max-w-[732px]`}
+							>
+								{translationExplore?.property_buy_description}
+							</div>
+						</div>
+
+						{/* Property Grid */}
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+							<div className="md:col-span-2 lg:col-span-4">
+                <BuyMap/>
               </div>
+							{properties.length > 0 ? (
+								<>
+									{properties.map((property) => (
+										<Property
+											key={property.id}
+											property={property}
+											taviraj={taviraj}
+											archivo={archivo}
+										/>
+									))}
 
-              <div
-                className={`${archivo.className} text-[#e2dbcc] text-base mb-6 text-center max-w-[732px]`}
-              >
-                {translationExplore?.property_buy_description}
-              </div>
-            </div>
+									{propertiesTotalPages > 1 && (
+										<div className="flex items-center justify-between mt-12 w-full md:col-span-2 lg:col-span-4">
+											{!isMobileView && (
+												<div className="flex gap-8">
+													{Array.from(
+														{ length: propertiesTotalPages },
+														(_, index) => (
+															<div
+																key={index}
+																className={`w-3 h-3 ${
+																	index === propertiesCurrentPage
+																		? "bg-[#BD9574]"
+																		: "bg-[#656565]"
+																} transform rotate-45 cursor-pointer`}
+																onClick={() => handlePropertyPageChange(index)}
+															/>
+														)
+													)}
+												</div>
+											)}
 
-            {/* Property Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {properties.length > 0 ? (
-                <>
-                  {properties.map((property) => (
-                    <Property
-                      key={property.id}
-                      property={property}
-                      taviraj={taviraj}
-                      archivo={archivo}
-                    />
-                  ))}
+											<div className="flex items-center gap-4 text-white">
+												<button
+													className={`p-2 border border-[#656565] rounded ${
+														propertiesCurrentPage === 0
+															? "opacity-50 cursor-not-allowed"
+															: "hover:border-[#BD9574] hover:text-[#BD9574]"
+													} transition-colors`}
+													onClick={() =>
+														handlePropertyPageChange(propertiesCurrentPage - 1)
+													}
+													disabled={propertiesCurrentPage === 0}
+												>
+													<svg
+														width="24"
+														height="24"
+														viewBox="0 0 24 24"
+														fill="none"
+														xmlns="http://www.w3.org/2000/svg"
+													>
+														<path
+															d="M15 18l-6-6 6-6"
+															stroke="currentColor"
+															strokeWidth="1.5"
+															strokeLinecap="round"
+															strokeLinejoin="round"
+														/>
+													</svg>
+												</button>
+												<button
+													className={`p-2 border border-[#656565] rounded ${
+														propertiesCurrentPage === propertiesTotalPages - 1
+															? "opacity-50 cursor-not-allowed"
+															: "hover:border-[#BD9574] hover:text-[#BD9574]"
+													} transition-colors`}
+													onClick={() =>
+														handlePropertyPageChange(propertiesCurrentPage + 1)
+													}
+													disabled={
+														propertiesCurrentPage === propertiesTotalPages - 1
+													}
+												>
+													<svg
+														width="24"
+														height="24"
+														viewBox="0 0 24 24"
+														fill="none"
+														xmlns="http://www.w3.org/2000/svg"
+													>
+														<path
+															d="M9 6l6 6-6 6"
+															stroke="currentColor"
+															strokeWidth="1.5"
+															strokeLinecap="round"
+															strokeLinejoin="round"
+														/>
+													</svg>
+												</button>
+											</div>
+										</div>
+									)}
+								</>
+							) : (
+								<div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
+									{language === "en"
+										? "No properties found."
+										: "未找到任何属性。"}
+								</div>
+							)}
+						</div>
+					</div>
 
-                  {propertiesTotalPages > 1 && (
-                    <div className="flex items-center justify-between mt-12 w-full md:col-span-2 lg:col-span-4">
-                      {!isMobileView && (
-                        <div className="flex gap-8">
-                          {Array.from(
-                            { length: propertiesTotalPages },
-                            (_, index) => (
-                              <div
-                                key={index}
-                                className={`w-3 h-3 ${
-                                  index === propertiesCurrentPage
-                                    ? "bg-[#BD9574]"
-                                    : "bg-[#656565]"
-                                } transform rotate-45 cursor-pointer`}
-                                onClick={() => handlePropertyPageChange(index)}
-                              />
-                            )
-                          )}
-                        </div>
-                      )}
+					{/* Explore City Section */}
+					<ExploreCity data={explore} />
 
-                      <div className="flex items-center gap-4 text-white">
-                        <button
-                          className={`p-2 border border-[#656565] rounded ${
-                            propertiesCurrentPage === 0
-                              ? "opacity-50 cursor-not-allowed"
-                              : "hover:border-[#BD9574] hover:text-[#BD9574]"
-                          } transition-colors`}
-                          onClick={() =>
-                            handlePropertyPageChange(propertiesCurrentPage - 1)
-                          }
-                          disabled={propertiesCurrentPage === 0}
-                        >
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M15 18l-6-6 6-6"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </button>
-                        <button
-                          className={`p-2 border border-[#656565] rounded ${
-                            propertiesCurrentPage === propertiesTotalPages - 1
-                              ? "opacity-50 cursor-not-allowed"
-                              : "hover:border-[#BD9574] hover:text-[#BD9574]"
-                          } transition-colors`}
-                          onClick={() =>
-                            handlePropertyPageChange(propertiesCurrentPage + 1)
-                          }
-                          disabled={
-                            propertiesCurrentPage === propertiesTotalPages - 1
-                          }
-                        >
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M9 6l6 6-6 6"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="col-span-4 p-32 text-center italic text-[#e2dbcc]">
-                  {language === "en"
-                    ? "No properties found."
-                    : "未找到任何属性。"}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Explore City Section */}
-          <ExploreCity data={explore} />
-
-          {/* Off-Market Properties Section */}
-          <OffMarket data={offMarket} section={offMarketSection} />
-        </>
-      )}
-      <Footer />
-    </main>
-  );
+					{/* Off-Market Properties Section */}
+					<OffMarket data={offMarket} section={offMarketSection} />
+				</>
+			)}
+			<Footer />
+		</main>
+	);
 }
 export default function BuyPage() {
   return (
