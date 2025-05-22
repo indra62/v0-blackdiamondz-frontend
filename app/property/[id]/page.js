@@ -144,8 +144,12 @@ export default function PropertyDetailPage({ params }) {
     setViewMode("grid");
   };
 
-  const handleShowImages = (imageIndex = 0) => {
-    setAlbum(imageAlbum);
+  const handleShowImages = (imageIndex = 0, all = false) => {
+		if (all){
+			setAlbum(allMedia);
+		} else {
+			setAlbum(imageAlbum);
+		}
     setSelectedImageId(typeof imageIndex === "number" ? imageIndex : 0);
     setViewMode("gallery");
   };
@@ -476,7 +480,7 @@ export default function PropertyDetailPage({ params }) {
 											{/* Row 1: Large Image */}
 											<div className="relative h-56 md:h-64">
 												{property?.images?.[0] && (
-													<div onClick={() => handleShowImages(0)}>
+													<div onClick={() => handleShowImages(0, true)}>
 														<Image
 															src={getImageUrl(
 																property?.images?.[0]?.directus_files_id?.id,
@@ -499,7 +503,7 @@ export default function PropertyDetailPage({ params }) {
 											<div className="grid grid-cols-2 gap-2">
 												<div className="relative h-32 md:h-40">
 													{property?.images?.[1] && (
-														<div onClick={() => handleShowImages(1)}>
+														<div onClick={() => handleShowImages(1, true)}>
 															<Image
 																src={getImageUrl(
 																	property?.images?.[1]?.directus_files_id?.id,
@@ -517,7 +521,7 @@ export default function PropertyDetailPage({ params }) {
 												</div>
 												<div className="relative h-32 md:h-40">
 													{property?.images?.[2] && (
-														<div onClick={() => handleShowImages(2)}>
+														<div onClick={() => handleShowImages(2, true)}>
 															<Image
 																src={getImageUrl(
 																	property?.images?.[2]?.directus_files_id?.id,
@@ -557,7 +561,7 @@ export default function PropertyDetailPage({ params }) {
 											{/* Row 1: Image */}
 											<div className="relative h-56 md:h-64">
 												{property?.images?.[3] && (
-													<div onClick={() => handleShowImages(3)}>
+													<div onClick={() => handleShowImages(3, true)}>
 														<Image
 															src={getImageUrl(
 																property?.images?.[3]?.directus_files_id?.id,
