@@ -320,9 +320,9 @@ export function BuyPageContent() {
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 							{properties.length > 0 ? (
 								<>
-							<div className="md:col-span-2 lg:col-span-4">
-                <BuyMap/>
-              </div>
+									<div className="md:col-span-2 lg:col-span-4">
+										<BuyMap />
+									</div>
 									{properties.map((property) => (
 										<Property
 											key={property.id}
@@ -425,7 +425,9 @@ export function BuyPageContent() {
 					</div>
 
 					{/* Explore City Section */}
-					<ExploreCity data={explore} />
+					<div className="py-16 px-[40px]">
+						<ExploreCity data={explore} />
+					</div>
 
 					{/* Off-Market Properties Section */}
 					<OffMarket data={offMarket} section={offMarketSection} />
