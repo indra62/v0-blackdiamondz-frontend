@@ -144,8 +144,12 @@ export default function PropertyDetailPage({ params }) {
     setViewMode("grid");
   };
 
-  const handleShowImages = (imageIndex = 0) => {
-    setAlbum(imageAlbum);
+  const handleShowImages = (imageIndex = 0, all = false) => {
+		if (all){
+			setAlbum(allMedia);
+		} else {
+			setAlbum(imageAlbum);
+		}
     setSelectedImageId(typeof imageIndex === "number" ? imageIndex : 0);
     setViewMode("gallery");
   };
@@ -476,7 +480,7 @@ export default function PropertyDetailPage({ params }) {
 											{/* Row 1: Large Image */}
 											<div className="relative h-56 md:h-64">
 												{property?.images?.[0] && (
-													<div onClick={() => handleShowImages(0)}>
+													<div onClick={() => handleShowImages(0, true)}>
 														<Image
 															src={getImageUrl(
 																property?.images?.[0]?.directus_files_id?.id,
@@ -499,7 +503,7 @@ export default function PropertyDetailPage({ params }) {
 											<div className="grid grid-cols-2 gap-2">
 												<div className="relative h-32 md:h-40">
 													{property?.images?.[1] && (
-														<div onClick={() => handleShowImages(1)}>
+														<div onClick={() => handleShowImages(1, true)}>
 															<Image
 																src={getImageUrl(
 																	property?.images?.[1]?.directus_files_id?.id,
@@ -508,7 +512,7 @@ export default function PropertyDetailPage({ params }) {
 																		fit: "cover",
 																	}
 																)}
-																alt="Luxury bedroom with ocean view"
+																alt={property?.images?.[1]?.directus_files_id?.title}
 																fill
 																className="transition-transform duration-700 hover:scale-110"
 															/>
@@ -517,7 +521,7 @@ export default function PropertyDetailPage({ params }) {
 												</div>
 												<div className="relative h-32 md:h-40">
 													{property?.images?.[2] && (
-														<div onClick={() => handleShowImages(2)}>
+														<div onClick={() => handleShowImages(2, true)}>
 															<Image
 																src={getImageUrl(
 																	property?.images?.[2]?.directus_files_id?.id,
@@ -526,7 +530,7 @@ export default function PropertyDetailPage({ params }) {
 																		fit: "cover",
 																	}
 																)}
-																alt="Luxury property spa interior"
+																alt={property?.images?.[2]?.directus_files_id?.title}
 																fill
 																className="transition-transform duration-700 hover:scale-110"
 															/>
@@ -536,7 +540,7 @@ export default function PropertyDetailPage({ params }) {
 											</div>
 
 											{/* Row 3: Don't Miss It Section */}
-											<div className="mt-4">
+											<div className="flex flex-col mt-4">
 												<h3
 													className={`${archivo.className} text-[#E2DBCC] text-[20px] font-[400] leading-[100%] tracking-[0%] mb-2`}
 												>
@@ -557,7 +561,7 @@ export default function PropertyDetailPage({ params }) {
 											{/* Row 1: Image */}
 											<div className="relative h-56 md:h-64">
 												{property?.images?.[3] && (
-													<div onClick={() => handleShowImages(3)}>
+													<div onClick={() => handleShowImages(3, true)}>
 														<Image
 															src={getImageUrl(
 																property?.images?.[3]?.directus_files_id?.id,
@@ -566,7 +570,9 @@ export default function PropertyDetailPage({ params }) {
 																	fit: "cover",
 																}
 															)}
-															alt="Luxury property interior with ocean view"
+															alt={
+																property?.images?.[3]?.directus_files_id.title
+															}
 															fill
 															className="transition-transform duration-700 hover:scale-110"
 														/>
@@ -576,17 +582,19 @@ export default function PropertyDetailPage({ params }) {
 
 											{/* Row 2: Image */}
 											<div className="relative h-32 md:h-40">
-												{property?.plans?.[0] && (
+												{property?.images?.[4] && (
 													<div onClick={() => handleShowPlans(0)}>
 														<Image
 															src={getImageUrl(
-																property?.plans?.[0]?.directus_files_id?.id,
+																property?.images?.[4]?.directus_files_id?.id,
 																{
 																	quality: 80,
 																	fit: "cover",
 																}
 															)}
-															alt="Luxury beachfront aerial view"
+															alt={
+																property?.images?.[4]?.directus_files_id.title
+															}
 															fill
 															className="object-cover transition-transform duration-700 hover:scale-110"
 														/>
@@ -595,55 +603,14 @@ export default function PropertyDetailPage({ params }) {
 											</div>
 
 											{/* Row 3: Icons and All Media Button */}
-											<div className="flex items-center justify-end mt-4">
-												<div className="flex items-center gap-6 mr-6">
+											<div className="flex items-center justify-end gap-6 mt-4">
+												<div className="flex items-center gap-6">
 													<div
-														className="flex items-center gap-2 text-[#bd9574] cursor-pointer"
+														className={`${archivo.className} flex flex-col justify-center items-center text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
 														title="Images"
 														onClick={handleShowImages}
 													>
-														<svg
-															width="23"
-															height="22"
-															viewBox="0 0 23 22"
-															fill="none"
-															xmlns="http://www.w3.org/2000/svg"
-														>
-															<path
-																d="M8.55014 10.1999C9.43376 10.1999 10.1501 9.48359 10.1501 8.59994C10.1501 7.71632 9.43376 7 8.55014 7C7.66651 7 6.9502 7.71632 6.9502 8.59994C6.9502 9.48359 7.66651 10.1999 8.55014 10.1999Z"
-																stroke="currentColor"
-																strokeWidth="1.56"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															/>
-															<path
-																d="M7.39844 18.2002C11.8542 8.5205 15.5581 6.82456 19.75 13.1044"
-																stroke="currentColor"
-																strokeWidth="1.56"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															/>
-															<path
-																d="M16.5505 3.7998H6.95086C5.18361 3.7998 3.75098 5.23244 3.75098 6.99969V14.9994C3.75098 16.7666 5.18361 18.1993 6.95086 18.1993H16.5505C18.3177 18.1993 19.7504 16.7666 19.7504 14.9994V6.99969C19.7504 5.23244 18.3177 3.7998 16.5505 3.7998Z"
-																stroke="currentColor"
-																strokeWidth="1.56"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															/>
-														</svg>
-														Photos
-														<span
-															className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
-														>
-															{property?.images?.length}
-														</span>
-													</div>
-													{property?.video && (
-														<div
-															className="flex items-center gap-2 text-[#bd9574] cursor-pointer"
-															title="Video"
-															onClick={handleVideoClick}
-														>
+														<div className="flex items-center gap-2 text-[#bd9574]">
 															<svg
 																width="23"
 																height="22"
@@ -652,44 +619,91 @@ export default function PropertyDetailPage({ params }) {
 																xmlns="http://www.w3.org/2000/svg"
 															>
 																<path
-																	d="M14.75 9.16667L18.9236 7.08033C19.0633 7.01052 19.2185 6.97756 19.3746 6.98458C19.5306 6.99161 19.6823 7.03839 19.8151 7.12049C19.948 7.20258 20.0577 7.31727 20.1338 7.45367C20.2099 7.59006 20.2499 7.74364 20.25 7.89983V14.1002C20.2499 14.2564 20.2099 14.4099 20.1338 14.5463C20.0577 14.6827 19.948 14.7974 19.8151 14.8795C19.6823 14.9616 19.5306 15.0084 19.3746 15.0154C19.2185 15.0224 19.0633 14.9895 18.9236 14.9197L14.75 12.8333V9.16667ZM3.75 7.33333C3.75 6.8471 3.94315 6.38079 4.28697 6.03697C4.63079 5.69315 5.0971 5.5 5.58333 5.5H12.9167C13.4029 5.5 13.8692 5.69315 14.213 6.03697C14.5568 6.38079 14.75 6.8471 14.75 7.33333V14.6667C14.75 15.1529 14.5568 15.6192 14.213 15.963C13.8692 16.3068 13.4029 16.5 12.9167 16.5H5.58333C5.0971 16.5 4.63079 16.3068 4.28697 15.963C3.94315 15.6192 3.75 15.1529 3.75 14.6667V7.33333Z"
+																	d="M8.55014 10.1999C9.43376 10.1999 10.1501 9.48359 10.1501 8.59994C10.1501 7.71632 9.43376 7 8.55014 7C7.66651 7 6.9502 7.71632 6.9502 8.59994C6.9502 9.48359 7.66651 10.1999 8.55014 10.1999Z"
+																	stroke="currentColor"
+																	strokeWidth="1.56"
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																/>
+																<path
+																	d="M7.39844 18.2002C11.8542 8.5205 15.5581 6.82456 19.75 13.1044"
+																	stroke="currentColor"
+																	strokeWidth="1.56"
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																/>
+																<path
+																	d="M16.5505 3.7998H6.95086C5.18361 3.7998 3.75098 5.23244 3.75098 6.99969V14.9994C3.75098 16.7666 5.18361 18.1993 6.95086 18.1993H16.5505C18.3177 18.1993 19.7504 16.7666 19.7504 14.9994V6.99969C19.7504 5.23244 18.3177 3.7998 16.5505 3.7998Z"
 																	stroke="currentColor"
 																	strokeWidth="1.56"
 																	strokeLinecap="round"
 																	strokeLinejoin="round"
 																/>
 															</svg>
-															Video
 															<span
 																className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
 															>
-																{property?.video ? 1 : 0}
+																{property?.images?.length}
 															</span>
+														</div>
+														<span>Images</span>
+													</div>
+													{property?.video && (
+														<div
+															className={`${archivo.className} flex flex-col justify-center items-center text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
+															title="Video"
+															onClick={handleVideoClick}
+														>
+															<div className="flex items-center gap-2 text-[#bd9574]">
+																<svg
+																	width="23"
+																	height="22"
+																	viewBox="0 0 23 22"
+																	fill="none"
+																	xmlns="http://www.w3.org/2000/svg"
+																>
+																	<path
+																		d="M14.75 9.16667L18.9236 7.08033C19.0633 7.01052 19.2185 6.97756 19.3746 6.98458C19.5306 6.99161 19.6823 7.03839 19.8151 7.12049C19.948 7.20258 20.0577 7.31727 20.1338 7.45367C20.2099 7.59006 20.2499 7.74364 20.25 7.89983V14.1002C20.2499 14.2564 20.2099 14.4099 20.1338 14.5463C20.0577 14.6827 19.948 14.7974 19.8151 14.8795C19.6823 14.9616 19.5306 15.0084 19.3746 15.0154C19.2185 15.0224 19.0633 14.9895 18.9236 14.9197L14.75 12.8333V9.16667ZM3.75 7.33333C3.75 6.8471 3.94315 6.38079 4.28697 6.03697C4.63079 5.69315 5.0971 5.5 5.58333 5.5H12.9167C13.4029 5.5 13.8692 5.69315 14.213 6.03697C14.5568 6.38079 14.75 6.8471 14.75 7.33333V14.6667C14.75 15.1529 14.5568 15.6192 14.213 15.963C13.8692 16.3068 13.4029 16.5 12.9167 16.5H5.58333C5.0971 16.5 4.63079 16.3068 4.28697 15.963C3.94315 15.6192 3.75 15.1529 3.75 14.6667V7.33333Z"
+																		stroke="currentColor"
+																		strokeWidth="1.56"
+																		strokeLinecap="round"
+																		strokeLinejoin="round"
+																	/>
+																</svg>
+																<span
+																	className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+																>
+																	{property?.video ? 1 : 0}
+																</span>
+															</div>
+															<span>Video</span>
 														</div>
 													)}
 													<div
-														className="flex items-center gap-2 text-[#bd9574] cursor-pointer"
+														className={`${archivo.className} flex flex-col justify-center items-center text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
 														title="Floor Plans"
 														onClick={handleShowPlans}
 													>
-														<svg
-															width="18"
-															height="18"
-															viewBox="0 0 23 22"
-															fill="none"
-															xmlns="http://www.w3.org/2000/svg"
-														>
-															<path
-																d="M22 2V22H2V11H4V20H9V14H11V20H20V11H17V9H20V4H11V9H14V11H9V4H4V8H2V2H22Z"
-																fill="currentColor"
-															></path>
-														</svg>
-														Floorplan
-														<span
-															className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
-														>
-															{property?.plans?.length}
-														</span>
+														<div className="flex items-center gap-2 text-[#bd9574]">
+															<svg
+																width="18"
+																height="18"
+																viewBox="0 0 23 22"
+																fill="none"
+																xmlns="http://www.w3.org/2000/svg"
+															>
+																<path
+																	d="M22 2V22H2V11H4V20H9V14H11V20H20V11H17V9H20V4H11V9H14V11H9V4H4V8H2V2H22Z"
+																	fill="currentColor"
+																></path>
+															</svg>
+															<span
+																className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+															>
+																{property?.plans?.length}
+															</span>
+														</div>
+														<span>Floor Plans</span>
 													</div>
 												</div>
 												{/* Update the button onClick handler to pass the event */}
