@@ -192,6 +192,13 @@ export default function Menu({
 							>
 								Sell
 							</Link>
+							<Link
+								href="/sold-properties"
+								onClick={onClose}
+								className={`${taviraj.className} text-white text-[28px] leading-[40px] font-normal hover:text-[#BD9574] transition-colors px-5`}
+							>
+								Sold
+							</Link>
 
 							<div className="w-[359px] border-t-[1px] border-[#BD9574] my-1"></div>
 

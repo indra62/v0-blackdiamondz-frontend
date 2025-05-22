@@ -88,6 +88,8 @@ export default function Header() {
     ? "buy"
     : pathname.startsWith("/sell")
     ? "sell"
+    : pathname.startsWith("/sold-properties")
+    ? "sold"
     : ""
   const [dataLogo, setDataLogo] = useState(null)
   const [dataSocial, setDataSocial] = useState(null)
@@ -711,517 +713,568 @@ function PropertyFilter({
   }
 
   return (
-    <div
-      className={`bg-[#211F17]/80 backdrop-blur-md w-full border-b border-[#333] transition-colors duration-300`}
-    >
-      {/* Buy/Sell Tabs with Filters Button on Mobile */}
-      <div className="flex justify-between items-center">
-        <div className="flex">
-          <Link
-            href="/buy"
-            className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
-              activeTab === "buy" ? "text-[#BD9574]" : "text-[#656565]"
-            }`}
-          >
-            Buy
-          </Link>
-          <Link
-            href="/sell"
-            className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
-              activeTab === "sell" ? "text-[#BD9574]" : "text-[#656565]"
-            }`}
-          >
-            Sell
-          </Link>
-        </div>
-        {/* Desktop Property Filters */}
-        {!isMobileView && (
-          <div className="hidden md:flex items-stretch text-[#656565]">
-            {/* Spacer */}
-            <div className="flex-grow"></div>
+		<div
+			className={`bg-[#211F17]/80 backdrop-blur-md w-full border-b border-[#333] transition-colors duration-300`}
+		>
+			{/* Buy/Sell Tabs with Filters Button on Mobile */}
+			<div className="flex justify-between items-center">
+				<div className="flex">
+					<Link
+						href="/buy"
+						className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
+							activeTab === "buy" ? "text-[#BD9574]" : "text-[#656565]"
+						}`}
+					>
+						Buy
+					</Link>
+					<Link
+						href="/sell"
+						className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
+							activeTab === "sell" ? "text-[#BD9574]" : "text-[#656565]"
+						}`}
+					>
+						Sell
+					</Link>
+					<Link
+						href="/sold-properties"
+						className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
+							activeTab === "sold" ? "text-[#BD9574]" : "text-[#656565]"
+						}`}
+					>
+						Sold
+					</Link>
+				</div>
+				{/* Desktop Property Filters */}
+				{!isMobileView && (
+					<div className="hidden md:flex items-stretch text-[#656565]">
+						{/* Spacer */}
+						<div className="flex-grow"></div>
+						<Link
+							href="/our-team"
+							className={`flex items-center px-7 py-4 text-sm font-light border-l border-[#333] ${
+								activeTab === "ourteam" ? "text-[#BD9574]" : "text-[#656565]"
+							}`}
+						>
+							Our Team
+						</Link>
+						<Link
+							href="/club-diamondz"
+							className={`flex items-center gap-2 px-7 py-4 text-sm font-light border-l border-[#333] ${
+								activeTab === "diamondz" ? "text-[#BD9574]" : "text-[#656565]"
+							}`}
+						>
+							<svg
+								width="25"
+								height="25"
+								viewBox="0 0 25 25"
+								fill="currentColor"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M16.933 4.375H6.818L3.125 8.956l8.75 10.367 8.75 -10.366zM4.857 8.981l2.529 -3.152H16.363l2.529 3.152L11.875 17.261z"
+									fill="currentColor"
+								/>
+								<path
+									d="M16.902 19.12H6.848V20.625h10.054z"
+									fill="currentColor"
+								/>
+							</svg>
+							Club Diamondz
+						</Link>
+						<Link
+							href="/contact-us"
+							className={`flex items-center px-7 py-4 text-sm font-light border-l border-[#333] ${
+								activeTab === "contact" ? "text-[#BD9574]" : "text-[#656565]"
+							}`}
+						>
+							Contact Us
+						</Link>
 
-            {/* Property Type Filters */}
-            <button
-              onClick={() => toggleFilter("city")}
-              className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-                activeFilters.includes("city") ? "text-[#BD9574]" : ""
-              }`}
-            >
-              <svg
-                className="h-5 w-5 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 21H21M6 18V9.99998M10 18V9.99998M14 18V9.99998M18 18V9.99998M20 21V6.99998L12 2.99998L4 6.99998V21"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs">City</span>
-            </button>
+						{/* Property Type Filters */}
+						{/* <button
+							onClick={() => toggleFilter("city")}
+							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
+								activeFilters.includes("city") ? "text-[#BD9574]" : ""
+							}`}
+						>
+							<svg
+								className="h-5 w-5 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M3 21H21M6 18V9.99998M10 18V9.99998M14 18V9.99998M18 18V9.99998M20 21V6.99998L12 2.99998L4 6.99998V21"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs">City</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("country")}
-              className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-                activeFilters.includes("country") ? "text-[#BD9574]" : ""
-              }`}
-            >
-              <svg
-                className="h-5 w-5 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 21V12M16 21V12M4 21H20M4 7H20M6 7L9 4M18 7L15 4M11 7V4H13V7M4 7V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V7"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs">Country</span>
-            </button>
+						<button
+							onClick={() => toggleFilter("country")}
+							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
+								activeFilters.includes("country") ? "text-[#BD9574]" : ""
+							}`}
+						>
+							<svg
+								className="h-5 w-5 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M8 21V12M16 21V12M4 21H20M4 7H20M6 7L9 4M18 7L15 4M11 7V4H13V7M4 7V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V7"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs">Country</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("beachfront")}
-              className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-                activeFilters.includes("beachfront") ? "text-[#BD9574]" : ""
-              }`}
-            >
-              <svg
-                className="h-5 w-5 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 19H20M4 15L7 14C8.5 13.5 10.5 13.5 12 14C13.5 14.5 15.5 14.5 17 14L20 15M4 11L7 10C8.5 9.5 10.5 9.5 12 10C13.5 10.5 15.5 10.5 17 10L20 11"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs">Beachfront</span>
-            </button>
+						<button
+							onClick={() => toggleFilter("beachfront")}
+							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
+								activeFilters.includes("beachfront") ? "text-[#BD9574]" : ""
+							}`}
+						>
+							<svg
+								className="h-5 w-5 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M4 19H20M4 15L7 14C8.5 13.5 10.5 13.5 12 14C13.5 14.5 15.5 14.5 17 14L20 15M4 11L7 10C8.5 9.5 10.5 9.5 12 10C13.5 10.5 15.5 10.5 17 10L20 11"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs">Beachfront</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("apartment")}
-              className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-                activeFilters.includes("apartment") ? "text-[#BD9574]" : ""
-              }`}
-            >
-              <svg
-                className="h-5 w-5 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 21H21M5 21V5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21M9 21V17C9 15.8954 9.89543 15 11 15H13C14.1046 15 15 15.8954 15 17V21M9 7H11M9 11H11M13 7H15M13 11H15"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs">Apartment</span>
-            </button>
+						<button
+							onClick={() => toggleFilter("apartment")}
+							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
+								activeFilters.includes("apartment") ? "text-[#BD9574]" : ""
+							}`}
+						>
+							<svg
+								className="h-5 w-5 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M3 21H21M5 21V5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21M9 21V17C9 15.8954 9.89543 15 11 15H13C14.1046 15 15 15.8954 15 17V21M9 7H11M9 11H11M13 7H15M13 11H15"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs">Apartment</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("suburbs")}
-              className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-                activeFilters.includes("suburbs") ? "text-[#BD9574]" : ""
-              }`}
-            >
-              <svg
-                className="h-5 w-5 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 21H21M5 21V8L12 3L19 8V21M9 21V12H15V21"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs">Suburbs</span>
-            </button>
+						<button
+							onClick={() => toggleFilter("suburbs")}
+							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
+								activeFilters.includes("suburbs") ? "text-[#BD9574]" : ""
+							}`}
+						>
+							<svg
+								className="h-5 w-5 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M3 21H21M5 21V8L12 3L19 8V21M9 21V12H15V21"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs">Suburbs</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("ocean-view")}
-              className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-                activeFilters.includes("ocean-view") ? "text-[#BD9574]" : ""
-              }`}
-            >
-              <svg
-                className="h-5 w-5 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 16C3 16 7 10 12 10C17 10 21 16 21 16M3 12C3 12 7 6 12 6C17 6 21 12 21 12M3 20C3 20 7 14 12 14C17 14 21 20 21 20"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs">Ocean View</span>
-            </button>
+						<button
+							onClick={() => toggleFilter("ocean-view")}
+							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
+								activeFilters.includes("ocean-view") ? "text-[#BD9574]" : ""
+							}`}
+						>
+							<svg
+								className="h-5 w-5 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M3 16C3 16 7 10 12 10C17 10 21 16 21 16M3 12C3 12 7 6 12 6C17 6 21 12 21 12M3 20C3 20 7 14 12 14C17 14 21 20 21 20"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs">Ocean View</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("pool")}
-              className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-                activeFilters.includes("pool") ? "text-[#BD9574]" : ""
-              }`}
-            >
-              <svg
-                className="h-5 w-5 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 15C4 15 5 14 7 14C9 14 10 15 12 15C14 15 15 14 17 14C19 14 20 15 20 15M4 19C4 19 5 18 7 18C9 18 10 19 12 19C14 19 15 18 17 18C19 18 20 19 20 19M4 11C4 11 5 10 7 10C9 10 10 11 12 11C14 11 15 10 17 10C19 10 20 11 20 11M12 4V7M15 5V8M9 5V8"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs">Pool</span>
-            </button>
-          </div>
-        )}
-        {/* Filters button - Only on mobile */}
-        {isMobileView && (
-          <>
-            <div className="flex items-center">
-              <div className="flex items-center justify-center px-7 py-4 border-[#333] border-l">
-                <button
-                  onClick={toggleMobileFilters}
-                  className="text-[#BD9574] text-sm font-light"
-                >
-                  <svg
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 0.45 0.45"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M0 0.075h0.45m-0.36 0.15h0.27m-0.21 0.15h0.15"
-                      stroke="currentColor"
-                      strokeWidth="0.03"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="flex items-center justify-center px-7 py-4 border-[#333] border-l">
-                {hasMounted ? (
-                  isAuthenticated ? (
-                    <button
-                      onClick={logout}
-                      className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                    >
-                      <svg
-                        width="24px"
-                        height="24px"
-                        viewBox="0 0 0.72 0.72"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="0.06"
-                          d="M0.6 0.36H0.314M0.54 0.45 0.63 0.36 0.54 0.27M0.39 0.21V0.18A0.06 0.06 0 0 0 0.33 0.12H0.18A0.06 0.06 0 0 0 0.12 0.18v0.36A0.06 0.06 0 0 0 0.18 0.6h0.15a0.06 0.06 0 0 0 0.06 -0.06V0.51"
-                        />
-                      </svg>
-                    </button>
-                  ) : (
-                    <Link
-                      href="/login"
-                      className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                    >
-                      <svg
-                        width="24px"
-                        height="24px"
-                        viewBox="0 0 0.72 0.72"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M0.24 0.18a0.12 0.12 0 0 1 0.12 -0.12h0.166A0.136 0.136 0 0 1 0.66 0.196v0.33a0.136 0.136 0 0 1 -0.136 0.136H0.36a0.12 0.12 0 0 1 -0.12 -0.12V0.511a0.03 0.03 0 1 1 0.06 0v0.03a0.06 0.06 0 0 0 0.06 0.06h0.166A0.076 0.076 0 0 0 0.601 0.526V0.196A0.076 0.076 0 0 0 0.526 0.12H0.36a0.06 0.06 0 0 0 -0.06 0.06v0.03a0.03 0.03 0 0 1 -0.06 0zm0.128 0.068a0.03 0.03 0 0 1 0.042 0l0.09 0.09a0.03 0.03 0 0 1 0 0.042L0.41 0.47A0.03 0.03 0 0 1 0.368 0.428L0.408 0.39H0.15a0.03 0.03 0 1 1 0 -0.06H0.408L0.37 0.292a0.03 0.03 0 0 1 0 -0.042"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </Link>
-                  )
-                ) : (
-                  <span style={{ visibility: "hidden" }}>Login</span>
-                )}
-              </div>
-            </div>
-          </>
-        )}
-      </div>
+						<button
+							onClick={() => toggleFilter("pool")}
+							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
+								activeFilters.includes("pool") ? "text-[#BD9574]" : ""
+							}`}
+						>
+							<svg
+								className="h-5 w-5 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M4 15C4 15 5 14 7 14C9 14 10 15 12 15C14 15 15 14 17 14C19 14 20 15 20 15M4 19C4 19 5 18 7 18C9 18 10 19 12 19C14 19 15 18 17 18C19 18 20 19 20 19M4 11C4 11 5 10 7 10C9 10 10 11 12 11C14 11 15 10 17 10C19 10 20 11 20 11M12 4V7M15 5V8M9 5V8"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs">Pool</span>
+						</button> */}
+					</div>
+				)}
+				{/* Filters button - Only on mobile */}
+				{isMobileView && (
+					<>
+						<div className="flex items-center">
+							<div className="flex items-center justify-center px-7 py-4 border-[#333] border-l">
+								<button
+									onClick={toggleMobileFilters}
+									className="text-[#BD9574] text-sm font-light"
+								>
+									<svg
+										width="24px"
+										height="24px"
+										viewBox="0 0 0.45 0.45"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M0 0.075h0.45m-0.36 0.15h0.27m-0.21 0.15h0.15"
+											stroke="currentColor"
+											strokeWidth="0.03"
+										/>
+									</svg>
+								</button>
+							</div>
+							<div className="flex items-center justify-center px-7 py-4 border-[#333] border-l">
+								{hasMounted ? (
+									isAuthenticated ? (
+										<button
+											onClick={logout}
+											className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+										>
+											<svg
+												width="24px"
+												height="24px"
+												viewBox="0 0 0.72 0.72"
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+											>
+												<path
+													stroke="currentColor"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													strokeWidth="0.06"
+													d="M0.6 0.36H0.314M0.54 0.45 0.63 0.36 0.54 0.27M0.39 0.21V0.18A0.06 0.06 0 0 0 0.33 0.12H0.18A0.06 0.06 0 0 0 0.12 0.18v0.36A0.06 0.06 0 0 0 0.18 0.6h0.15a0.06 0.06 0 0 0 0.06 -0.06V0.51"
+												/>
+											</svg>
+										</button>
+									) : (
+										<Link
+											href="/login"
+											className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+										>
+											<svg
+												width="24px"
+												height="24px"
+												viewBox="0 0 0.72 0.72"
+												fill="none"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<path
+													fillRule="evenodd"
+													clipRule="evenodd"
+													d="M0.24 0.18a0.12 0.12 0 0 1 0.12 -0.12h0.166A0.136 0.136 0 0 1 0.66 0.196v0.33a0.136 0.136 0 0 1 -0.136 0.136H0.36a0.12 0.12 0 0 1 -0.12 -0.12V0.511a0.03 0.03 0 1 1 0.06 0v0.03a0.06 0.06 0 0 0 0.06 0.06h0.166A0.076 0.076 0 0 0 0.601 0.526V0.196A0.076 0.076 0 0 0 0.526 0.12H0.36a0.06 0.06 0 0 0 -0.06 0.06v0.03a0.03 0.03 0 0 1 -0.06 0zm0.128 0.068a0.03 0.03 0 0 1 0.042 0l0.09 0.09a0.03 0.03 0 0 1 0 0.042L0.41 0.47A0.03 0.03 0 0 1 0.368 0.428L0.408 0.39H0.15a0.03 0.03 0 1 1 0 -0.06H0.408L0.37 0.292a0.03 0.03 0 0 1 0 -0.042"
+													fill="currentColor"
+												/>
+											</svg>
+										</Link>
+									)
+								) : (
+									<span style={{ visibility: "hidden" }}>Login</span>
+								)}
+							</div>
+						</div>
+					</>
+				)}
+			</div>
 
-      {/* Mobile Filters Panel - Shows when toggled */}
-      {isMobileView && isMobileFiltersOpen && (
-        <div className="bg-[#211F17]/90 w-full border-t border-[#333] overflow-x-auto hide-scrollbar">
-          <div className="backdrop-blur-md border-t border-[#333] px-4 py-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col col-span-2">
-                <span className="text-[14px] text-[#888] mb-1">Location</span>
-                <AsyncSelect
-                  instanceId="property-location-select-mobile"
-                  name="location"
-                  value={
-                    formData.city
-                      ? {
-                          id: formData.city_id,
-                          name: formData.city,
-                        }
-                      : null
-                  }
-                  loadOptions={debouncedLoadCityOptions}
-                  onChange={(option) => {
-                    // Update both the label and ID fields
-                    setFormData((prev) => ({
-                      ...prev,
-                      city: option ? option.name : "",
-                      city_id: option ? option.id : "",
-                    }))
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  getOptionValue={(option) => option.id}
-                  placeholder={"Search.."}
-                  menuPortalTarget={document.body}
-                  menuPosition="absolute"
-                  styles={customStyles}
-                  className={archivo.className}
-                  isClearable
-                  components={{
-                    DropdownIndicator: () => null,
-                  }}
-                  noOptionsMessage={({ inputValue }) =>
-                    inputValue ? `No location found` : null
-                  }
-                />
-              </div>
+			{/* Mobile Filters Panel - Shows when toggled */}
+			{isMobileView && isMobileFiltersOpen && (
+				<div className="bg-[#211F17]/90 w-full border-t border-[#333] overflow-x-auto hide-scrollbar">
+					<div className="backdrop-blur-md border-t border-[#333] px-4 py-3">
+						<div className="grid grid-cols-2 gap-3">
+							<div className="flex flex-col col-span-2">
+								<span className="text-[14px] text-[#888] mb-1">Location</span>
+								<AsyncSelect
+									instanceId="property-location-select-mobile"
+									name="location"
+									value={
+										formData.city
+											? {
+													id: formData.city_id,
+													name: formData.city,
+											  }
+											: null
+									}
+									loadOptions={debouncedLoadCityOptions}
+									onChange={(option) => {
+										// Update both the label and ID fields
+										setFormData((prev) => ({
+											...prev,
+											city: option ? option.name : "",
+											city_id: option ? option.id : "",
+										}));
+									}}
+									getOptionLabel={(option) => option.name}
+									getOptionValue={(option) => option.id}
+									placeholder={"Search.."}
+									menuPortalTarget={document.body}
+									menuPosition="absolute"
+									styles={customStyles}
+									className={archivo.className}
+									isClearable
+									components={{
+										DropdownIndicator: () => null,
+									}}
+									noOptionsMessage={({ inputValue }) =>
+										inputValue ? `No location found` : null
+									}
+								/>
+							</div>
 
-              <div className="flex flex-col">
-                <span className="text-[14px] text-[#888] mb-1">Type</span>
-                <Select
-                  instanceId="property-type-select-mobile"
-                  name="type"
-                  value={propertyTypeOptions.find(
-                    (option) => option.value === formData.type
-                  )}
-                  onChange={(option) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      type: option ? option.value : "",
-                    }))
-                  }
-                  options={propertyTypeOptions}
-                  placeholder="Any"
-                  styles={customStyles}
-                  menuPortalTarget={document.body}
-                  menuPosition="absolute"
-                  className={`${archivo.className}`}
-                  isClearable
-                  isSearchable={false}
-                />
-              </div>
+							<div className="flex flex-col">
+								<span className="text-[14px] text-[#888] mb-1">Type</span>
+								<Select
+									instanceId="property-type-select-mobile"
+									name="type"
+									value={propertyTypeOptions.find(
+										(option) => option.value === formData.type
+									)}
+									onChange={(option) =>
+										setFormData((prev) => ({
+											...prev,
+											type: option ? option.value : "",
+										}))
+									}
+									options={propertyTypeOptions}
+									placeholder="Any"
+									styles={customStyles}
+									menuPortalTarget={document.body}
+									menuPosition="absolute"
+									className={`${archivo.className}`}
+									isClearable
+									isSearchable={false}
+								/>
+							</div>
 
-              <div className="flex flex-col">
-                <span className="text-[14px] text-[#888] mb-1">Bedroom</span>
-                <Select
-                  instanceId="property-bedroom-select-mobile"
-                  name="type"
-                  value={bedroomOptions.find(
-                    (option) => option.value === formData.bedroom
-                  )}
-                  onChange={(option) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      bedroom: option ? option.value : "",
-                    }))
-                  }
-                  options={bedroomOptions}
-                  placeholder="Any"
-                  styles={customStyles}
-                  menuPortalTarget={document.body}
-                  menuPosition="absolute"
-                  className={`${archivo.className}`}
-                  isClearable
-                  isSearchable={false}
-                />
-              </div>
+							<div className="flex flex-col">
+								<span className="text-[14px] text-[#888] mb-1">Bedroom</span>
+								<Select
+									instanceId="property-bedroom-select-mobile"
+									name="type"
+									value={bedroomOptions.find(
+										(option) => option.value === formData.bedroom
+									)}
+									onChange={(option) =>
+										setFormData((prev) => ({
+											...prev,
+											bedroom: option ? option.value : "",
+										}))
+									}
+									options={bedroomOptions}
+									placeholder="Any"
+									styles={customStyles}
+									menuPortalTarget={document.body}
+									menuPosition="absolute"
+									className={`${archivo.className}`}
+									isClearable
+									isSearchable={false}
+								/>
+							</div>
 
-              <div className="flex flex-col">
-                <span className="text-[14px] text-[#888] mb-1">Value</span>
-                <input
-                  name="price_min"
-                  type="number"
-                  min={0}
-                  step={1000}
-                  placeholder="Min"
-                  value={formData.price_min}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      price_min: e.target.value,
-                    }))
-                  }
-                  className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[14px] text-[#888] mb-1 invisible">
-                  Max Value
-                </span>
-                <input
-                  name="price_max"
-                  type="number"
-                  min={0}
-                  step={1000}
-                  placeholder="Max"
-                  value={formData.price_max}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      price_max: e.target.value,
-                    }))
-                  }
-                  className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
-                />
-              </div>
-            </div>
+							<div className="flex flex-col">
+								<span className="text-[14px] text-[#888] mb-1">Value</span>
+								<input
+									name="price_min"
+									type="number"
+									min={0}
+									step={1000}
+									placeholder="Min"
+									value={formData.price_min}
+									onChange={(e) =>
+										setFormData((prev) => ({
+											...prev,
+											price_min: e.target.value,
+										}))
+									}
+									className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
+								/>
+							</div>
+							<div className="flex flex-col">
+								<span className="text-[14px] text-[#888] mb-1 invisible">
+									Max Value
+								</span>
+								<input
+									name="price_max"
+									type="number"
+									min={0}
+									step={1000}
+									placeholder="Max"
+									value={formData.price_max}
+									onChange={(e) =>
+										setFormData((prev) => ({
+											...prev,
+											price_max: e.target.value,
+										}))
+									}
+									className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
+								/>
+							</div>
+						</div>
 
-            <button onClick={handleSearch} className="w-full flex items-center justify-center mt-3 py-2 border border-[#BD9574] text-[#BD9574] rounded">
-              <span className="mr-2">Search</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="flex backdrop-blur-md z-[980]">
-            <button
-              onClick={() => toggleFilter("city")}
-              className={`flex flex-col items-center justify-center px-4 py-2 ${
-                activeFilters.includes("city")
-                  ? "text-[#BD9574]"
-                  : "text-[#656565]"
-              }`}
-            >
-              <svg
-                className="h-4 w-4 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 21H21M6 18V9.99998M10 18V9.99998M14 18V9.99998M18 18V9.99998M20 21V6.99998L12 2.99998L4 6.99998V21"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs whitespace-nowrap">City</span>
-            </button>
+						<button
+							onClick={handleSearch}
+							className="w-full flex items-center justify-center mt-3 py-2 border border-[#BD9574] text-[#BD9574] rounded"
+						>
+							<span className="mr-2">Search</span>
+							<ArrowRight className="h-4 w-4" />
+						</button>
+					</div>
+					<div className="flex backdrop-blur-md z-[980]">
+						<button
+							onClick={() => toggleFilter("city")}
+							className={`flex flex-col items-center justify-center px-4 py-2 ${
+								activeFilters.includes("city")
+									? "text-[#BD9574]"
+									: "text-[#656565]"
+							}`}
+						>
+							<svg
+								className="h-4 w-4 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M3 21H21M6 18V9.99998M10 18V9.99998M14 18V9.99998M18 18V9.99998M20 21V6.99998L12 2.99998L4 6.99998V21"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs whitespace-nowrap">City</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("country")}
-              className={`flex flex-col items-center justify-center px-4 py-2 ${
-                activeFilters.includes("country")
-                  ? "text-[#BD9574]"
-                  : "text-[#656565]"
-              }`}
-            >
-              <svg
-                className="h-4 w-4 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 21V12M16 21V12M4 21H20M4 7H20M6 7L9 4M18 7L15 4M11 7V4H13V7M4 7V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V7"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs whitespace-nowrap">Country</span>
-            </button>
+						<button
+							onClick={() => toggleFilter("country")}
+							className={`flex flex-col items-center justify-center px-4 py-2 ${
+								activeFilters.includes("country")
+									? "text-[#BD9574]"
+									: "text-[#656565]"
+							}`}
+						>
+							<svg
+								className="h-4 w-4 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M8 21V12M16 21V12M4 21H20M4 7H20M6 7L9 4M18 7L15 4M11 7V4H13V7M4 7V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V7"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs whitespace-nowrap">Country</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("beachfront")}
-              className={`flex flex-col items-center justify-center px-4 py-2 ${
-                activeFilters.includes("beachfront")
-                  ? "text-[#BD9574]"
-                  : "text-[#656565]"
-              }`}
-            >
-              <svg
-                className="h-4 w-4 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 19H20M4 15L7 14C8.5 13.5 10.5 13.5 12 14C13.5 14.5 15.5 14.5 17 14L20 15M4 11L7 10C8.5 9.5 10.5 9.5 12 10C13.5 10.5 15.5 10.5 17 10L20 11"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs whitespace-nowrap">Beachfront</span>
-            </button>
+						<button
+							onClick={() => toggleFilter("beachfront")}
+							className={`flex flex-col items-center justify-center px-4 py-2 ${
+								activeFilters.includes("beachfront")
+									? "text-[#BD9574]"
+									: "text-[#656565]"
+							}`}
+						>
+							<svg
+								className="h-4 w-4 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M4 19H20M4 15L7 14C8.5 13.5 10.5 13.5 12 14C13.5 14.5 15.5 14.5 17 14L20 15M4 11L7 10C8.5 9.5 10.5 9.5 12 10C13.5 10.5 15.5 10.5 17 10L20 11"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs whitespace-nowrap">Beachfront</span>
+						</button>
 
-            <button
-              onClick={() => toggleFilter("apartment")}
-              className={`flex flex-col items-center justify-center px-4 py-2 ${
-                activeFilters.includes("apartment")
-                  ? "text-[#BD9574]"
-                  : "text-[#656565]"
-              }`}
-            >
-              <svg
-                className="h-4 w-4 mb-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 21H21M5 21V5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21M9 21V17C9 15.8954 9.89543 15 11 15H13C14.1046 15 15 15.8954 15 17V21M9 7H11M9 11H11M13 7H15M13 11H15"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-xs whitespace-nowrap">Apartment</span>
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  )
+						<button
+							onClick={() => toggleFilter("apartment")}
+							className={`flex flex-col items-center justify-center px-4 py-2 ${
+								activeFilters.includes("apartment")
+									? "text-[#BD9574]"
+									: "text-[#656565]"
+							}`}
+						>
+							<svg
+								className="h-4 w-4 mb-1"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M3 21H21M5 21V5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21M9 21V17C9 15.8954 9.89543 15 11 15H13C14.1046 15 15 15.8954 15 17V21M9 7H11M9 11H11M13 7H15M13 11H15"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							<span className="text-xs whitespace-nowrap">Apartment</span>
+						</button>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 }
