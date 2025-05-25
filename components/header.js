@@ -102,6 +102,7 @@ export default function Header() {
     price_max: priceMax || "",
   })
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
+  const languageDropdownRef = useRef(null);
   const [selectedLanguage, setSelectedLanguage] = useState("en")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobileView, setIsMobileView] = useState(false)
@@ -289,398 +290,420 @@ export default function Header() {
     setIsValueDropdownOpen(true)
   }
 
+  useEffect(() => {
+		if (!isLanguageDropdownOpen) return;
+
+		function handleClickOutside(event) {
+			// If click is outside both the dropdown and the button, close
+			if (
+				languageDropdownRef.current &&
+				!languageDropdownRef.current.contains(event.target) &&
+				languageButtonRef.current &&
+				!languageButtonRef.current.contains(event.target)
+			) {
+				setIsLanguageDropdownOpen(false);
+			}
+		}
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [isLanguageDropdownOpen]);
+
   return (
-    <>
-      <header className={`${archivo.className} font-light sticky-header`}>
-        {/* Main Navigation */}
-        <div
-          className={`bg-[#211F17]/80 backdrop-blur-md text-[#BD9574] border-b border-[#333] transition-colors duration-300`}
-        >
-          {/* Mobile Header */}
-          <div className="md:hidden flex items-center justify-between px-4 h-[60px]">
-            <Link href="/">
-              <div className="flex items-center justify-center">
-                <img
-                  src={
-                    getImageUrl(dataLogo?.Logo?.id, {
-                      format: "webp",
-                      quality: 80,
-                      fit: "fit",
-                    }) || "/images/smallLogoBD.png"
-                  }
-                  alt="Black Diamondz Logo"
-                  className="w-auto h-6"
-                />
-              </div>
-            </Link>
+		<>
+			<header className={`${archivo.className} font-light sticky-header`}>
+				{/* Main Navigation */}
+				<div
+					className={`bg-[#211F17]/80 backdrop-blur-md text-[#BD9574] border-b border-[#333] transition-colors duration-300`}
+				>
+					{/* Mobile Header */}
+					<div className="md:hidden flex items-center justify-between px-4 h-[60px]">
+						<Link href="/">
+							<div className="flex items-center justify-center">
+								<img
+									src={
+										getImageUrl(dataLogo?.Logo?.id, {
+											format: "webp",
+											quality: 80,
+											fit: "fit",
+										}) || "/images/smallLogoBD.png"
+									}
+									alt="Black Diamondz Logo"
+									className="w-auto h-6"
+								/>
+							</div>
+						</Link>
 
-            <div className="flex items-center gap-6 mobile-header-actions">
-              <button
-                ref={languageButtonRef}
-                onTouchStart={(e) => {
-                  e.preventDefault()
-                  toggleLanguageDropdown()
-                }}
-                aria-expanded={isLanguageDropdownOpen}
-                aria-haspopup="true"
-                className="flex items-center w-10 h-10 gap-1 text-[#BD9574] focus:outline-none relative z-[999]"
-              >
-                <span className="text-xl">{selectedLanguage.flag}</span>
-                <ChevronDown className="h-4 w-4 text-[#BD9574]" />
-              </button>
+						<div className="flex items-center gap-6 mobile-header-actions">
+							<button
+								ref={languageButtonRef}
+								onTouchStart={(e) => {
+									e.preventDefault();
+									toggleLanguageDropdown();
+								}}
+								aria-expanded={isLanguageDropdownOpen}
+								aria-haspopup="true"
+								className="flex items-center w-10 h-10 gap-1 text-[#BD9574] focus:outline-none relative z-[999]"
+							>
+								<span className="text-xl">{selectedLanguage.flag}</span>
+								<ChevronDown className="h-4 w-4 text-[#BD9574]" />
+							</button>
 
-              <button
-                onClick={toggleMenu}
-                className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
-              >
-                <div className="flex flex-col gap-2">
-                  <div className="w-[24px] h-[1px] bg-current"></div>
-                  <div className="w-[24px] h-[1px] bg-current"></div>
-                </div>
-              </button>
-            </div>
-          </div>
+							<button
+								onClick={toggleMenu}
+								className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
+							>
+								<div className="flex flex-col gap-2">
+									<div className="w-[24px] h-[1px] bg-current"></div>
+									<div className="w-[24px] h-[1px] bg-current"></div>
+								</div>
+							</button>
+						</div>
+					</div>
 
-          {/* Desktop Header */}
-          <div className="hidden md:flex flex-col md:flex-row items-stretch">
-            {/* Logo Section */}
-            <div className="flex items-center justify-center px-4 h-[60px] !w-[220px] min-w-[60px] border-r border-[#333] self-stretch">
-              <Link href="/">
-                <img
-                  src={
-                    getImageUrl(dataLogo?.Logo?.id, {
-                      format: "webp",
-                      quality: 80,
-                      fit: "fit",
-                    }) || "/images/smallLogoBD.png"
-                  }
-                  alt="Black Diamondz Logo"
-                  className="w-auto h-7"
-                />
-              </Link>
-            </div>
+					{/* Desktop Header */}
+					<div className="hidden md:flex flex-col md:flex-row items-stretch">
+						{/* Logo Section */}
+						<div className="flex items-center justify-center px-4 h-[60px] !w-[220px] min-w-[60px] border-r border-[#333] self-stretch">
+							<Link href="/">
+								<img
+									src={
+										getImageUrl(dataLogo?.Logo?.id, {
+											format: "webp",
+											quality: 80,
+											fit: "fit",
+										}) || "/images/smallLogoBD.png"
+									}
+									alt="Black Diamondz Logo"
+									className="w-auto h-7"
+								/>
+							</Link>
+						</div>
 
-            {/* Location Section */}
-            <div className="flex items-center px-6 border-r border-[#333] w-1/2">
-              <div className="flex flex-col w-full">
-                <AsyncSelect
-                  instanceId="property-location-select"
-                  name="location"
-                  value={
-                    formData.city
-                      ? {
-                          id: formData.city_id,
-                          name: formData.city,
-                        }
-                      : null
-                  }
-                  loadOptions={debouncedLoadCityOptions}
-                  onChange={(option) => {
-                    // Update both the label and ID fields
-                    setFormData((prev) => ({
-                      ...prev,
-                      city: option ? option.name : "",
-                      city_id: option ? option.id : "",
-                    }))
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  getOptionValue={(option) => option.id}
-                  placeholder={"Search Location"}
-                  menuPortalTarget={
-                    typeof window !== "undefined" ? document.body : null
-                  }
-                  menuPosition="fixed"
-                  styles={customStyles}
-                  className={archivo.className}
-                  isClearable
-                  components={{
-                    DropdownIndicator: () => null,
-                  }}
-                  noOptionsMessage={({ inputValue }) =>
-                    inputValue ? `No location found` : null
-                  }
-                />
-              </div>
-            </div>
+						{/* Location Section */}
+						<div className="flex items-center px-6 border-r border-[#333] w-1/2">
+							<div className="flex flex-col w-full">
+								<AsyncSelect
+									instanceId="property-location-select"
+									name="location"
+									value={
+										formData.city
+											? {
+													id: formData.city_id,
+													name: formData.city,
+											  }
+											: null
+									}
+									loadOptions={debouncedLoadCityOptions}
+									onChange={(option) => {
+										// Update both the label and ID fields
+										setFormData((prev) => ({
+											...prev,
+											city: option ? option.name : "",
+											city_id: option ? option.id : "",
+										}));
+									}}
+									getOptionLabel={(option) => option.name}
+									getOptionValue={(option) => option.id}
+									placeholder={"Search Location"}
+									menuPortalTarget={
+										typeof window !== "undefined" ? document.body : null
+									}
+									menuPosition="fixed"
+									styles={customStyles}
+									className={archivo.className}
+									isClearable
+									components={{
+										DropdownIndicator: () => null,
+									}}
+									noOptionsMessage={({ inputValue }) =>
+										inputValue ? `No location found` : null
+									}
+								/>
+							</div>
+						</div>
 
-            {/* Type Section */}
-            <div className="flex items-center px-6 border-r border-[#333] w-1/4">
-              <div className="flex flex-col w-full">
-                <Select
-                  instanceId="property-type-select"
-                  name="type"
-                  value={propertyTypeOptions.find(
-                    (option) => option.value === formData.type
-                  )}
-                  onChange={(option) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      type: option ? option.value : "",
-                    }))
-                  }
-                  options={propertyTypeOptions}
-                  placeholder="Type"
-                  styles={customStyles}
-                  menuPortalTarget={
-                    typeof window !== "undefined" ? document.body : null
-                  }
-                  menuPosition="fixed"
-                  className={archivo.className}
-                  isClearable
-                />
-              </div>
-            </div>
+						{/* Type Section */}
+						<div className="flex items-center px-6 border-r border-[#333] w-1/4">
+							<div className="flex flex-col w-full">
+								<Select
+									instanceId="property-type-select"
+									name="type"
+									value={propertyTypeOptions.find(
+										(option) => option.value === formData.type
+									)}
+									onChange={(option) =>
+										setFormData((prev) => ({
+											...prev,
+											type: option ? option.value : "",
+										}))
+									}
+									options={propertyTypeOptions}
+									placeholder="Type"
+									styles={customStyles}
+									menuPortalTarget={
+										typeof window !== "undefined" ? document.body : null
+									}
+									menuPosition="fixed"
+									className={archivo.className}
+									isClearable
+								/>
+							</div>
+						</div>
 
-            {/* Bedroom Section */}
-            <div className="flex items-center px-6 border-r border-[#333] w-1/4">
-              <div className="flex flex-col w-full">
-                <Select
-                  instanceId="property-bedroom-select"
-                  name="bedroom"
-                  value={bedroomOptions.find(
-                    (option) => option.value === formData.bedroom
-                  )}
-                  onChange={(option) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      bedroom: option ? option.value : "",
-                    }))
-                  }
-                  options={bedroomOptions}
-                  placeholder="Bedroom"
-                  styles={customStyles}
-                  menuPortalTarget={
-                    typeof window !== "undefined" ? document.body : null
-                  }
-                  menuPosition="fixed"
-                  className={archivo.className}
-                  isClearable
-                />
-              </div>
-            </div>
+						{/* Bedroom Section */}
+						<div className="flex items-center px-6 border-r border-[#333] w-1/4">
+							<div className="flex flex-col w-full">
+								<Select
+									instanceId="property-bedroom-select"
+									name="bedroom"
+									value={bedroomOptions.find(
+										(option) => option.value === formData.bedroom
+									)}
+									onChange={(option) =>
+										setFormData((prev) => ({
+											...prev,
+											bedroom: option ? option.value : "",
+										}))
+									}
+									options={bedroomOptions}
+									placeholder="Bedroom"
+									styles={customStyles}
+									menuPortalTarget={
+										typeof window !== "undefined" ? document.body : null
+									}
+									menuPosition="fixed"
+									className={archivo.className}
+									isClearable
+								/>
+							</div>
+						</div>
 
-            {/* Value Section */}
-            <div
-              className="flex items-center px-6 border-r border-[#333] w-1/3 relative"
-              ref={valueDropdownRef}
-            >
-              <button
-                ref={buttonRef}
-                type="button"
-                className="flex items-center justify-between w-full text-left"
-                onClick={openDropdown}
-              >
-                {minPrice === 0 && maxPrice === 50000000 ? (
-                  <span className="text-[16px] leading-[150%] font-light text-[#888]">
-                    Value
-                  </span>
-                ) : (
-                  <span className="text-[16px] leading-[150%] font-light text-[#E2DBCC]">
-                    {formatPrice(minPrice)} - {formatPrice(maxPrice)}
-                  </span>
-                )}
+						{/* Value Section */}
+						<div
+							className="flex items-center px-6 border-r border-[#333] w-1/3 relative"
+							ref={valueDropdownRef}
+						>
+							<button
+								ref={buttonRef}
+								type="button"
+								className="flex items-center justify-between w-full text-left"
+								onClick={openDropdown}
+							>
+								{minPrice === 0 && maxPrice === 50000000 ? (
+									<span className="text-[16px] leading-[150%] font-light text-[#888]">
+										Value
+									</span>
+								) : (
+									<span className="text-[16px] leading-[150%] font-light text-[#E2DBCC]">
+										{formatPrice(minPrice)} - {formatPrice(maxPrice)}
+									</span>
+								)}
 
-                <ChevronDown className="h-5 w-5 text-[#888] ml-2" />
-              </button>
-              {isValueDropdownOpen &&
-                createPortal(
-                  <div
-                    className="z-[1000] bg-[#211f17] border border-[#333] rounded shadow-lg p-6 min-w-[240px] price-range-slider"
-                    style={{
-                      position: "absolute",
-                      top: dropdownPosition.top,
-                      left: dropdownPosition.left,
-                      width: dropdownPosition.width,
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <RangeSlider
-                      min={0}
-                      max={50000000}
-                      step={1000000}
-                      value={[minPrice, maxPrice]}
-                      onInput={([min, max]) => {
-                        setFormData((prev) => ({
-                          ...prev,
-                          price_min: min,
-                          price_max: max,
-                        }))
-                      }}
-                    />
-                    <div className="flex justify-between mt-4 text-[#E2DBCC] text-sm">
-                      <span>{formatPrice(minPrice)}</span>
-                      <span>{formatPrice(maxPrice)}</span>
-                    </div>
-                    <button
-                      className="mt-4 w-full border border-[#BD9574] text-[#BD9574] rounded py-1 hover:bg-[#BD9574] hover:text-[#211f17] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setIsValueDropdownOpen(false)
-                      }}
-                    >
-                      Done
-                    </button>
-                  </div>,
-                  document.body
-                )}
-            </div>
+								<ChevronDown className="h-5 w-5 text-[#888] ml-2" />
+							</button>
+							{isValueDropdownOpen &&
+								createPortal(
+									<div
+										className="z-[1000] bg-[#211f17] border border-[#333] rounded shadow-lg p-6 min-w-[240px] price-range-slider"
+										style={{
+											position: "absolute",
+											top: dropdownPosition.top,
+											left: dropdownPosition.left,
+											width: dropdownPosition.width,
+										}}
+										onClick={(e) => e.stopPropagation()}
+									>
+										<RangeSlider
+											min={0}
+											max={50000000}
+											step={1000000}
+											value={[minPrice, maxPrice]}
+											onInput={([min, max]) => {
+												setFormData((prev) => ({
+													...prev,
+													price_min: min,
+													price_max: max,
+												}));
+											}}
+										/>
+										<div className="flex justify-between mt-4 text-[#E2DBCC] text-sm">
+											<span>{formatPrice(minPrice)}</span>
+											<span>{formatPrice(maxPrice)}</span>
+										</div>
+										<button
+											className="mt-4 w-full border border-[#BD9574] text-[#BD9574] rounded py-1 hover:bg-[#BD9574] hover:text-[#211f17] transition-colors"
+											onClick={(e) => {
+												e.stopPropagation();
+												setIsValueDropdownOpen(false);
+											}}
+										>
+											Done
+										</button>
+									</div>,
+									document.body
+								)}
+						</div>
 
-            {/* Search Button */}
-            <div className="flex items-center justify-center px-6 border-r border-[#333] w-[140px]">
-              <button
-                className="flex items-center text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                onClick={handleSearch}
-              >
-                <span className="mr-2">Search</span>
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </div>
+						{/* Search Button */}
+						<div className="flex items-center justify-center px-6 border-r border-[#333] w-[140px]">
+							<button
+								className="flex items-center text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+								onClick={handleSearch}
+							>
+								<span className="mr-2">Search</span>
+								<ArrowRight className="h-5 w-5" />
+							</button>
+						</div>
 
-            {/* Login Button */}
-            <div className="flex items-center justify-center px-6 border-r border-[#333] w-[120px]">
-              {hasMounted ? (
-                isAuthenticated ? (
-                  <button
-                    onClick={logout}
-                    className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <Link
-                    href="/login"
-                    className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-                  >
-                    Login
-                  </Link>
-                )
-              ) : (
-                <span style={{ visibility: "hidden" }}>Login</span>
-              )}
-            </div>
+						{/* Login Button */}
+						<div className="flex items-center justify-center px-6 border-r border-[#333] w-[120px]">
+							{hasMounted ? (
+								isAuthenticated ? (
+									<button
+										onClick={logout}
+										className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+									>
+										Logout
+									</button>
+								) : (
+									<Link
+										href="/login"
+										className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+									>
+										Login
+									</Link>
+								)
+							) : (
+								<span style={{ visibility: "hidden" }}>Login</span>
+							)}
+						</div>
 
-            {/* Language Selection */}
-            <div className="flex items-center justify-center px-6 border-r border-[#333] w-[80px] relative">
-              <button
-                ref={languageButtonRef}
-                onClick={toggleLanguageDropdown}
-                className="flex items-center gap-2 text-[#BD9574] focus:outline-none"
-                aria-expanded={isLanguageDropdownOpen}
-                aria-haspopup="true"
-              >
-                <span className="text-xl">{selectedLanguage.flag}</span>
-                <ChevronDown className="h-4 w-4 text-[#BD9574]" />
-              </button>
+						{/* Language Selection */}
+						<div className="flex items-center justify-center px-6 border-r border-[#333] w-[80px] relative">
+							<button
+								ref={languageButtonRef}
+								onClick={toggleLanguageDropdown}
+								className="flex items-center gap-2 text-[#BD9574] focus:outline-none"
+								aria-expanded={isLanguageDropdownOpen}
+								aria-haspopup="true"
+							>
+								<span className="text-xl">{selectedLanguage.flag}</span>
+								<ChevronDown className="h-4 w-4 text-[#BD9574]" />
+							</button>
 
-              {!isMobileView &&
-                isLanguageDropdownOpen &&
-                createPortal(
-                  <div
-                    className="bg-[#211f17] border border-[#333] shadow-lg z-[1000]"
-                    style={{
-                      position: "fixed",
-                      top:
-                        languageButtonRef.current?.getBoundingClientRect()
-                          .bottom + "px",
-                      left:
-                        languageButtonRef.current?.getBoundingClientRect()
-                          .right -
-                        128 +
-                        "px",
-                      width: "128px",
-                    }}
-                  >
-                    {languages.map((language) => (
-                      <button
-                        key={language.country}
-                        onClick={() => selectLanguage(language)}
-                        className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
-                      >
-                        <span className="text-[#BD9574] text-xl">
-                          {language.flag}
-                        </span>
-                        <div className="flex flex-col items-start">
-                          <span className="text-[#BD9574] text-base font-light">
-                            {language.name}
-                          </span>
-                          <span className="text-[#BD9574] text-xs font-light">
-                            {language.country}
-                          </span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>,
-                  document.body
-                )}
-            </div>
+							{!isMobileView &&
+								isLanguageDropdownOpen &&
+								createPortal(
+									<div
+										className="bg-[#211f17] border border-[#333] shadow-lg z-[1000]"
+										ref={languageDropdownRef}
+										style={{
+											position: "fixed",
+											top:
+												languageButtonRef.current?.getBoundingClientRect()
+													.bottom + "px",
+											left:
+												languageButtonRef.current?.getBoundingClientRect()
+													.right -
+												128 +
+												"px",
+											width: "128px",
+										}}
+									>
+										{languages.map((language) => (
+											<button
+												key={language.country}
+												onClick={() => selectLanguage(language)}
+												className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
+											>
+												<span className="text-[#BD9574] text-xl">
+													{language.flag}
+												</span>
+												<div className="flex flex-col items-start">
+													<span className="text-[#BD9574] text-base font-light">
+														{language.name}
+													</span>
+													<span className="text-[#BD9574] text-xs font-light">
+														{language.country}
+													</span>
+												</div>
+											</button>
+										))}
+									</div>,
+									document.body
+								)}
+						</div>
 
-            {/* Menu Button */}
-            <div className="flex items-center justify-center px-6 w-[80px]">
-              <button
-                onClick={toggleMenu}
-                className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
-              >
-                <div className="flex flex-col gap-2">
-                  <div className="w-[32px] h-[1px] bg-current"></div>
-                  <div className="w-[32px] h-[1px] bg-current"></div>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
+						{/* Menu Button */}
+						<div className="flex items-center justify-center px-6 w-[80px]">
+							<button
+								onClick={toggleMenu}
+								className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
+							>
+								<div className="flex flex-col gap-2">
+									<div className="w-[32px] h-[1px] bg-current"></div>
+									<div className="w-[32px] h-[1px] bg-current"></div>
+								</div>
+							</button>
+						</div>
+					</div>
+				</div>
 
-        {/* Secondary Navigation - Property Filter */}
-        <PropertyFilter
-          activeTab={activeTab}
-          isMobileView={isMobileView}
-          toggleMobileFilters={toggleMobileFilters}
-          isMobileFiltersOpen={isMobileFiltersOpen}
-          isAuthenticated={isAuthenticated}
-          logout={logout}
-          formData={formData}
-          setFormData={setFormData}
-          propertyTypeOptions={propertyTypeOptions}
-          debouncedLoadCityOptions={debouncedLoadCityOptions}
-          formatPrice={formatPrice}
-          handleSearch={handleSearch}
-        />
-      </header>
+				{/* Secondary Navigation - Property Filter */}
+				<PropertyFilter
+					activeTab={activeTab}
+					isMobileView={isMobileView}
+					toggleMobileFilters={toggleMobileFilters}
+					isMobileFiltersOpen={isMobileFiltersOpen}
+					isAuthenticated={isAuthenticated}
+					logout={logout}
+					formData={formData}
+					setFormData={setFormData}
+					propertyTypeOptions={propertyTypeOptions}
+					debouncedLoadCityOptions={debouncedLoadCityOptions}
+					formatPrice={formatPrice}
+					handleSearch={handleSearch}
+				/>
+			</header>
 
-      {/* Language Dropdown for Mobile */}
-      {isMobileView && isLanguageDropdownOpen && (
-        <div
-          className="bg-[#211f17] border border-[#333] shadow-lg fixed z-[1000]"
-          style={{
-            top: "60px",
-            right: "10px",
-            width: "150px",
-          }}
-        >
-          {languages.map((language) => (
-            <button
-              key={language.country}
-              onClick={() => selectLanguage(language)}
-              className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
-            >
-              <span className="text-[#BD9574] text-xl">{language.flag}</span>
-              <span className="text-[#BD9574] text-base font-light">
-                {language.name}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
+			{/* Language Dropdown for Mobile */}
+			{isMobileView && isLanguageDropdownOpen && (
+				<div
+					className="bg-[#211f17] border border-[#333] shadow-lg fixed z-[1000]"
+					style={{
+						top: "60px",
+						right: "10px",
+						width: "150px",
+					}}
+				>
+					{languages.map((language) => (
+						<button
+							key={language.country}
+							onClick={() => selectLanguage(language)}
+							className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
+						>
+							<span className="text-[#BD9574] text-xl">{language.flag}</span>
+							<span className="text-[#BD9574] text-base font-light">
+								{language.name}
+							</span>
+						</button>
+					))}
+				</div>
+			)}
 
-      {/* Menu Overlay */}
-      <Menu
-        dataSocial={dataSocial}
-        dataLogo={dataLogo}
-        isOpen={isMenuOpen}
-        isAuthenticated={isAuthenticated}
-        onClose={() => setIsMenuOpen(false)}
-      />
-    </>
-  )
+			{/* Menu Overlay */}
+			<Menu
+				dataSocial={dataSocial}
+				dataLogo={dataLogo}
+				isOpen={isMenuOpen}
+				isAuthenticated={isAuthenticated}
+				onClose={() => setIsMenuOpen(false)}
+			/>
+		</>
+	);
 }
 
 // Property Filter Component
@@ -789,168 +812,6 @@ function PropertyFilter({
 						>
 							Contact Us
 						</Link>
-
-						{/* Property Type Filters */}
-						{/* <button
-							onClick={() => toggleFilter("city")}
-							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-								activeFilters.includes("city") ? "text-[#BD9574]" : ""
-							}`}
-						>
-							<svg
-								className="h-5 w-5 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M3 21H21M6 18V9.99998M10 18V9.99998M14 18V9.99998M18 18V9.99998M20 21V6.99998L12 2.99998L4 6.99998V21"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs">City</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("country")}
-							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-								activeFilters.includes("country") ? "text-[#BD9574]" : ""
-							}`}
-						>
-							<svg
-								className="h-5 w-5 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M8 21V12M16 21V12M4 21H20M4 7H20M6 7L9 4M18 7L15 4M11 7V4H13V7M4 7V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V7"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs">Country</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("beachfront")}
-							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-								activeFilters.includes("beachfront") ? "text-[#BD9574]" : ""
-							}`}
-						>
-							<svg
-								className="h-5 w-5 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M4 19H20M4 15L7 14C8.5 13.5 10.5 13.5 12 14C13.5 14.5 15.5 14.5 17 14L20 15M4 11L7 10C8.5 9.5 10.5 9.5 12 10C13.5 10.5 15.5 10.5 17 10L20 11"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs">Beachfront</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("apartment")}
-							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-								activeFilters.includes("apartment") ? "text-[#BD9574]" : ""
-							}`}
-						>
-							<svg
-								className="h-5 w-5 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M3 21H21M5 21V5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21M9 21V17C9 15.8954 9.89543 15 11 15H13C14.1046 15 15 15.8954 15 17V21M9 7H11M9 11H11M13 7H15M13 11H15"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs">Apartment</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("suburbs")}
-							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-								activeFilters.includes("suburbs") ? "text-[#BD9574]" : ""
-							}`}
-						>
-							<svg
-								className="h-5 w-5 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M3 21H21M5 21V8L12 3L19 8V21M9 21V12H15V21"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs">Suburbs</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("ocean-view")}
-							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-								activeFilters.includes("ocean-view") ? "text-[#BD9574]" : ""
-							}`}
-						>
-							<svg
-								className="h-5 w-5 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M3 16C3 16 7 10 12 10C17 10 21 16 21 16M3 12C3 12 7 6 12 6C17 6 21 12 21 12M3 20C3 20 7 14 12 14C17 14 21 20 21 20"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs">Ocean View</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("pool")}
-							className={`flex flex-col items-center justify-center px-6 py-2 border-l border-[#333] ${
-								activeFilters.includes("pool") ? "text-[#BD9574]" : ""
-							}`}
-						>
-							<svg
-								className="h-5 w-5 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M4 15C4 15 5 14 7 14C9 14 10 15 12 15C14 15 15 14 17 14C19 14 20 15 20 15M4 19C4 19 5 18 7 18C9 18 10 19 12 19C14 19 15 18 17 18C19 18 20 19 20 19M4 11C4 11 5 10 7 10C9 10 10 11 12 11C14 11 15 10 17 10C19 10 20 11 20 11M12 4V7M15 5V8M9 5V8"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs">Pool</span>
-						</button> */}
 					</div>
 				)}
 				{/* Filters button - Only on mobile */}

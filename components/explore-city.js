@@ -23,7 +23,7 @@ import { useRef } from "react"
 
 export default function ExploreCity({ data }) {
   const [language, setLanguage] = useState("en")
-  const showNavigation = false
+  const showNavigation = true
   const scrollRef = useRef(null)
   const wasDragged = useRef(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -128,7 +128,7 @@ export default function ExploreCity({ data }) {
 
   return (
 		<div className="bg-[#211f17]">
-			<div className={data?.cities.length <= 3 ? "" : "pl-[40px]"}>
+			<div className={data?.cities.length <= 3 ? "" : "px-[40px]"}>
 				{/* Header */}
 				<div className="text-center mb-16">
 					<h2
@@ -148,13 +148,13 @@ export default function ExploreCity({ data }) {
 				{/* Container with fixed width to show 3 full images + 250px of the fourth */}
 				<div
 					ref={scrollRef}
-					className="overflow-x-auto pl-2 pb-8 max-w-full md:max-w-[calc(508px*3+270px+12px)] scrollbar-thin scrollbar-thumb-[#bd9574]/60 cursor-grab active:cursor-grabbing"
+					className="overflow-x-auto pl-2 pb-8 max-w-full md:max-w-[calc(508px*3+270px+12px)] hide-scrollbar cursor-grab active:cursor-grabbing"
 					onMouseDown={onMouseDown}
 					style={{ userSelect: isDragging ? "none" : "auto" }}
 				>
 					<div
 						className={`flex items-center gap-6  ${
-							data?.cities.length <= 3 ? "w-fit mx-auto" : "w-max pl-[40px]"
+							data?.cities.length <= 3 ? "w-fit mx-auto" : "w-max"
 						}`}
 					>
 						{data?.cities.map((city) => {
@@ -208,7 +208,7 @@ export default function ExploreCity({ data }) {
 					<div className="flex items-center justify-end mt-12">
 						<div className="flex items-center gap-4">
 							<button
-								className={`p-2 border border-[#656565] rounded hover:border-[#BD9574] hover:text-[#BD9574] transition-colors`}
+								className={`p-2 border border-[#656565] text-[#656565] rounded hover:border-[#BD9574] hover:text-[#BD9574] transition-colors`}
 								onClick={handleScrollLeft}
 								disabled={false}
 							>
@@ -229,7 +229,7 @@ export default function ExploreCity({ data }) {
 								</svg>
 							</button>
 							<button
-								className={`p-2 border border-[#656565] rounded hover:border-[#BD9574] hover:text-[#BD9574] transition-colors`}
+								className={`p-2 border border-[#656565] text-[#656565] rounded hover:border-[#BD9574] hover:text-[#BD9574] transition-colors`}
 								onClick={handleScrollRight}
 								disabled={false}
 							>
