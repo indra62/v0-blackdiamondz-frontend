@@ -53,7 +53,7 @@ export default function FeaturedProperties() {
           {properties.map((property) => (
             <div key={property.id} className="bg-white rounded-lg shadow-md overflow-hidden">
               <img
-                src={property.image || "/placeholder.svg"}
+                src={property.image || "/placeholder-image.jpg"}
                 alt={property.title}
                 className="w-full h-48 object-cover"
               />

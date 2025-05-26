@@ -25,7 +25,7 @@ const VideoSection = ({
 }) => {
   let currentVideos = [];
   if (slideKey.toLowerCase() === "recent") {
-    currentVideos = videos?.slice(-8) || [];
+    currentVideos = videos;
   } else {
     currentVideos =
       videos?.filter(

@@ -79,7 +79,7 @@ export default function MediaNews() {
                     quality: 100,
                     fit: "cover",
                     alt: "Black Diamondz Media",
-                  }) || "/placeholder.svg"
+                  }) || "/placeholder-image.jpg"
                 }
                 alt="Black Diamondz Media"
                 fill
@@ -130,7 +130,7 @@ export default function MediaNews() {
                               quality: 100,
                               fit: "cover",
                               alt: newsTranslation?.news_title,
-                            }) || "/placeholder.svg"
+                            }) || "/placeholder-image.jpg"
                           }
                           alt={newsTranslation?.news_title}
                           fill

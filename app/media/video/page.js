@@ -16,7 +16,8 @@ export default function MediaVideo() {
   const [heroData, setHeroData] = useState(null)
   const router = useRouter()
   const [activeCategory, setActiveCategory] = useState("all")
-  const [videos, setVideos] = useState(null)
+  const [videos, setVideos] = useState([])
+  const [allVideos, setAllVideos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [language, setLanguage] = useState("en")
@@ -38,10 +39,17 @@ export default function MediaVideo() {
         })
 
         const dataVideo = await getItems("videos", {
-          fields: ["*", "translations.*"],
-        })
+					fields: ["*.*", "translations.*"],
+					sort: ["-date_created"],
+				});
+
+        const dataAll = await getItems("videos", {
+					fields: ["*.*", "translations.*"],
+					sort: ["-date_created"],
+				});
 
         setHeroData(dataHero)
+        setAllVideos(dataAll);
         setVideos(dataVideo)
         setLoading(false)
       } catch (error) {
@@ -54,89 +62,89 @@ export default function MediaVideo() {
   }, [])
 
   return (
-    <div className="bg-[#211f17] min-h-screen">
-      {loading ? (
-        <section className="flex justify-center items-center h-[800px] bg-[#211f17]">
-          <Loading error={error} />
-        </section>
-      ) : (
-        <>
-          {/* Hero Section */}
-          <div className="relative h-screen">
-            <div className="absolute inset-0">
-              <Image
-                src={getImageUrl(heroData?.hero_image?.id, {
-                  format: "webp",
-                  quality: 100,
-                  fit: "cover",
-                  alt: "Black Diamondz Media",
-                })}
-                alt="Black Diamondz Media"
-                fill
-                priority
-                className="object-cover"
-              />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, rgba(33, 31, 23, 0) 80.08%, #211F17 100%)",
-                }}
-              ></div>
-            </div>
-            <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-              <h1 className="text-white text-4xl md:text-5xl font-serif mb-8">
-                {translation?.title || ""}
-              </h1>
-              {/* Diamond Separator */}
-              <div className="flex items-center justify-center gap-4 mb-8">
-                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-              </div>
-              <p className="text-white max-w-3xl mx-auto text-base md:text-lg">
-                {translation?.description || ""}
-              </p>
-            </div>
-          </div>
+		<div className="bg-[#211f17] min-h-screen">
+			{loading ? (
+				<section className="flex justify-center items-center h-[800px] bg-[#211f17]">
+					<Loading error={error} />
+				</section>
+			) : (
+				<>
+					{/* Hero Section */}
+					<div className="relative h-screen">
+						<div className="absolute inset-0">
+							<Image
+								src={getImageUrl(heroData?.hero_image?.id, {
+									format: "webp",
+									quality: 100,
+									fit: "cover",
+									alt: "Black Diamondz Media",
+								})}
+								alt="Black Diamondz Media"
+								fill
+								priority
+								className="object-cover"
+							/>
+							<div
+								className="absolute inset-0"
+								style={{
+									background:
+										"linear-gradient(0deg, rgba(33, 31, 23, 0.7), rgba(33, 31, 23, 0.7)), linear-gradient(180deg, rgba(33, 31, 23, 0) 80.08%, #211F17 100%)",
+								}}
+							></div>
+						</div>
+						<div className="relative h-full flex flex-col items-center justify-center text-center px-4">
+							<h1 className="text-white text-4xl md:text-5xl font-serif mb-8">
+								{translation?.title || ""}
+							</h1>
+							{/* Diamond Separator */}
+							<div className="flex items-center justify-center gap-4 mb-8">
+								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+								<div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+							</div>
+							<p className="text-white max-w-3xl mx-auto text-base md:text-lg">
+								{translation?.description || ""}
+							</p>
+						</div>
+					</div>
 
-          <div className="container mx-auto px-4 pb-16">
-            {/* Recently Uploaded Section */}
-            <VideoSection
-              title="Recently uploaded"
-              videos={videos}
-              count={videos?.length || 0}
-              slideKey="recent"
-            />
+					<div className="container mx-auto px-4 pb-16">
+						{/* Recently Uploaded Section */}
+						<VideoSection
+							title="Recently uploaded"
+							videos={allVideos}
+							count={allVideos?.length || 0}
+							slideKey="recent"
+						/>
 
-            {/* Talks Section */}
-            <VideoSection
-              title="Talks"
-              videos={videos}
-              count={videos?.length || 0}
-              slideKey="talks"
-            />
+						{/* Talks Section */}
+						<VideoSection
+							title="Talks"
+							videos={videos}
+							count={videos?.length || 0}
+							slideKey="talks"
+						/>
 
-            {/* House Tour Section */}
-            <VideoSection
-              title="House Tour"
-              videos={videos}
-              count={videos?.length || 0}
-              slideKey="house tour"
-            />
+						{/* House Tour Section */}
+						<VideoSection
+							title="House Tour"
+							videos={videos}
+							count={videos?.length || 0}
+							slideKey="house tour"
+						/>
 
-            {/* Events Section */}
-            <VideoSection
-              title="Events"
-              videos={videos}
-              count={videos?.length || 0}
-              slideKey="events"
-            />
-          </div>
-        </>
-      )}
-      {/* Footer */}
-      <Footer />
-    </div>
-  )
+						{/* Events Section */}
+						<VideoSection
+							title="Events"
+							videos={videos}
+							count={videos?.length || 0}
+							slideKey="events"
+						/>
+					</div>
+				</>
+			)}
+			{/* Footer */}
+			<Footer />
+		</div>
+	);
 }
