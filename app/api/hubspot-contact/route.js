@@ -5,15 +5,22 @@ export async function POST(request) {
   // The function name POST itself handles only POST requests.
   // If a different method is used, Next.js will automatically return a 405.
 
-  let email, firstname, lastname;
+  let email, firstname, lastname, phone, hs_country_region_code, city_id, property_type, sale_type, property_address, message;
   try {
     const body = await request.json();
     email = body.email;
     firstname = body.firstname;
     lastname = body.lastname;
+    phone = body.phone;
+    hs_country_region_code= body.country_id;
+    city_id = body.city_id;
+    property_type = body.property_type;
+    sale_type = body.sale_type;
+    property_address = body.property_address;
+    message = body.message;
 
-    if (!email || !firstname || !lastname) {
-      return NextResponse.json({ message: 'Missing required fields: email, firstname, lastname' }, { status: 400 });
+    if (!email || !firstname || !lastname || !phone || !hs_country_region_code || !city_id || !property_type || !sale_type || !property_address || !message) {
+      return NextResponse.json({ message: 'Missing required fields: email, firstname, lastname, phone, country_id, city_id, property_type, sale_type, property_address, message' }, { status: 400 });
     }
   } catch (error) {
     console.error("Error parsing request body:", error);
@@ -32,6 +39,13 @@ export async function POST(request) {
           email,
           firstname,
           lastname,
+          phone,
+          hs_country_region_code,
+          city_id,
+          property_type,
+          sale_type,
+          property_address,
+          message,
         },
       }),
     });
