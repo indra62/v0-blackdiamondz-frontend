@@ -1,296 +1,157 @@
-"use client"
-import { useAuth } from "@/hooks/useAuth"
-import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
-import { ChevronDown, ArrowRight, Heart } from "lucide-react"
-import { Archivo } from "next/font/google"
-import Menu from "./menu"
-import { getImageUrl, getItems } from "@/lib/api"
-import { createPortal } from "react-dom"
-import { useDebouncedCallback } from "use-debounce"
-import AsyncSelect from "react-select/async"
-import Select from "react-select"
-import { useRouter, useSearchParams, usePathname } from "next/navigation"
-import RangeSlider from "react-range-slider-input"
-import "react-range-slider-input/dist/style.css"
+"use client";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { ChevronDown } from "lucide-react";
+import { Archivo } from "next/font/google";
+import Menu from "./menu";
+import { getImageUrl, getItems } from "@/lib/api";
+import { createPortal } from "react-dom";
+import { useDebouncedCallback } from "use-debounce";
+import { useRouter, usePathname } from "next/navigation";
+import "react-range-slider-input/dist/style.css";
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
-
-const customStyles = {
-  control: (provided) => ({
-    ...provided,
-    backgroundColor: "transparent",
-    border: "none",
-    boxShadow: "none",
-    color: "#E2DBCC",
-  }),
-  menu: (provided) => ({
-    ...provided,
-    backgroundColor: "#211f17",
-    overflowY: "auto",
-    border: "1px solid rgba(101, 101, 101, 0.3)",
-    WebkitOverflowScrolling: "touch",
-    zIndex: 1000,
-  }),
-  menuPortal: (base) => ({
-    ...base,
-    zIndex: 1000, // or higher if needed
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isFocused ? "#2c2a20" : "#211f17",
-    color: "#E2DBCC",
-    cursor: "pointer",
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: "#E2DBCC",
-  }),
-  placeholder: (provided) => ({
-    ...provided,
-    color: "#888",
-  }),
-  input: (provided) => ({
-    ...provided,
-    color: "#E2DBCC",
-  }),
-  indicatorSeparator: (base) => ({
-    display: "none",
-  }),
-}
-
-const bedroomOptions = [
-  { value: 1, label: "1 Bedroom" },
-  { value: 2, label: "2 Bedrooms" },
-  { value: 3, label: "3 Bedrooms" },
-  { value: 4, label: "4 Bedrooms" },
-  { value: 5, label: "5 Bedrooms" },
-  { value: 6, label: "6+ Bedrooms" },
-]
+const archivo = Archivo({
+	subsets: ["latin"],
+	weight: ["300", "400", "500", "600", "700"],
+});
 
 export default function Header() {
-  const [hasMounted, setHasMounted] = useState(false)
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const city = searchParams.get("city")
-  const type = searchParams.get("type")
-  const bedroom = searchParams.get("bedroom")
-  const priceMin = searchParams.get("price_min")
-  const priceMax = searchParams.get("price_max")
-  const { logout, isAuthenticated } = useAuth()
-  const [error, setError] = useState(null)
-  const languageButtonRef = useRef(null)
-  const activeTab = pathname.startsWith("/buy")
-    ? "buy"
-    : pathname.startsWith("/sell")
-    ? "sell"
-    : pathname.startsWith("/sold-properties")
-    ? "sold"
-    : ""
-  const [dataLogo, setDataLogo] = useState(null)
-  const [dataSocial, setDataSocial] = useState(null)
-  const [dataType, setDataTypes] = useState([])
-  const [formData, setFormData] = useState({
-    city: city || "",
-    type: type || "",
-    bedroom: bedroom || "",
-    price_min: priceMin || "",
-    price_max: priceMax || "",
-  })
-  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
-  const languageDropdownRef = useRef(null);
-  const [selectedLanguage, setSelectedLanguage] = useState("en")
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isMobileView, setIsMobileView] = useState(false)
-  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false)
-  const [isValueDropdownOpen, setIsValueDropdownOpen] = useState(false)
-  const [dropdownPosition, setDropdownPosition] = useState({
-    top: 0,
-    left: 0,
-    width: 0,
-  })
-  const valueDropdownRef = useRef()
-  const buttonRef = useRef()
-  const valueDropdownPortalRef = useRef()
+	const [hasMounted, setHasMounted] = useState(false);
+	useEffect(() => {
+		setHasMounted(true);
+	}, []);
+	const router = useRouter();
+	const pathname = usePathname();
+	const { logout, isAuthenticated } = useAuth();
+	const [error, setError] = useState(null);
+	const languageButtonRef = useRef(null);
+	const [dataLogo, setDataLogo] = useState(null);
+	const [dataSocial, setDataSocial] = useState(null);
+	const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+	const languageDropdownRef = useRef(null);
+	const [selectedLanguage, setSelectedLanguage] = useState("en");
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isMobileView, setIsMobileView] = useState(false);
+	const [isValueDropdownOpen, setIsValueDropdownOpen] = useState(false);
+	const valueDropdownRef = useRef();
+	const valueDropdownPortalRef = useRef();
+	const activeTab = pathname.startsWith("/buy")
+		? "buy"
+		: pathname.startsWith("/sell")
+		? "sell"
+		: pathname.startsWith("/sold-properties")
+		? "sold"
+		: "";
 
-  const languages = [
-    { name: "English", country: "UK", flag: "🇬🇧", value: "en" },
-    { name: "中文", country: "CN", flag: "🇨🇳", value: "cn" },
-  ]
+	const languages = [
+		{ name: "English", country: "UK", flag: "🇬🇧", value: "en" },
+		{ name: "中文", country: "CN", flag: "🇨🇳", value: "cn" },
+	];
 
-  const toggleLanguageDropdown = () => {
-    setIsLanguageDropdownOpen(!isLanguageDropdownOpen)
-  }
+	const toggleLanguageDropdown = () => {
+		setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
+	};
 
-  const selectLanguage = (language) => {
-    setSelectedLanguage(language)
-    localStorage.setItem("language", language.value)
-    setIsLanguageDropdownOpen(false)
-    window.location.reload()
-  }
+	const selectLanguage = (language) => {
+		setSelectedLanguage(language);
+		localStorage.setItem("language", language.value);
+		setIsLanguageDropdownOpen(false);
+		window.location.reload();
+	};
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+	const toggleMenu = () => {
+		setIsMenuOpen(!isMenuOpen);
+	};
 
-  const toggleMobileFilters = () => {
-    setIsMobileFiltersOpen(!isMobileFiltersOpen)
-  }
+	const handleSearch = () => {
+		const params = new URLSearchParams();
+		if (formData.city) params.set("city", formData.city);
+		if (formData.type) params.set("type", formData.type);
+		if (formData.bedroom) params.set("bedroom", formData.bedroom);
 
-  const handleSearch = () => {
-    const params = new URLSearchParams()
-    if (formData.city) params.set("city", formData.city)
-    if (formData.type) params.set("type", formData.type)
-    if (formData.bedroom) params.set("bedroom", formData.bedroom)
+		if (formData.price_min) params.set("price_min", formData.price_min);
+		if (formData.price_max) params.set("price_max", formData.price_max);
 
-    if (formData.price_min) params.set("price_min", formData.price_min)
-    if (formData.price_max) params.set("price_max", formData.price_max)
+		const hasParams = Array.from(params).length > 0;
+		if (hasParams) {
+			router.push(`/buy?${params.toString()}`);
+		} else {
+			if (router.pathname !== "/buy") {
+				router.push("/buy");
+			} else {
+				// Refresh the page
+				router.replace(router.asPath);
+			}
+		}
+		setIsMobileFiltersOpen(false);
+	};
 
-    const hasParams = Array.from(params).length > 0
-    if (hasParams) {
-      router.push(`/buy?${params.toString()}`)
-    } else {
-      if (router.pathname !== "/buy") {
-        router.push("/buy")
-      } else {
-        // Refresh the page
-        router.replace(router.asPath)
-      }
-    }
-    setIsMobileFiltersOpen(false)
-  }
+	useEffect(() => {
+		const savedLanguage = localStorage.getItem("language");
+		if (savedLanguage) {
+			const foundLanguage = languages.find(
+				(lang) => lang.value === savedLanguage
+			);
+			if (foundLanguage) {
+				setSelectedLanguage(foundLanguage);
+			}
+		} else {
+			localStorage.setItem("language", "en");
+		}
+	}, []);
 
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem("language")
-    if (savedLanguage) {
-      const foundLanguage = languages.find(
-        (lang) => lang.value === savedLanguage
-      )
-      if (foundLanguage) {
-        setSelectedLanguage(foundLanguage)
-      }
-    } else {
-      localStorage.setItem("language", "en")
-    }
-  }, [])
+	useEffect(() => {
+		const fetchDataSocial = async () => {
+			try {
+				const dataLogo = await getItems("Global", {
+					fields: ["Logo.*"],
+				});
+				const dataFooter = await getItems("footer", {
+					fields: ["*.*"],
+				});
+				setDataLogo(dataLogo);
+				setDataSocial(dataFooter);
+			} catch (err) {
+				setError("Failed to load home data:" + err.message);
+			}
+		};
+		fetchDataSocial();
+	}, []);
 
-  useEffect(() => {
-    const fetchDataSocial = async () => {
-      try {
-        const dataLogo = await getItems("Global", {
-          fields: ["Logo.*"],
-        })
-        const dataFooter = await getItems("footer", {
-          fields: ["*.*"],
-        })
-        const dataTypes = await getItems("property_types", {
-          fields: ["*.*"],
-        })
-        setDataTypes(dataTypes)
-        setDataLogo(dataLogo)
-        setDataSocial(dataFooter)
-      } catch (err) {
-        setError("Failed to load home data:" + err.message)
-      }
-    }
-    fetchDataSocial()
-  }, [])
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobileView(window.innerWidth < 768);
+		};
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth < 768)
-    }
+		handleResize();
+		window.addEventListener("resize", handleResize);
 
-    handleResize()
-    window.addEventListener("resize", handleResize)
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
+	useEffect(() => {
+		function handleClickOutside(event) {
+			if (
+				valueDropdownRef.current &&
+				!valueDropdownRef.current.contains(event.target) &&
+				valueDropdownPortalRef.current &&
+				!valueDropdownPortalRef.current.contains(event.target)
+			) {
+				setIsValueDropdownOpen(false);
+			}
+		}
+		if (isValueDropdownOpen) {
+			document.addEventListener("mousedown", handleClickOutside);
+		} else {
+			document.removeEventListener("mousedown", handleClickOutside);
+		}
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, [isValueDropdownOpen]);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        valueDropdownRef.current &&
-        !valueDropdownRef.current.contains(event.target) &&
-        valueDropdownPortalRef.current &&
-        !valueDropdownPortalRef.current.contains(event.target)
-      ) {
-        setIsValueDropdownOpen(false)
-      }
-    }
-    if (isValueDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [isValueDropdownOpen])
-
-  const formatPrice = (num) =>
-    num
-      ? new Intl.NumberFormat("en-AU", {
-          style: "currency",
-          currency: "AUD",
-        }).format(num)
-      : "Any"
-
-  const minPrice = formData.price_min !== "" ? Number(formData.price_min) : 0
-  const maxPrice =
-    formData.price_max !== "" ? Number(formData.price_max) : 50000000
-
-  const debouncedLoadCityOptions = useDebouncedCallback(
-    (inputValue, callback) => {
-      const fetchData = async () => {
-        try {
-          const data = await getItems("cities", {
-            fields: ["*"],
-            filter: {
-              country_id: { _in: ["14"] },
-            },
-            search: inputValue,
-            sort: ["name"],
-          })
-          callback(data)
-        } catch (error) {
-          console.error("Error fetching cities:", error)
-          callback([])
-        }
-      }
-      fetchData()
-    },
-    300
-  )
-
-  const propertyTypeOptions = dataType.map((type) => {
-    const translation =
-      type.translations.find(
-        (t) => t.languages_code === selectedLanguage.value
-      ) || type.translations[0]
-    return {
-      value: type.id,
-      label: translation?.name || "",
-    }
-  })
-
-  const openDropdown = () => {
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect()
-      setDropdownPosition({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      })
-    }
-    setIsValueDropdownOpen(true)
-  }
-
-  useEffect(() => {
+	useEffect(() => {
 		if (!isLanguageDropdownOpen) return;
 
 		function handleClickOutside(event) {
@@ -311,15 +172,17 @@ export default function Header() {
 		};
 	}, [isLanguageDropdownOpen]);
 
-  return (
+	return (
 		<>
-			<header className={`${archivo.className} font-light sticky-header`}>
+			<header
+				className={`${archivo.className} font-light sticky-header h-[140px]`}
+			>
 				{/* Main Navigation */}
 				<div
-					className={`bg-[#211F17]/80 backdrop-blur-md text-[#BD9574] border-b border-[#333] transition-colors duration-300`}
+					className={`bg-[#211F17]/80 backdrop-blur-md text-[#BD9574] border-b border-[#333] transition-colors duration-300 h-[70px] md:h-[140px]`}
 				>
 					{/* Mobile Header */}
-					<div className="md:hidden flex items-center justify-between px-4 h-[60px]">
+					<div className="md:hidden flex items-center justify-between px-4 h-[70px]">
 						<Link href="/">
 							<div className="flex items-center justify-center">
 								<img
@@ -364,309 +227,204 @@ export default function Header() {
 					</div>
 
 					{/* Desktop Header */}
-					<div className="hidden md:flex flex-col md:flex-row items-stretch">
+					<div className="hidden md:grid grid-cols-[repeat(3,1fr)] md:grid-rows-[1fr] md:gap-y-[10px] md:gap-x-[10px] md:justify-items-stretch">
 						{/* Logo Section */}
-						<div className="flex items-center justify-center px-4 h-[60px] !w-[220px] min-w-[60px] border-r border-[#333] self-stretch">
+						<div className="row-1 row-2 col-1 col-2 flex flex-col justify-start items-start">
+							<div className="px-7 py-4 h-[70px]">
+								<Link href="/">
+									<img
+										src={
+											getImageUrl(dataLogo?.Logo?.id, {
+												format: "webp",
+												quality: 80,
+												fit: "fit",
+											}) || "/images/smallLogoBD.png"
+										}
+										alt="Black Diamondz Logo"
+										className="w-auto h-7"
+									/>
+								</Link>
+							</div>
+							<div className="flex h-[70px]">
+								<Link
+									href="/buy"
+									className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
+										activeTab === "buy" ? "text-[#BD9574]" : "text-[#888]"
+									}`}
+								>
+									Buy
+								</Link>
+								<Link
+									href="/sell"
+									className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
+										activeTab === "sell" ? "text-[#BD9574]" : "text-[#888]"
+									}`}
+								>
+									Sell
+								</Link>
+								<Link
+									href="/sold-properties"
+									className={`flex items-center px-7 py-4 text-sm font-light ${
+										activeTab === "sold" ? "text-[#BD9574]" : "text-[#888]"
+									}`}
+								>
+									Sold
+								</Link>
+							</div>
+						</div>
+
+						<div className="row-1 row-2 col-2 col-3 flex justify-center items-center">
 							<Link href="/">
 								<img
 									src={
-										getImageUrl(dataLogo?.Logo?.id, {
+										getImageUrl(dataSocial?.footer_logo?.id, {
 											format: "webp",
 											quality: 80,
 											fit: "fit",
 										}) || "/images/smallLogoBD.png"
 									}
 									alt="Black Diamondz Logo"
-									className="w-auto h-7"
+									className="w-auto h-14"
 								/>
 							</Link>
 						</div>
 
-						{/* Location Section */}
-						<div className="flex items-center px-6 border-r border-[#333] w-1/2">
-							<div className="flex flex-col w-full">
-								<AsyncSelect
-									instanceId="property-location-select"
-									name="location"
-									value={
-										formData.city
-											? {
-													id: formData.city_id,
-													name: formData.city,
-											  }
-											: null
-									}
-									loadOptions={debouncedLoadCityOptions}
-									onChange={(option) => {
-										// Update both the label and ID fields
-										setFormData((prev) => ({
-											...prev,
-											city: option ? option.name : "",
-											city_id: option ? option.id : "",
-										}));
-									}}
-									getOptionLabel={(option) => option.name}
-									getOptionValue={(option) => option.id}
-									placeholder={"Search Location"}
-									menuPortalTarget={
-										typeof window !== "undefined" ? document.body : null
-									}
-									menuPosition="fixed"
-									styles={customStyles}
-									className={archivo.className}
-									isClearable
-									components={{
-										DropdownIndicator: () => null,
-									}}
-									noOptionsMessage={({ inputValue }) =>
-										inputValue ? `No location found` : null
-									}
-								/>
-							</div>
-						</div>
-
-						{/* Type Section */}
-						<div className="flex items-center px-6 border-r border-[#333] w-1/4">
-							<div className="flex flex-col w-full">
-								<Select
-									instanceId="property-type-select"
-									name="type"
-									value={propertyTypeOptions.find(
-										(option) => option.value === formData.type
-									)}
-									onChange={(option) =>
-										setFormData((prev) => ({
-											...prev,
-											type: option ? option.value : "",
-										}))
-									}
-									options={propertyTypeOptions}
-									placeholder="Type"
-									styles={customStyles}
-									menuPortalTarget={
-										typeof window !== "undefined" ? document.body : null
-									}
-									menuPosition="fixed"
-									className={archivo.className}
-									isClearable
-								/>
-							</div>
-						</div>
-
-						{/* Bedroom Section */}
-						<div className="flex items-center px-6 border-r border-[#333] w-1/4">
-							<div className="flex flex-col w-full">
-								<Select
-									instanceId="property-bedroom-select"
-									name="bedroom"
-									value={bedroomOptions.find(
-										(option) => option.value === formData.bedroom
-									)}
-									onChange={(option) =>
-										setFormData((prev) => ({
-											...prev,
-											bedroom: option ? option.value : "",
-										}))
-									}
-									options={bedroomOptions}
-									placeholder="Bedroom"
-									styles={customStyles}
-									menuPortalTarget={
-										typeof window !== "undefined" ? document.body : null
-									}
-									menuPosition="fixed"
-									className={archivo.className}
-									isClearable
-								/>
-							</div>
-						</div>
-
-						{/* Value Section */}
-						<div
-							className="flex items-center px-6 border-r border-[#333] w-1/3 relative"
-							ref={valueDropdownRef}
-						>
-							<button
-								ref={buttonRef}
-								type="button"
-								className="flex items-center justify-between w-full text-left"
-								onClick={openDropdown}
-							>
-								{minPrice === 0 && maxPrice === 50000000 ? (
-									<span className="text-[16px] leading-[150%] font-light text-[#888]">
-										Value
-									</span>
-								) : (
-									<span className="text-[16px] leading-[150%] font-light text-[#E2DBCC]">
-										{formatPrice(minPrice)} - {formatPrice(maxPrice)}
-									</span>
-								)}
-
-								<ChevronDown className="h-5 w-5 text-[#888] ml-2" />
-							</button>
-							{isValueDropdownOpen &&
-								createPortal(
-									<div
-										className="z-[1000] bg-[#211f17] border border-[#333] rounded shadow-lg p-6 min-w-[240px] price-range-slider"
-										style={{
-											position: "absolute",
-											top: dropdownPosition.top,
-											left: dropdownPosition.left,
-											width: dropdownPosition.width,
-										}}
-										onClick={(e) => e.stopPropagation()}
-									>
-										<RangeSlider
-											min={0}
-											max={50000000}
-											step={1000000}
-											value={[minPrice, maxPrice]}
-											onInput={([min, max]) => {
-												setFormData((prev) => ({
-													...prev,
-													price_min: min,
-													price_max: max,
-												}));
-											}}
-										/>
-										<div className="flex justify-between mt-4 text-[#E2DBCC] text-sm">
-											<span>{formatPrice(minPrice)}</span>
-											<span>{formatPrice(maxPrice)}</span>
-										</div>
-										<button
-											className="mt-4 w-full border border-[#BD9574] text-[#BD9574] rounded py-1 hover:bg-[#BD9574] hover:text-[#211f17] transition-colors"
-											onClick={(e) => {
-												e.stopPropagation();
-												setIsValueDropdownOpen(false);
-											}}
-										>
-											Done
-										</button>
-									</div>,
-									document.body
-								)}
-						</div>
-
-						{/* Search Button */}
-						<div className="flex items-center justify-center px-6 border-r border-[#333] w-[140px]">
-							<button
-								className="flex items-center text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-								onClick={handleSearch}
-							>
-								<span className="mr-2">Search</span>
-								<ArrowRight className="h-5 w-5" />
-							</button>
-						</div>
-
-						{/* Login Button */}
-						<div className="flex items-center justify-center px-6 border-r border-[#333] w-[120px]">
-							{hasMounted ? (
-								isAuthenticated ? (
-									<button
-										onClick={logout}
-										className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-									>
-										Logout
-									</button>
-								) : (
-									<Link
-										href="/login"
-										className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-									>
-										Login
-									</Link>
-								)
-							) : (
-								<span style={{ visibility: "hidden" }}>Login</span>
-							)}
-						</div>
-
 						{/* Language Selection */}
-						<div className="flex items-center justify-center px-6 border-r border-[#333] w-[80px] relative">
-							<button
-								ref={languageButtonRef}
-								onClick={toggleLanguageDropdown}
-								className="flex items-center gap-2 text-[#BD9574] focus:outline-none"
-								aria-expanded={isLanguageDropdownOpen}
-								aria-haspopup="true"
-							>
-								<span className="text-xl">{selectedLanguage.flag}</span>
-								<ChevronDown className="h-4 w-4 text-[#BD9574]" />
-							</button>
-
-							{!isMobileView &&
-								isLanguageDropdownOpen &&
-								createPortal(
-									<div
-										className="bg-[#211f17] border border-[#333] shadow-lg z-[1000]"
-										ref={languageDropdownRef}
-										style={{
-											position: "fixed",
-											top:
-												languageButtonRef.current?.getBoundingClientRect()
-													.bottom + "px",
-											left:
-												languageButtonRef.current?.getBoundingClientRect()
-													.right -
-												128 +
-												"px",
-											width: "128px",
-										}}
-									>
-										{languages.map((language) => (
+						<div className="row-1 row-2 col-3 col-4 flex-col items-center justify-end">
+							<div className="flex items-center justify-end px-6 h-[70px]">
+								{/* Login Button */}
+								<div className="flex items-center justify-center px-6 py-4 w-[120px]">
+									{hasMounted ? (
+										isAuthenticated ? (
 											<button
-												key={language.country}
-												onClick={() => selectLanguage(language)}
-												className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
+												onClick={logout}
+												className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
 											>
-												<span className="text-[#BD9574] text-xl">
-													{language.flag}
-												</span>
-												<div className="flex flex-col items-start">
-													<span className="text-[#BD9574] text-base font-light">
-														{language.name}
-													</span>
-													<span className="text-[#BD9574] text-xs font-light">
-														{language.country}
-													</span>
-												</div>
+												Logout
 											</button>
-										))}
-									</div>,
-									document.body
-								)}
-						</div>
-
-						{/* Menu Button */}
-						<div className="flex items-center justify-center px-6 w-[80px]">
-							<button
-								onClick={toggleMenu}
-								className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
-							>
-								<div className="flex flex-col gap-2">
-									<div className="w-[32px] h-[1px] bg-current"></div>
-									<div className="w-[32px] h-[1px] bg-current"></div>
+										) : (
+											<Link
+												href="/login"
+												className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+											>
+												Login
+											</Link>
+										)
+									) : (
+										<span style={{ visibility: "hidden" }}>Login</span>
+									)}
 								</div>
-							</button>
+								<div className="flex items-center justify-center px-6 py-4">
+									<button
+										ref={languageButtonRef}
+										onClick={toggleLanguageDropdown}
+										className="flex items-center gap-2 text-[#BD9574] focus:outline-none"
+										aria-expanded={isLanguageDropdownOpen}
+										aria-haspopup="true"
+									>
+										<span className="text-xl">{selectedLanguage.flag}</span>
+										<ChevronDown className="h-4 w-4 text-[#BD9574]" />
+									</button>
+
+									{!isMobileView &&
+										isLanguageDropdownOpen &&
+										createPortal(
+											<div
+												className="bg-[#211f17] border border-[#333] shadow-lg z-[1000]"
+												ref={languageDropdownRef}
+												style={{
+													position: "fixed",
+													top:
+														languageButtonRef.current?.getBoundingClientRect()
+															.bottom + "px",
+													left:
+														languageButtonRef.current?.getBoundingClientRect()
+															.right -
+														128 +
+														"px",
+													width: "128px",
+												}}
+											>
+												{languages.map((language) => (
+													<button
+														key={language.country}
+														onClick={() => selectLanguage(language)}
+														className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
+													>
+														<span className="text-[#BD9574] text-xl">
+															{language.flag}
+														</span>
+														<div className="flex flex-col items-start">
+															<span className="text-[#BD9574] text-base font-light">
+																{language.name}
+															</span>
+															<span className="text-[#BD9574] text-xs font-light">
+																{language.country}
+															</span>
+														</div>
+													</button>
+												))}
+											</div>,
+											document.body
+										)}
+								</div>
+
+								{/* Menu Button */}
+								<div className="flex items-center justify-center px-6 w-[80px]">
+									<button
+										onClick={toggleMenu}
+										className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
+									>
+										<div className="flex flex-col gap-2">
+											<div className="w-[32px] h-[1px] bg-current"></div>
+											<div className="w-[32px] h-[1px] bg-current"></div>
+										</div>
+									</button>
+								</div>
+							</div>
+							{!isMobileView && (
+								<div className="hidden md:flex items-stretch text-[#888] h-[70px]">
+									{/* Spacer */}
+									<div className="flex-grow"></div>
+									<Link
+										href="/our-team"
+										className={`flex items-center px-7 py-4 text-sm font-light text-[#888]`}
+									>
+										Our Team
+									</Link>
+									<Link
+										href="/club-diamondz"
+										className={`flex items-center px-7 py-4 text-sm font-light border-l border-[#333] text-[#888]`}
+									>
+										<svg
+											width="25"
+											height="25"
+											viewBox="0 0 25 25"
+											fill="currentColor"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<path
+												d="M16.933 4.375H6.818L3.125 8.956l8.75 10.367 8.75 -10.366zM4.857 8.981l2.529 -3.152H16.363l2.529 3.152L11.875 17.261z"
+												fill="currentColor"
+											/>
+											<path
+												d="M16.902 19.12H6.848V20.625h10.054z"
+												fill="currentColor"
+											/>
+										</svg>
+										Club Diamondz
+									</Link>
+									<Link
+										href="/contact-us"
+										className={`flex items-center px-7 py-4 text-sm font-light border-l border-[#333] text-[#888]`}
+									>
+										Contact Us
+									</Link>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
-
-				{/* Secondary Navigation - Property Filter */}
-				<PropertyFilter
-					activeTab={activeTab}
-					isMobileView={isMobileView}
-					toggleMobileFilters={toggleMobileFilters}
-					isMobileFiltersOpen={isMobileFiltersOpen}
-					isAuthenticated={isAuthenticated}
-					logout={logout}
-					formData={formData}
-					setFormData={setFormData}
-					propertyTypeOptions={propertyTypeOptions}
-					debouncedLoadCityOptions={debouncedLoadCityOptions}
-					formatPrice={formatPrice}
-					handleSearch={handleSearch}
-				/>
 			</header>
 
 			{/* Language Dropdown for Mobile */}
@@ -703,439 +461,5 @@ export default function Header() {
 				onClose={() => setIsMenuOpen(false)}
 			/>
 		</>
-	);
-}
-
-// Property Filter Component
-function PropertyFilter({
-  activeTab,
-  isMobileView,
-  toggleMobileFilters,
-  isMobileFiltersOpen,
-  isAuthenticated,
-  logout,
-  formData,
-  setFormData,
-  propertyTypeOptions,
-  debouncedLoadCityOptions,
-  formatPrice,
-  handleSearch
-}) {
-  const [hasMounted, setHasMounted] = useState(false)
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-  const [activeFilters, setActiveFilters] = useState([])
-
-  const toggleFilter = (filterId) => {
-    setActiveFilters((prev) =>
-      prev.includes(filterId)
-        ? prev.filter((id) => id !== filterId)
-        : [...prev, filterId]
-    )
-  }
-
-  return (
-		<div
-			className={`bg-[#211F17]/80 backdrop-blur-md w-full border-b border-[#333] transition-colors duration-300`}
-		>
-			{/* Buy/Sell Tabs with Filters Button on Mobile */}
-			<div className="flex justify-between items-center">
-				<div className="flex">
-					<Link
-						href="/buy"
-						className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
-							activeTab === "buy" ? "text-[#BD9574]" : "text-[#656565]"
-						}`}
-					>
-						Buy
-					</Link>
-					<Link
-						href="/sell"
-						className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
-							activeTab === "sell" ? "text-[#BD9574]" : "text-[#656565]"
-						}`}
-					>
-						Sell
-					</Link>
-					<Link
-						href="/sold-properties"
-						className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
-							activeTab === "sold" ? "text-[#BD9574]" : "text-[#656565]"
-						}`}
-					>
-						Sold
-					</Link>
-				</div>
-				{/* Desktop Property Filters */}
-				{!isMobileView && (
-					<div className="hidden md:flex items-stretch text-[#656565]">
-						{/* Spacer */}
-						<div className="flex-grow"></div>
-						<Link
-							href="/our-team"
-							className={`flex items-center px-7 py-4 text-sm font-light border-l border-[#333] ${
-								activeTab === "ourteam" ? "text-[#BD9574]" : "text-[#656565]"
-							}`}
-						>
-							Our Team
-						</Link>
-						<Link
-							href="/club-diamondz"
-							className={`flex items-center gap-2 px-7 py-4 text-sm font-light border-l border-[#333] ${
-								activeTab === "diamondz" ? "text-[#BD9574]" : "text-[#656565]"
-							}`}
-						>
-							<svg
-								width="25"
-								height="25"
-								viewBox="0 0 25 25"
-								fill="currentColor"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M16.933 4.375H6.818L3.125 8.956l8.75 10.367 8.75 -10.366zM4.857 8.981l2.529 -3.152H16.363l2.529 3.152L11.875 17.261z"
-									fill="currentColor"
-								/>
-								<path
-									d="M16.902 19.12H6.848V20.625h10.054z"
-									fill="currentColor"
-								/>
-							</svg>
-							Club Diamondz
-						</Link>
-						<Link
-							href="/contact-us"
-							className={`flex items-center px-7 py-4 text-sm font-light border-l border-[#333] ${
-								activeTab === "contact" ? "text-[#BD9574]" : "text-[#656565]"
-							}`}
-						>
-							Contact Us
-						</Link>
-					</div>
-				)}
-				{/* Filters button - Only on mobile */}
-				{isMobileView && (
-					<>
-						<div className="flex items-center">
-							<div className="flex items-center justify-center px-7 py-4 border-[#333] border-l">
-								<button
-									onClick={toggleMobileFilters}
-									className="text-[#BD9574] text-sm font-light"
-								>
-									<svg
-										width="24px"
-										height="24px"
-										viewBox="0 0 0.45 0.45"
-										fill="currentColor"
-										xmlns="http://www.w3.org/2000/svg"
-									>
-										<path
-											d="M0 0.075h0.45m-0.36 0.15h0.27m-0.21 0.15h0.15"
-											stroke="currentColor"
-											strokeWidth="0.03"
-										/>
-									</svg>
-								</button>
-							</div>
-							<div className="flex items-center justify-center px-7 py-4 border-[#333] border-l">
-								{hasMounted ? (
-									isAuthenticated ? (
-										<button
-											onClick={logout}
-											className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-										>
-											<svg
-												width="24px"
-												height="24px"
-												viewBox="0 0 0.72 0.72"
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-											>
-												<path
-													stroke="currentColor"
-													strokeLinecap="round"
-													strokeLinejoin="round"
-													strokeWidth="0.06"
-													d="M0.6 0.36H0.314M0.54 0.45 0.63 0.36 0.54 0.27M0.39 0.21V0.18A0.06 0.06 0 0 0 0.33 0.12H0.18A0.06 0.06 0 0 0 0.12 0.18v0.36A0.06 0.06 0 0 0 0.18 0.6h0.15a0.06 0.06 0 0 0 0.06 -0.06V0.51"
-												/>
-											</svg>
-										</button>
-									) : (
-										<Link
-											href="/login"
-											className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
-										>
-											<svg
-												width="24px"
-												height="24px"
-												viewBox="0 0 0.72 0.72"
-												fill="none"
-												xmlns="http://www.w3.org/2000/svg"
-											>
-												<path
-													fillRule="evenodd"
-													clipRule="evenodd"
-													d="M0.24 0.18a0.12 0.12 0 0 1 0.12 -0.12h0.166A0.136 0.136 0 0 1 0.66 0.196v0.33a0.136 0.136 0 0 1 -0.136 0.136H0.36a0.12 0.12 0 0 1 -0.12 -0.12V0.511a0.03 0.03 0 1 1 0.06 0v0.03a0.06 0.06 0 0 0 0.06 0.06h0.166A0.076 0.076 0 0 0 0.601 0.526V0.196A0.076 0.076 0 0 0 0.526 0.12H0.36a0.06 0.06 0 0 0 -0.06 0.06v0.03a0.03 0.03 0 0 1 -0.06 0zm0.128 0.068a0.03 0.03 0 0 1 0.042 0l0.09 0.09a0.03 0.03 0 0 1 0 0.042L0.41 0.47A0.03 0.03 0 0 1 0.368 0.428L0.408 0.39H0.15a0.03 0.03 0 1 1 0 -0.06H0.408L0.37 0.292a0.03 0.03 0 0 1 0 -0.042"
-													fill="currentColor"
-												/>
-											</svg>
-										</Link>
-									)
-								) : (
-									<span style={{ visibility: "hidden" }}>Login</span>
-								)}
-							</div>
-						</div>
-					</>
-				)}
-			</div>
-
-			{/* Mobile Filters Panel - Shows when toggled */}
-			{isMobileView && isMobileFiltersOpen && (
-				<div className="bg-[#211F17]/90 w-full border-t border-[#333] overflow-x-auto hide-scrollbar">
-					<div className="backdrop-blur-md border-t border-[#333] px-4 py-3">
-						<div className="grid grid-cols-2 gap-3">
-							<div className="flex flex-col col-span-2">
-								<span className="text-[14px] text-[#888] mb-1">Location</span>
-								<AsyncSelect
-									instanceId="property-location-select-mobile"
-									name="location"
-									value={
-										formData.city
-											? {
-													id: formData.city_id,
-													name: formData.city,
-											  }
-											: null
-									}
-									loadOptions={debouncedLoadCityOptions}
-									onChange={(option) => {
-										// Update both the label and ID fields
-										setFormData((prev) => ({
-											...prev,
-											city: option ? option.name : "",
-											city_id: option ? option.id : "",
-										}));
-									}}
-									getOptionLabel={(option) => option.name}
-									getOptionValue={(option) => option.id}
-									placeholder={"Search.."}
-									menuPortalTarget={document.body}
-									menuPosition="absolute"
-									styles={customStyles}
-									className={archivo.className}
-									isClearable
-									components={{
-										DropdownIndicator: () => null,
-									}}
-									noOptionsMessage={({ inputValue }) =>
-										inputValue ? `No location found` : null
-									}
-								/>
-							</div>
-
-							<div className="flex flex-col">
-								<span className="text-[14px] text-[#888] mb-1">Type</span>
-								<Select
-									instanceId="property-type-select-mobile"
-									name="type"
-									value={propertyTypeOptions.find(
-										(option) => option.value === formData.type
-									)}
-									onChange={(option) =>
-										setFormData((prev) => ({
-											...prev,
-											type: option ? option.value : "",
-										}))
-									}
-									options={propertyTypeOptions}
-									placeholder="Any"
-									styles={customStyles}
-									menuPortalTarget={document.body}
-									menuPosition="absolute"
-									className={`${archivo.className}`}
-									isClearable
-									isSearchable={false}
-								/>
-							</div>
-
-							<div className="flex flex-col">
-								<span className="text-[14px] text-[#888] mb-1">Bedroom</span>
-								<Select
-									instanceId="property-bedroom-select-mobile"
-									name="type"
-									value={bedroomOptions.find(
-										(option) => option.value === formData.bedroom
-									)}
-									onChange={(option) =>
-										setFormData((prev) => ({
-											...prev,
-											bedroom: option ? option.value : "",
-										}))
-									}
-									options={bedroomOptions}
-									placeholder="Any"
-									styles={customStyles}
-									menuPortalTarget={document.body}
-									menuPosition="absolute"
-									className={`${archivo.className}`}
-									isClearable
-									isSearchable={false}
-								/>
-							</div>
-
-							<div className="flex flex-col">
-								<span className="text-[14px] text-[#888] mb-1">Value</span>
-								<input
-									name="price_min"
-									type="number"
-									min={0}
-									step={1000}
-									placeholder="Min"
-									value={formData.price_min}
-									onChange={(e) =>
-										setFormData((prev) => ({
-											...prev,
-											price_min: e.target.value,
-										}))
-									}
-									className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
-								/>
-							</div>
-							<div className="flex flex-col">
-								<span className="text-[14px] text-[#888] mb-1 invisible">
-									Max Value
-								</span>
-								<input
-									name="price_max"
-									type="number"
-									min={0}
-									step={1000}
-									placeholder="Max"
-									value={formData.price_max}
-									onChange={(e) =>
-										setFormData((prev) => ({
-											...prev,
-											price_max: e.target.value,
-										}))
-									}
-									className="bg-[#211F17] rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
-								/>
-							</div>
-						</div>
-
-						<button
-							onClick={handleSearch}
-							className="w-full flex items-center justify-center mt-3 py-2 border border-[#BD9574] text-[#BD9574] rounded"
-						>
-							<span className="mr-2">Search</span>
-							<ArrowRight className="h-4 w-4" />
-						</button>
-					</div>
-					<div className="flex backdrop-blur-md z-[980]">
-						<button
-							onClick={() => toggleFilter("city")}
-							className={`flex flex-col items-center justify-center px-4 py-2 ${
-								activeFilters.includes("city")
-									? "text-[#BD9574]"
-									: "text-[#656565]"
-							}`}
-						>
-							<svg
-								className="h-4 w-4 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M3 21H21M6 18V9.99998M10 18V9.99998M14 18V9.99998M18 18V9.99998M20 21V6.99998L12 2.99998L4 6.99998V21"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs whitespace-nowrap">City</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("country")}
-							className={`flex flex-col items-center justify-center px-4 py-2 ${
-								activeFilters.includes("country")
-									? "text-[#BD9574]"
-									: "text-[#656565]"
-							}`}
-						>
-							<svg
-								className="h-4 w-4 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M8 21V12M16 21V12M4 21H20M4 7H20M6 7L9 4M18 7L15 4M11 7V4H13V7M4 7V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V7"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs whitespace-nowrap">Country</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("beachfront")}
-							className={`flex flex-col items-center justify-center px-4 py-2 ${
-								activeFilters.includes("beachfront")
-									? "text-[#BD9574]"
-									: "text-[#656565]"
-							}`}
-						>
-							<svg
-								className="h-4 w-4 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M4 19H20M4 15L7 14C8.5 13.5 10.5 13.5 12 14C13.5 14.5 15.5 14.5 17 14L20 15M4 11L7 10C8.5 9.5 10.5 9.5 12 10C13.5 10.5 15.5 10.5 17 10L20 11"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs whitespace-nowrap">Beachfront</span>
-						</button>
-
-						<button
-							onClick={() => toggleFilter("apartment")}
-							className={`flex flex-col items-center justify-center px-4 py-2 ${
-								activeFilters.includes("apartment")
-									? "text-[#BD9574]"
-									: "text-[#656565]"
-							}`}
-						>
-							<svg
-								className="h-4 w-4 mb-1"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M3 21H21M5 21V5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21M9 21V17C9 15.8954 9.89543 15 11 15H13C14.1046 15 15 15.8954 15 17V21M9 7H11M9 11H11M13 7H15M13 11H15"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-							<span className="text-xs whitespace-nowrap">Apartment</span>
-						</button>
-					</div>
-				</div>
-			)}
-		</div>
 	);
 }

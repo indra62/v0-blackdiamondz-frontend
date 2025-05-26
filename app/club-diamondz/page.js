@@ -288,7 +288,7 @@ export default function ClubDiamondz() {
               format: "webp",
               quality: 100,
               fit: "cover",
-            }) || "/placeholder.svg"
+            }) || "/placeholder-image.jpg"
           }
           alt={item?.translation?.event_title}
           fill
@@ -311,7 +311,7 @@ export default function ClubDiamondz() {
     <div className="relative group cursor-pointer">
       <div className="relative w-full aspect-video overflow-hidden">
         <Image
-          src={item.thumbnail || "/placeholder.svg"}
+          src={item.thumbnail || "/placeholder-image.jpg"}
           alt={item.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -341,7 +341,7 @@ export default function ClubDiamondz() {
             format: "webp",
             quality: 100,
             fit: "cover",
-          }) || "/placeholder.svg"
+          }) || "/placeholder-image.jpg"
         }
           alt={item?.translation?.activity_title}
           fill
@@ -365,7 +365,7 @@ export default function ClubDiamondz() {
       {/* Image Container */}
       <div className="relative h-[240px] mb-4 overflow-hidden">
         <Image
-          src={property.image || "/placeholder.svg"}
+          src={property.image || "/placeholder-image.jpg"}
           alt={property.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -608,7 +608,7 @@ export default function ClubDiamondz() {
                   format: "webp",
                   quality: 100,
                   fit: "cover",
-                }) || "/placeholder.svg"
+                }) || "/placeholder-image.jpg"
               }
               alt="Club Diamondz Luxury Fashion"
               fill
@@ -689,7 +689,7 @@ export default function ClubDiamondz() {
                 format: "webp",
                 quality: 100,
                 fit: "cover",
-              }) || "/placeholder.svg"
+              }) || "/placeholder-image.jpg"
             }
             alt="Sydney Harbour"
             fill

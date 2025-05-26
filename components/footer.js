@@ -15,7 +15,7 @@ import { Archivo } from "next/font/google"
 import { X } from "lucide-react"
 import { useState, useEffect } from "react"
 import { toast } from "react-hot-toast"
-import { getImageUrl, getItems, submitSubscribe } from "@/lib/api"
+import { getImageUrl, getItems, submitSubscribe, submitNewsletterSubscribe } from "@/lib/api"
 import Image from "next/image"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
@@ -62,13 +62,13 @@ export default function Footer({dark = true}) {
         email: formData.email,
       }
 
-      await submitSubscribe(formPayload)
+      await submitNewsletterSubscribe(formPayload)
       setFormData({
         email: "",
       })
 
       // Show success toast
-      toast.success("Subscribed!", {
+      toast.success("Subscribed to newsletter!", {
         style: {
           background: "#BD9574",
           color: "#211F17",

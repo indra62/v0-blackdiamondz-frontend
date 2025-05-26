@@ -196,7 +196,7 @@ export default function OurStoryPage() {
                     format: "webp",
                     quality: 100,
                     fit: "cover",
-                  }) || "/placeholder.svg"
+                  }) || "/placeholder-image.jpg"
                 }
                 alt={image.title || `Story Image`}
                 fill
@@ -245,7 +245,7 @@ export default function OurStoryPage() {
                     format: "webp",
                     quality: 100,
                     fit: "cover",
-                  }) || "/placeholder.svg"
+                  }) || "/placeholder-image.jpg"
                 }
                 alt="Sydney Harbour with Bridge and city skyline at sunset"
                 fill
@@ -344,7 +344,7 @@ export default function OurStoryPage() {
                     format: "webp",
                     quality: 100,
                     fit: "cover",
-                  }) || "/placeholder.svg"
+                  }) || "/placeholder-image.jpg"
                 }
                 alt="Meet Our Team"
                 fill

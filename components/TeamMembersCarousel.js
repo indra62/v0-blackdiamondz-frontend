@@ -53,7 +53,7 @@ export default function TeamMembersCarousel({ data }) {
                     format: "webp",
                     quality: 100,
                     fit: "cover",
-                  }) || "/placeholder.svg"
+                  }) || "/placeholder-image.jpg"
                 }
                 alt={member?.first_name}
                 fill

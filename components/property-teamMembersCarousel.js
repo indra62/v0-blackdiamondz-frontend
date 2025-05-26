@@ -56,7 +56,7 @@ export default function PropertyTeamMembersCarousel({ data }) {
                     format: "webp",
                     quality: 100,
                     fit: "cover",
-                  }) || "/placeholder.svg"
+                  }) || "/placeholder-image.jpg"
                 }
                 alt={member?.agent_id?.user_id?.first_name}
                 fill
