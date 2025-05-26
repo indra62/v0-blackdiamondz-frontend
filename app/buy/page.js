@@ -21,6 +21,7 @@ import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
 import Loading from "@/components/loading";
 import { useSearchParams } from "next/navigation";
+import SearchBar from "@/components/searchBar";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
@@ -44,6 +45,8 @@ export function BuyPageContent() {
   const bedroom = searchParams.get("bedroom");
   const priceMin = searchParams.get("price_min");
   const priceMax = searchParams.get("price_max");
+  const features = searchParams.getAll("features");
+  const featuresKey = features.join(",");
   const rangesParam = searchParams.get("ranges");
   const ranges =
     rangesParam && rangesParam.length > 0
@@ -60,32 +63,35 @@ export function BuyPageContent() {
     bedroom,
     priceMin,
     priceMax,
+    features,
     rangesParam,
   });
 
   useEffect(() => {
-    // Compare each primitive filter value
-    const prev = prevFilters.current;
-    if (
-      prev.city !== city ||
-      prev.type !== type ||
-      prev.bedroom !== bedroom ||
-      prev.priceMin !== priceMin ||
-      prev.priceMax !== priceMax ||
-      prev.rangesParam !== rangesParam
-    ) {
-      setPropertiesCurrentPage(0);
-      prevFilters.current = {
-        city,
-        type,
-        bedroom,
-        priceMin,
-        priceMax,
-        rangesParam,
-      };
-    }
-    // eslint-disable-next-line
-  }, [city, type, bedroom, priceMin, priceMax, rangesParam]);
+		// Compare each primitive filter value
+		const prev = prevFilters.current;
+		if (
+			prev.city !== city ||
+			prev.type !== type ||
+			prev.bedroom !== bedroom ||
+			prev.priceMin !== priceMin ||
+			prev.priceMax !== priceMax ||
+			prev.featuresKey !== featuresKey ||
+			prev.rangesParam !== rangesParam
+		) {
+			setPropertiesCurrentPage(0);
+			prevFilters.current = {
+				city,
+				type,
+				bedroom,
+				priceMin,
+				priceMax,
+				featuresKey,
+				rangesParam,
+			};
+		}
+		// eslint-disable-next-line
+	}, [city, type, bedroom, priceMin, priceMax, featuresKey, rangesParam]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -110,96 +116,111 @@ export function BuyPageContent() {
   }, []);
 
   const fetchProperties = async (
-    page = 0,
-    status = "Current",
-    type = [],
-    city,
-    bedroom,
-    priceMin,
-    priceMax,
-    ranges
-  ) => {
-    try {
-      const directusPage = page + 1;
+		page = 0,
+		status = "Current",
+		type = [],
+		city,
+		bedroom,
+		priceMin,
+		priceMax,
+		ranges = [],
+		features = []
+	) => {
+		try {
+			const directusPage = page + 1;
 
-      const filter = {
-        is_off_market: { _eq: false },
-        status:
-          status === "Current"
-            ? { _eq: "Current" }
-            : { _eq: "Sold", _neq: "Inactive" },
-      };
+			const filter = {
+				is_off_market: { _eq: false },
+				status:
+					status === "Current"
+						? { _eq: "Current" }
+						: { _eq: "Sold", _neq: "Inactive" },
+			};
 
-      if (city) {
-        filter.address_suburb = { _eq: city };
-      }
+			if (city) {
+				filter.address_suburb = { _eq: city };
+			}
+			if (type && type.length > 0) {
+				filter.type = { id: { _in: type } };
+			}
 
-      if (type) {
-        filter.type = { id: { _in: [type] } };
-      }
+			if (priceMin || priceMax) {
+				filter.price = {};
+				if (priceMin) filter.price._gte = Number(priceMin);
+				if (priceMax) filter.price._lte = Number(priceMax);
+			}
 
-      if (priceMin || priceMax) {
-        filter.price = {};
-        if (priceMin) filter.price._gte = Number(priceMin);
-        if (priceMax) filter.price._lte = Number(priceMax);
-      }
+			if (bedroom !== undefined && bedroom !== null && bedroom !== "") {
+				const is6Plus = bedroom === "6";
+				filter.features = {
+					_some: {
+						feature_id: { slug: { _eq: "bedrooms" } },
+						value: is6Plus ? { _gte: 6 } : { _eq: bedroom },
+					},
+				};
+			}
 
-      if (bedroom !== undefined && bedroom !== null && bedroom !== "") {
-        const is6Plus = bedroom === "6";
-        filter.features = {
-          _some: {
-            feature_id: { slug: { _eq: "bedrooms" } },
-            value: is6Plus ? { _gte: 6 } : { _eq: bedroom },
-          },
-        };
-      }
+			// Ranges (_or for postcode ranges)
+			if (ranges.length > 0) {
+				filter._or = [
+					...(filter._or || []),
+					...ranges.map(({ start, end }) => ({
+						address_postcode: {
+							_gte: start,
+							_lte: end,
+						},
+					})),
+				];
+			}
 
-      if (ranges.length > 0) {
-        filter._or = [
-          ...(filter._or || []),
-          ...ranges.map(({ start, end }) => ({
-            address_postcode: {
-              _gte: start,
-              _lte: end,
-            },
-          })),
-        ];
-      }
+			// Features (_or for features, using _some for relational filtering)
+			if (features.length > 0) {
+				filter._or = [
+					...(filter._or || []),
+					...features.map((feature) => ({
+						features: {
+							_some: {
+								value: { _contains: feature },
+							},
+						},
+					})),
+				];
+			}
 
-      // Fetch properties with pagination
-      const data = await getItems(
-        "properties",
-        {
-          fields: [
-            "*",
-            "translations.*",
-            "images.directus_files_id.*",
-            "plans.*",
-            "videos.*",
-            "features.feature_id.*",
-            "features.value",
-            "agents.agent_id.user_id.*",
-            "type.*.*",
-          ],
-          filter,
-          limit: ITEMS_PER_PAGE,
-          page: directusPage,
-          meta: "filter_count,total_count",
-        },
-        {},
-        true
-      );
+			// Fetch properties with pagination
+			const data = await getItems(
+				"properties",
+				{
+					fields: [
+						"*",
+						"translations.*",
+						"images.directus_files_id.*",
+						"plans.*",
+						"videos.*",
+						"features.feature_id.*",
+						"features.value",
+						"agents.agent_id.user_id.*",
+						"type.*.*",
+					],
+					filter,
+					limit: ITEMS_PER_PAGE,
+					page: directusPage,
+					meta: "filter_count,total_count",
+				},
+				{},
+				true
+			);
 
-      setProperties(data?.data || []);
-      const totalCount = data.meta?.filter_count || 0;
-      setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE));
-      return data;
-    } catch (err) {
-      console.error("Error fetching properties:", err);
-      setError("Failed to load properties");
-      return { data: [] };
-    }
-  };
+			setProperties(data?.data || []);
+			const totalCount = data.meta?.filter_count || 0;
+			setPropertiesTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE));
+			return data;
+		} catch (err) {
+			console.error("Error fetching properties:", err);
+			setError("Failed to load properties");
+			return { data: [] };
+		}
+	};
 
   const handlePropertyPageChange = (page) => {
     if (page >= 0 && page < propertiesTotalPages) {
@@ -259,26 +280,28 @@ export function BuyPageContent() {
   }, []);
 
   useEffect(() => {
-    fetchProperties(
-      propertiesCurrentPage,
-      "Current",
-      type ? [type] : [],
-      city,
-      bedroom,
-      priceMin,
-      priceMax,
-      ranges
-    );
-    // eslint-disable-next-line
-  }, [
-    propertiesCurrentPage,
-    city,
-    type,
-    bedroom,
-    priceMin,
-    priceMax,
-    rangesParam,
-  ]);
+		fetchProperties(
+			propertiesCurrentPage,
+			"Current",
+			type ? [type] : [],
+			city,
+			bedroom,
+			priceMin,
+			priceMax,
+			ranges,
+			features
+		);
+		// eslint-disable-next-line
+	}, [
+		propertiesCurrentPage,
+		city,
+		type,
+		bedroom,
+		priceMin,
+		priceMax,
+		rangesParam,
+		featuresKey,
+	]);
 
   const translationExplore =
     dataExplore?.translations?.find((t) => t.languages_code === language) ||
@@ -323,6 +346,7 @@ export function BuyPageContent() {
 									<div className="md:col-span-2 lg:col-span-4">
 										<BuyMap />
 									</div>
+
 									{properties.map((property) => (
 										<Property
 											key={property.id}
@@ -439,8 +463,9 @@ export function BuyPageContent() {
 }
 export default function BuyPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#211f17]"></div>}>
-      <BuyPageContent />
-    </Suspense>
-  );
+		<Suspense fallback={<div className="min-h-screen bg-[#211f17]"></div>}>
+			<SearchBar/>
+			<BuyPageContent />
+		</Suspense>
+	);
 }
