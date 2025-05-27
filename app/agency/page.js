@@ -243,7 +243,7 @@ export default function AgencyPage() {
       ) : (
         <>
           {/* Hero Section */}
-          <section className="relative h-[600px]">
+          <section className="relative h-[800px]">
             {/* Updated gradient overlay */}
             <div
               className="absolute inset-0 z-10"
@@ -252,7 +252,7 @@ export default function AgencyPage() {
                         linear-gradient(180deg, rgba(33, 31, 23, 0) 80.08%, #211F17 100%)`,
               }}
             ></div>
-            <div className="absolute inset-0 overflow-hidden">
+            <div className="overflow-hidden">
               <Image
                 src={getImageUrl(data?.heroImage?.id, {
                   format: "webp",
@@ -265,7 +265,7 @@ export default function AgencyPage() {
                 className="object-cover"
               />
             </div>
-            <div className="relative z-20 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
+            <div className="relative z-20 mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
               <h1
                 className={`${taviraj.className} text-[48px] font-light mb-8 text-[#E2DBCC] leading-[125%] tracking-[2px]`}
               >
