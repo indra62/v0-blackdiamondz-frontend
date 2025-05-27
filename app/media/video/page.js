@@ -41,11 +41,13 @@ export default function MediaVideo() {
         const dataVideo = await getItems("videos", {
 					fields: ["*.*", "translations.*"],
 					sort: ["-date_created"],
+          filter: { status: { _eq: "published" }}
 				});
 
         const dataAll = await getItems("videos", {
 					fields: ["*.*", "translations.*"],
 					sort: ["-date_created"],
+					filter: { status: { _eq: "published" } },
 				});
 
         setHeroData(dataHero)
