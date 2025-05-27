@@ -192,337 +192,350 @@ export function Signup() {
   }
 
   return (
-    <main
-      className={`min-h-screen ${isJoinClub ? "bg-[#FBF4E4] px-10" : "bg-[#211f17]"}`}
-    >
-      {loading ? (
-        <section
-          className={`flex justify-center items-center h-[800px] ${
-            isJoinClub ? "bg-[#FBF4E4]" : "bg-[#211f17]"
-          }`}
-        >
-          <Loading error={error} dark={!isJoinClub} />
-        </section>
-      ) : (
-        <>
-          <div className="flex flex-col min-h-[calc(100vh-60px)]">
-            {isJoinClub && (
-              <section className="pt-16 text-center">
-                <h2
-                  className={`${taviraj.className} text-[#211f17] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
-                >
-                  {translation?.signup_title}
-                </h2>
+		<main
+			className={`min-h-screen ${
+				isJoinClub ? "bg-[#FBF4E4] px-10" : "bg-[#211f17]"
+			}`}
+		>
+			{loading ? (
+				<section
+					className={`flex justify-center items-center h-[800px] ${
+						isJoinClub ? "bg-[#FBF4E4]" : "bg-[#211f17]"
+					}`}
+				>
+					<Loading error={error} dark={!isJoinClub} />
+				</section>
+			) : (
+				<>
+					<div className="flex flex-col min-h-[calc(100vh-60px)]">
+						{isJoinClub && (
+							<section className="pt-16 text-center">
+								<h2
+									className={`${taviraj.className} text-[#211f17] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+								>
+									{translation?.signup_title}
+								</h2>
 
-                {/* Diamond Separator */}
-                <div className="flex items-center justify-center gap-4 mb-8">
-                  <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-                  <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-                  <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-                </div>
-              </section>
-            )}
-            <div className={`${isMobileView ? "flex-col" : "flex"}`}>
-              {/* Left side - Sydney Harbour Image */}
-              {isJoinClub ? (
-                <div className="md:block md:w-1/2 w-full relative p-8 flex justify-center">
-                  <div className="dangerous text-[#211f17] font-['Archivo']" dangerouslySetInnerHTML={{ __html: translation?.signup_body}}/>
-                </div>
-              ) : (  
-              <div className="hidden md:block w-1/2 relative">
-                <Image
-                  src={getImageUrl(data?.signup_image?.id, {
-                    format: "webp",
-                    quality: 80,
-                    fit: "cover",
-                  })}
-                  alt="Sydney Harbour"
-                  fill
-                  priority
-                  className="object-cover"
-                />
-              </div>
-              )}
+								{/* Diamond Separator */}
+								<div className="flex items-center justify-center gap-4 mb-8">
+									<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+									<div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+									<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+								</div>
+							</section>
+						)}
+						<div className={`${isMobileView ? "flex-col" : "flex"}`}>
+							{/* Left side - Sydney Harbour Image */}
+							{isJoinClub ? (
+								<div className="md:block md:w-1/2 w-full relative p-8 flex justify-center">
+									<div
+										className="dangerous text-[#211f17] font-['Archivo']"
+										dangerouslySetInnerHTML={{
+											__html: translation?.signup_body,
+										}}
+									/>
+								</div>
+							) : (
+								<div className="hidden md:block w-1/2 relative min-h-screen">
+									<Image
+										src={getImageUrl(data?.signup_image?.id, {
+											format: "webp",
+											quality: 80,
+											fit: "cover",
+										})}
+										alt="Sydney Harbour"
+										fill
+										priority
+										className="object-cover"
+									/>
+								</div>
+							)}
 
-              {/* Right side - Signup Form */}
-              <div
-                className={`w-full md:w-1/2 ${
-                  isJoinClub ? "bg-[#FBF4E4]" : "bg-[#211f17]"
-                } flex items-center justify-center p-8`}
-              >
-                <div className="w-full max-w-md">
-                  {!isJoinClub && (
-                    <h1
-                      className={`${taviraj.className} ${
-                        isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
-                      }  text-5xl mb-12 text-center`}
-                    >
-                      Join the Club!
-                    </h1>
-                  )}
+							{/* Right side - Signup Form */}
+							<div
+								className={`w-full md:w-1/2 ${
+									isJoinClub ? "bg-[#FBF4E4]" : "bg-[#211f17]"
+								} flex items-center justify-center p-8`}
+							>
+								<div className="w-full max-w-md">
+									{!isJoinClub && (
+										<h1
+											className={`${taviraj.className} ${
+												isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
+											}  text-5xl mb-12 text-center`}
+										>
+											Join the Club!
+										</h1>
+									)}
 
-                  {success ? (
-                    <div className={`font-['Archivo'] ${isJoinClub ? "text-[#211f17] border-[#211f17]" : "text-[#E2DBCC] border-[#BD9574]" } text-center  p-4 border `}>
-                      <p className="mb-4">
-                        Registration successful! Please check your email to
-                        verify your account.
-                      </p>
-                      <Link
-                        href="/login"
-                        className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
-                      >
-                        Go to login
-                      </Link>
-                    </div>
-                  ) : (
-                    <>
-                      {formError && (
-                        <div className="mb-4 p-3 bg-red-900/50 text-white border border-red-500">
-                          {formError}
-                        </div>
-                      )}
+									{success ? (
+										<div
+											className={`font-['Archivo'] ${
+												isJoinClub
+													? "text-[#211f17] border-[#211f17]"
+													: "text-[#E2DBCC] border-[#BD9574]"
+											} text-center  p-4 border `}
+										>
+											<p className="mb-4">
+												Registration successful! Please check your email to
+												verify your account.
+											</p>
+											<Link
+												href="/login"
+												className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
+											>
+												Go to login
+											</Link>
+										</div>
+									) : (
+										<>
+											{formError && (
+												<div className="mb-4 p-3 bg-red-900/50 text-white border border-red-500">
+													{formError}
+												</div>
+											)}
 
-                      <form onSubmit={handleSubmit}>
-                        <div className="flex flex-col">
-                          <div className="flex w-full">
-                            <input
-                              type="text"
-                              name="first_name"
-                              placeholder="First Name"
-                              className={`w-1/2 bg-transparent border border-[#656565] border-r-0 border-b-0 p-4 ${
-                                isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
-                              } placeholder-[#656565] focus:outline-none focus:border-[#BD9574]`}
-                              required
-                              value={formData.first_name}
-                              onChange={handleChange}
-                            />
-                            <input
-                              type="text"
-                              name="last_name"
-                              placeholder="Last Name"
-                              className={`w-1/2 bg-transparent border border-[#656565] border-b-0 p-4 ${
-                                isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
-                              } placeholder-[#656565] focus:outline-none focus:border-[#BD9574]`}
-                              required
-                              value={formData.last_name}
-                              onChange={handleChange}
-                            />
-                          </div>
+											<form onSubmit={handleSubmit}>
+												<div className="flex flex-col">
+													<div className="flex w-full">
+														<input
+															type="text"
+															name="first_name"
+															placeholder="First Name"
+															className={`w-1/2 bg-transparent border border-[#656565] border-r-0 border-b-0 p-4 ${
+																isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
+															} placeholder-[#656565] focus:outline-none focus:border-[#BD9574]`}
+															required
+															value={formData.first_name}
+															onChange={handleChange}
+														/>
+														<input
+															type="text"
+															name="last_name"
+															placeholder="Last Name"
+															className={`w-1/2 bg-transparent border border-[#656565] border-b-0 p-4 ${
+																isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
+															} placeholder-[#656565] focus:outline-none focus:border-[#BD9574]`}
+															required
+															value={formData.last_name}
+															onChange={handleChange}
+														/>
+													</div>
 
-                          <div className="flex w-full">
-                            <input
-                              type="email"
-                              name="email"
-                              placeholder="Email"
-                              className={`bg-transparent border border-[#656565] ${
-                                isJoinClub
-                                  ? "border-r-0 w-1/2 text-[#211f17]"
-                                  : "w-full text-[#E2DBCC]"
-                              } placeholder-[#656565] border-b-0 p-4 focus:outline-none focus:border-[#BD9574]`}
-                              required
-                              value={formData.email}
-                              onChange={handleChange}
-                            />
+													<div className="flex w-full">
+														<input
+															type="email"
+															name="email"
+															placeholder="Email"
+															className={`bg-transparent border border-[#656565] ${
+																isJoinClub
+																	? "border-r-0 w-1/2 text-[#211f17]"
+																	: "w-full text-[#E2DBCC]"
+															} placeholder-[#656565] border-b-0 p-4 focus:outline-none focus:border-[#BD9574]`}
+															required
+															value={formData.email}
+															onChange={handleChange}
+														/>
 
-                            {isJoinClub && (
-                              <input
-                                type="tel"
-                                name="phone"
-                                placeholder="Phone"
-                                className={`${
-                                  isJoinClub
-                                    ? "w-1/2 text-[#211f17]"
-                                    : "w-full text-[#E2DBCC]"
-                                } placeholder-[#656565] bg-transparent border border-[#656565] border-b-0 p-4  focus:outline-none focus:border-[#BD9574]`}
-                                required
-                                value={formData.phone}
-                                onChange={handleChange}
-                              />
-                            )}
-                          </div>
+														{isJoinClub && (
+															<input
+																type="tel"
+																name="phone"
+																placeholder="Phone"
+																className={`${
+																	isJoinClub
+																		? "w-1/2 text-[#211f17]"
+																		: "w-full text-[#E2DBCC]"
+																} placeholder-[#656565] bg-transparent border border-[#656565] border-b-0 p-4  focus:outline-none focus:border-[#BD9574]`}
+																required
+																value={formData.phone}
+																onChange={handleChange}
+															/>
+														)}
+													</div>
 
-                          {isJoinClub && (
-                            <>
-                              <div
-                                className={`w-full bg-transparent border border-[#656565] border-b-0 py-4 px-2 text-[#211f17] focus:outline-none focus:border-[#BD9574]`}
-                              >
-                                <AsyncSelect
-                                  instanceId="join-club-country-select"
-                                  name="country"
-                                  value={
-                                    formData.country
-                                      ? {
-                                          id: formData.country_id,
-                                          name: formData.country,
-                                        }
-                                      : null
-                                  }
-                                  loadOptions={debouncedLoadCountryOptions}
-                                  onChange={(option) => {
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      country: option ? option.name : "",
-                                      country_id: option ? option.id : "",
-                                    }))
-                                  }}
-                                  getOptionLabel={(option) => option.name}
-                                  getOptionValue={(option) => option.id}
-                                  placeholder="Country"
-                                  styles={customStyles}
-                                  className={archivo.className}
-                                  defaultOptions={true}
-                                  cacheOptions
-                                  required
-                                />
-                              </div>
-                              <div
-                                className={`w-full bg-transparent border border-[#656565] border-b-0 py-4 px-2 text-[#211f17] focus:outline-none focus:border-[#BD9574]`}
-                              >
-                                <Select
-                                  instanceId="residential-price-range-select"
-                                  name="residential_property_price_range"
-                                  value={priceRangeOption.find(
-                                    (option) =>
-                                      option.value ===
-                                      formData.residential_property_price_range
-                                  )}
-                                  onChange={(option) =>
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      residential_property_price_range: option
-                                        ? option.value
-                                        : "",
-                                    }))
-                                  }
-                                  options={priceRangeOption}
-                                  placeholder="Residential Property Price Range"
-                                  styles={customStyles}
-                                  menuPortalTarget={
-                                    typeof window !== "undefined"
-                                      ? document.body
-                                      : null
-                                  }
-                                  menuPosition="fixed"
-                                  className={archivo.className}
-                                  isClearable
-                                />
-                              </div>
-                              <div
-                                className={`w-full bg-transparent border border-[#656565] border-b-0 py-4 px-2 text-[#211f17] focus:outline-none focus:border-[#BD9574]`}
-                              >
-                                <Select
-                                  instanceId="investing-price-range-select"
-                                  name="investing_property_price_range"
-                                  value={priceRangeOption.find(
-                                    (option) =>
-                                      option.value ===
-                                      formData.investing_property_price_range
-                                  )}
-                                  onChange={(option) =>
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      investing_property_price_range: option
-                                        ? option.value
-                                        : "",
-                                    }))
-                                  }
-                                  options={priceRangeOption}
-                                  placeholder="Investing Property Price Range"
-                                  styles={customStyles}
-                                  menuPortalTarget={
-                                    typeof window !== "undefined"
-                                      ? document.body
-                                      : null
-                                  }
-                                  menuPosition="fixed"
-                                  className={archivo.className}
-                                  isClearable
-                                />
-                              </div>
-                              <div className="flex flex-row gap-2 items-center w-full bg-transparent border border-[#656565] border-b-0 p-4 text-[#211f17] placeholder-[#656565] focus:outline-none focus:border-[#BD9574]">
-                                <input
-                                  type="checkbox"
-                                  name="interested_in_concierge_services"
-                                  className=""
-                                  checked={
-                                    !!formData.interested_in_concierge_services
-                                  }
-                                  onChange={handleChange}
-                                />
-                                <span className={`text-[#656565]`}>
-                                  Interested in Concierge Services
-                                </span>
-                              </div>
-                              <div className="flex w-full">
-                                <textarea
-                                  placeholder="Message"
-                                  rows="5"
-                                  name="message"
-                                  className={`bg-transparent border border-[#656565] text-[#211f17] w-full placeholder-[#656565] border-b-0 p-4 focus:outline-none focus:border-[#BD9574]`}
-                                  required
-                                  value={formData.message}
-                                  onChange={handleChange}
-                                />
-                              </div>
-                            </>
-                          )}
+													{isJoinClub && (
+														<>
+															<div
+																className={`w-full bg-transparent border border-[#656565] border-b-0 py-4 px-2 text-[#211f17] focus:outline-none focus:border-[#BD9574]`}
+															>
+																<AsyncSelect
+																	instanceId="join-club-country-select"
+																	name="country"
+																	value={
+																		formData.country
+																			? {
+																					id: formData.country_id,
+																					name: formData.country,
+																			  }
+																			: null
+																	}
+																	loadOptions={debouncedLoadCountryOptions}
+																	onChange={(option) => {
+																		setFormData((prev) => ({
+																			...prev,
+																			country: option ? option.name : "",
+																			country_id: option ? option.id : "",
+																		}));
+																	}}
+																	getOptionLabel={(option) => option.name}
+																	getOptionValue={(option) => option.id}
+																	placeholder="Country"
+																	styles={customStyles}
+																	className={archivo.className}
+																	defaultOptions={true}
+																	cacheOptions
+																	required
+																/>
+															</div>
+															<div
+																className={`w-full bg-transparent border border-[#656565] border-b-0 py-4 px-2 text-[#211f17] focus:outline-none focus:border-[#BD9574]`}
+															>
+																<Select
+																	instanceId="residential-price-range-select"
+																	name="residential_property_price_range"
+																	value={priceRangeOption.find(
+																		(option) =>
+																			option.value ===
+																			formData.residential_property_price_range
+																	)}
+																	onChange={(option) =>
+																		setFormData((prev) => ({
+																			...prev,
+																			residential_property_price_range: option
+																				? option.value
+																				: "",
+																		}))
+																	}
+																	options={priceRangeOption}
+																	placeholder="Residential Property Price Range"
+																	styles={customStyles}
+																	menuPortalTarget={
+																		typeof window !== "undefined"
+																			? document.body
+																			: null
+																	}
+																	menuPosition="fixed"
+																	className={archivo.className}
+																	isClearable
+																/>
+															</div>
+															<div
+																className={`w-full bg-transparent border border-[#656565] border-b-0 py-4 px-2 text-[#211f17] focus:outline-none focus:border-[#BD9574]`}
+															>
+																<Select
+																	instanceId="investing-price-range-select"
+																	name="investing_property_price_range"
+																	value={priceRangeOption.find(
+																		(option) =>
+																			option.value ===
+																			formData.investing_property_price_range
+																	)}
+																	onChange={(option) =>
+																		setFormData((prev) => ({
+																			...prev,
+																			investing_property_price_range: option
+																				? option.value
+																				: "",
+																		}))
+																	}
+																	options={priceRangeOption}
+																	placeholder="Investing Property Price Range"
+																	styles={customStyles}
+																	menuPortalTarget={
+																		typeof window !== "undefined"
+																			? document.body
+																			: null
+																	}
+																	menuPosition="fixed"
+																	className={archivo.className}
+																	isClearable
+																/>
+															</div>
+															<div className="flex flex-row gap-2 items-center w-full bg-transparent border border-[#656565] border-b-0 p-4 text-[#211f17] placeholder-[#656565] focus:outline-none focus:border-[#BD9574]">
+																<input
+																	type="checkbox"
+																	name="interested_in_concierge_services"
+																	className=""
+																	checked={
+																		!!formData.interested_in_concierge_services
+																	}
+																	onChange={handleChange}
+																/>
+																<span className={`text-[#656565]`}>
+																	Interested in Concierge Services
+																</span>
+															</div>
+															<div className="flex w-full">
+																<textarea
+																	placeholder="Message"
+																	rows="5"
+																	name="message"
+																	className={`bg-transparent border border-[#656565] text-[#211f17] w-full placeholder-[#656565] border-b-0 p-4 focus:outline-none focus:border-[#BD9574]`}
+																	required
+																	value={formData.message}
+																	onChange={handleChange}
+																/>
+															</div>
+														</>
+													)}
 
-                          <div className="flex w-full">
-                            <input
-                              type="password"
-                              name="password"
-                              placeholder="Password"
-                              className={`w-1/2 bg-transparent border border-[#656565] border-r-0 border-b-0 p-4 ${
-                                isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
-                              } placeholder-[#656565] focus:outline-none focus:border-[#BD9574]`}
-                              required
-                              value={formData.password}
-                              onChange={handleChange}
-                            />
-                            <input
-                              type="password"
-                              name="confirmPassword"
-                              placeholder="Confirm Password"
-                              className={`w-1/2 bg-transparent border border-[#656565] border-b-0 p-4 ${
-                                isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
-                              } placeholder-[#656565] focus:outline-none focus:border-[#BD9574]`}
-                              required
-                              value={formData.confirmPassword}
-                              onChange={handleChange}
-                            />
-                          </div>
+													<div className="flex w-full">
+														<input
+															type="password"
+															name="password"
+															placeholder="Password"
+															className={`w-1/2 bg-transparent border border-[#656565] border-r-0 border-b-0 p-4 ${
+																isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
+															} placeholder-[#656565] focus:outline-none focus:border-[#BD9574]`}
+															required
+															value={formData.password}
+															onChange={handleChange}
+														/>
+														<input
+															type="password"
+															name="confirmPassword"
+															placeholder="Confirm Password"
+															className={`w-1/2 bg-transparent border border-[#656565] border-b-0 p-4 ${
+																isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
+															} placeholder-[#656565] focus:outline-none focus:border-[#BD9574]`}
+															required
+															value={formData.confirmPassword}
+															onChange={handleChange}
+														/>
+													</div>
 
-                          <button
-                            type="submit"
-                            className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#BD9574] transition-colors disabled:opacity-50"
-                            disabled={isSubmitting}
-                          >
-                            {isSubmitting ? "Signing Up..." : "Sign Up"}
-                          </button>
-                        </div>
-                      </form>
+													<button
+														type="submit"
+														className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#BD9574] transition-colors disabled:opacity-50"
+														disabled={isSubmitting}
+													>
+														{isSubmitting ? "Signing Up..." : "Sign Up"}
+													</button>
+												</div>
+											</form>
 
-                      <div className="mt-8 text-center">
-                        <p className="text-[#656565]">
-                          Already have an account?{" "}
-                          <Link
-                            href="/login"
-                            className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
-                          >
-                            Sign in!
-                          </Link>
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </main>
-  )
+											<div className="mt-8 text-center">
+												<p className="text-[#656565]">
+													Already have an account?{" "}
+													<Link
+														href="/login"
+														className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
+													>
+														Sign in!
+													</Link>
+												</p>
+											</div>
+										</>
+									)}
+								</div>
+							</div>
+						</div>
+					</div>
+				</>
+			)}
+		</main>
+	);
 }
 
 export default function signUpPage() {

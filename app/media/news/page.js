@@ -46,8 +46,10 @@ export default function MediaNews() {
         })
 
         const dataNews = await getItems("news", {
-          fields: ["*", "translations.*"],
-        })
+					fields: ["*", "translations.*"],
+					sort: ["-news_date"],
+					filter: { status: { _eq: "published" } },
+				});
 
         setHeroData(dataHero)
         setNews(dataNews)

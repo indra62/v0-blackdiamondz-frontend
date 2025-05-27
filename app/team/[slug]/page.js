@@ -44,23 +44,24 @@ export default function TeamMemberPage() {
         let dataStatistics = null
         if (matchedAgent && matchedAgent.id) {
           dataAgentProperties = await getItems("agent_properties", {
-            fields: [
-              "*",
-              "agent_id.user_id",
-              "property_id.*.*",
-              "property_id.type.translations.*",
-              "property_id.features.*",
-              "property_id.features.feature_id.*",
-              "property_id.images.directus_files_id.*",
-            ],
-            filter: {
-              agent_id: {
-                user_id: {
-                  _eq: matchedAgent.id,
-                },
-              },
-            },
-          })
+						fields: [
+							"*",
+							"agent_id.user_id.*",
+							"property_id.*.*",
+							"property_id.type.translations.*",
+							"property_id.features.*",
+							"property_id.features.feature_id.*",
+							"property_id.images.directus_files_id.*",
+							"property_id.agents.agent_id.user_id.*",
+						],
+						filter: {
+							agent_id: {
+								user_id: {
+									_eq: matchedAgent.id,
+								},
+							},
+						},
+					});
 
           dataTestimonials = await getItems("aboutUs_team_testimonials", {
             fields: ["testimonials.*.*"],

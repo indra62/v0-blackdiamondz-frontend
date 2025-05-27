@@ -179,11 +179,11 @@ export default function Header() {
 			>
 				{/* Main Navigation */}
 				<div
-					className={`bg-[#211F17]/80 backdrop-blur-md text-[#BD9574] border-b border-[#333] transition-colors duration-300 h-[70px] md:h-[140px]`}
+					className={`bg-[#211F17]/80 backdrop-blur-md text-[#BD9574] md:border-b md:border-[#333] transition-colors duration-300 h-[140px]`}
 				>
 					{/* Mobile Header */}
-					<div className="md:hidden flex items-center justify-between px-4 h-[70px]">
-						<Link href="/">
+					<div className="md:hidden flex items-center justify-between px-4 h-[60px]">
+						<Link href="/" className="flex justify-start gap-10">
 							<div className="flex items-center justify-center">
 								<img
 									src={
@@ -197,6 +197,18 @@ export default function Header() {
 									className="w-auto h-6"
 								/>
 							</div>
+
+							{/* <img
+								src={
+									getImageUrl(dataSocial?.footer_logo?.id, {
+										format: "webp",
+										quality: 80,
+										fit: "fit",
+									}) || "/images/smallLogoBD.png"
+								}
+								alt="Black Diamondz Logo"
+								className="w-auto h-7"
+							/> */}
 						</Link>
 
 						<div className="flex items-center gap-6 mobile-header-actions">
@@ -216,13 +228,78 @@ export default function Header() {
 
 							<button
 								onClick={toggleMenu}
-								className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
+								className="text-[#BD9574] hover:text-[#D4AF37] transition-colors"
 							>
 								<div className="flex flex-col gap-2">
 									<div className="w-[24px] h-[1px] bg-current"></div>
 									<div className="w-[24px] h-[1px] bg-current"></div>
 								</div>
 							</button>
+						</div>
+					</div>
+
+					<div className="md:hidden flex flex-col items-center justify-between px-4 h-[80px]">
+						<div className="flex h-[40px]">
+							<Link
+								href="/buy"
+								className={`flex items-center px-10 py-2 text-sm font-light ${
+									activeTab === "buy" ? "text-[#BD9574]" : "text-[#888]"
+								}`}
+							>
+								Buy
+							</Link>
+							<Link
+								href="/sell"
+								className={`flex items-center px-[80px] border-x border-[#333] py-2 text-sm font-light ${
+									activeTab === "sell" ? "text-[#BD9574]" : "text-[#888]"
+								}`}
+							>
+								Sell
+							</Link>
+							<Link
+								href="/sold-properties"
+								className={`flex items-center px-10 py-2 text-sm font-light ${
+									activeTab === "sold" ? "text-[#BD9574]" : "text-[#888]"
+								}`}
+							>
+								Sold
+							</Link>
+						</div>
+						<div className="flex h-[40px]">
+							<Link
+								href="/our-team"
+								className={`flex items-center px-6 py-2 text-sm font-light text-[#888]`}
+							>
+								Our Team
+							</Link>
+							<Link
+								href="/club-diamondz"
+								className={`flex items-center px-6 py-2 text-sm font-light text-[#888]`}
+							>
+								<svg
+									width="25"
+									height="25"
+									viewBox="0 0 25 25"
+									fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M16.933 4.375H6.818L3.125 8.956l8.75 10.367 8.75 -10.366zM4.857 8.981l2.529 -3.152H16.363l2.529 3.152L11.875 17.261z"
+										fill="currentColor"
+									/>
+									<path
+										d="M16.902 19.12H6.848V20.625h10.054z"
+										fill="currentColor"
+									/>
+								</svg>
+								Club Diamondz
+							</Link>
+							<Link
+								href="/contact-us"
+								className={`flex items-center px-6 py-2 text-sm font-light text-[#888]`}
+							>
+								Contact Us
+							</Link>
 						</div>
 					</div>
 
@@ -298,14 +375,14 @@ export default function Header() {
 										isAuthenticated ? (
 											<button
 												onClick={logout}
-												className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+												className="text-[#BD9574] hover:text-[#D4AF37] transition-colors text-[16px] leading-[150%] font-light"
 											>
 												Logout
 											</button>
 										) : (
 											<Link
 												href="/login"
-												className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+												className="text-[#BD9574] hover:text-[#D4AF37] transition-colors text-[16px] leading-[150%] font-light"
 											>
 												Login
 											</Link>
@@ -373,7 +450,7 @@ export default function Header() {
 								<div className="flex items-center justify-center px-6 w-[80px]">
 									<button
 										onClick={toggleMenu}
-										className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
+										className="text-[#BD9574] hover:text-[#D4AF37] transition-colors"
 									>
 										<div className="flex flex-col gap-2">
 											<div className="w-[32px] h-[1px] bg-current"></div>
