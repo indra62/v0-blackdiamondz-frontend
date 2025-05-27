@@ -729,7 +729,7 @@ function PropertyFilter({
 							<ArrowRight className="h-4 w-4" />
 						</button>
 					</div>
-					<div className="flex justify-between backdrop-blur-md z-[1000] mx-4]">
+					<div className="flex justify-around backdrop-blur-md z-[1000] mx-4]">
 						{dataViews.length > 0 &&
 							dataViews?.map((views) => {
 								const translation =
