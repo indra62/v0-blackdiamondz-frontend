@@ -22,6 +22,7 @@ export default function Paddington() {
   const [data, setData] = useState(null);
   const [stats, setStats] = useState([]);
   const [language, setLanguage] = useState("en");
+  const [propertyStats, setPropertyStats] = useState(null);
 
 
   useEffect(() => {
@@ -38,9 +39,10 @@ export default function Paddington() {
     const fetchSuggestions = async (query = "QLD") => {
       const res = await fetch(`/api/corelogic-suggest?q=${encodeURIComponent(query)}`);
       const data = await res.json();
+      setPropertyStats(data);
       console.log("CoreLogic suggestions:", JSON.stringify(data, null, 2));
     };
-    fetchSuggestions("old");
+    fetchSuggestions("2 Albert Avenue Broadbeach QLD 4218");
   }, []);
 
 
@@ -91,7 +93,7 @@ export default function Paddington() {
           <h2
             className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
           >
-            {translationData?.paddington_title}
+          {propertyStats?.statistics?.seriesResponseList?.[0]?.localityName}
           </h2>
 
           {/* Diamond Separator */}
@@ -123,12 +125,157 @@ export default function Paddington() {
                 <div
                   className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-normal leading-[120%] tracking-[0px] mb-2 text-center`}
                 >
-                  {stat.translatedData?.value}
+                {/* Latest Value */}
+                {(() => {
+                  if (index === 0) {
+                    const seriesData = propertyStats?.statistics?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return latest.value?.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+                    }
+                    return "0";
+                  }
+                  if (index === 1) {
+                    const seriesData = propertyStats?.statisticsAnnualChangeInMedianPrice?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return latest.value?.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+                    }
+                    return "0";
+                  }
+                  if (index === 2) {
+                    const seriesData = propertyStats?.statisticsPropertiesSold?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return latest.value;
+                    }
+                    return "0";
+                  };
+                  if (index === 3) {
+                    const seriesData = propertyStats?.statisticsMedianDaysOnMarket?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return latest.value;
+                    }
+                    return "0";
+                  };
+                  if (index === 4) {
+                    const seriesData = propertyStats?.statisticsMedianAskingRent?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return latest.value?.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+                    }
+                    return "0";
+                  };
+                  if (index === 5) {
+                    const seriesData = propertyStats?.statisticsAverageHoldPeriod?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return Math.round(latest.value * 10) / 10;
+                    }
+                    return "0";
+                  };
+                  return stat.translatedData?.value;
+                })()}
                 </div>
                 <div
                   className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center`}
                 >
-                  {stat.translatedData?.period}
+
+
+
+
+
+
+
+                {/* Latest Date */}
+                {(() => {
+                  if (index === 0) {
+                    const seriesData = propertyStats?.statistics?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return "in " + new Date(latest.dateTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                    }
+                    return "0";
+                  }
+                  if (index === 1) {
+                    const seriesData = propertyStats?.statisticsAnnualChangeInMedianPrice?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return "in " + new Date(latest.dateTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                    }
+                    return "0";
+                  }
+                  if (index === 2) {
+                    const seriesData = propertyStats?.statisticsPropertiesSold?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return "in " + new Date(latest.dateTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                    }
+                    return "0";
+                  }
+                  if (index === 3) {
+                    const seriesData = propertyStats?.statisticsMedianDaysOnMarket?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return "in " + new Date(latest.dateTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                    }
+                    return "0";
+                  }
+                  if (index === 4) {
+                    const seriesData = propertyStats?.statisticsMedianAskingRent?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return "in " + new Date(latest.dateTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                    }
+                    return "0";
+                  }
+                  if (index === 5) {
+                    const seriesData = propertyStats?.statisticsAverageHoldPeriod?.seriesResponseList?.[0]?.seriesDataList;
+                    if (Array.isArray(seriesData) && seriesData.length) {
+                      // Find the entry with the latest dateTime
+                      const latest = seriesData.reduce((a, b) =>
+                        new Date(a.dateTime) > new Date(b.dateTime) ? a : b
+                      );
+                      return "in " + new Date(latest.dateTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                    }
+                    return "0";
+                  }
+                  return stat.translatedData?.period;
+                })()}
                 </div>
               </div>
             ))}

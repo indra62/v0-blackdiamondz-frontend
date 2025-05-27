@@ -761,8 +761,7 @@ export default function PropertyDetailPage({ params }) {
 							</div>
 						)}
 					</div>
-
-					{/* <Paddington /> */}
+					<Paddington />
 				</>
 			)}
 			<Footer />
