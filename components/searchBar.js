@@ -472,7 +472,7 @@ export default function SearchBar() {
 						{/* Search Button */}
 						<div className="flex items-center justify-center px-6 py-4 w-[140px]">
 							<button
-								className="flex items-center text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+								className="flex items-center text-[#BD9574] hover:text-[#D4AF37] transition-colors text-[16px] leading-[150%] font-light"
 								type="submit"
 							>
 								<span className="mr-2">Search</span>

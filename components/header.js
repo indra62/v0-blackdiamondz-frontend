@@ -216,7 +216,7 @@ export default function Header() {
 
 							<button
 								onClick={toggleMenu}
-								className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
+								className="text-[#BD9574] hover:text-[#D4AF37] transition-colors"
 							>
 								<div className="flex flex-col gap-2">
 									<div className="w-[24px] h-[1px] bg-current"></div>
@@ -298,14 +298,14 @@ export default function Header() {
 										isAuthenticated ? (
 											<button
 												onClick={logout}
-												className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+												className="text-[#BD9574] hover:text-[#D4AF37] transition-colors text-[16px] leading-[150%] font-light"
 											>
 												Logout
 											</button>
 										) : (
 											<Link
 												href="/login"
-												className="text-[#BD9574] hover:text-[#FFE55C] transition-colors text-[16px] leading-[150%] font-light"
+												className="text-[#BD9574] hover:text-[#D4AF37] transition-colors text-[16px] leading-[150%] font-light"
 											>
 												Login
 											</Link>
@@ -373,7 +373,7 @@ export default function Header() {
 								<div className="flex items-center justify-center px-6 w-[80px]">
 									<button
 										onClick={toggleMenu}
-										className="text-[#BD9574] hover:text-[#FFE55C] transition-colors"
+										className="text-[#BD9574] hover:text-[#D4AF37] transition-colors"
 									>
 										<div className="flex flex-col gap-2">
 											<div className="w-[32px] h-[1px] bg-current"></div>
