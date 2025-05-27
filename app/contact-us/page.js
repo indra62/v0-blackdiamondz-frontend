@@ -283,7 +283,7 @@ export default function ContactUs() {
                 className="grid grid-cols-1 md:grid-cols-2 gap-0"
               >
                 {/* First Name */}
-                <div className="border border-[#656565]/30 p-4">
+                <div className="md:border border-x border-t border-[#656565]/30 p-4">
                   <input
                     type="text"
                     name="first_name"
@@ -296,7 +296,7 @@ export default function ContactUs() {
                 </div>
 
                 {/* Last Name */}
-                <div className="border border-[#656565]/30 border-l-0 md:border-l-0 p-4">
+                <div className="border border-[#656565]/30 border-l md:border-l-0 p-4">
                   <input
                     type="text"
                     name="last_name"

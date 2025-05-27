@@ -7,9 +7,9 @@ export default function TeamMembersCarousel({ data }) {
   if (!data?.featured_agents || !Array.isArray(data.featured_agents)) return null; // safeguard
   const [currentPage, setCurrentPage] = useState(0);
 
-  const ITEMS_PER_PAGE = 6;
+  // const ITEMS_PER_PAGE = 6;
   const SHOW_PAGINATION = false;
-  const totalPages = Math.ceil(data.featured_agents.length / ITEMS_PER_PAGE);
+  // const totalPages = Math.ceil(data.featured_agents.length / ITEMS_PER_PAGE);
 
   // Navigation functions
   const goToNextPage = () => {
@@ -27,16 +27,16 @@ export default function TeamMembersCarousel({ data }) {
   };
 
   // Get current page team members
-  const currentTeamMembers = data.featured_agents.slice(
-    currentPage * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE + ITEMS_PER_PAGE
-  );
+  // const currentTeamMembers = data.featured_agents.slice(
+  //   currentPage * ITEMS_PER_PAGE,
+  //   currentPage * ITEMS_PER_PAGE + ITEMS_PER_PAGE
+  // );
 
   return (
 		<>
 			{/* Team Grid - Single Row with Overflow */}
-			<div className="flex justify-center overflow-x-auto pb-8 gap-6 max-w-[1200px] mx-auto hide-scrollbar">
-				{currentTeamMembers.map((member, idx) => (
+			<div className="flex md:justify-center justify-start overflow-x-auto pb-8 gap-6 max-w-[1200px] mx-auto hide-scrollbar snap-x snap-mandatory">
+				{data?.featured_agents?.map((member, idx) => (
 					<Link
 						key={member?.id || idx}
 						href={
@@ -45,7 +45,7 @@ export default function TeamMembersCarousel({ data }) {
 							"-" +
 							member?.last_name?.toLowerCase().replace(/\s+/g, "-")
 						}
-						className="flex-none w-[150px] group cursor-pointer"
+						className="flex-none w-[150px] group cursor-pointer snap-start"
 					>
 						<div className="relative w-[150px] h-[200px] mb-4 overflow-hidden">
 							<Image

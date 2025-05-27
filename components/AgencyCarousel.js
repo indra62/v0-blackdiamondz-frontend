@@ -11,7 +11,7 @@ import Image from "next/image"
  */
 const AgencyCarousel = ({ agency, language, getImageUrl, archivo }) => {
   return (
-    <div className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-full mx-auto justify-center">
+    <div className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-full mx-auto md:justify-center justify-start">
       {agency?.map((agency) => {
         // Find translation for the current language or fallback
         const translation =
