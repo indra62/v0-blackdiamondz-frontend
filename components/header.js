@@ -350,7 +350,7 @@ export default function Header() {
 							</div>
 						</div>
 
-						<div className="row-1 row-2 col-2 col-3 flex justify-center items-center">
+						<div className="row-1 row-2 col-2 col-3 flex justify-center items-center px-3">
 							<Link href="/">
 								<img
 									src={
@@ -361,7 +361,7 @@ export default function Header() {
 										}) || "/images/smallLogoBD.png"
 									}
 									alt="Black Diamondz Logo"
-									className="w-auto h-14"
+									className="lg:max-w-[400px] md:max-w-[200px] h-auto"
 								/>
 							</Link>
 						</div>

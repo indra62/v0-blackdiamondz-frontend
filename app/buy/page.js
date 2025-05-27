@@ -315,7 +315,7 @@ export function BuyPageContent() {
 				</section>
 			) : (
 				<>
-					<div className="container mx-auto px-4 py-16">
+					<div className="container mx-auto px-4 pt-16">
 						{/* Heading */}
 						<div
 							ref={gridRef}
@@ -338,15 +338,19 @@ export function BuyPageContent() {
 								{translationExplore?.property_buy_description}
 							</div>
 						</div>
+					</div>
 
-						{/* Property Grid */}
+					<div className="container mb-6 mx-auto px-4 py-16">
+						<BuyMap />
+					</div>
+					
+					<SearchBar />
+
+					{/* Property Grid */}
+					<div className="container mx-auto px-4 py-16">
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 							{properties.length > 0 ? (
 								<>
-									<div className="md:col-span-2 lg:col-span-4">
-										<BuyMap />
-									</div>
-
 									{properties.map((property) => (
 										<Property
 											key={property.id}
@@ -464,7 +468,6 @@ export function BuyPageContent() {
 export default function BuyPage() {
   return (
 		<Suspense fallback={<div className="min-h-screen bg-[#211f17]"></div>}>
-			<SearchBar/>
 			<BuyPageContent />
 		</Suspense>
 	);
