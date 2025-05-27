@@ -8,7 +8,6 @@ import { Archivo } from "next/font/google";
 import { useEffect, useState } from "react";
 import { getImageUrl, getItems } from "@/lib/api";
 import Loading from "@/components/loading";
-import TeamMembersCarousel from "@/components/TeamMembersCarousel";
 
 const taviraj = Taviraj({
 	subsets: ["latin"],
@@ -19,7 +18,7 @@ const archivo = Archivo({
 	weight: ["300", "400", "500", "600", "700"],
 });
 
-export default function OurTeamPage() {
+export default function OurTeamAllPage() {
 	const [language, setLanguage] = useState("en");
 	const [loading, setLoading] = useState(true);
 	const [heroData, setHeroData] = useState(null);
@@ -71,7 +70,7 @@ export default function OurTeamPage() {
 				});
 
 				const dataSupport = await getItems("aboutUs_team_support", {
-					fields: ["*", "translations.*", "featured_agents.*.*"],
+					fields: ["*", "translations.*", "agents.*.*"],
 				});
 
 				setHeroData(dataHero);
@@ -238,258 +237,46 @@ export default function OurTeamPage() {
 							</div>
 						</div>
 					</section>
-
-					{/* Team Gallery */}
-					<section className="pt-16 pb-0 bg-[#211f17]">
-						<div className="container mx-auto px-4">
-							{/* Desktop/Tablet Table Layout (unchanged) */}
-							<div className="hidden md:block">
-								<table
-									className="mx-auto border-separate"
-									style={{ borderSpacing: "2px" }}
-								>
-									<tbody>
-										<tr>
-											<td
-												style={{ width: "200px", height: "200px", padding: 0 }}
-											>
-												<div className="relative w-full h-full">
-													<Image
-														src={getImageUrl(
-															teamFounderData?.founder_image_1?.id,
-															{
-																format: "webp",
-																quality: 100,
-																fit: "cover",
-															}
-														)}
-														alt="Team member in red dress"
-														fill
-														className="object-cover"
-													/>
-												</div>
-											</td>
-											<td
-												style={{ width: "200px", height: "200px", padding: 0 }}
-											>
-												<div className="relative w-full h-full">
-													<Image
-														src={getImageUrl(
-															teamFounderData?.founder_image_2?.id,
-															{
-																format: "webp",
-																quality: 100,
-																fit: "cover",
-															}
-														)}
-														alt="Team members meeting clients"
-														fill
-														className="object-cover"
-													/>
-												</div>
-											</td>
-											<td
-												rowSpan={2}
-												style={{ width: "300px", height: "402px", padding: 0 }}
-											>
-												<div className="relative w-full h-full">
-													<Image
-														src={getImageUrl(
-															teamFounderData?.founder_image_3?.id,
-															{
-																format: "webp",
-																quality: 100,
-																fit: "cover",
-															}
-														)}
-														alt="Female agent in red dress"
-														fill
-														className="object-cover"
-													/>
-												</div>
-											</td>
-											<td
-												rowSpan={2}
-												style={{ width: "300px", height: "402px", padding: 0 }}
-											>
-												<div className="relative w-full h-full">
-													<Image
-														src={getImageUrl(
-															teamFounderData?.founder_image_4?.id,
-															{
-																format: "webp",
-																quality: 100,
-																fit: "cover",
-															}
-														)}
-														alt="Team members with clients"
-														fill
-														className="object-cover"
-													/>
-												</div>
-											</td>
-											<td
-												style={{ width: "402px", height: "200px", padding: 0 }}
-											>
-												<div className="flex w-full h-full">
-													<div
-														className="relative w-1/2 h-full"
-														style={{ marginRight: "1px" }}
-													>
-														<Image
-															src={getImageUrl(
-																teamFounderData?.founder_image_5?.id,
-																{
-																	format: "webp",
-																	quality: 100,
-																	fit: "cover",
-																}
-															)}
-															alt="Director portrait 1"
-															fill
-															className="object-cover"
-														/>
-													</div>
-													<div
-														className="relative w-1/2 h-full"
-														style={{ marginLeft: "1px" }}
-													>
-														<Image
-															src={getImageUrl(
-																teamFounderData?.founder_image_6?.id,
-																{
-																	format: "webp",
-																	quality: 100,
-																	fit: "cover",
-																}
-															)}
-															alt="Director portrait 2"
-															fill
-															className="object-cover"
-														/>
-													</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td
-												colSpan={2}
-												style={{ width: "402px", height: "200px", padding: 0 }}
-											>
-												<div className="relative w-full h-full">
-													<Image
-														src={getImageUrl(
-															teamFounderData?.founder_image_7?.id,
-															{
-																format: "webp",
-																quality: 100,
-																fit: "cover",
-															}
-														)}
-														alt="Modern house exterior"
-														fill
-														className="object-cover"
-													/>
-												</div>
-											</td>
-											<td
-												style={{ width: "200px", height: "200px", padding: 0 }}
-											>
-												<div className="relative w-full h-full">
-													<Image
-														src={getImageUrl(
-															teamFounderData?.founder_image_8?.id,
-															{
-																format: "webp",
-																quality: 100,
-																fit: "cover",
-															}
-														)}
-														alt="Luxury property exterior"
-														fill
-														className="object-cover"
-													/>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							{/* Mobile stacked gallery */}
-							<div className="md:hidden flex flex-col gap-2">
-								{[1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
-									<div key={idx} className="relative w-full h-[400px]">
-										<Image
-											src={getImageUrl(
-												teamFounderData?.[`founder_image_${idx}`]?.id,
-												{
-													format: "webp",
-													quality: 100,
-													fit: "cover",
-												}
-											)}
-											alt={`Team gallery image ${idx}`}
-											fill
-											className="object-cover"
-										/>
-									</div>
-								))}
-							</div>
-						</div>
-					</section>
-
-					{/* Explore Our Story Section */}
-					<section className="relative h-[365px] w-full overflow-hidden">
-						{/* Background Image */}
-						<div className="absolute inset-0">
-							{/* Only render the Image if a valid src is provided */}
-							<Image
-								src={getImageUrl(heroData?.secondary_image?.id, {
-									format: "webp",
-									quality: 100,
-									fit: "cover",
-								})}
-								alt="Business professionals shaking hands"
-								fill
-								className="object-cover"
-							/>
-							<div className="w-full h-96 left-0 top-0 absolute bg-gradient-to-b from-[#211f17] via-[#211f17]/20 to-[#211f17]" />
-						</div>
-
-						{/* Content */}
-						<div className="relative h-full flex flex-col items-center justify-center">
-							<Link href="/our-story" className="cursor-pointer">
-								<h2 className="font-['Taviraj'] text-5xl font-light text-[#E2DBCC] tracking-wide hover:text-[#BD9574] transition-colors">
-									{translation?.secondary_title}
-								</h2>
-							</Link>
-						</div>
-					</section>
-
 					{/* Support Section */}
 					<section className="py-16 bg-[#211f17]">
 						<div className="container mx-auto px-4">
-							{/* Heading */}
-							<h2 className="font-serif text-[48px] font-light text-[#E2DBCC] text-center mb-8">
-								{translationSupport?.title}
-							</h2>
-
-							{/* Diamond Separator */}
-							<div className="flex items-center justify-center gap-0 mb-12">
-								<div className="w-[120px] h-[1px] bg-[#BD9574]"></div>
-								<div className="w-2 h-2 bg-[#BD9574] rotate-45 mx-4"></div>
-								<div className="w-[120px] h-[1px] bg-[#BD9574]"></div>
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-10 pb-8 max-w-[1200px] mx-auto justify-center">
+								{supportData?.agents.map((member, idx) => (
+									<div className="flex flex-col justify-center items-center" key={member?.id || idx}>
+										<Link
+											key={member?.id || idx}
+											href={
+												"/team/" +
+												member?.first_name?.toLowerCase().replace(/\s+/g, "-") +
+												"-" +
+												member?.last_name?.toLowerCase().replace(/\s+/g, "-")
+											}
+											className="flex flex-col justify-center group cursor-pointer"
+										>
+											<div className="relative w-[300px] h-[400px] mb-4 overflow-hidden">
+												<Image
+													src={
+														getImageUrl(member?.avatar?.id, {
+															format: "webp",
+															quality: 100,
+															fit: "cover",
+														}) || "/placeholder-image.jpg"
+													}
+													alt={member?.first_name}
+													fill
+													className="object-cover transition-transform duration-300 group-hover:scale-105"
+												/>
+											</div>
+											<h4 className="text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-1 text-center group-hover:text-[#BD9574] transition-colors">
+												{member?.first_name + " " + member?.last_name}
+											</h4>
+											<p className="text-[#BD9574] font-light text-[14px] leading-[150%] text-center">
+												{member?.title || ""}
+											</p>
+										</Link>
+									</div>
+								))}
 							</div>
-
-							{/* Description Text */}
-							<p
-								className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] max-w-3xl mx-auto mb-16 text-center`}
-							>
-								{translationSupport?.description}
-							</p>
-
-							{/* Team Members Section with Pagination */}
-							<TeamMembersCarousel data={supportData || []} />
 						</div>
 					</section>
 				</>
