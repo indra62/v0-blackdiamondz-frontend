@@ -59,6 +59,7 @@ export default function Paddington({ selectedSuggestion }) {
     setPropertyStatsLoading(false);
   }
 };
+console.log("selectedSuggestion?.suggestion", selectedSuggestion?.suggestion);
     fetchSuggestions(selectedSuggestion?.suggestion || "2 Albert Avenue Broadbeach QLD 4218");
   }, []);
 

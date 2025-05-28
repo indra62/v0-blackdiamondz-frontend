@@ -761,7 +761,8 @@ export default function PropertyDetailPage({ params }) {
 							</div>
 						)}
 					</div>
-					<Paddington />
+					<Paddington selectedSuggestion={{ suggestion: property?.address_street+" "+property?.address_suburb +" "+property?.address_state+" "+property?.address_postcode.toString().padStart(4, "0") }} />
+
 				</>
 			)}
 			<Footer />
