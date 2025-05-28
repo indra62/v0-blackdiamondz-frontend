@@ -28,6 +28,7 @@ export default function PropertyImagesCarousel({
 	detailUrl,
 	taviraj,
 	archivo,
+  count,
 }) {
 	if (!images.length) {
 		return (
@@ -84,7 +85,7 @@ export default function PropertyImagesCarousel({
 							<span
 								className={`${archivo.className} bg-black bg-opacity-60 text-white px-4 py-2 rounded text-lg font-semibold`}
 							>
-								See all photos
+								{`See all ${count} photos`}
 							</span>
 						</div>
 					</Link>
