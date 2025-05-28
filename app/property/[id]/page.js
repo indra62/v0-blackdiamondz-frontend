@@ -559,7 +559,7 @@ export default function PropertyDetailPage({ params }) {
 										{/* Column 2 (Right) */}
 										<div className="flex flex-col gap-2">
 											{/* Row 1: Image */}
-											<div className="relative h-56 md:h-64">
+											<div className="hidden md:block relative h-56 md:h-64">
 												{property?.images?.[3] && (
 													<div onClick={() => handleShowImages(3, true)}>
 														<Image
@@ -581,7 +581,7 @@ export default function PropertyDetailPage({ params }) {
 											</div>
 
 											{/* Row 2: Image */}
-											<div className="relative h-32 md:h-40">
+											<div className="hidden md:block relative h-32 md:h-40">
 												{property?.images?.[4] && (
 													<div onClick={() => handleShowPlans(0)}>
 														<Image
