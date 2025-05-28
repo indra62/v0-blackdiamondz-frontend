@@ -29,13 +29,14 @@ export default function TeamListing({ agentProperties, status }) {
       
         {currentListings.map((property) => {
           return (
-            <Property
-              key={property.id}
-              property={property}
-              taviraj={taviraj}
-              archivo={archivo}
-            />
-          )
+						<Property
+							key={property.id}
+							property={property}
+							taviraj={taviraj}
+							archivo={archivo}
+							showAction={false}
+						/>
+					);
         })}
       </div>
     </div>

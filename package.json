@@ -55,6 +55,7 @@
     "react-dom": "^19",
     "react-hook-form": "^7.54.1",
     "react-hot-toast": "^2.5.2",
+    "react-multi-carousel": "^2.8.6",
     "react-range-slider-input": "^3.2.1",
     "react-resizable-panels": "^2.1.7",
     "react-select": "^5.10.1",
