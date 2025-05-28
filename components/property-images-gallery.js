@@ -34,13 +34,32 @@ export default function PropertyImagesGallery({
 
   useEffect(() => {
 		if (!lightboxOpen) return;
-		const onKeyDown = (e) => {
-			if (e.key === "Escape") setLightboxOpen(false);
-			if (e.key === "ArrowLeft") handlePrevious();
-			if (e.key === "ArrowRight") handleNext();
+
+		let touchStartX = null;
+
+		function onTouchStart(e) {
+			if (e.touches.length === 1) {
+				touchStartX = e.touches[0].clientX;
+			}
+		}
+
+		function onTouchEnd(e) {
+			if (touchStartX === null) return;
+			const touchEndX = e.changedTouches[0].clientX;
+			const dx = touchEndX - touchStartX;
+
+			if (dx > 50) handlePrevious();
+			else if (dx < -50) handleNext();
+			touchStartX = null;
+		}
+
+		window.addEventListener("touchstart", onTouchStart, { passive: false });
+		window.addEventListener("touchend", onTouchEnd, { passive: false });
+
+		return () => {
+			window.removeEventListener("touchstart", onTouchStart);
+			window.removeEventListener("touchend", onTouchEnd);
 		};
-		window.addEventListener("keydown", onKeyDown);
-		return () => window.removeEventListener("keydown", onKeyDown);
 	}, [lightboxOpen, handlePrevious, handleNext]);
 
   return (
