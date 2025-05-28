@@ -603,10 +603,10 @@ export default function PropertyDetailPage({ params }) {
 											</div>
 
 											{/* Row 3: Icons and All Media Button */}
-											<div className="flex items-center justify-end gap-6 mt-4">
-												<div className="flex items-center gap-6">
+											<div className="flex flex-row items-start justify-end gap-6 mt-4">
+												<div className="flex flex-row items-start gap-6">
 													<div
-														className={`${archivo.className} flex flex-col justify-center items-center text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
+														className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
 														title="Images"
 														onClick={handleShowImages}
 													>
@@ -646,11 +646,11 @@ export default function PropertyDetailPage({ params }) {
 																{property?.images?.length}
 															</span>
 														</div>
-														<span>Images</span>
+														<span className="text-center">Images</span>
 													</div>
 													{property?.video && (
 														<div
-															className={`${archivo.className} flex flex-col justify-center items-center text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
+															className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
 															title="Video"
 															onClick={handleVideoClick}
 														>
@@ -676,11 +676,11 @@ export default function PropertyDetailPage({ params }) {
 																	{property?.video ? 1 : 0}
 																</span>
 															</div>
-															<span>Video</span>
+															<span className="text-center">Video</span>
 														</div>
 													)}
 													<div
-														className={`${archivo.className} flex flex-col justify-center items-center text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
+														className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
 														title="Floor Plans"
 														onClick={handleShowPlans}
 													>
@@ -703,7 +703,7 @@ export default function PropertyDetailPage({ params }) {
 																{property?.plans?.length}
 															</span>
 														</div>
-														<span>Floor Plans</span>
+														<span className="text-center">Floor Plans</span>
 													</div>
 												</div>
 												{/* Update the button onClick handler to pass the event */}
