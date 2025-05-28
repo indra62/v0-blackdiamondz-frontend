@@ -16,7 +16,7 @@ import Loading from "./loading";
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
-export default function Paddington() {
+export default function Paddington({ selectedSuggestion }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
@@ -42,7 +42,8 @@ export default function Paddington() {
       setPropertyStats(data);
       console.log("CoreLogic suggestions:", JSON.stringify(data, null, 2));
     };
-    fetchSuggestions("2 Albert Avenue Broadbeach QLD 4218");
+    console.log("selectedSuggestion", selectedSuggestion?.suggestion);
+    fetchSuggestions(selectedSuggestion?.suggestion || "2 Albert Avenue Broadbeach QLD 4218");
   }, []);
 
 

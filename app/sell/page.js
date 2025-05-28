@@ -20,8 +20,9 @@ import { getImageUrl, getItems, submitPropertySellSubmission } from "@/lib/api"
 import Loading from "@/components/loading"
 import toast from "react-hot-toast"
 import AsyncSelect from "react-select/async"
-import Select from "react-select"
+import Select from "react-select" 
 import { useDebouncedCallback } from "use-debounce"
+import SearchBarAddressCorelogic from "@/components/SearchBarAddressCorelogic";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
@@ -373,24 +374,15 @@ export default function SellPage() {
               <div className="w-24 h-[1px] bg-[#BD9574]"></div>
             </div>
 
-            {/* <div className="max-w-3xl mx-auto mb-8">
+            <div className="max-w-3xl mx-auto mb-8">
               <p
                 className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 mb-4`}
               >
                 {translation?.property_sell_secondary_description}
               </p>
 
-              <div className="flex flex-col md:flex-row gap-4 mt-8">
-                <input
-                  type="text"
-                  placeholder="Start typing to find your address..."
-                  className="flex-grow bg-transparent border border-[#656565] p-4 text-white focus:outline-none focus:border-[#BD9574]"
-                />
-                <button className="bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#BD9574] transition-colors">
-                  Find Out
-                </button>
-              </div>
-            </div> */}
+              <SearchBarAddressCorelogic />
+            </div>
           </section>
 
           {/* Contact form for property sellers
