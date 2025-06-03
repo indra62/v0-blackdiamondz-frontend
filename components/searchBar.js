@@ -296,7 +296,7 @@ export default function SearchBar() {
 		<>
 			<form
 				onSubmit={handleSearch}
-				className={`${archivo.className} font-light sticky top-[140px] z-[1000] bg-[#211F17]/80 border-none`}
+				className={`${archivo.className} font-light sticky top-[140px] z-[1001] bg-[#211F17]/80 border-none`}
 			>
 				{/* Main Navigation */}
 				<div

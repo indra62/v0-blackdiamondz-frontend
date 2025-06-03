@@ -25,7 +25,7 @@ export default function SocialMediaLinks() {
   return (
 		<>
 			{/* Floating Social Media Icons */}
-			<div className="fixed bottom-6 right-6 flex flex-col gap-2 z-40">
+			<div className="fixed bottom-6 right-6 flex flex-col gap-2 z-[1002]">
 				{data?.show_diamondz_group !== false && (
 					<a
 						href={data?.diamondz_group_url || "/"}
