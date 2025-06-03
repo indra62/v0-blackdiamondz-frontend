@@ -517,12 +517,12 @@ export function Signup() {
 
 											<div className="mt-8 text-center">
 												<p className="text-[#656565]">
-													Already have an account?{" "}
+												{isJoinClub ? "Already have a Member-ship?" : "Already have an account?"}
 													<Link
 														href="/login"
 														className="text-[#BD9574] hover:text-[#BD9574] transition-colors"
 													>
-														Sign in!
+														Sign in here.
 													</Link>
 												</p>
 											</div>

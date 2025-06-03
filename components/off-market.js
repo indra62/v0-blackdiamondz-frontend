@@ -109,7 +109,7 @@ export default function OffMarket({ data, section, dark = true }) {
             <div
               className={`${taviraj.className} ${darkMode ? "text-[#e2dbcc]" : "text-[#211f17]"} text-2xl mb-6 text-center`}
             >
-              Login to view our exclusive off-market properties
+              Login to view our Off-Market Properties
             </div>
             <Link
               href="/login"

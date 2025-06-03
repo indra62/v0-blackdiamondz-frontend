@@ -42,7 +42,7 @@ export default function StatsHome({ data, isMobileView }) {
               <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-center">
                 {translation?.left_title}
               </h2>
-              <button className="px-6 py-2 border border-[#656565] text-[#BD9574] hover:border-[#BD9574] hover:text-[#e5c04b] transition-colors font-archivo font-light text-base leading-6">
+              <button className="px-6 py-2 border-b border-[#656565] text-[#BD9574] hover:border-[#BD9574] hover:text-[#D4AF37] transition-colors font-archivo font-light text-base leading-6">
               <Link href="/our-story">More about Black Diamondz</Link>  
               </button>
             </div>
@@ -111,7 +111,7 @@ export default function StatsHome({ data, isMobileView }) {
               <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-center">
                 {translation?.right_title}
               </h2>
-              <button className="px-6 py-2 border border-[#656565] text-[#BD9574] hover:border-[#BD9574] hover:text-[#e5c04b] transition-colors font-archivo font-light text-base leading-6">
+              <button className="px-6 py-2 border-b border-[#656565] text-[#BD9574] hover:border-[#BD9574] hover:text-[#D4AF37] transition-colors font-archivo font-light text-base leading-6">
                 More about Australian Market
               </button>
             </div>

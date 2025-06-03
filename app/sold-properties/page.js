@@ -39,7 +39,7 @@ export default function SoldPage() {
 	const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0);
 	const [propertiesTotalPages, setPropertiesTotalPages] = useState(0);
 	const [error, setError] = useState(null);
-	const [explore, setExplore] = useState(null);
+	const [statistic, setStatistic] = useState(null);
 	const [offMarket, setOffMarket] = useState(null);
 	const [offMarketSection, setOffMarketSection] = useState(null);
 	const [language, setLanguage] = useState("en");
@@ -133,8 +133,8 @@ export default function SoldPage() {
 				const dataSold = await getItems("property_sold", {
 					fields: ["*", "translations.*", "cities.*"],
 				});
-				const dataExplore_section = await getItems("explore_section", {
-					fields: ["*", "translations.*", "cities.*"],
+				const dataStatistic_section = await getItems("statistic_section", {
+					fields: ["*", "translations.*"],
 				});
 				const dataOffMarketSection = await getItems("offMarket_section", {
 					fields: ["*", "translations.*"],
@@ -158,7 +158,7 @@ export default function SoldPage() {
 					sort: ["-date_created"],
 				});
 
-				setExplore(dataExplore_section);
+				setStatistic(dataStatistic_section);
 				setDataSold(dataSold);
 				setOffMarketSection(dataOffMarketSection);
 				setOffMarket(dataOffMarketProperties);
@@ -323,8 +323,9 @@ export default function SoldPage() {
 						</div>
 					</div>
 
-					{/* Explore City Section */}
-					<ExploreCity data={explore} />
+					<div className="px-[40px] py-16">
+						<StatsHome data={statistic} isMobileView={isMobileView} />
+					</div>
 
 					{/* Off-Market Properties Section */}
 					<OffMarket data={offMarket} section={offMarketSection} />

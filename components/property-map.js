@@ -210,7 +210,7 @@ export default function PropertyMap({ onClose, property, type }) {
 									? { lat: property?.geo_lat, lng: property?.geo_lon }
 									: { lat: -33.8688, lng: 151.2093 }
 							}
-							zoom={16}
+							zoom={18}
 							mapTypeId={mapType === "Satellite" ? "satellite" : "roadmap"}
 							options={{
 								disableDefaultUI: true,
@@ -254,7 +254,7 @@ export default function PropertyMap({ onClose, property, type }) {
 									}}
 									onCloseClick={() => setSelectedProperty(null)}
 								>
-									<div style={{ minWidth: 220 }}>
+									<div style={{ width: 220 }}>
 										{/* Image at the top */}
 										{selectedProperty.images?.length > 0 &&
 											selectedProperty.images[0]?.directus_files_id?.id && (
@@ -263,7 +263,7 @@ export default function PropertyMap({ onClose, property, type }) {
 													alt={selectedProperty.name}
 													style={{
 														width: "100%",
-														maxHeight: 120,
+														maxHeight: 160,
 														objectFit: "cover",
 														borderRadius: 8,
 														marginBottom: 8,

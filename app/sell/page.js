@@ -271,9 +271,9 @@ export default function SellPage() {
       ) : (
         <>
           {/* Hero Section */}
-          <section className="pt-32 text-center">
+          <section className="flex flex-col items-center pt-32 text-center">
             <h1
-              className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+              className={`${taviraj.className} text-[#e2dbcc] text-[48px] max-w-[1200px] font-light leading-[60px] tracking-[2px] mb-8`}
             >
               {translation?.property_sell_title}
             </h1>
@@ -356,32 +356,6 @@ export default function SellPage() {
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-
-          {/* Second Sell Section */}
-          <section className="py-16 text-center">
-            <h2
-              className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
-            >
-              {translation?.property_sell_secondary_title}
-            </h2>
-
-            {/* Diamond Separator */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-              <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-            </div>
-
-            <div className="max-w-3xl mx-auto mb-8">
-              <p
-                className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 mb-4`}
-              >
-                {translation?.property_sell_secondary_description}
-              </p>
-
-              <SearchBarAddressCorelogic />
             </div>
           </section>
 
@@ -607,6 +581,32 @@ export default function SellPage() {
                   </form>
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* Second Sell Section */}
+          <section className="py-16 text-center">
+            <h2
+              className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+            >
+              {translation?.property_sell_secondary_title}
+            </h2>
+
+            {/* Diamond Separator */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+              <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+            </div>
+
+            <div className="max-w-3xl mx-auto mb-8">
+              <p
+                className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 mb-4`}
+              >
+                {translation?.property_sell_secondary_description}
+              </p>
+
+              <SearchBarAddressCorelogic />
             </div>
           </section>
         </>
