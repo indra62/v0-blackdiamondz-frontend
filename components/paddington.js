@@ -113,8 +113,8 @@ export default function Paddington({ selectedSuggestion }) {
 
   return propertyStatsLoading || paddingtonStatsLoading ? (
     <section className="flex flex-col justify-center items-center h-[800px] bg-[#211f17]">
-      <Loading />
-      {error && (
+      <Loading error={error} />
+      {/* {error && (
         <div className="mt-6 text-red-500 text-lg text-center max-w-xl">
           {error}
         </div>
@@ -123,7 +123,7 @@ export default function Paddington({ selectedSuggestion }) {
         <div className="mt-6 text-[#E2DBCC] text-lg text-center">
           Loading property and statistics data, please wait...
         </div>
-      )}
+      )} */}
     </section>
   ) : (
     <>
