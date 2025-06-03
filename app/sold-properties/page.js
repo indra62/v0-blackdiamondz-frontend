@@ -98,6 +98,7 @@ export default function SoldPage() {
 					limit: ITEMS_PER_PAGE,
 					page: directusPage,
 					meta: "filter_count,total_count",
+					sort: ["-date_created"],
 				},
 				{},
 				true
@@ -151,10 +152,10 @@ export default function SoldPage() {
 						"type.*.*",
 					],
 					filter: {
-						is_off_market: { _eq: true },
 						status: { _eq: "Offmarket" },
 					},
 					limit: 4,
+					sort: ["-date_created"],
 				});
 
 				setExplore(dataExplore_section);

@@ -1,4 +1,4 @@
-import { getCoreLogicAccessToken, getCoreLogicSuggestions, getCorelogicPropertyDetail, getCoreLogicMedianSalePrice, getCoreLogicAnnualChangeInMedianPrice, getCoreLogicPropertiesSold, getCoreLogicMedianDaysOnMarket, getCoreLogicMedianAskingRent, getCoreLogicAverageHoldPeriod  } from "@/lib/corelogic-api";
+import { getCoreLogicAccessToken, getCoreLogicSuggestions, getCorelogicPropertyDetail, getCoreLogicMedianSalePrice, getCoreLogicAnnualChangeInMedianPrice, getCoreLogicPropertiesSold, getCoreLogicMedianDaysOnMarket, getCoreLogicMedianAskingRent, getCoreLogicAverageHoldPeriod, getCoreLogicReport  } from "@/lib/corelogic-api";
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -34,6 +34,8 @@ export async function GET(req) {
       });
     }
 
+
+    const report = await getCoreLogicReport(token, propertyId);
     // 3. Get statistics
     // 3.1 get Median Sale Price (12 mo)
     const statistics = await getCoreLogicMedianSalePrice(token, localityId);
@@ -49,7 +51,7 @@ export async function GET(req) {
     const statisticsAverageHoldPeriod = await getCoreLogicAverageHoldPeriod(token, localityId);
 
     // Return both suggestions and statistics
-    return new Response(JSON.stringify({ suggestions, statistics, statisticsPropertiesSold, statisticsMedianDaysOnMarket, statisticsAnnualChangeInMedianPrice, statisticsMedianAskingRent, statisticsAverageHoldPeriod }), {
+    return new Response(JSON.stringify({ suggestions, statistics, statisticsPropertiesSold, statisticsMedianDaysOnMarket, statisticsAnnualChangeInMedianPrice, statisticsMedianAskingRent, statisticsAverageHoldPeriod, report }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

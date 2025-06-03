@@ -75,6 +75,7 @@ export default function TeamMemberPage() {
           dataStatistics = await getItems("agent_statistics", {
             fields: ["*", "translations.*"],
             filter: {
+              status: { _eq: "published"},
               user_id: { _eq: matchedAgent.id },
             },
           })

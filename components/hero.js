@@ -120,7 +120,7 @@ export default function Hero({ data }) {
 						/>
 					</div>
 					<div className="text-[#FBF4E4] text-base mb-2">Scroll to start</div>
-					<ChevronDown className="text-[#FFD700] animate-bounce" />
+					<ChevronDown className="text-[#BD9574] animate-bounce" />
 				</div>
 			</div>
 		</div>

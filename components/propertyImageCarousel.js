@@ -58,7 +58,11 @@ export default function PropertyImagesCarousel({
 		>
 			{images.map((img, idx) =>
 				typeof img === "string" ? (
-					<div key={idx} className="relative h-[240px]">
+					<Link
+						key={idx}
+						href={detailUrl}
+						className="relative h-[240px] block group"
+					>
 						<Image
 							src={img}
 							alt={alt}
@@ -66,7 +70,7 @@ export default function PropertyImagesCarousel({
 							style={{ objectFit: "cover" }}
 							className="transition-transform duration-700 hover:scale-110"
 						/>
-					</div>
+					</Link>
 				) : img.seeAll ? (
 					<Link
 						key={idx}

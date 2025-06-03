@@ -33,11 +33,11 @@ const customStyles = {
 		overflowY: "auto",
 		border: "1px solid rgba(101, 101, 101, 0.3)",
 		WebkitOverflowScrolling: "touch",
-		zIndex: 1000,
+		zIndex: 1002,
 	}),
 	menuPortal: (base) => ({
 		...base,
-		zIndex: 1000, // or higher if needed
+		zIndex: 1002, // or higher if needed
 	}),
 	option: (provided, state) => ({
 		...provided,
@@ -535,10 +535,12 @@ function PropertyFilter({
 	features,
 }) {
 	const [hasMounted, setHasMounted] = useState(false);
+	const [shouldAutoSubmit, setShouldAutoSubmit] = useState(false);
+	
 	useEffect(() => {
 		setHasMounted(true);
 	}, []);
-
+	
 	const toggleFilter = (filterId) => {
 		setActiveFilters((prev) =>
 			prev.includes(filterId)
@@ -546,6 +548,14 @@ function PropertyFilter({
 				: [...prev, filterId]
 		);
 	};
+
+	useEffect(() => {
+  if (shouldAutoSubmit && isMobileView) {
+    handleSearch();
+    setShouldAutoSubmit(false);
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formData, shouldAutoSubmit, isMobileView]);
 
 	return (
 		<>
@@ -569,12 +579,12 @@ function PropertyFilter({
 									}
 									loadOptions={debouncedLoadCityOptions}
 									onChange={(option) => {
-										// Update both the label and ID fields
 										setFormData((prev) => ({
 											...prev,
 											city: option ? option.name : "",
 											city_id: option ? option.id : "",
 										}));
+										if (isMobileView) setShouldAutoSubmit(true);
 									}}
 									getOptionLabel={(option) => option.name}
 									getOptionValue={(option) => option.id}
@@ -593,7 +603,7 @@ function PropertyFilter({
 								/>
 							</div>
 							<div className="flex items-center">
-								<div className="flex flex-col justify-center px-7 py-4 border-[#333] border-l">
+								<div className="flex flex-col justify-center px-7 py-2 border-[#333] border-l">
 									<div className={isMobileFiltersOpen ? "rotate-180" : ""}>
 										<button
 											type="button"

@@ -257,10 +257,10 @@ export default function ClubDiamondz() {
 						"type.*.*",
 					],
 					filter: {
-						is_off_market: { _eq: true },
 						status: { _eq: "Offmarket" },
 					},
 					limit: 4,
+          sort: ["-date_created"],
 				});
 
         setDiamondzPage(dataDiamondzPage)
