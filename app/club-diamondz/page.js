@@ -261,6 +261,7 @@ export default function ClubDiamondz() {
 						status: { _eq: "Offmarket" },
 					},
 					limit: 4,
+          sort: ["-date_created"],
 				});
 
         setDiamondzPage(dataDiamondzPage)

@@ -94,6 +94,7 @@ export function SavedPropertyPage() {
           limit: ITEMS_PER_PAGE,
           page: directusPage,
           meta: "filter_count,total_count",
+          sort: ["-date_created"],
         },
         {
           Authorization: `Bearer ${token}`,
@@ -155,6 +156,7 @@ export function SavedPropertyPage() {
 						status: { _eq: "Offmarket" },
 					},
 					limit: 4,
+          sort: ["-date_created"],
 				});
 
         fetchProperties()

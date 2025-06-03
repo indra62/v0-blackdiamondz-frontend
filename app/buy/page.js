@@ -206,6 +206,7 @@ export function BuyPageContent() {
 					limit: ITEMS_PER_PAGE,
 					page: directusPage,
 					meta: "filter_count,total_count",
+					sort: ["-date_created"],
 				},
 				{},
 				true
@@ -230,7 +231,8 @@ export function BuyPageContent() {
 
   useEffect(() => {
     if (gridRef.current) {
-      gridRef.current.scrollIntoView({ top: -80, behavior: "smooth" });
+			gridRef.current.style.scrollMarginTop = "280px";
+      gridRef.current.scrollIntoView({ behavior: "instant" });
     }
   }, [propertiesCurrentPage]);
 
@@ -263,6 +265,7 @@ export function BuyPageContent() {
 						status: { _eq: "Offmarket" },
 					},
 					limit: 4,
+					sort: ["-date_created"],
 				});
 
         setExplore(dataExplore_section);
@@ -318,7 +321,6 @@ export function BuyPageContent() {
 					<div className="container mx-auto px-4 pt-16">
 						{/* Heading */}
 						<div
-							ref={gridRef}
 							className="flex flex-col items-center text-center mb-12"
 						>
 							<h2
@@ -347,7 +349,7 @@ export function BuyPageContent() {
 					<SearchBar />
 
 					{/* Property Grid */}
-					<div className="container mx-auto px-4 py-16">
+					<div ref={gridRef} className="container mx-auto px-4 py-16">
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 							{properties.length > 0 ? (
 								<>

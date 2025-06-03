@@ -100,6 +100,7 @@ export default function Home() {
 					filter,
 					limit: ITEMS_PER_PAGE,
 					page: directusPage,
+					sort: ["-date_created"],
 					meta: "filter_count,total_count",
 				},
 				{},
@@ -188,6 +189,7 @@ export default function Home() {
 						is_off_market: { _eq: true },
 						status: { _eq: "Offmarket" },
 					},
+					sort: ["-date_created"],
 					limit: 4,
 				});
 
