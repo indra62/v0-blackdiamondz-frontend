@@ -126,9 +126,7 @@ export default function BuyMap() {
 	const [error, setError] = useState(null);
 	const [selectedProperty, setSelectedProperty] = useState(null);
   const mapRef = useRef(null);
-	// NOTE: To use Google Maps, you must set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
-	// Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
-	// The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
+
 	const { isLoaded } = useMapLoader()
 
 	useEffect(() => {
@@ -180,7 +178,7 @@ export default function BuyMap() {
 	}, [isLoaded, property]);
 
 	return (
-		<div className="relative bg-[#211f17] z-50 flex flex-col rounded-md">
+		<div className="relative bg-[#211f17] z-[1001] flex flex-col rounded-md">
 			<div className="flex-1 relative">
 				<div className="h-[500px] w-full">
 					{isLoaded ? (

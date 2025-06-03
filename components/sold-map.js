@@ -126,9 +126,6 @@ export default function SoldMap() {
 	const [error, setError] = useState(null);
 	const [selectedProperty, setSelectedProperty] = useState(null);
   const mapRef = useRef(null);
-	// NOTE: To use Google Maps, you must set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
-	// Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
-	// The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
 
 	const { isLoaded } = useMapLoader()
 
