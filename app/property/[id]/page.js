@@ -516,26 +516,21 @@ export default function PropertyDetailPage({ params }) {
                     <div>
                       <p
                         className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] whitespace-pre-line`}
+                        style={{
+                          overflow: "hidden",
+                          display: "-webkit-box",
+                          WebkitLineClamp: !expanded ? 5 : "unset",
+                          WebkitBoxOrient: "vertical",
+                        }}
                       >
-                        {displayedText}
-                        {showReadMore && !expanded && "..."}
+                        {description}
                       </p>
-                      {showReadMore && !expanded && (
+                      {showReadMore && (
                         <button
-                          className="text-[#bd9574] underline mt-2 cursor-pointer bg-transparent border-none p-0"
-                          onClick={() => setExpanded(true)}
-                          type="button"
+                          className="text-[#bd9574] underline mt-2 cursor-pointer font-['Archivo']"
+                          onClick={() => setExpanded(!expanded)}
                         >
-                          Read more...
-                        </button>
-                      )}
-                      {showReadMore && expanded && (
-                        <button
-                          className="text-[#bd9574] underline mt-2 cursor-pointer bg-transparent border-none p-0"
-                          onClick={() => setExpanded(false)}
-                          type="button"
-                        >
-                          Read less...
+                          {expanded ? "Read Less" : "Read More"}
                         </button>
                       )}
                     </div>
@@ -621,8 +616,6 @@ export default function PropertyDetailPage({ params }) {
                           )}
                         </div>
                       </div>
-
-                      
                     </div>
 
                     {/* Column 2 (Right) */}
@@ -670,32 +663,73 @@ export default function PropertyDetailPage({ params }) {
                           </div>
                         )}
                       </div>
-
-                      
                     </div>
                     {/* Row 3: Don't Miss It Section */}
                     {/* Row 3: Icons and All Media Button */}
-                      <div className="flex flex-col mt-4 order-4 md:order-3">
-                        <h3
-                          className={`${archivo.className} text-[#E2DBCC] text-[20px] font-[400] leading-[100%] tracking-[0%] mb-2`}
-                        >
-                          Don't miss it !
-                        </h3>
-                        <p
-                          className={`${inter.className} text-[#757575] font-[500] text-[12px] leading-[150%] tracking-[-1.1%] mb-4`}
-                        >
-                          Follow the updates about this property by subscribing
-                          to our newsletter and stay in the loop with news &
-                          updates.
-                        </p>
-                      </div>
+                    <div className="flex flex-col mt-4 order-4 md:order-3">
+                      <h3
+                        className={`${archivo.className} text-[#E2DBCC] text-[20px] font-[400] leading-[100%] tracking-[0%] mb-2`}
+                      >
+                        Don't miss it !
+                      </h3>
+                      <p
+                        className={`${inter.className} text-[#757575] font-[500] text-[12px] leading-[150%] tracking-[-1.1%] mb-4`}
+                      >
+                        Follow the updates about this property by subscribing to
+                        our newsletter and stay in the loop with news & updates.
+                      </p>
+                    </div>
 
-                      <div className="flex flex-row items-start justify-end gap-6 mt-4 order-3 md:order-4">
-                        <div className="flex flex-row items-start gap-6">
+                    <div className="flex flex-row items-start justify-end gap-6 mt-4 order-3 md:order-4">
+                      <div className="flex flex-row items-start gap-6">
+                        <div
+                          className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
+                          title="Images"
+                          onClick={() => handleShowImages(0, false, true)}
+                        >
+                          <div className="flex items-center gap-2 text-[#bd9574]">
+                            <svg
+                              width="23"
+                              height="22"
+                              viewBox="0 0 23 22"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M8.55014 10.1999C9.43376 10.1999 10.1501 9.48359 10.1501 8.59994C10.1501 7.71632 9.43376 7 8.55014 7C7.66651 7 6.9502 7.71632 6.9502 8.59994C6.9502 9.48359 7.66651 10.1999 8.55014 10.1999Z"
+                                stroke="currentColor"
+                                strokeWidth="1.56"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M7.39844 18.2002C11.8542 8.5205 15.5581 6.82456 19.75 13.1044"
+                                stroke="currentColor"
+                                strokeWidth="1.56"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M16.5505 3.7998H6.95086C5.18361 3.7998 3.75098 5.23244 3.75098 6.99969V14.9994C3.75098 16.7666 5.18361 18.1993 6.95086 18.1993H16.5505C18.3177 18.1993 19.7504 16.7666 19.7504 14.9994V6.99969C19.7504 5.23244 18.3177 3.7998 16.5505 3.7998Z"
+                                stroke="currentColor"
+                                strokeWidth="1.56"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                            <span
+                              className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+                            >
+                              {property?.images?.length}
+                            </span>
+                          </div>
+                          <span className="text-center">Images</span>
+                        </div>
+                        {property?.video && (
                           <div
                             className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
-                            title="Images"
-                            onClick={() => handleShowImages(0, false, true)}
+                            title="Video"
+                            onClick={handleVideoClick}
                           >
                             <div className="flex items-center gap-2 text-[#bd9574]">
                               <svg
@@ -706,21 +740,7 @@ export default function PropertyDetailPage({ params }) {
                                 xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
-                                  d="M8.55014 10.1999C9.43376 10.1999 10.1501 9.48359 10.1501 8.59994C10.1501 7.71632 9.43376 7 8.55014 7C7.66651 7 6.9502 7.71632 6.9502 8.59994C6.9502 9.48359 7.66651 10.1999 8.55014 10.1999Z"
-                                  stroke="currentColor"
-                                  strokeWidth="1.56"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M7.39844 18.2002C11.8542 8.5205 15.5581 6.82456 19.75 13.1044"
-                                  stroke="currentColor"
-                                  strokeWidth="1.56"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M16.5505 3.7998H6.95086C5.18361 3.7998 3.75098 5.23244 3.75098 6.99969V14.9994C3.75098 16.7666 5.18361 18.1993 6.95086 18.1993H16.5505C18.3177 18.1993 19.7504 16.7666 19.7504 14.9994V6.99969C19.7504 5.23244 18.3177 3.7998 16.5505 3.7998Z"
+                                  d="M14.75 9.16667L18.9236 7.08033C19.0633 7.01052 19.2185 6.97756 19.3746 6.98458C19.5306 6.99161 19.6823 7.03839 19.8151 7.12049C19.948 7.20258 20.0577 7.31727 20.1338 7.45367C20.2099 7.59006 20.2499 7.74364 20.25 7.89983V14.1002C20.2499 14.2564 20.2099 14.4099 20.1338 14.5463C20.0577 14.6827 19.948 14.7974 19.8151 14.8795C19.6823 14.9616 19.5306 15.0084 19.3746 15.0154C19.2185 15.0224 19.0633 14.9895 18.9236 14.9197L14.75 12.8333V9.16667ZM3.75 7.33333C3.75 6.8471 3.94315 6.38079 4.28697 6.03697C4.63079 5.69315 5.0971 5.5 5.58333 5.5H12.9167C13.4029 5.5 13.8692 5.69315 14.213 6.03697C14.5568 6.38079 14.75 6.8471 14.75 7.33333V14.6667C14.75 15.1529 14.5568 15.6192 14.213 15.963C13.8692 16.3068 13.4029 16.5 12.9167 16.5H5.58333C5.0971 16.5 4.63079 16.3068 4.28697 15.963C3.94315 15.6192 3.75 15.1529 3.75 14.6667V7.33333Z"
                                   stroke="currentColor"
                                   strokeWidth="1.56"
                                   strokeLinecap="round"
@@ -730,78 +750,48 @@ export default function PropertyDetailPage({ params }) {
                               <span
                                 className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
                               >
-                                {property?.images?.length}
+                                {property?.video ? 1 : 0}
                               </span>
                             </div>
-                            <span className="text-center">Images</span>
+                            <span className="text-center">Video</span>
                           </div>
-                          {property?.video && (
-                            <div
-                              className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
-                              title="Video"
-                              onClick={handleVideoClick}
-                            >
-                              <div className="flex items-center gap-2 text-[#bd9574]">
-                                <svg
-                                  width="23"
-                                  height="22"
-                                  viewBox="0 0 23 22"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M14.75 9.16667L18.9236 7.08033C19.0633 7.01052 19.2185 6.97756 19.3746 6.98458C19.5306 6.99161 19.6823 7.03839 19.8151 7.12049C19.948 7.20258 20.0577 7.31727 20.1338 7.45367C20.2099 7.59006 20.2499 7.74364 20.25 7.89983V14.1002C20.2499 14.2564 20.2099 14.4099 20.1338 14.5463C20.0577 14.6827 19.948 14.7974 19.8151 14.8795C19.6823 14.9616 19.5306 15.0084 19.3746 15.0154C19.2185 15.0224 19.0633 14.9895 18.9236 14.9197L14.75 12.8333V9.16667ZM3.75 7.33333C3.75 6.8471 3.94315 6.38079 4.28697 6.03697C4.63079 5.69315 5.0971 5.5 5.58333 5.5H12.9167C13.4029 5.5 13.8692 5.69315 14.213 6.03697C14.5568 6.38079 14.75 6.8471 14.75 7.33333V14.6667C14.75 15.1529 14.5568 15.6192 14.213 15.963C13.8692 16.3068 13.4029 16.5 12.9167 16.5H5.58333C5.0971 16.5 4.63079 16.3068 4.28697 15.963C3.94315 15.6192 3.75 15.1529 3.75 14.6667V7.33333Z"
-                                    stroke="currentColor"
-                                    strokeWidth="1.56"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  />
-                                </svg>
-                                <span
-                                  className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
-                                >
-                                  {property?.video ? 1 : 0}
-                                </span>
-                              </div>
-                              <span className="text-center">Video</span>
-                            </div>
-                          )}
-                          <div
-                            className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
-                            title="Floor Plans"
-                            onClick={() => handleShowPlans(0, true)}
-                          >
-                            <div className="flex items-center gap-2 text-[#bd9574]">
-                              <svg
-                                width="18"
-                                height="18"
-                                viewBox="0 0 23 22"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M22 2V22H2V11H4V20H9V14H11V20H20V11H17V9H20V4H11V9H14V11H9V4H4V8H2V2H22Z"
-                                  fill="currentColor"
-                                ></path>
-                              </svg>
-                              <span
-                                className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
-                              >
-                                {property?.plans?.length}
-                              </span>
-                            </div>
-                            <span className="text-center">Floor Plans</span>
-                          </div>
-                        </div>
-                        {/* Update the button onClick handler to pass the event */}
-                        <button
-                          onClick={handleShowAllMedia}
-                          className="px-6 py-3 border border-[#bd9574] text-[#bd9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
+                        )}
+                        <div
+                          className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}
+                          title="Floor Plans"
+                          onClick={() => handleShowPlans(0, true)}
                         >
-                          View All Media
-                        </button>
+                          <div className="flex items-center gap-2 text-[#bd9574]">
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 23 22"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M22 2V22H2V11H4V20H9V14H11V20H20V11H17V9H20V4H11V9H14V11H9V4H4V8H2V2H22Z"
+                                fill="currentColor"
+                              ></path>
+                            </svg>
+                            <span
+                              className={`${archivo.className} text-[#E2DBCC] font-[300] text-[16px] leading-[150%] tracking-[0px]`}
+                            >
+                              {property?.plans?.length}
+                            </span>
+                          </div>
+                          <span className="text-center">Floor Plans</span>
+                        </div>
                       </div>
-                </div>
+                      {/* Update the button onClick handler to pass the event */}
+                      <button
+                        onClick={handleShowAllMedia}
+                        className="px-6 py-3 border border-[#bd9574] text-[#bd9574] hover:border-[#BD9574] hover:text-[#BD9574] transition-colors"
+                      >
+                        View All Media
+                      </button>
+                    </div>
+                  </div>
                 ) : viewMode === "gallery" ? (
                   /* Gallery View - Replaces the grid when "View All Media" is clicked */
                   <div className="w-full h-[500px]">

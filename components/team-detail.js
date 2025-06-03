@@ -23,8 +23,14 @@ const scrollbarHideStyles = `
   }
 `
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const taviraj = Taviraj({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+})
+const archivo = Archivo({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+})
 
 export default function TeamDetail({
   member,
@@ -33,6 +39,7 @@ export default function TeamDetail({
   testimonials,
 }) {
   const [language, setLanguage] = useState("en")
+  const [expanded, setExpanded] = useState(false)
 
   const translation =
     member?.translations?.find((t) => t.languages_code === language) ||
@@ -96,21 +103,21 @@ export default function TeamDetail({
         <div className=" mx-auto px-[40px] py-12">
           <div className="flex flex-col md:flex-row">
             {/* Left Column - Agent Info */}
-            <div className="w-full md:w-1/3 pr-0 md:pr-8">
+            <div className="w-full md:w-2/5 lg:w-1/3 pr-0 md:pr-8">
               <h1
-                className={`${taviraj.className} text-[#BD9574] text-[48px] font-light leading-[120%] mb-2`}
+                className={`${taviraj.className} text-[#BD9574] text-4xl lg:text-[48px] font-light leading-[120%] mb-2`}
               >
                 {member?.first_name + " " + member?.last_name}
               </h1>
               <p
-                className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] mb-8`}
+                className={`${archivo.className} text-[#E2DBCC] font-light text-sm lg:text-base leading-[150%] mb-8`}
               >
                 {member?.title}
               </p>
 
               {/* Contact Buttons */}
               <div className="space-y-0 mb-8">
-                <button className="w-full border border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors">
+                <div className="w-full border border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] transition-colors">
                   <svg
                     width="22"
                     height="22"
@@ -127,10 +134,12 @@ export default function TeamDetail({
                       fill="currentColor"
                     />
                   </svg>
-                  <span className={`${archivo.className} font-light text-base`}>
+                  <span
+                    className={`${archivo.className} font-light text-sm lg:text-base`}
+                  >
                     Book Appraisal for Sale
                   </span>
-                </button>
+                </div>
                 {member?.contact_phone && (
                   <a
                     href={`tel:${member?.contact_phone}`}
@@ -161,7 +170,7 @@ export default function TeamDetail({
                       />
                     </svg>
                     <span
-                      className={`${archivo.className} font-light text-base`}
+                      className={`${archivo.className} font-light text-sm lg:text-base`}
                     >
                       {member?.contact_phone}
                     </span>
@@ -186,50 +195,107 @@ export default function TeamDetail({
                       />
                     </svg>
                     <span
-                      className={`${archivo.className} font-light text-base`}
+                      className={`${archivo.className} font-light text-sm lg:text-base`}
                     >
                       {member?.contact_mobile}
                     </span>
                   </a>
                 )}
-
-                <a
-                  href={`mailto:${member?.contact_email}`}
-                  className="w-full border border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
-                >
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 22 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                {member?.contact_email && (
+                  <a
+                    href={`mailto:${member?.contact_email}`}
+                    className="w-full border border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
                   >
-                    <path
-                      d="M4 6.83403L9.68333 11.0965C10.6611 11.8298 12.0055 11.8298 12.9833 11.0965L18.6667 6.83398"
-                      stroke="currentColor"
-                      strokeWidth="1.56"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M17.6667 5H4.83333C3.82081 5 3 5.82081 3 6.83333V16C3 17.0125 3.82081 17.8333 4.83333 17.8333H17.6667C18.6792 17.8333 19.5 17.0125 19.5 16V6.83333C19.5 5.82081 18.6792 5 17.6667 5Z"
-                      stroke="currentColor"
-                      strokeWidth="1.56"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <span className={`${archivo.className} font-light text-base`}>
-                    {member?.contact_email}
-                  </span>
-                </a>
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 22 22"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M4 6.83403L9.68333 11.0965C10.6611 11.8298 12.0055 11.8298 12.9833 11.0965L18.6667 6.83398"
+                        stroke="currentColor"
+                        strokeWidth="1.56"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M17.6667 5H4.83333C3.82081 5 3 5.82081 3 6.83333V16C3 17.0125 3.82081 17.8333 4.83333 17.8333H17.6667C18.6792 17.8333 19.5 17.0125 19.5 16V6.83333C19.5 5.82081 18.6792 5 17.6667 5Z"
+                        stroke="currentColor"
+                        strokeWidth="1.56"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <span
+                      className={`${archivo.className} font-light text-sm lg:text-base`}
+                    >
+                      {member?.contact_email}
+                    </span>
+                  </a>
+                )}
+              </div>
+
+              {/* Agent Photo and Quote */}
+              <div className={`block md:hidden relative w-full ${member?.description ? "h-[600px]" : "h-[300px]"} bg-black overflow-hidden`}>
+                <div className="grid grid-cols-1 gap-4 h-full">
+                  {/* Image Container */}
+                  <div className="flex items-center justify-center">
+                    <div className="relative w-full h-[300px] mx-auto">
+                      <Image
+                        src={getImageUrl(member?.avatar?.id, {
+                          format: "webp",
+                          quality: 100,
+                          fit: "contain",
+                        })}
+                        alt={member?.first_name + " " + member?.last_name}
+                        fill
+                        className="object-contain"
+                        priority
+                      />
+                    </div>
+                  </div>
+
+                  {/* Text Overlay - Positioned in the middle-right area */}
+                  {member?.description && (
+                    <div className="flex items-center justify-center">
+                      <div className="max-w-[400px] px-8">
+                        <p
+                          className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
+                        >
+                          {member?.description}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Bio */}
-              <div className="space-y-4">
+              <div className="md:mt-0 mt-8">
                 <div
-                  className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-relaxed`}
+                  className={`
+          ${archivo.className}
+          text-[#E2DBCC] font-light text-sm lg:text-base leading-relaxed
+          ${!expanded ? "line-clamp-5" : ""}
+        `}
+                  style={{
+                    overflow: "hidden",
+                    display: "-webkit-box",
+                    WebkitLineClamp: !expanded ? 5 : "unset",
+                    WebkitBoxOrient: "vertical",
+                  }}
                   dangerouslySetInnerHTML={{ __html: translation?.bio || "" }}
                 />
+                {/* Toggle Button */}
+                {(translation?.bio || "").length > 300 && (
+                  <button
+                    className="text-[#bd9574] text-sm lg:text-base underline mt-2 cursor-pointer font-['Archivo']"
+                    onClick={() => setExpanded(!expanded)}
+                  >
+                    {expanded ? "Read Less" : "Read More"}
+                  </button>
+                )}
               </div>
 
               {/* Stats */}
@@ -241,12 +307,12 @@ export default function TeamDetail({
                       className="flex justify-between items-center py-4 border-t border-[#656565] "
                     >
                       <span
-                        className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
+                        className={`${archivo.className} text-[#E2DBCC] font-light text-sm lg:text-base leading-[150%]`}
                       >
                         {statistic?.title}
                       </span>
                       <span
-                        className={`${taviraj.className} text-[#BD9574] text-[32px] font-normal leading-[120%]`}
+                        className={`${taviraj.className} text-[#BD9574] md:text-[16px] lg:text-[32px] font-normal leading-[120%]`}
                       >
                         {statistic?.value}
                       </span>
@@ -257,35 +323,41 @@ export default function TeamDetail({
             </div>
 
             {/* Right Column - Agent Photo and Current Listings */}
-            <div className="w-full md:w-2/3">
+            <div className="w-full md:w-3/5 lg:w-2/3">
               {/* Agent Photo and Quote */}
-              <div className="relative w-full h-[480px] bg-black overflow-hidden">
-                {/* Image Container */}
-                <div className=" relative w-[60%] top-10 h-full">
-                  <Image
-                    src={getImageUrl(member?.avatar?.id, {
-                      format: "webp",
-                      quality: 100,
-                      fit: "contain",
-                    })}
-                    alt={member?.first_name + " " + member?.last_name}
-                    fill
-                    className="object-contain scale-125"
-                    priority
-                  />
-                </div>
+              <div className="hidden md:block relative md:h-[300px] lg:h-[480px] bg-black overflow-hidden">
+                <div
+                  className={`${
+                    member?.description ? "grid-cols-2" : "grid-cols-1"
+                  } grid gap-4 h-full`}
+                >
+                  {/* Image Container */}
+                  <div className="flex items-center justify-center">
+                    <div className="relative w-[60%] h-[300px] lg:h-[480px] mx-auto">
+                      <Image
+                        src={getImageUrl(member?.avatar?.id, {
+                          format: "webp",
+                          quality: 100,
+                          fit: "contain",
+                        })}
+                        alt={member?.first_name + " " + member?.last_name}
+                        fill
+                        className="object-contain"
+                        priority
+                      />
+                    </div>
+                  </div>
 
-                {/* Text Overlay - Positioned in the middle-right area */}
-                <div className="absolute bottom-4 md:top-1/2 right-8 transform md:-translate-y-1/2 max-w-[400px] p-6">
-                  <p
-                    className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%]`}
-                  >
-                    "Black Diamondz' hand-picked team provides homeowners with
-                    specialist support throughout the sale process. Our aim is
-                    to help clients make informed decisions about the sale of
-                    their home, and to enable transparent and open
-                    communication."
-                  </p>
+                  {/* Text Overlay - Positioned in the middle-right area */}
+                  <div className="flex items-center justify-center">
+                    <div className="max-w-[400px]">
+                      <p
+                        className={`${archivo.className} text-[#E2DBCC] font-light md:text-sm lg:text-base leading-[150%]`}
+                      >
+                        {member?.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
