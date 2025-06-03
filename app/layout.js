@@ -4,6 +4,7 @@ import { AuthProvider } from "@/hooks/useAuth"
 import { Toaster } from "react-hot-toast"
 import SocialMediaLinks from "@/components/socialMedia"
 import Header from "@/components/header"
+import { MapLoaderProvider } from "@/lib/component/MapLoaderProvider";
 import { Suspense } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -22,7 +23,9 @@ export default function RootLayout({ children }) {
           <Suspense fallback={null}>
             <Toaster position="top-center" reverseOrder={false} />
             <Header />
+            <MapLoaderProvider>
             {children}
+            </MapLoaderProvider>
             <SocialMediaLinks />
           </Suspense>
         </AuthProvider>

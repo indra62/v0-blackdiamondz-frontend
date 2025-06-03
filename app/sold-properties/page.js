@@ -20,6 +20,7 @@ import { Property } from "@/lib/component/property";
 import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
 import Loading from "@/components/loading";
+import StatsHome from "@/components/stats_home";
 
 const taviraj = Taviraj({
 	subsets: ["latin"],

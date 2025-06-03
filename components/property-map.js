@@ -1,14 +1,15 @@
 "use client"
 
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Archivo, Taviraj } from "next/font/google"
 import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
 
-import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api"
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api"
 import Loading from "./loading"
 import { getImageUrl, getItems } from "@/lib/api"
+import { useMapLoader } from "@/lib/component/MapLoaderProvider"
 
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
@@ -119,10 +120,7 @@ export default function PropertyMap({ onClose, property, type }) {
   // Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
   // The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
 
-  const { isLoaded } = useJsApiLoader({
-    id: "google-maps-script",
-    googleMapsApiKey: "AIzaSyBQ7mtgk24xxFbuz7eS2KE93QRu3JzDLr0",
-  })
+  const { isLoaded } = useMapLoader()
 
   const handleMapTypeChange = (type) => {
     setMapType(type)
