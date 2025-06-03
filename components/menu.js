@@ -142,7 +142,7 @@ export default function Menu({
   // Main menu overlay with responsive layout
   // Uses flex-col on mobile and standard flex on desktop
   return (
-		<div className="fixed inset-0 bg-[#211f17]/80 z-[1001] backdrop-blur-2xl overflow-y-auto">
+		<div className="fixed inset-0 bg-[#211f17]/80 z-[1003] backdrop-blur-2xl overflow-y-auto">
 			<Toaster position="top-center" reverseOrder={false} />
 			<div className="container mx-auto px-4 py-6 h-full flex flex-col">
 				<div className="flex justify-between items-center mb-12">

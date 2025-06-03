@@ -220,7 +220,7 @@ export default function Header() {
 								}}
 								aria-expanded={isLanguageDropdownOpen}
 								aria-haspopup="true"
-								className="flex items-center w-10 h-10 gap-1 text-[#BD9574] focus:outline-none relative z-[999]"
+								className="flex items-center w-10 h-10 gap-1 text-[#BD9574] focus:outline-none relative z-[1001]"
 							>
 								<span className="text-xl">{selectedLanguage.flag}</span>
 								<ChevronDown className="h-4 w-4 text-[#BD9574]" />
@@ -407,7 +407,7 @@ export default function Header() {
 										isLanguageDropdownOpen &&
 										createPortal(
 											<div
-												className="bg-[#211f17] border border-[#333] shadow-lg z-[1000]"
+												className="bg-[#211f17] border border-[#333] shadow-lg z-[1001]"
 												ref={languageDropdownRef}
 												style={{
 													position: "fixed",
@@ -507,7 +507,7 @@ export default function Header() {
 			{/* Language Dropdown for Mobile */}
 			{isMobileView && isLanguageDropdownOpen && (
 				<div
-					className="bg-[#211f17] border border-[#333] shadow-lg fixed z-[1000]"
+					className="bg-[#211f17] border border-[#333] shadow-lg fixed z-[1001]"
 					style={{
 						top: "60px",
 						right: "10px",

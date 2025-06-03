@@ -259,7 +259,7 @@
   .sticky-header {
     position: sticky !important;
     top: 0 !important;
-    z-index: 70 !important;
+    z-index: 1001 !important;
     width: 100%;
     height: auto;
     transform: translateZ(0);
