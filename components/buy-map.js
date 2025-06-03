@@ -9,10 +9,10 @@ import {
 	GoogleMap,
 	Marker,
 	InfoWindow,
-	useJsApiLoader,
 } from "@react-google-maps/api";
 import Loading from "./loading";
 import { getImageUrl, getItems } from "@/lib/api";
+import { useMapLoader } from "@/lib/component/MapLoaderProvider";
 
 const archivo = Archivo({
 	subsets: ["latin"],
@@ -126,14 +126,8 @@ export default function BuyMap() {
 	const [error, setError] = useState(null);
 	const [selectedProperty, setSelectedProperty] = useState(null);
   const mapRef = useRef(null);
-	// NOTE: To use Google Maps, you must set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
-	// Example: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
-	// The @react-google-maps/api will automatically use this key if you use useJsApiLoader.
 
-	const { isLoaded } = useJsApiLoader({
-		id: "google-maps-script",
-		googleMapsApiKey: "AIzaSyBQ7mtgk24xxFbuz7eS2KE93QRu3JzDLr0",
-	});
+	const { isLoaded } = useMapLoader()
 
 	useEffect(() => {
 		const fetchProperty = async () => {
@@ -184,7 +178,7 @@ export default function BuyMap() {
 	}, [isLoaded, property]);
 
 	return (
-		<div className="relative bg-[#211f17] z-50 flex flex-col rounded-md">
+		<div className="relative bg-[#211f17] z-[1001] flex flex-col rounded-md">
 			<div className="flex-1 relative">
 				<div className="h-[500px] w-full">
 					{isLoaded ? (
@@ -193,7 +187,7 @@ export default function BuyMap() {
 							onLoad={(map) => {
 								mapRef.current = map;
 							}}
-							zoom={16}
+							zoom={18}
 							mapTypeId={mapType === "Satellite" ? "satellite" : "roadmap"}
 							options={{
 								disableDefaultUI: true,
@@ -225,7 +219,7 @@ export default function BuyMap() {
 									}}
 									onCloseClick={() => setSelectedProperty(null)}
 								>
-									<div style={{ minWidth: 220 }}>
+									<div style={{ width: 220 }}>
 										{/* Image at the top */}
 										{selectedProperty.images?.length > 0 &&
 											selectedProperty.images[0]?.directus_files_id?.id && (
@@ -236,7 +230,7 @@ export default function BuyMap() {
 													alt={selectedProperty.name}
 													style={{
 														width: "100%",
-														maxHeight: 120,
+														maxHeight: 160,
 														objectFit: "cover",
 														borderRadius: 8,
 														marginBottom: 8,

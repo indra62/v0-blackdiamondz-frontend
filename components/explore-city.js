@@ -164,7 +164,7 @@ export default function ExploreCity({ data }) {
 							return (
 								<div
 									key={city.id}
-									className="relative w-[280px] md:w-[508px] h-[460px] flex-none group cursor-pointer overflow-hidden"
+									className="relative w-[280px] md:w-[300px] h-[320px] flex-none group cursor-pointer overflow-hidden"
 								>
 									<Link
 										href={`/buy?ranges=${encodeURIComponent(rangesParam)}`}
@@ -190,9 +190,9 @@ export default function ExploreCity({ data }) {
 											draggable={false}
 										/>
 										<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-										<div className="absolute bottom-4 left-8">
+										<div className="absolute bottom-4 left-5">
 											<h3
-												className={`${archivo.className} font-light text-base leading-[40px] text-[#FBF4E4]`}
+												className={`${archivo.className} font-light text-sm leading-[40px] text-[#FBF4E4]`}
 											>
 												{city.name}
 											</h3>

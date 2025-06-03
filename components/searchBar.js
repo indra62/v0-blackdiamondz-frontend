@@ -33,11 +33,11 @@ const customStyles = {
 		overflowY: "auto",
 		border: "1px solid rgba(101, 101, 101, 0.3)",
 		WebkitOverflowScrolling: "touch",
-		zIndex: 1002,
+		zIndex: 999,
 	}),
 	menuPortal: (base) => ({
 		...base,
-		zIndex: 1002, // or higher if needed
+		zIndex: 999, // or higher if needed
 	}),
 	option: (provided, state) => ({
 		...provided,
@@ -296,7 +296,7 @@ export default function SearchBar() {
 		<>
 			<form
 				onSubmit={handleSearch}
-				className={`${archivo.className} font-light sticky top-[140px] z-[1001] bg-[#211F17]/80 border-none`}
+				className={`${archivo.className} font-light z-[999] bg-[#211F17]/80 border-none`}
 			>
 				{/* Main Navigation */}
 				<div
@@ -429,7 +429,7 @@ export default function SearchBar() {
 							{isValueDropdownOpen &&
 								createPortal(
 									<div
-										className="z-[1000] bg-[#211f17] border border-[#333] rounded shadow-lg px-6 py-4 min-w-[240px] price-range-slider"
+										className="z-[999] bg-[#211f17] border border-[#333] rounded shadow-lg px-6 py-4 min-w-[240px] price-range-slider"
 										style={{
 											position: "absolute",
 											top: dropdownPosition.top,
@@ -739,7 +739,7 @@ function PropertyFilter({
 							<ArrowRight className="h-4 w-4" />
 						</button>
 					</div>
-					<div className="flex justify-around backdrop-blur-md z-[1000] mx-4]">
+					<div className="flex justify-around backdrop-blur-md z-[999] mx-4]">
 						{dataViews.length > 0 &&
 							dataViews?.map((views) => {
 								const translation =
@@ -768,7 +768,7 @@ function PropertyFilter({
 					</div>
 				</div>
 			)}
-			<div className="md:flex justify-between md:justify-end backdrop-blur-md z-[1000] mx-4 md:mr-[40px] hidden md:h-[70px]">
+			<div className="md:flex justify-between md:justify-end backdrop-blur-md z-[999] mx-4 md:mr-[40px] hidden md:h-[70px]">
 				{dataViews.length > 0 &&
 					dataViews?.map((views) => {
 						const translation =
