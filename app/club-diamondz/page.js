@@ -12,6 +12,7 @@ import OffMarket from "@/components/off-market"
 import Loading from "@/components/loading"
 import Footer from "@/components/footer"
 import { formatDate } from "@/lib/utils"
+import AgencyCarousel from "@/components/AgencyCarousel"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
@@ -24,7 +25,6 @@ const archivo = Archivo({
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 })
-
 
 // Sample data for latest happenings
 const latestHappenings = [
@@ -97,7 +97,6 @@ const latestHappenings = [
   },
 ]
 
-
 export default function ClubDiamondz() {
   // State for pagination in each section
   const [loading, setLoading] = useState(true)
@@ -110,7 +109,9 @@ export default function ClubDiamondz() {
   const [diamondzEvent, setDiamondzEvent] = useState(null)
   const [diamondzEventUpcoming, setDiamondzEventUpcoming] = useState(null)
   const [diamondzEventList, setDiamondzEventList] = useState(null)
-  const [diamondzEventUpcomingList, setDiamondzEventUpcomingList] = useState(null)
+  const [diamondzEventUpcomingList, setDiamondzEventUpcomingList] =
+    useState(null)
+  const [luxuryBrands, setLuxuryBrands] = useState([])
   const [language, setLanguage] = useState("en")
   const [error, setError] = useState(null)
 
@@ -121,7 +122,9 @@ export default function ClubDiamondz() {
   // Calculate total pages for each section
   const eventPages = Math.ceil((diamondzEventList?.length || 0) / itemsPerPage)
   const happeningPages = Math.ceil(latestHappenings.length / itemsPerPage)
-  const activityPages = Math.ceil((diamondzEventUpcomingList?.length || 0) / itemsPerPage)
+  const activityPages = Math.ceil(
+    (diamondzEventUpcomingList?.length || 0) / itemsPerPage
+  )
 
   // Get current items for each section
   const currentEvents =
@@ -143,10 +146,11 @@ export default function ClubDiamondz() {
   )
 
   //upcoming events
-  const currentActivities = diamondzEventUpcomingList?.slice(
-    eventPage * itemsPerPage,
-    (eventPage + 1) * itemsPerPage
-  ) || []
+  const currentActivities =
+    diamondzEventUpcomingList?.slice(
+      eventPage * itemsPerPage,
+      (eventPage + 1) * itemsPerPage
+    ) || []
 
   const upcomingEventsToDisplay = currentActivities.map((event) => {
     const translation =
@@ -154,7 +158,6 @@ export default function ClubDiamondz() {
       event.translations?.[0]
     return { ...event, translation }
   })
-
 
   // Navigation functions
   const navigateEvents = (direction) => {
@@ -205,26 +208,17 @@ export default function ClubDiamondz() {
       try {
         const token = localStorage.getItem("access_token")
 
-        const dataDiamondzPage = await getItems(
-          "diamondz_page",
-          {
-            fields: ["*", "translations.*"],
-          }
-        )
+        const dataDiamondzPage = await getItems("diamondz_page", {
+          fields: ["*.*", "translations.*", "luxury_brand_partnerships.*", "luxury_brand_partnerships.translations.*", "luxury_brand_partnerships.image.*"],
+        })
 
-        const dataEventUpdates = await getItems(
-          "diamondz_event",
-          {
-            fields: ["*", "translations.*"],
-          }
-        )
+        const dataEventUpdates = await getItems("diamondz_event", {
+          fields: ["*", "translations.*"],
+        })
 
-        const dataEventList = await getItems(
-          "event_list",
-          {
-            fields: ["*", "translations.*"],
-          }
-        )
+        const dataEventList = await getItems("event_list", {
+          fields: ["*", "translations.*"],
+        })
 
         const dataEventUpcoming = await getItems(
           "diamondz_upcoming_activities",
@@ -233,37 +227,35 @@ export default function ClubDiamondz() {
           }
         )
 
-        const dataEventUpcomingList = await getItems(
-          "activities_list",
-          {
-            fields: ["*", "translations.*"],
-          }
-        )
+        const dataEventUpcomingList = await getItems("activities_list", {
+          fields: ["*", "translations.*"],
+        })
 
         const dataOffMarketSection = await getItems("offMarket_section", {
           fields: ["*", "translations.*"],
         })
 
         const dataOffMarketProperties = await getItems("properties", {
-					fields: [
-						"*",
-						"translations.*",
-						"images.directus_files_id.*",
-						"plans.*",
-						"videos.*",
-						"features.feature_id.*",
-						"features.value",
-						"agents.*",
-						"type.*.*",
-					],
-					filter: {
-						status: { _eq: "Offmarket" },
-					},
-					limit: 4,
+          fields: [
+            "*",
+            "translations.*",
+            "images.directus_files_id.*",
+            "plans.*",
+            "videos.*",
+            "features.feature_id.*",
+            "features.value",
+            "agents.*",
+            "type.*.*",
+          ],
+          filter: {
+            status: { _eq: "Offmarket" },
+          },
+          limit: 4,
           sort: ["-date_created"],
-				});
+        })
 
         setDiamondzPage(dataDiamondzPage)
+        setLuxuryBrands(dataDiamondzPage?.luxury_brand_partnerships || [])
         setDiamondzEvent(dataEventUpdates)
         setDiamondzEventList(dataEventList)
         setDiamondzEventUpcoming(dataEventUpcoming)
@@ -297,11 +289,15 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.tags}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">
+          {item.tags}
+        </div>
         <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
           {item?.translation?.event_title}
         </h3>
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item?.event_date)}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">
+          {formatDate(item?.event_date)}
+        </div>
       </div>
     </div>
   )
@@ -319,11 +315,15 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.category}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">
+          {item.category}
+        </div>
         <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
           {item.title}
         </h3>
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item.date)}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">
+          {formatDate(item.date)}
+        </div>
         <p className="text-[#BD9574] text-sm mt-2 line-clamp-2">
           {item.description}
         </p>
@@ -336,13 +336,13 @@ export default function ClubDiamondz() {
     <div className="relative group cursor-pointer">
       <div className="relative w-full aspect-video overflow-hidden">
         <Image
-        src={
-          getImageUrl(item.activity_thumbnail, {
-            format: "webp",
-            quality: 100,
-            fit: "cover",
-          }) || "/placeholder-image.jpg"
-        }
+          src={
+            getImageUrl(item.activity_thumbnail, {
+              format: "webp",
+              quality: 100,
+              fit: "cover",
+            }) || "/placeholder-image.jpg"
+          }
           alt={item?.translation?.activity_title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -350,240 +350,16 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.tags}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">
+          {item.tags}
+        </div>
         <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
-        {item?.translation?.activity_title}
+          {item?.translation?.activity_title}
         </h3>
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item.activity_date)}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">
+          {formatDate(item.activity_date)}
+        </div>
         <div className="text-[#BD9574] text-[16px]">{item.location}</div>
-      </div>
-    </div>
-  )
-
-  const OffMarketPropertyCard = ({ property }) => (
-    <div className="bg-white overflow-hidden shadow-sm">
-      {/* Image Container */}
-      <div className="relative h-[240px] mb-4 overflow-hidden">
-        <Image
-          src={property.image || "/placeholder-image.jpg"}
-          alt={property.name}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-          style={{ objectFit: "cover" }}
-          className="transition-transform duration-700 hover:scale-110"
-        />
-      </div>
-
-      {/* Property Type and Location with Heart Icon */}
-      <div className="flex justify-between items-center mb-2 px-4">
-        <div
-          className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%]`}
-        >
-          {property.type} | {property.location}
-        </div>
-        <button className="text-[#BD9574] hover:text-[#BD9574] transition-colors">
-          <Heart className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Property Name */}
-      <h3
-        className={`${taviraj.className} text-[#211f17] text-[32px] font-light leading-[40px] mb-2 px-4`}
-      >
-        {property.name}
-      </h3>
-
-      {/* Address */}
-      <div
-        className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%] mb-1 px-4`}
-      >
-        {property.address}
-      </div>
-      <div
-        className={`${archivo.className} text-[#656565] font-light text-[16px] leading-[150%] mb-4 px-4`}
-      >
-        {property.city}, {property.postcode}
-      </div>
-
-      {/* Price */}
-      <div
-        className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] mb-6 px-4`}
-      >
-        Auction: $ {property.price}
-      </div>
-
-      {/* Property Features */}
-      <div className="flex flex-wrap items-center gap-4 mb-6 px-4">
-        <div className="flex items-center gap-1 text-[#656565]">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 11h18M7 11V7m10 4V7"
-              stroke="#656565"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>
-            {property.features.bedrooms}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 text-[#656565]">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 12h16a1 1 0 011 1v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2a1 1 0 011-1zm4-9v5m4-2v2m4-4v7"
-              stroke="#656565"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>
-            {property.features.bathrooms}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 text-[#656565]">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5 17h14M5 17a2 2 0 01-2-2V9m2 8a2 2 0 002 2h10a2 2 0 002-2M5 17V7a2 2 0 012-2h10a2 2 0 012 2v10m0 0V9m0 0H3"
-              stroke="#656565"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>
-            {property.features.parking}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 text-[#656565]">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M3 21h18M9 8h1m5 0h1M9 16h1m5 0h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"
-              stroke="#656565"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>
-            {property.features.floors}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 text-[#656565]">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 21V8a2 2 0 012-2h12a2 2 0 012 2v13M2 10h20M10 2v6m4-6v6"
-              stroke="#656565"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>
-            {property.features.rooms}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 text-[#656565]">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 15c0 1.1.9 2 2 2h12a2 2 0 002-2v-2H4v2zm18-7H2v3h20V8zm-9-4h-2v2h2V4z"
-              stroke="#656565"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className={`${archivo.className} font-light text-[14px]`}>
-            {property.features.additional}
-          </span>
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="grid grid-cols-2 gap-0">
-        <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-r-0 border-[#656565]/20 hover:bg-[#f7ede0] transition-colors">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9 20l-5.447-5.447a8 8 0 1113.894 0L12 20l-3-3z"
-              stroke="#BD9574"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M16.5 11a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"
-              stroke="#BD9574"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className={`${archivo.className} font-light text-[16px]`}>
-            See map
-          </span>
-        </button>
-        <button className="py-4 flex items-center justify-center gap-2 text-[#BD9574] border border-[#656565]/20 hover:bg-[#f7ede0] transition-colors">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 11a4 4 0 100-8 4 4 0 000 8zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"
-              stroke="#BD9574"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className={`${archivo.className} font-light text-[16px]`}>
-            Agent
-          </span>
-        </button>
       </div>
     </div>
   )
@@ -628,17 +404,21 @@ export default function ClubDiamondz() {
           <div className="absolute inset-0 z-10">
             <div className="container mx-auto h-full">
               <div className="flex flex-col justify-center h-full max-w-xl px-8 md:px-16">
-                <p
-                  className={`${archivo.className} text-[#211f17] text-xl mb-4`}
-                >
-                  Hello,
-                  <span className="text-[#bd9574]">
-                    {user?.first_name ? " " + user?.first_name : " Guest"}
-                  </span>
-                </p>
+                {user && (
+                  <p
+                    className={`${archivo.className} text-[#211f17] text-xl mb-4`}
+                  >
+                    Hello,
+                    <span className="text-[#bd9574]">
+                      {user?.first_name ? " " + user?.first_name : " Guest"}
+                    </span>
+                  </p>
+                )}
                 <h1
-                  className={`${taviraj.className} text-[#211f17] text-5xl md:text-6xl font-light mb-8 whitespace-nowrap`}
-                  dangerouslySetInnerHTML={{ __html: translationDiamondzPage?.hero_title || "" }}
+                  className={`${taviraj.className} text-[#211f17] text-4xl md:text-5xl leading-[125%] tracking-[2px] mb-8 whitespace-nowrap`}
+                  dangerouslySetInnerHTML={{
+                    __html: translationDiamondzPage?.hero_title || "",
+                  }}
                 />
 
                 {/* Diamond Separator */}
@@ -649,7 +429,7 @@ export default function ClubDiamondz() {
                 </div>
 
                 <p
-                  className={`${archivo.className} text-[#211f17] text-lg mb-10 max-w-xl`}
+                  className={`${archivo.className} text-[#211f17] text-base md:text-lg mb-10 max-w-xl`}
                 >
                   {translationDiamondzPage?.hero_description}
                 </p>
@@ -794,6 +574,39 @@ export default function ClubDiamondz() {
         <div className="px-[40px]">
           <OffMarket data={offMarket} section={offMarketSection} dark={false} />
         </div>
+
+        {/* Luxury Brand Partnerships Section */}
+        <section className="py-20 bg-[#FBF4E4]">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2
+                className={`${taviraj.className} text-[48px] font-light mb-8 text-[#211f17]`}
+              >
+                {translationDiamondzPage?.luxury_brand_title}
+              </h2>
+              {/* Diamond Separator */}
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+              </div>
+              <p
+                className={`${archivo.className} text-[16px] font-light max-w-3xl mx-auto text-center text-[#211f17] leading-[150%]`}
+              >
+                {translationDiamondzPage?.luxury_brand_description}
+              </p>
+            </div>
+
+            {/* Agency Logos Grid */}
+            <AgencyCarousel
+              agency={luxuryBrands}
+              language={language}
+              getImageUrl={getImageUrl}
+              archivo={archivo}
+              light={true}
+            />
+          </div>
+        </section>
       </div>
       <Footer dark={false} />
     </>

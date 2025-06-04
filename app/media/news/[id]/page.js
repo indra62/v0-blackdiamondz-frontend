@@ -173,9 +173,7 @@ export default function MediaNewsDetail() {
 
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
-          <h1
-            className={`${taviraj.className}text-4xl md:text-5xl lg:text-6xl font-light mb-8`}
-          >
+          <h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
             {translation?.news_title}
           </h1>
 
@@ -187,9 +185,7 @@ export default function MediaNewsDetail() {
           </div>
 
           {/* Intro paragraph */}
-          <p
-            className={`${archivo.className} text-[#E2DBCC] max-w-3xl mx-auto`}
-          >
+          <p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg`}>
             {translation?.news_summary}
           </p>
 

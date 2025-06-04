@@ -121,9 +121,7 @@ export default function OurTeamAllPage() {
 
 						{/* Hero Content */}
 						<div className="relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
-							<h1
-								className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
-							>
+							<h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
 								{translation?.hero_title || ""}
 							</h1>
 
@@ -134,9 +132,7 @@ export default function OurTeamAllPage() {
 								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
 							</div>
 
-							<p
-								className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
-							>
+							<p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg`}>
 								{translation?.hero_description || ""}
 							</p>
 						</div>
@@ -192,9 +188,9 @@ export default function OurTeamAllPage() {
 
 								{/* Center Divider */}
 								<div className="hidden md:flex flex-col items-center justify-center mx-4">
-									<div className="h-[400px] w-[1px] bg-[#656565]/30"></div>
+									<div className="h-[350px] w-[1px] bg-[#656565]/30"></div>
 									<div className="my-4 w-3 h-3 bg-[#BD9574] rotate-45"></div>
-									<div className="h-[200px] w-[1px] bg-[#656565]/30"></div>
+									<div className="h-[350px] w-[1px] bg-[#656565]/30"></div>
 								</div>
 
 								{/* Second Member */}
@@ -279,6 +275,34 @@ export default function OurTeamAllPage() {
 							</div>
 						</div>
 					</section>
+
+					{/* Explore Our Story Section */}
+										<section className="relative h-[365px] w-full overflow-hidden">
+											{/* Background Image */}
+											<div className="absolute inset-0">
+												{/* Only render the Image if a valid src is provided */}
+												<Image
+													src={getImageUrl(heroData?.secondary_image?.id, {
+														format: "webp",
+														quality: 100,
+														fit: "cover",
+													})}
+													alt="Business professionals shaking hands"
+													fill
+													className="object-cover"
+												/>
+												<div className="w-full h-96 left-0 top-0 absolute bg-gradient-to-b from-[#211f17] via-[#211f17]/20 to-[#211f17]" />
+											</div>
+					
+											{/* Content */}
+											<div className="relative h-full flex flex-col items-center justify-center">
+												<Link href="/our-story" className="cursor-pointer">
+													<h2 className="font-['Taviraj'] text-5xl font-light text-[#E2DBCC] tracking-wide hover:text-[#BD9574] transition-colors">
+														{translation?.secondary_title}
+													</h2>
+												</Link>
+											</div>
+										</section>
 				</>
 			)}
 			<Footer />

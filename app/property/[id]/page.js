@@ -305,19 +305,19 @@ export default function PropertyDetailPage({ params }) {
                 </h1>
 
                 <p
-                  className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
+                  className={`${archivo.className} text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-2`}
                 >
                   {property?.address_street}
                 </p>
                 <p
-                  className={`${archivo.className} text-[#e2dbcc] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-4`}
+                  className={`${archivo.className} text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] mb-4`}
                 >
                   {property?.address_suburb}, {property?.address_state}{" "}
                   {property?.address_postcode.toString().padStart(4, "0")}
                 </p>
 
                 <p
-                  className={`${archivo.className} text-[#bd9574] font-bold text-[16px] leading-[150%] tracking-[0px] mb-6`}
+                  className={`${archivo.className} text-[#e2dbcc] font-bold text-[16px] leading-[150%] tracking-[0px] mb-6`}
                 >
                   {property?.price_view || ""}
                 </p>
@@ -482,11 +482,36 @@ export default function PropertyDetailPage({ params }) {
                       </span>
                     </div>
                   )}
+                  {property?.land_area > 0 && (
+                    <div className="flex items-center gap-1" title="Land Area">
+                      <svg
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                      >
+                        <path
+                          d="M12.7 1.447c0.816 0.314 1.35 0.71 2.02 1.271l0.729 0.603 0.751 0.633q0.742 0.619 1.485 1.235l0.661 0.555C18.9 6.214 18.9 6.214 19.594 6.531l-0.344 1.719h-1.375l0.005 0.657q0.01 1.465 0.016 2.93l0.009 1.035 0.003 0.984 0.005 0.911C17.875 15.469 17.875 15.469 17.531 15.813c-0.763 0.03 -1.526 0.037 -2.289 0.034l-0.692 -0.002c-0.732 -0.002 -1.464 -0.006 -2.196 -0.01q-0.743 -0.003 -1.486 -0.005c-1.216 -0.003 -2.433 -0.01 -3.649 -0.017V8.25h-1.719l-0.344 -1.375C11.614 1.33 11.614 1.33 12.7 1.447m-2.43 3.344 -0.948 0.761L8.594 6.188v0.344h7.563c-1.645 -1.647 -1.645 -1.647 -3.438 -3.094 -1.085 0 -1.622 0.684 -2.449 1.353M8.594 8.25v6.188h1.719l0.344 -3.781h3.438l0.344 3.781h1.719V8.25zm3.438 3.781v2.406h1.031v-2.406z"
+                          fill="#BD9574"
+                        />
+                        <path
+                          d="M2.557 -0.193C3.839 0.088 4.366 0.695 5.156 1.719c-0.064 0.795 -0.064 0.795 -0.344 1.375h-1.375v15.469h15.469l0.344 -1.719c2.046 0.719 2.046 0.719 2.75 1.719 0.172 0.816 0.172 0.816 0 1.719 -0.773 0.967 -0.773 0.967 -1.719 1.719h-1.375v-1.375l-15.469 -0.344 -0.344 1.719H1.719v-1.719H0l0.344 -1.719h1.375L1.375 3.094H0c0.119 -1.066 0.291 -1.65 0.945 -2.514C1.719 0 1.719 0 2.557 -0.193"
+                          fill="#BD9574"
+                        />
+                      </svg>
+                      <span
+                        className={`${archivo.className} font-light text-[#E2DBCC] text-[14px]`}
+                      >
+                        {property?.land_area} m<sup>2</sup>
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Map Button */}
-                <div className="grid grid-cols-2 gap-0">
-                  <button
+                <div className="grid grid-cols-1 gap-0">
+                  {/* <button
                     onClick={showMap}
                     className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
                   >
@@ -496,7 +521,7 @@ export default function PropertyDetailPage({ params }) {
                     >
                       See map
                     </span>
-                  </button>
+                  </button> */}
                   <button
                     onClick={showAgents}
                     className="w-full border border-[#656565] py-3 px-4 flex items-center justify-center gap-2 text-[#bd9574] hover:bg-[#2c2920] transition-colors mb-8"
@@ -666,7 +691,7 @@ export default function PropertyDetailPage({ params }) {
                     </div>
                     {/* Row 3: Don't Miss It Section */}
                     {/* Row 3: Icons and All Media Button */}
-                    <div className="flex flex-col mt-4 order-4 md:order-3">
+                    {/* <div className="flex flex-col mt-4 order-4 md:order-3">
                       <h3
                         className={`${archivo.className} text-[#E2DBCC] text-[20px] font-[400] leading-[100%] tracking-[0%] mb-2`}
                       >
@@ -678,9 +703,9 @@ export default function PropertyDetailPage({ params }) {
                         Follow the updates about this property by subscribing to
                         our newsletter and stay in the loop with news & updates.
                       </p>
-                    </div>
+                    </div> */}
 
-                    <div className="flex flex-row items-start justify-end gap-6 mt-4 order-3 md:order-4">
+                    <div className="col-span-2 flex flex-row items-start justify-evenly md:justify-end gap-6 mt-4 order-3 md:order-4">
                       <div className="flex flex-row items-start gap-6">
                         <div
                           className={`${archivo.className} flex flex-col justify-center items-center min-w-[50px] text-[#bd9574] font-[300] text-[16px] leading-[150%] tracking-[0px] cursor-pointer`}

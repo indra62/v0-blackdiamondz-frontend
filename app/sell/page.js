@@ -67,8 +67,8 @@ export default function SellPage() {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    country: "",
-    country_id: "",
+    country: "Australia",
+    country_id: "14",
     city: "",
     city_id: "",
     email: "",
@@ -179,8 +179,8 @@ export default function SellPage() {
           const data = await getItems("cities", {
             fields: ["*"],
             filter: {
-              country_id: { _eq: formData.country_id },
-            },
+							country_id: { _in: ["14"] },
+						},
             search: inputValue,
             sort: ["name"],
           })
@@ -224,8 +224,8 @@ export default function SellPage() {
       setFormData({
         first_name: "",
         last_name: "",
-        country: "",
-        country_id: "",
+        country: "Australia",
+        country_id: "14",
         city: "",
         city_id: "",
         email: "",
@@ -272,22 +272,18 @@ export default function SellPage() {
         <>
           {/* Hero Section */}
           <section className="flex flex-col items-center pt-32 text-center">
-            <h1
-              className={`${taviraj.className} text-[#e2dbcc] text-[48px] max-w-[1200px] font-light leading-[60px] tracking-[2px] mb-8`}
-            >
+            <h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
               {translation?.property_sell_title}
             </h1>
 
             {/* Diamond Separator */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-              <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-            </div>
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+              </div>
 
-            <p
-              className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 max-w-2xl mx-auto mb-16`}
-            >
+            <p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg mb-6`}>
               {translation?.property_sell_description}
             </p>
           </section>
@@ -382,7 +378,7 @@ export default function SellPage() {
                       <div className="border border-[#656565]/30 p-4">
                         <input
                           type="text"
-                          placeholder="First Name*"
+                          placeholder="Name*"
                           name="first_name"
                           value={formData.first_name}
                           onChange={handleChange}
@@ -392,7 +388,7 @@ export default function SellPage() {
                       </div>
 
                       {/* Last Name */}
-                      <div className="border border-[#656565]/30 p-4 border-l-0">
+                      {/* <div className="border border-[#656565]/30 p-4 border-l-0">
                         <input
                           type="text"
                           placeholder="Last Name*"
@@ -402,9 +398,9 @@ export default function SellPage() {
                           required
                           className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] font-light text-[16px] focus:outline-none`}
                         />
-                      </div>
+                      </div> */}
 
-                      <div className="border border-[#656565]/30 p-4 border-t-0">
+                      <div className="border border-[#656565]/30 p-4 border-l-0">
                         <input
                           type="email"
                           placeholder="Email*"
@@ -417,7 +413,7 @@ export default function SellPage() {
                       </div>
 
                       {/* Phone */}
-                      <div className="border border-[#656565]/30 p-4 border-l-0 border-t-0">
+                      <div className="flex items-center border border-[#656565]/30 p-4 border-r-0 border-t-0">
                         <input
                           type="tel"
                           placeholder="Phone*"
@@ -429,7 +425,7 @@ export default function SellPage() {
                         />
                       </div>
 
-                      <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
+                      {/* <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
                         <AsyncSelect
                           instanceId="property-submission-country-select"
                           name="country"
@@ -462,7 +458,7 @@ export default function SellPage() {
                           cacheOptions
                           required
                         />
-                      </div>
+                      </div> */}
 
                       {/* City */}
                       <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
@@ -488,7 +484,7 @@ export default function SellPage() {
                           }}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
-                          placeholder={loading ? "Loading cities..." : "City"}
+                          placeholder={loading ? "Loading cities..." : "City*"}
                           styles={customStyles}
                           className={archivo.className}
                           isDisabled={!formData.country_id || loading}
@@ -498,7 +494,7 @@ export default function SellPage() {
                         />
                       </div>
 
-                      <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
+                      {/* <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
                         <Select
                           instanceId="property-submission-type-select"
                           name="property_type"
@@ -558,15 +554,14 @@ export default function SellPage() {
                           required
                           className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] font-light text-[16px] focus:outline-none`}
                         />
-                      </div>
+                      </div> */}
                       <div className="border border-[#656565]/30 p-4 border-t-0 col-span-2">
                         <textarea
-                          placeholder="Message"
+                          placeholder="Message (optional)"
                           rows="8"
                           name="message"
                           value={formData.message}
                           onChange={handleChange}
-                          required
                           className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] font-light text-[16px] focus:outline-none resize-none`}
                         ></textarea>
                       </div>

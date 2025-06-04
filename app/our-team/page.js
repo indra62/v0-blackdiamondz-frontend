@@ -122,9 +122,7 @@ export default function OurTeamPage() {
 
 						{/* Hero Content */}
 						<div className="relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
-							<h1
-								className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
-							>
+							<h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
 								{translation?.hero_title || ""}
 							</h1>
 
@@ -135,9 +133,7 @@ export default function OurTeamPage() {
 								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
 							</div>
 
-							<p
-								className={`${archivo.className} text-[#E2DBCC] font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
-							>
+							<p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg`}>
 								{translation?.hero_description || ""}
 							</p>
 						</div>
@@ -193,9 +189,9 @@ export default function OurTeamPage() {
 
 								{/* Center Divider */}
 								<div className="hidden md:flex flex-col items-center justify-center mx-4">
-									<div className="h-[400px] w-[1px] bg-[#656565]/30"></div>
+									<div className="h-[350px] w-[1px] bg-[#656565]/30"></div>
 									<div className="my-4 w-3 h-3 bg-[#BD9574] rotate-45"></div>
-									<div className="h-[200px] w-[1px] bg-[#656565]/30"></div>
+									<div className="h-[350px] w-[1px] bg-[#656565]/30"></div>
 								</div>
 
 								{/* Second Member */}
@@ -470,7 +466,7 @@ export default function OurTeamPage() {
 					<section className="py-16 bg-[#211f17]">
 						<div className="container mx-auto px-4">
 							{/* Heading */}
-							<h2 className="font-serif text-[48px] font-light text-[#E2DBCC] text-center mb-8">
+							<h2 className={`${taviraj.className} text-[48px] font-light text-[#E2DBCC] text-center mb-8`}>
 								{translationSupport?.title}
 							</h2>
 

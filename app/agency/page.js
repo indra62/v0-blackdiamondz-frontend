@@ -266,15 +266,18 @@ export default function AgencyPage() {
               />
             </div>
             <div className="relative z-20 mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
-              <h1
-                className={`${taviraj.className} text-[48px] font-light mb-8 text-[#E2DBCC] leading-[125%] tracking-[2px]`}
-              >
+              <h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
                 {translationData?.hero_title}
               </h1>
-              <div className="w-20 h-[1px] bg-[#BD9574] mb-8"></div>
-              <p
-                className={`${archivo.className} text-[16px] font-light max-w-3xl text-center text-[#E2DBCC] leading-[150%]`}
-              >
+
+              {/* Diamond Separator */}
+							<div className="flex items-center justify-center gap-4 mb-8">
+								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+								<div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+							</div>
+              
+              <p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg`}>
                 {translationData?.hero_description}
               </p>
             </div>
@@ -480,11 +483,12 @@ export default function AgencyPage() {
                 >
                   {translationData?.collaborating_title}
                 </h2>
-                <div className="flex items-center justify-center mb-12">
-                  <div className="w-32 h-[1px] bg-[#656565]/50"></div>
-                  <div className="w-2 h-2 bg-[#BD9574] transform rotate-45 mx-4"></div>
-                  <div className="w-32 h-[1px] bg-[#656565]/50"></div>
-                </div>
+                {/* Diamond Separator */}
+							<div className="flex items-center justify-center gap-4 mb-8">
+								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+								<div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+							</div>
                 <p
                   className={`${archivo.className} text-[16px] font-light max-w-3xl mx-auto text-center text-[#E2DBCC] leading-[150%]`}
                 >

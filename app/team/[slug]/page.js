@@ -10,6 +10,7 @@ export default function TeamMemberPage() {
   const params = useParams()
   const { slug } = params
   const [firstname, lastname] = slug.split("-")
+  const [heroData, setHeroData] = useState(null);
   const [agentData, setAgentData] = useState(null)
   const [testimonials, setTestimonials] = useState([])
   const [agentProperties, setAgentProperties] = useState(null)
@@ -20,6 +21,10 @@ export default function TeamMemberPage() {
   useEffect(() => {
     const fetchDataAgent = async () => {
       try {
+        const dataHero = await getItems("aboutUs_team_hero", {
+					fields: ["*", "hero_image.*", "translations.*", "secondary_image.*"],
+				});
+
         const dataTeam = await getUsers({
           fields: ["*.*"],
           filter: {
@@ -86,6 +91,7 @@ export default function TeamMemberPage() {
         setAgentProperties(properties)
         setTestimonials(dataTestimonials?.[0]?.testimonials || [])
         setAgentStatistics(statistics || [])
+        setHeroData(dataHero);
         setLoading(false)
       } catch (err) {
         setError("Failed to load home data:" + err.message)
@@ -103,6 +109,7 @@ export default function TeamMemberPage() {
       ) : (
         <TeamDetail
           member={agentData}
+          heroData={heroData}
           agentStatistics={agentStatistics}
           agentProperties={agentProperties}
           testimonials={testimonials}

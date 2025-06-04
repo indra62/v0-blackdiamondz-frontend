@@ -258,7 +258,7 @@ export function Signup() {
 								} flex items-center justify-center p-8`}
 							>
 								<div className="w-full max-w-md">
-									{!isJoinClub && (
+									{!isJoinClub ? (
 										<h1
 											className={`${taviraj.className} ${
 												isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
@@ -266,6 +266,14 @@ export function Signup() {
 										>
 											Join the Club!
 										</h1>
+									) : (
+										<h2
+											className={`${taviraj.className} ${
+												isJoinClub ? "text-[#211f17]" : "text-[#E2DBCC]"
+											} mb-8 text-2xl text-center`}
+										>
+											{translation?.signup_pitch}
+										</h2>
 									)}
 
 									{success ? (
@@ -480,6 +488,18 @@ export function Signup() {
 														</>
 													)}
 
+													
+
+												{isJoinClub ? (
+													<button
+														type="submit"
+														className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#BD9574] transition-colors disabled:opacity-50"
+														disabled={isSubmitting}
+													>
+														{isSubmitting ? "Submitting..." : "Submit"}
+													</button>
+												) : (
+													<>
 													<div className="flex w-full">
 														<input
 															type="password"
@@ -504,7 +524,6 @@ export function Signup() {
 															onChange={handleChange}
 														/>
 													</div>
-
 													<button
 														type="submit"
 														className="w-full bg-[#BD9574] text-[#211f17] p-4 hover:bg-[#BD9574] transition-colors disabled:opacity-50"
@@ -512,12 +531,15 @@ export function Signup() {
 													>
 														{isSubmitting ? "Signing Up..." : "Sign Up"}
 													</button>
+													</>
+												)}
+													
 												</div>
 											</form>
 
 											<div className="mt-8 text-center">
 												<p className="text-[#656565]">
-												{isJoinClub ? "Already have a Member-ship?" : "Already have an account?"}
+												{isJoinClub ? "Already have a Member - " : "Already have an account? "}
 													<Link
 														href="/login"
 														className="text-[#BD9574] hover:text-[#BD9574] transition-colors"

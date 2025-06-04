@@ -165,14 +165,14 @@ export default function ContactUs() {
   }
 
   return (
-    <main className="bg-[#211f17] min-h-screen">
+    <main className="bg-[#211f17] h-auto">
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column - Contact Info */}
             <div className="flex flex-col justify-center">
               <h1
-                className={`${taviraj.className} text-[#E2DBCC] text-5xl font-light leading-tight mb-12`}
+                className={`${taviraj.className} text-[#E2DBCC] text-4xl md:text-5xl leading-[125%] tracking-[2px] mb-12`}
               >
                 More details?
                 <br />

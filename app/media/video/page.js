@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Play, ChevronLeft, ChevronRight } from "lucide-react"
-import { Archivo } from "next/font/google"
+import { Archivo, Taviraj } from "next/font/google"
 import { useRouter } from "next/navigation"
 import Footer from "@/components/footer"
 import Loading from "@/components/loading"
 import { getImageUrl, getItems } from "@/lib/api"
 import VideoSection from "@/components/VideoSection"
 
+const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 
 export default function MediaVideo() {
@@ -95,7 +96,7 @@ export default function MediaVideo() {
 							></div>
 						</div>
 						<div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-							<h1 className="text-white text-4xl md:text-5xl font-serif mb-8">
+							<h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
 								{translation?.title || ""}
 							</h1>
 							{/* Diamond Separator */}
@@ -104,7 +105,7 @@ export default function MediaVideo() {
 								<div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
 								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
 							</div>
-							<p className="text-white max-w-3xl mx-auto text-base md:text-lg">
+							<p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg`}>
 								{translation?.description || ""}
 							</p>
 						</div>
