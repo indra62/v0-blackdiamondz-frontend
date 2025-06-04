@@ -275,6 +275,34 @@ export default function OurTeamAllPage() {
 							</div>
 						</div>
 					</section>
+
+					{/* Explore Our Story Section */}
+										<section className="relative h-[365px] w-full overflow-hidden">
+											{/* Background Image */}
+											<div className="absolute inset-0">
+												{/* Only render the Image if a valid src is provided */}
+												<Image
+													src={getImageUrl(heroData?.secondary_image?.id, {
+														format: "webp",
+														quality: 100,
+														fit: "cover",
+													})}
+													alt="Business professionals shaking hands"
+													fill
+													className="object-cover"
+												/>
+												<div className="w-full h-96 left-0 top-0 absolute bg-gradient-to-b from-[#211f17] via-[#211f17]/20 to-[#211f17]" />
+											</div>
+					
+											{/* Content */}
+											<div className="relative h-full flex flex-col items-center justify-center">
+												<Link href="/our-story" className="cursor-pointer">
+													<h2 className="font-['Taviraj'] text-5xl font-light text-[#E2DBCC] tracking-wide hover:text-[#BD9574] transition-colors">
+														{translation?.secondary_title}
+													</h2>
+												</Link>
+											</div>
+										</section>
 				</>
 			)}
 			<Footer />

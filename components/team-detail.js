@@ -11,6 +11,7 @@ import { useEffect } from "react"
 import { AgentIcon } from "./icons/AgentIcon"
 import { LocationIcon } from "./icons/LocationIcon"
 import TeamListing from "./team-listing"
+import Link from "next/link"
 
 // Add this CSS class for the scrollbar
 const scrollbarHideStyles = `
@@ -37,6 +38,7 @@ export default function TeamDetail({
   agentStatistics,
   agentProperties,
   testimonials,
+  heroData,
 }) {
   const [language, setLanguage] = useState("en")
   const [expanded, setExpanded] = useState(false)
@@ -54,6 +56,10 @@ export default function TeamDetail({
       translatedData: translation,
     }
   })
+
+  const translationStory =
+    heroData?.translations?.find((t) => t.languages_code === language) ||
+    heroData?.translations?.[0]
 
   const translationStatistics =
     agentStatistics?.find((t) => t.languages_code === language) ||
@@ -117,7 +123,7 @@ export default function TeamDetail({
 
               {/* Contact Buttons */}
               <div className="space-y-0 mb-8">
-                <div className="w-full border border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] transition-colors">
+                <div className="w-full border-none border-[#656565] py-4 px-4 flex items-center gap-4 text-[#E2DBCC] transition-colors">
                   <svg
                     width="22"
                     height="22"
@@ -143,7 +149,7 @@ export default function TeamDetail({
                 {member?.contact_phone && (
                   <a
                     href={`tel:${member?.contact_phone}`}
-                    className="w-full border border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
+                    className="w-full border-none border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#E2DBCC] hover:bg-[#2c2920] transition-colors"
                   >
                     <svg
                       width="22"
@@ -179,7 +185,7 @@ export default function TeamDetail({
                 {member?.contact_mobile && (
                   <a
                     href={`tel:${member?.contact_mobile}`}
-                    className="w-full border border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
+                    className="w-full border-none border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#E2DBCC] hover:bg-[#2c2920] transition-colors"
                   >
                     <svg
                       width="22px"
@@ -204,7 +210,7 @@ export default function TeamDetail({
                 {member?.contact_email && (
                   <a
                     href={`mailto:${member?.contact_email}`}
-                    className="w-full border border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#BD9574] hover:bg-[#2c2920] transition-colors"
+                    className="w-full border-none border-t-0 border-[#656565] py-4 px-4 flex items-center gap-4 text-[#E2DBCC] hover:bg-[#2c2920] transition-colors"
                   >
                     <svg
                       width="22"
@@ -237,7 +243,11 @@ export default function TeamDetail({
               </div>
 
               {/* Agent Photo and Quote */}
-              <div className={`block md:hidden relative w-full ${member?.description ? "h-[600px]" : "h-[300px]"} bg-black overflow-hidden`}>
+              <div
+                className={`block md:hidden relative w-full ${
+                  member?.description ? "h-[600px]" : "h-[300px]"
+                } bg-black overflow-hidden`}
+              >
                 <div className="grid grid-cols-1 gap-4 h-full">
                   {/* Image Container */}
                   <div className="flex items-center justify-center">
@@ -463,6 +473,33 @@ export default function TeamDetail({
             </div>
           </div>
         </div>
+        {/* Explore Our Story Section */}
+        <section className="relative h-[365px] w-full overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            {/* Only render the Image if a valid src is provided */}
+            <Image
+              src={getImageUrl(heroData?.secondary_image?.id, {
+                format: "webp",
+                quality: 100,
+                fit: "cover",
+              })}
+              alt="Business professionals shaking hands"
+              fill
+              className="object-cover"
+            />
+            <div className="w-full h-96 left-0 top-0 absolute bg-gradient-to-b from-[#211f17] via-[#211f17]/20 to-[#211f17]" />
+          </div>
+
+          {/* Content */}
+          <div className="relative h-full flex flex-col items-center justify-center">
+            <Link href="/our-story" className="cursor-pointer">
+              <h2 className="font-['Taviraj'] text-5xl font-light text-[#E2DBCC] tracking-wide hover:text-[#BD9574] transition-colors">
+                {translationStory?.secondary_title}
+              </h2>
+            </Link>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

@@ -12,6 +12,7 @@ import OffMarket from "@/components/off-market"
 import Loading from "@/components/loading"
 import Footer from "@/components/footer"
 import { formatDate } from "@/lib/utils"
+import AgencyCarousel from "@/components/AgencyCarousel"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
@@ -24,7 +25,6 @@ const archivo = Archivo({
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 })
-
 
 // Sample data for latest happenings
 const latestHappenings = [
@@ -97,7 +97,6 @@ const latestHappenings = [
   },
 ]
 
-
 export default function ClubDiamondz() {
   // State for pagination in each section
   const [loading, setLoading] = useState(true)
@@ -110,7 +109,9 @@ export default function ClubDiamondz() {
   const [diamondzEvent, setDiamondzEvent] = useState(null)
   const [diamondzEventUpcoming, setDiamondzEventUpcoming] = useState(null)
   const [diamondzEventList, setDiamondzEventList] = useState(null)
-  const [diamondzEventUpcomingList, setDiamondzEventUpcomingList] = useState(null)
+  const [diamondzEventUpcomingList, setDiamondzEventUpcomingList] =
+    useState(null)
+  const [luxuryBrands, setLuxuryBrands] = useState([])
   const [language, setLanguage] = useState("en")
   const [error, setError] = useState(null)
 
@@ -121,7 +122,9 @@ export default function ClubDiamondz() {
   // Calculate total pages for each section
   const eventPages = Math.ceil((diamondzEventList?.length || 0) / itemsPerPage)
   const happeningPages = Math.ceil(latestHappenings.length / itemsPerPage)
-  const activityPages = Math.ceil((diamondzEventUpcomingList?.length || 0) / itemsPerPage)
+  const activityPages = Math.ceil(
+    (diamondzEventUpcomingList?.length || 0) / itemsPerPage
+  )
 
   // Get current items for each section
   const currentEvents =
@@ -143,10 +146,11 @@ export default function ClubDiamondz() {
   )
 
   //upcoming events
-  const currentActivities = diamondzEventUpcomingList?.slice(
-    eventPage * itemsPerPage,
-    (eventPage + 1) * itemsPerPage
-  ) || []
+  const currentActivities =
+    diamondzEventUpcomingList?.slice(
+      eventPage * itemsPerPage,
+      (eventPage + 1) * itemsPerPage
+    ) || []
 
   const upcomingEventsToDisplay = currentActivities.map((event) => {
     const translation =
@@ -154,7 +158,6 @@ export default function ClubDiamondz() {
       event.translations?.[0]
     return { ...event, translation }
   })
-
 
   // Navigation functions
   const navigateEvents = (direction) => {
@@ -205,26 +208,17 @@ export default function ClubDiamondz() {
       try {
         const token = localStorage.getItem("access_token")
 
-        const dataDiamondzPage = await getItems(
-          "diamondz_page",
-          {
-            fields: ["*", "translations.*"],
-          }
-        )
+        const dataDiamondzPage = await getItems("diamondz_page", {
+          fields: ["*.*", "translations.*", "luxury_brand_partnerships.*", "luxury_brand_partnerships.translations.*", "luxury_brand_partnerships.image.*"],
+        })
 
-        const dataEventUpdates = await getItems(
-          "diamondz_event",
-          {
-            fields: ["*", "translations.*"],
-          }
-        )
+        const dataEventUpdates = await getItems("diamondz_event", {
+          fields: ["*", "translations.*"],
+        })
 
-        const dataEventList = await getItems(
-          "event_list",
-          {
-            fields: ["*", "translations.*"],
-          }
-        )
+        const dataEventList = await getItems("event_list", {
+          fields: ["*", "translations.*"],
+        })
 
         const dataEventUpcoming = await getItems(
           "diamondz_upcoming_activities",
@@ -233,37 +227,35 @@ export default function ClubDiamondz() {
           }
         )
 
-        const dataEventUpcomingList = await getItems(
-          "activities_list",
-          {
-            fields: ["*", "translations.*"],
-          }
-        )
+        const dataEventUpcomingList = await getItems("activities_list", {
+          fields: ["*", "translations.*"],
+        })
 
         const dataOffMarketSection = await getItems("offMarket_section", {
           fields: ["*", "translations.*"],
         })
 
         const dataOffMarketProperties = await getItems("properties", {
-					fields: [
-						"*",
-						"translations.*",
-						"images.directus_files_id.*",
-						"plans.*",
-						"videos.*",
-						"features.feature_id.*",
-						"features.value",
-						"agents.*",
-						"type.*.*",
-					],
-					filter: {
-						status: { _eq: "Offmarket" },
-					},
-					limit: 4,
+          fields: [
+            "*",
+            "translations.*",
+            "images.directus_files_id.*",
+            "plans.*",
+            "videos.*",
+            "features.feature_id.*",
+            "features.value",
+            "agents.*",
+            "type.*.*",
+          ],
+          filter: {
+            status: { _eq: "Offmarket" },
+          },
+          limit: 4,
           sort: ["-date_created"],
-				});
+        })
 
         setDiamondzPage(dataDiamondzPage)
+        setLuxuryBrands(dataDiamondzPage?.luxury_brand_partnerships || [])
         setDiamondzEvent(dataEventUpdates)
         setDiamondzEventList(dataEventList)
         setDiamondzEventUpcoming(dataEventUpcoming)
@@ -297,11 +289,15 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.tags}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">
+          {item.tags}
+        </div>
         <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
           {item?.translation?.event_title}
         </h3>
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item?.event_date)}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">
+          {formatDate(item?.event_date)}
+        </div>
       </div>
     </div>
   )
@@ -319,11 +315,15 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.category}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">
+          {item.category}
+        </div>
         <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
           {item.title}
         </h3>
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item.date)}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">
+          {formatDate(item.date)}
+        </div>
         <p className="text-[#BD9574] text-sm mt-2 line-clamp-2">
           {item.description}
         </p>
@@ -336,13 +336,13 @@ export default function ClubDiamondz() {
     <div className="relative group cursor-pointer">
       <div className="relative w-full aspect-video overflow-hidden">
         <Image
-        src={
-          getImageUrl(item.activity_thumbnail, {
-            format: "webp",
-            quality: 100,
-            fit: "cover",
-          }) || "/placeholder-image.jpg"
-        }
+          src={
+            getImageUrl(item.activity_thumbnail, {
+              format: "webp",
+              quality: 100,
+              fit: "cover",
+            }) || "/placeholder-image.jpg"
+          }
           alt={item?.translation?.activity_title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -350,11 +350,15 @@ export default function ClubDiamondz() {
         />
       </div>
       <div className="mt-3">
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">{item.tags}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light">
+          {item.tags}
+        </div>
         <h3 className="text-[#211f17] text-lg font-['Archivo'] font-normal mt-1 line-clamp-2 group-hover:text-[#353327] transition-colors">
-        {item?.translation?.activity_title}
+          {item?.translation?.activity_title}
         </h3>
-        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">{formatDate(item.activity_date)}</div>
+        <div className="text-[#BD9574] text-[16px] font-['Archivo'] font-light mt-1">
+          {formatDate(item.activity_date)}
+        </div>
         <div className="text-[#BD9574] text-[16px]">{item.location}</div>
       </div>
     </div>
@@ -400,19 +404,21 @@ export default function ClubDiamondz() {
           <div className="absolute inset-0 z-10">
             <div className="container mx-auto h-full">
               <div className="flex flex-col justify-center h-full max-w-xl px-8 md:px-16">
-              {user && (
-                <p
-                  className={`${archivo.className} text-[#211f17] text-xl mb-4`}
-                >
-                  Hello,
-                  <span className="text-[#bd9574]">
-                    {user?.first_name ? " " + user?.first_name : " Guest"}
-                  </span>
-                </p>
-              )}
+                {user && (
+                  <p
+                    className={`${archivo.className} text-[#211f17] text-xl mb-4`}
+                  >
+                    Hello,
+                    <span className="text-[#bd9574]">
+                      {user?.first_name ? " " + user?.first_name : " Guest"}
+                    </span>
+                  </p>
+                )}
                 <h1
                   className={`${taviraj.className} text-[#211f17] text-4xl md:text-5xl leading-[125%] tracking-[2px] mb-8 whitespace-nowrap`}
-                  dangerouslySetInnerHTML={{ __html: translationDiamondzPage?.hero_title || "" }}
+                  dangerouslySetInnerHTML={{
+                    __html: translationDiamondzPage?.hero_title || "",
+                  }}
                 />
 
                 {/* Diamond Separator */}
@@ -568,6 +574,39 @@ export default function ClubDiamondz() {
         <div className="px-[40px]">
           <OffMarket data={offMarket} section={offMarketSection} dark={false} />
         </div>
+
+        {/* Luxury Brand Partnerships Section */}
+        <section className="py-20 bg-[#FBF4E4]">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2
+                className={`${taviraj.className} text-[48px] font-light mb-8 text-[#211f17]`}
+              >
+                {translationDiamondzPage?.luxury_brand_title}
+              </h2>
+              {/* Diamond Separator */}
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+              </div>
+              <p
+                className={`${archivo.className} text-[16px] font-light max-w-3xl mx-auto text-center text-[#211f17] leading-[150%]`}
+              >
+                {translationDiamondzPage?.luxury_brand_description}
+              </p>
+            </div>
+
+            {/* Agency Logos Grid */}
+            <AgencyCarousel
+              agency={luxuryBrands}
+              language={language}
+              getImageUrl={getImageUrl}
+              archivo={archivo}
+              light={true}
+            />
+          </div>
+        </section>
       </div>
       <Footer dark={false} />
     </>

@@ -9,7 +9,7 @@ import Image from "next/image"
  * @param {Function} props.getImageUrl - Function to get image URL for a partner.
  * @param {Object} props.archivo - Font class object.
  */
-const AgencyCarousel = ({ agency, language, getImageUrl, archivo }) => {
+const AgencyCarousel = ({ agency, language, getImageUrl, archivo, light = false }) => {
    const containerRef = useRef(null)
   const [containerWidth, setContainerWidth] = useState(1500) // fallback default
 
@@ -83,12 +83,12 @@ const AgencyCarousel = ({ agency, language, getImageUrl, archivo }) => {
             </div>
             <div className="h-[64px] flex flex-col justify-center">
               <h4
-                className={`${archivo.className} text-[#FBF4E4] font-light text-[16px] leading-[150%] mt-4 mb-1 text-center px-1`}
+                className={`${archivo.className} ${light ? "text-[#211f17]" : "text-[#FBF4E4]"}  font-light text-[16px] leading-[150%] mt-4 mb-1 text-center px-1`}
               >
                 {translation?.name}
               </h4>
               <p
-                className={`${archivo.className} text-[#BD9574] font-light text-[12px] leading-[100%] text-center`}
+                className={`${archivo.className} ${light ? "text-[#BD9574]" : "text-[#BD9574]"} font-light text-[12px] leading-[100%] text-center`}
               >
                 {translation?.location}
               </p>
