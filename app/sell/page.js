@@ -67,8 +67,8 @@ export default function SellPage() {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    country: "",
-    country_id: "",
+    country: "Australia",
+    country_id: "14",
     city: "",
     city_id: "",
     email: "",
@@ -179,8 +179,8 @@ export default function SellPage() {
           const data = await getItems("cities", {
             fields: ["*"],
             filter: {
-              country_id: { _eq: formData.country_id },
-            },
+							country_id: { _in: ["14"] },
+						},
             search: inputValue,
             sort: ["name"],
           })
@@ -224,8 +224,8 @@ export default function SellPage() {
       setFormData({
         first_name: "",
         last_name: "",
-        country: "",
-        country_id: "",
+        country: "Australia",
+        country_id: "14",
         city: "",
         city_id: "",
         email: "",
@@ -378,7 +378,7 @@ export default function SellPage() {
                       <div className="border border-[#656565]/30 p-4">
                         <input
                           type="text"
-                          placeholder="First Name*"
+                          placeholder="Name*"
                           name="first_name"
                           value={formData.first_name}
                           onChange={handleChange}
@@ -388,7 +388,7 @@ export default function SellPage() {
                       </div>
 
                       {/* Last Name */}
-                      <div className="border border-[#656565]/30 p-4 border-l-0">
+                      {/* <div className="border border-[#656565]/30 p-4 border-l-0">
                         <input
                           type="text"
                           placeholder="Last Name*"
@@ -398,9 +398,9 @@ export default function SellPage() {
                           required
                           className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] font-light text-[16px] focus:outline-none`}
                         />
-                      </div>
+                      </div> */}
 
-                      <div className="border border-[#656565]/30 p-4 border-t-0">
+                      <div className="border border-[#656565]/30 p-4 border-l-0">
                         <input
                           type="email"
                           placeholder="Email*"
@@ -413,7 +413,7 @@ export default function SellPage() {
                       </div>
 
                       {/* Phone */}
-                      <div className="border border-[#656565]/30 p-4 border-l-0 border-t-0">
+                      <div className="flex items-center border border-[#656565]/30 p-4 border-r-0 border-t-0">
                         <input
                           type="tel"
                           placeholder="Phone*"
@@ -425,7 +425,7 @@ export default function SellPage() {
                         />
                       </div>
 
-                      <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
+                      {/* <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
                         <AsyncSelect
                           instanceId="property-submission-country-select"
                           name="country"
@@ -458,7 +458,7 @@ export default function SellPage() {
                           cacheOptions
                           required
                         />
-                      </div>
+                      </div> */}
 
                       {/* City */}
                       <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
@@ -484,7 +484,7 @@ export default function SellPage() {
                           }}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
-                          placeholder={loading ? "Loading cities..." : "City"}
+                          placeholder={loading ? "Loading cities..." : "City*"}
                           styles={customStyles}
                           className={archivo.className}
                           isDisabled={!formData.country_id || loading}
@@ -494,7 +494,7 @@ export default function SellPage() {
                         />
                       </div>
 
-                      <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
+                      {/* <div className="border border-[#656565]/30 border-t-0 px-2 py-4 relative">
                         <Select
                           instanceId="property-submission-type-select"
                           name="property_type"
@@ -554,15 +554,14 @@ export default function SellPage() {
                           required
                           className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] font-light text-[16px] focus:outline-none`}
                         />
-                      </div>
+                      </div> */}
                       <div className="border border-[#656565]/30 p-4 border-t-0 col-span-2">
                         <textarea
-                          placeholder="Message"
+                          placeholder="Message (optional)"
                           rows="8"
                           name="message"
                           value={formData.message}
                           onChange={handleChange}
-                          required
                           className={`${archivo.className} w-full bg-transparent text-[#E2DBCC] placeholder-[#656565] font-light text-[16px] focus:outline-none resize-none`}
                         ></textarea>
                       </div>

@@ -16,6 +16,7 @@ const SearchBarAddressCorelogic = () => {
     setInputValue(value);
     if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
     if (value.trim() === "") {
+      setSelectedSuggestion(null);
       setSuggestions([]);
       setShowDropdown(false);
       return;
@@ -84,7 +85,7 @@ const SearchBarAddressCorelogic = () => {
           )}
         </div>
         <button
-          className={`bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#BD9574] transition-colors ${!selectedSuggestion ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`bg-[#BD9574] text-[#211f17] px-8 py-4 hover:bg-[#BD9574] transition-colors`}
           onClick={() => {
             setShowPaddington(true);
             setPaddingtonKey(Date.now());

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 
 /**
@@ -10,49 +10,74 @@ import Image from "next/image"
  * @param {Object} props.archivo - Font class object.
  */
 const AgencyCarousel = ({ agency, language, getImageUrl, archivo }) => {
-  return (
-    <div className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-full mx-auto md:justify-center justify-start">
-      {agency?.map((agency) => {
-        // Find translation for the current language or fallback
-        const translation =
-          agency.translations?.find((t) => t.languages_code === language) ||
-          agency.translations?.[0]
+   const containerRef = useRef(null)
+  const [containerWidth, setContainerWidth] = useState(1500) // fallback default
 
-        // Get image URL (adjust as needed for your backend)
-        const imageUrl = agency.image
-          ? getImageUrl(agency.image.id, {
+  useEffect(() => {
+    if (containerRef.current) {
+      setContainerWidth(containerRef.current.offsetWidth)
+    }
+    // Optionally, add a resize listener for responsiveness
+    const handleResize = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth)
+      }
+    }
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  const minWidth = 80
+  const maxWidth = 300
+  const agentCount = agency?.length || 1
+
+  const cardWidth = Math.max(
+    Math.min(containerWidth / agentCount, maxWidth),
+    minWidth
+  )
+
+  return (
+    <div ref={containerRef} className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-full mx-auto md:justify-center justify-start">
+      {agency?.map((agent) => {
+        const translation =
+          agent.translations?.find((t) => t.languages_code === language) ||
+          agent.translations?.[0]
+
+        const imageUrl = agent.image
+          ? getImageUrl(agent.image.id, {
               format: "webp",
               quality: 100,
               fit: "cover",
             })
           : null
 
-        if (!agency.id || !imageUrl) return null
+        if (!agent.id || !imageUrl) return null
 
         return (
           <div
-            key={agency.id}
-            className="flex flex-col items-center flex-shrink-0 w-[150.25px]"
-            style={{ height: "320px" }}
+            key={agent.id}
+            className="flex flex-col items-center flex-shrink-0"
+            style={{ height: "320px", width: `${cardWidth}px` }}
           >
-            <div className="w-[150.25px] h-[220.25px] flex items-center justify-center">
-              {agency.url ? (
-                <a href={agency.url} target="_blank" rel="noopener noreferrer">
+            <div
+              className={`h-[220.25px] w-[${cardWidth}px] flex items-center justify-center`}
+              style={{ width: `${cardWidth}px`, position: "relative" }}
+            >
+              {agent.url ? (
+                <a href={agent.url} target="_blank" rel="noopener noreferrer">
                   <Image
                     src={imageUrl}
                     alt={translation?.name || `Agency`}
-                    width={150}
-                    height={150}
-                    className="object-contain cursor-pointer"
+                    fill
+                    style={{ objectFit: "contain" }}
                   />
                 </a>
               ) : (
                 <Image
                   src={imageUrl}
                   alt={translation?.name || `Agency`}
-                  width={150}
-                  height={150}
-                  className="object-contain"
+                  fill
+                  style={{ objectFit: "contain" }}
                 />
               )}
             </div>

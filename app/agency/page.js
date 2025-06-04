@@ -483,11 +483,12 @@ export default function AgencyPage() {
                 >
                   {translationData?.collaborating_title}
                 </h2>
-                <div className="flex items-center justify-center mb-12">
-                  <div className="w-32 h-[1px] bg-[#656565]/50"></div>
-                  <div className="w-2 h-2 bg-[#BD9574] transform rotate-45 mx-4"></div>
-                  <div className="w-32 h-[1px] bg-[#656565]/50"></div>
-                </div>
+                {/* Diamond Separator */}
+							<div className="flex items-center justify-center gap-4 mb-8">
+								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+								<div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+								<div className="w-24 h-[1px] bg-[#BD9574]"></div>
+							</div>
                 <p
                   className={`${archivo.className} text-[16px] font-light max-w-3xl mx-auto text-center text-[#E2DBCC] leading-[150%]`}
                 >

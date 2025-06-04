@@ -78,11 +78,11 @@ export default function Stats({ data }) {
 
           {/* Divider */}
           <div className="hidden lg:flex flex-col items-center mx-12">
-            <div className="flex-1 w-[1px] bg-[#656565]"></div>
+            <div className="flex-1 w-[1px] bg-[#BD9574]"></div>
             <div className="my-4">
               <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
             </div>
-            <div className="flex-1 w-[1px] bg-[#656565]"></div>
+            <div className="flex-1 w-[1px] bg-[#BD9574]"></div>
           </div>
 
           {/* Australian Market Stats */}
