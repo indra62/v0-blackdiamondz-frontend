@@ -18,18 +18,16 @@ export default function PrivacyPolicy() {
 		<main className="bg-[#211f17] min-h-screen">
 			<div className="container mx-auto px-4 py-16">
 				{/* Privacy Policy Header */}
-				<div className="text-center mb-12">
-					<h1
-						className={`${taviraj.className} text-[#E2DBCC] text-5xl font-light mb-6`}
-					>
+				<div className="flex flex-col items-center text-center mb-8">
+					<h1 className={`${taviraj.className} text-center text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
 						Privacy Policy
 					</h1>
 
-					{/* Decorative Divider */}
-					<div className="flex items-center justify-center gap-4 w-full max-w-md mx-auto">
-						<div className="h-px bg-[#656565]/30 flex-grow"></div>
+					{/* Diamond Separator */}
+					<div className="flex items-center justify-center gap-4 mb-8">
+						<div className="w-24 h-[1px] bg-[#BD9574]"></div>
 						<div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-						<div className="h-px bg-[#656565]/30 flex-grow"></div>
+						<div className="w-24 h-[1px] bg-[#BD9574]"></div>
 					</div>
 				</div>
 
@@ -37,12 +35,12 @@ export default function PrivacyPolicy() {
 				<div
 					className={`${archivo.className} text-[#E2DBCC] text-center max-w-3xl mx-auto mb-16`}
 				>
-					<p className="mb-4">
+					<p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto mb-4 text-base md:text-lg`}>
 						If you require any more information or have any questions about our
 						privacy policy, please feel free to contact us by email at
 						[ask@blackdiamondz.com]
 					</p>
-					<p>
+					<p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto mb-4 text-base md:text-lg`}>
 						At www.blackdiamondz.com we consider the privacy of our visitors to
 						be extremely important. This privacy policy document describes in
 						detail the types of personal information is collected and recorded

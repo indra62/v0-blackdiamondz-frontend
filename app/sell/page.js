@@ -272,22 +272,18 @@ export default function SellPage() {
         <>
           {/* Hero Section */}
           <section className="flex flex-col items-center pt-32 text-center">
-            <h1
-              className={`${taviraj.className} text-[#e2dbcc] text-[48px] max-w-[1200px] font-light leading-[60px] tracking-[2px] mb-8`}
-            >
+            <h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
               {translation?.property_sell_title}
             </h1>
 
             {/* Diamond Separator */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-              <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
-              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
-            </div>
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+              </div>
 
-            <p
-              className={`${archivo.className} text-[#E2DBCC] font-light text-base leading-6 max-w-2xl mx-auto mb-16`}
-            >
+            <p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg mb-6`}>
               {translation?.property_sell_description}
             </p>
           </section>

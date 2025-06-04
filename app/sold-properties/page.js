@@ -199,22 +199,19 @@ export default function SoldPage() {
 							ref={gridRef}
 							className="flex flex-col items-center text-center mb-12"
 						>
-							<h2
-								className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
-							>
+							<h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
 								{translationSold?.property_sold_title}
-							</h2>
-							<div className="flex justify-center mb-6">
-								<div className="w-24 h-px bg-[#bd9574] relative">
-									<div className="absolute w-2 h-2 bg-[#bd9574] rotate-45 -top-[3px] left-1/2 transform -translate-x-1/2"></div>
-								</div>
-							</div>
+							</h1>
+							{/* Diamond Separator */}
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+                <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+                <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+              </div>
 
-							<div
-								className={`${archivo.className} text-[#e2dbcc] text-base mb-6 text-center max-w-[732px]`}
-							>
+							<p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg mb-6`}>
 								{translationSold?.property_sold_description}
-							</div>
+							</p>
 						</div>
 
 						{/* Property Grid */}
@@ -326,8 +323,8 @@ export default function SoldPage() {
 						<StatsHome data={statistic} isMobileView={isMobileView} />
 					</div>
 
-					{/* Off-Market Properties Section */}
-					<OffMarket data={offMarket} section={offMarketSection} />
+					{/* Off-Market Properties Section
+					<OffMarket data={offMarket} section={offMarketSection} /> */}
 				</>
 			)}
 			<FloatingButtonWithModal

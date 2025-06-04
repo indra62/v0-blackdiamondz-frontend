@@ -263,9 +263,7 @@ export default function OurStoryPage() {
 
             {/* Hero Content */}
             <div className="text-[#E2DBCC] relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
-              <h1
-                className={`${taviraj.className} text-[48px] font-light leading-[125%] tracking-[2px] text-center mb-8`}
-              >
+              <h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
                 {translation?.title}
               </h1>
 
@@ -276,9 +274,7 @@ export default function OurStoryPage() {
                 <div className="w-24 h-[1px] bg-[#BD9574]"></div>
               </div>
 
-              <p
-                className={`${archivo.className}  font-light text-[16px] leading-[150%] tracking-[0px] text-center max-w-3xl mx-auto mb-4`}
-              >
+              <p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg`}>
                 {translation?.description}
               </p>
             </div>

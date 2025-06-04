@@ -82,11 +82,16 @@ export default function Hero({ data }) {
 
 			{/* Content */}
 			<div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-				<h1
-					className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-light leading-[125%] tracking-[2px] text-center max-w-5xl mb-8 -mt-32`}
-				>
+				<h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 max-w-5xl -mt-32 leading-[125%] tracking-[2px]`}>
 					{translation?.hero_text || ""}
 				</h1>
+
+				{/* Diamond divider */}
+          <div className="flex items-center justify-center mb-8">
+            <div className="w-24 h-px bg-[#bd9574]"></div>
+            <div className="w-2 h-2 mx-2 bg-[#bd9574] transform rotate-45"></div>
+            <div className="w-24 h-px bg-[#bd9574]"></div>
+          </div>
 
 				<div
 					className={`${archivo.className} text-[#E2DBCC] text-[16px] leading-[150%] tracking-[0px] text-center mb-2`}

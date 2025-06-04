@@ -10,6 +10,7 @@ import { createPortal } from "react-dom"
 import { useDebouncedCallback } from "use-debounce"
 import { useRouter, usePathname } from "next/navigation"
 import "react-range-slider-input/dist/style.css"
+import { FlagIcon } from "react-flag-kit";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -45,8 +46,8 @@ export default function Header() {
     : ""
 
   const languages = [
-    { name: "English", country: "UK", flag: "🇬🇧", value: "en" },
-    { name: "中文", country: "CN", flag: "🇨🇳", value: "cn" },
+    { name: "English", country: "UK", flag: "GB", value: "en" },
+    { name: "中文", country: "CN", flag: "CN", value: "cn" },
   ]
 
   const toggleLanguageDropdown = () => {
@@ -351,7 +352,7 @@ export default function Header() {
                     }) || "/images/smallLogoBD.png"
                   }
                   alt="Black Diamondz Logo"
-                  className="lg:max-w-[400px] md:max-w-[200px] h-auto"
+                  className="lg:max-w-[300px] md:max-w-[150px] h-auto"
                 />
               </Link>
             </div>
@@ -389,7 +390,7 @@ export default function Header() {
                     aria-expanded={isLanguageDropdownOpen}
                     aria-haspopup="true"
                   >
-                    <span className="text-xl">{selectedLanguage.flag}</span>
+                    <span className="text-xl"><FlagIcon code={selectedLanguage.flag} size={24} /></span>
                     <ChevronDown className="h-4 w-4 text-[#BD9574]" />
                   </button>
 
@@ -419,7 +420,7 @@ export default function Header() {
                             className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
                           >
                             <span className="text-[#BD9574] text-xl">
-                              {language.flag}
+                              <FlagIcon code={language.flag} size={24} />
                             </span>
                             <div className="flex flex-col items-start">
                               <span className="text-[#BD9574] text-base font-light">

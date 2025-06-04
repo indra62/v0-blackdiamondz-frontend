@@ -38,7 +38,7 @@ export default function Stats({ data }) {
           {/* Black Diamondz Stats */}
           <div className="flex-1 mb-12 lg:mb-0">
             <div className="flex items-center justify-center mb-12">
-              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
+              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-[#e2dbcc] text-center">
                 {translation?.left_title}
               </h2>
             </div>
@@ -49,7 +49,7 @@ export default function Stats({ data }) {
                 >
                   {translation?.left_title_value_1}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.left_title_value_1_text}
                 </div>
               </div>
@@ -59,7 +59,7 @@ export default function Stats({ data }) {
                 >
                   {translation?.left_title_value_2}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.left_title_value_2_text}
                 </div>
               </div>
@@ -69,7 +69,7 @@ export default function Stats({ data }) {
                 >
                   {translation?.left_title_value_3}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.left_title_value_3_text}
                 </div>
               </div>
@@ -88,7 +88,7 @@ export default function Stats({ data }) {
           {/* Australian Market Stats */}
           <div className="flex-1">
             <div className="flex items-center justify-center mb-12">
-              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-white text-center">
+              <h2 className="font-archivo font-normal text-[20px] leading-[21.76px] text-[#e2dbcc] text-center">
                 {translation?.right_title}
               </h2>
             </div>
@@ -99,7 +99,7 @@ export default function Stats({ data }) {
                 >
                   {translation?.right_title_value_1}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.right_title_value_1_text}
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function Stats({ data }) {
                 >
                   {translation?.right_title_value_2}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.right_title_value_2_text}
                 </div>
               </div>
@@ -119,7 +119,7 @@ export default function Stats({ data }) {
                 >
                   {translation?.right_title_value_3}
                 </div>
-                <div className="font-archivo font-light text-base leading-6 text-white">
+                <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.right_title_value_3_text}
                 </div>
               </div>
