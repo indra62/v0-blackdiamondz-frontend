@@ -159,9 +159,8 @@ export default function Home() {
 				const dataAboutUs_section = await getItems("aboutUs_section", {
 					fields: [
 						"*",
-						"aboutUs_Image.*",
 						"translations.*",
-						"aboutUs_Image.directus_files_id.*",
+						"aboutUs_images.directus_files_id.*",
 					],
 				});
 				const dataStatistic_section = await getItems("statistic_section", {
