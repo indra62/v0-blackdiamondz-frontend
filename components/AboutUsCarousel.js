@@ -45,7 +45,7 @@ export default function AboutUsCarousel({ images = [], alt }) {
       showDots
       arrows={false}
       autoPlay
-      autoPlaySpeed={1000}
+      autoPlaySpeed={3000}
       transitionDuration={500}
       customDot={<CustomDiamondDot />}
       infinite={true}
@@ -54,13 +54,15 @@ export default function AboutUsCarousel({ images = [], alt }) {
       itemClass="carousel-item"
     >
       {images.map((img, idx) => (
+        <div key={idx} className="relative w-full h-[500px]" style={{ minHeight: 300 }}>
         <Image
-          src={img}
-          alt={alt}
+          src={img.url}
+          alt={img.alt}
           fill
           style={{ objectFit: "cover", objectPosition: "center" }}
-          className="transition-transform duration-700 hover:scale-110"
+          className="transition-transform duration-700 hover:scale-105"
         />
+        </div>
       ))}
     </Carousel>
     </div>
