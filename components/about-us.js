@@ -28,13 +28,14 @@ export default function AboutUs({ data }) {
     data?.translations?.[0];
 
   const imageUrls =
-    data.aboutUs_images?.map((img) =>
-      getImageUrl(img?.directus_files_id?.id, {
-        format: "webp",
-        quality: 100,
-        fit: "cover",
-      })
-    ) || []
+  data.aboutUs_images?.map((img) => ({
+    url: getImageUrl(img?.directus_files_id?.id, {
+      format: "webp",
+      quality: 100,
+      fit: "cover",
+    }),
+    alt: img?.directus_files_id?.title || "Luxury interior with person sitting by floor-to-ceiling windows overlooking nature",
+  })) || [];
 
   return (
     <section className="relative w-full min-h-[500px] flex items-center justify-center bg-[#211f17] overflow-hidden">
@@ -48,16 +49,16 @@ export default function AboutUs({ data }) {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "linear-gradient(90deg, rgba(33,31,23,1) 0%, rgba(33,31,23,0.85) 15%, rgba(33,31,23,0.5) 35%, rgba(33,31,23,0) 70%)",
+              "linear-gradient(90deg, rgba(33,31,23,1) 0%, rgba(33,31,23,0.90) 30%, rgba(33,31,23,0.75) 50%, rgba(33,31,23,0) 80%)",
           }}
         ></div>
       </div>
 
       {/* Content container */}
       <div className="relative z-10 w-full px-6 py-16 flex flex-col lg:items-start items-center">
-        <div>
+        <div className="max-w-4xl text-center lg:text-left">
           <h2
-            className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
+            className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8 text-wrap`}
           >
             {translation?.aboutUs_title || ""}
           </h2>
