@@ -2,15 +2,20 @@
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import { Property } from "@/lib/component/property"
+import DynamicCarousel from "@/lib/component/DynamicCarousel"
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
+const taviraj = Taviraj({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+})
+const archivo = Archivo({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+})
 
 export default function TeamListing({ agentProperties, status }) {
   const currentListings =
-    agentProperties?.filter(
-      (property) => property?.status === status
-    ) || []
+    agentProperties?.filter((property) => property?.status === status) || []
   return (
     <div className="py-11 overflow-hidden">
       <div className="flex items-center justify-center mb-8">
@@ -25,7 +30,24 @@ export default function TeamListing({ agentProperties, status }) {
         <div className="h-[1px] bg-[#656565]/30 flex-grow"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <DynamicCarousel
+        buttonLabel="See All Properties"
+        infinite={true}
+        showButton={true}
+        href={status === "Current" ? "/buy" : "/sold-properties"}
+      >
+        {currentListings.map((property) => (
+          <Property
+            key={property.id}
+            property={property}
+            taviraj={taviraj}
+            archivo={archivo}
+            showAction={false}
+          />
+        ))}
+      </DynamicCarousel>
+
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       
         {currentListings.map((property) => {
           return (
@@ -38,7 +60,7 @@ export default function TeamListing({ agentProperties, status }) {
 						/>
 					);
         })}
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -120,7 +120,7 @@ const mapStyles = [
 	},
 ];
 
-export default function BuyMap() {
+export default function BuyMap({propertyStatus = "Current"}) {
   const [mapType, setMapType] = useState("Map");
 	const [property, setProperty] = useState([]);
 	const [error, setError] = useState(null);
@@ -146,7 +146,7 @@ export default function BuyMap() {
 					],
 					filter: {
 						is_off_market: { _eq: false },
-						status: { _eq: "Current" },
+						status: { _eq: propertyStatus },
 					},
 					limit: -1,
 				});

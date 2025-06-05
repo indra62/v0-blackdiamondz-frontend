@@ -17,6 +17,7 @@ import { getImageUrl } from "@/lib/api"
 import { Property } from "@/lib/component/property"
 import { useAuth } from "@/hooks/useAuth"
 import Link from "next/link"
+import DynamicCarousel from "@/lib/component/DynamicCarousel"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
@@ -71,10 +72,16 @@ export default function OffMarket({ data, section, dark = true }) {
         {data?.length > 0 ? (
           <>
           <div
-            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ${
+            className={`${
               !isAuthenticated ? "blur-md pointer-events-none" : ""
             }`}
           >
+          <DynamicCarousel
+                  buttonLabel="See All Properties"
+                  infinite={true}
+                  showButton={true}
+                  href={"/off-market"}
+                >
             {data?.map((property) => (
               <div
                 key={property.id}
@@ -90,6 +97,7 @@ export default function OffMarket({ data, section, dark = true }) {
                 />
               </div>
             ))}
+            </DynamicCarousel>
           </div>
           </>
         ) : (

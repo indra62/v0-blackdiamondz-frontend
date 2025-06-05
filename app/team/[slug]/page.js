@@ -66,6 +66,7 @@ export default function TeamMemberPage() {
 								},
 							},
 						},
+            limit: -1,
 					});
 
           dataTestimonials = await getItems("aboutUs_team_testimonials", {

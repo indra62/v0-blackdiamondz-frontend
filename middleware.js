@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-const protectedRoutes = ['/saved-properties'];
+const protectedRoutes = ['/saved-properties', '/off-market'];
 
 function isProtectedRoute(pathname) {
   return protectedRoutes.some(route => pathname.startsWith(route));
@@ -22,5 +22,6 @@ export function middleware(request) {
 export const config = {
   matcher: [
     '/saved-properties/:path*',
+    '/off-market/:path*',
   ],
 }

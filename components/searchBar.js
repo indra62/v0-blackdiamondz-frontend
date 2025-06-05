@@ -71,7 +71,7 @@ const bedroomOptions = [
 	{ value: 6, label: "6+ Bedrooms" },
 ];
 
-export default function SearchBar() {
+export default function SearchBar({ pathTo = "/buy" }) {
 	const [hasMounted, setHasMounted] = useState(false);
 	useEffect(() => {
 		setHasMounted(true);
@@ -158,10 +158,10 @@ export default function SearchBar() {
 
 		const hasParams = Array.from(params).length > 0;
 		if (hasParams) {
-			router.push(`/buy?${params.toString()}`);
+			router.push(`${pathTo}?${params.toString()}`);
 		} else {
-			if (router.pathname !== "/buy") {
-				router.push("/buy");
+			if (router.pathname !== pathTo) {
+				router.push(pathTo);
 			} else {
 				// Refresh the page
 				router.replace(router.asPath);
