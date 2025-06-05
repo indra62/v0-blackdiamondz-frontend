@@ -1,12 +1,13 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Heart } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
-import { Taviraj } from "next/font/google";
-import { Archivo } from "next/font/google";
-import { Property } from "@/lib/component/property";
+import { useRef, useEffect, useState } from "react";
+import { Heart } from "lucide-react"
+import Link from "next/link"
+import Image from "next/image"
+import { Taviraj } from "next/font/google"
+import { Archivo } from "next/font/google"
+import { Property } from "@/lib/component/property"
+import DynamicCarousel from "@/lib/component/DynamicCarousel"
 
 /**
  * Properties Component
@@ -21,18 +22,24 @@ import { Property } from "@/lib/component/property";
  * @param {number} props.propertyCount - Number of properties to display
  */
 
-const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
-const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const taviraj = Taviraj({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+})
+const archivo = Archivo({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+})
 
 const propertyTab = [
   { id: "buy", label: "Buy", type: "text", value: "Current" },
   { id: "sell", label: "Sell", type: "text", value: "Sold" },
-];
+]
 
 export default function Properties({
   data,
   showFilters = true,
-  showNavigation = true,
+  showNavigation = false,
   propertyCount = 4,
   onFilterChange,
   currentPage,
@@ -42,136 +49,76 @@ export default function Properties({
   categories,
   isMobileView,
 }) {
-  const [selectedFilters, setSelectedFilters] = useState(["Current"]);
-  const [selectedType, setSelectedType] = useState([]);
-  const [activeTab, setActiveTab] = useState("Current");
-  const [language, setLanguage] = useState("en");
+  const [selectedFilters, setSelectedFilters] = useState(["Current"])
+  const [selectedType, setSelectedType] = useState([])
+  const [activeTab, setActiveTab] = useState("Current")
+  const [language, setLanguage] = useState("en")
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedLanguage = localStorage.getItem("language");
+      const storedLanguage = localStorage.getItem("language")
       if (storedLanguage) {
-        setLanguage(storedLanguage);
+        setLanguage(storedLanguage)
       }
     }
-  }, []);
+  }, [])
 
   const translationCategories =
     categories?.translations?.find((t) => t.languages_code === language) ||
-    categories?.translations?.[0];
+    categories?.translations?.[0]
 
   const toggleFilter = (filterId) => {
     if (filterId === "Current" || filterId === "Sold") {
-      setActiveTab(filterId);
+      setActiveTab(filterId)
       // Call the parent component's filter handler
       if (onFilterChange) {
-        onFilterChange(filterId, selectedType);
+        onFilterChange(filterId, selectedType)
       }
     } else {
       setSelectedFilters((prev) =>
         prev.includes(filterId)
           ? prev.filter((id) => id !== filterId)
           : [...prev, filterId]
-      );
+      )
     }
-  };
+  }
 
   const toggleType = (filterId) => {
     const updatedTypes = selectedType.includes(filterId)
       ? selectedType.filter((id) => id !== filterId)
-      : [...selectedType, filterId];
+      : [...selectedType, filterId]
 
-    setSelectedType(updatedTypes);
+    setSelectedType(updatedTypes)
     if (onTypeChange) {
-      onTypeChange(updatedTypes); // Only pass the updated types
+      onTypeChange(updatedTypes) // Only pass the updated types
     }
-  };
+  }
 
   return (
     <div className="bg-[#211f17] text-white py-12">
       <div>
-        {/* Only show filters if showFilters prop is true */}
-        {/* {showFilters && (
-          <div className="flex items-center justify-between pb-4 mb-8">
-            <div className="flex gap-8">
-              {propertyTab
-                .filter((cat) => cat.type === "text")
-                .map((category) => (
-                  <div
-                    key={category.id}
-                    className={`cursor-pointer ${
-                      activeTab === category.value
-                        ? "text-[#BD9574]"
-                        : "text-[#656565]"
-                    }`}
-                    onClick={() => toggleFilter(category.value)}
-                  >
-                    <span className="font-light text-lg">{category.label}</span>
-                    {activeTab === category.value && (
-                      <div className="w-full h-[2px] bg-[#BD9574] mt-2" />
-                    )}
-                  </div>
-                ))}
-            </div>
-
-            <div className="flex gap-8">
-              {categories
-                .filter((cat) => cat.svg !== null)
-                .map((category) => {
-                  // Find the correct translation based on current language
-                  // Assuming you have a currentLanguage variable or similar
-                  const translation = category.translations.find(
-                    (t) => t.languages_code === language // or use your current language code
-                  )
-
-                  return (
-                    <div
-                      key={category.id}
-                      className={`flex flex-col items-center cursor-pointer ${
-                        selectedType.includes(category.id)
-                          ? "text-[#BD9574]"
-                          : "text-[#656565]"
-                      }`}
-                      onClick={() => toggleType(category.id)}
-                    >
-                      <div
-                        className="mb-1"
-                        dangerouslySetInnerHTML={{ __html: category.svg }}
-                      />
-                      <span
-                        className={`font-light text-xs ${
-                          selectedType.includes(category.id)
-                            ? "text-[#BD9574]"
-                            : "text-[#656565]"
-                        }`}
-                      >
-                        {translation?.name || category.slug}
-                      </span>
-                    </div>
-                  )
-                })}
-            </div>
-          </div>
-        )} */}
-
         {/* Properties Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <DynamicCarousel
+          buttonLabel="See All Properties"
+          infinite={true}
+          showButton={true}
+        >
           {data.map((property) => (
-            <Property
-              key={property.id}
-              property={property}
-              taviraj={taviraj}
-              archivo={archivo}
-            />
+              <Property
+                key={property.id}
+                property={property}
+                taviraj={taviraj}
+                archivo={archivo}
+              />
           ))}
-        </div>
+        </DynamicCarousel>
 
         {/* Navigation - only show if showNavigation prop is true */}
         {showNavigation && (
           <div className={`flex items-center justify-between mt-12`}>
             {!isMobileView && (
               <div className="flex gap-8">
-                {Array.from({ length: totalPages}, (_, index) => (
+                {Array.from({ length: totalPages }, (_, index) => (
                   <div
                     key={index}
                     className={`w-3 h-3 ${
@@ -262,5 +209,5 @@ export default function Properties({
         )}
       </div>
     </div>
-  );
+  )
 }

@@ -46,19 +46,20 @@ export default function AboutUs({ data }) {
           alt="Luxury interior with person sitting by floor-to-ceiling windows overlooking nature"/>
         {/* Left gradient overlay for fade effect */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 -left-6 pointer-events-none"
           style={{
+            width: "calc(100% + 3rem)",
             background:
-              "linear-gradient(90deg, rgba(33,31,23,1) 0%, rgba(33,31,23,0.90) 30%, rgba(33,31,23,0.75) 50%, rgba(33,31,23,0) 80%)",
+              "linear-gradient(90deg, rgba(33,31,23,1) 0%, rgba(33,31,23,1) 10%, rgba(33,31,23,0.90) 30%, rgba(33,31,23,0.75) 50%, rgba(33,31,23,0) 80%)",
           }}
         ></div>
       </div>
 
       {/* Content container */}
       <div className="relative z-10 w-full px-6 py-16 flex flex-col lg:items-start items-center">
-        <div className="max-w-4xl text-center lg:text-left">
+        <div className="max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-4xl w-full text-center lg:text-left">
           <h2
-            className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8 text-wrap`}
+            className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
           >
             {translation?.aboutUs_title || ""}
           </h2>

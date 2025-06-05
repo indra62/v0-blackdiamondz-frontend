@@ -1,4 +1,6 @@
 import { Inter } from "next/font/google"
+import "swiper/css";
+import "swiper/css/pagination";
 import "./globals.css"
 import { AuthProvider } from "@/hooks/useAuth"
 import { Toaster } from "react-hot-toast"
@@ -24,6 +26,7 @@ export default function RootLayout({ children }) {
             <Toaster position="top-center" reverseOrder={false} />
             <Header />
             <MapLoaderProvider>
+            <div id="modal-root" />
             {children}
             </MapLoaderProvider>
             <SocialMediaLinks />

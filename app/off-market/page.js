@@ -1,5 +1,5 @@
 /**
- * Buy Page
+ * Off-Market Properties Page
  *
  * Property listings page for properties available for purchase.
  * Includes property grid with filtering options, explore city section,
@@ -9,18 +9,17 @@
  */
 "use client"
 
-import { useState, useEffect, Suspense, useRef } from "react"
+import { useState, useEffect, Suspense, useRef, useMemo } from "react"
 import Footer from "@/components/footer"
 import ExploreCity from "@/components/explore-city"
-import SoldMap from "@/components/sold-map"
+import BuyMap from "@/components/buy-map"
 import OffMarket from "@/components/off-market"
-import { getItems } from "@/lib/api"
+import { getImageUrl, getItems } from "@/lib/api"
 import Link from "next/link"
 import { Property } from "@/lib/component/property"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Loading from "@/components/loading"
-import StatsHome from "@/components/stats_home"
 import FloatingButtonWithModal from "@/components/FloatingButtonWithModal"
 import { useSearchParams } from "next/navigation"
 import SearchBar from "@/components/searchBar"
@@ -36,17 +35,15 @@ const archivo = Archivo({
 
 const ITEMS_PER_PAGE = 12
 
-export function SoldPageContent() {
+export function OffMarketPageContent() {
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(true)
-  const [dataSold, setDataSold] = useState(null)
+  const [dataOffmarket, setDataOffmarket] = useState(null)
   const [properties, setProperties] = useState([])
   const [propertiesCurrentPage, setPropertiesCurrentPage] = useState(0)
   const [propertiesTotalPages, setPropertiesTotalPages] = useState(0)
   const [error, setError] = useState(null)
-  const [statistic, setStatistic] = useState(null)
-  const [offMarket, setOffMarket] = useState(null)
-  const [offMarketSection, setOffMarketSection] = useState(null)
+  const [explore, setExplore] = useState(null)
   const [language, setLanguage] = useState("en")
   const city = searchParams.get("city")
   const type = searchParams.get("type")
@@ -125,6 +122,7 @@ export function SoldPageContent() {
 
   const fetchProperties = async (
     page = 0,
+    status = "Current",
     type = [],
     city,
     bedroom,
@@ -138,7 +136,10 @@ export function SoldPageContent() {
 
       const filter = {
         is_off_market: { _eq: false },
-        status: { _eq: "Sold", _neq: "Inactive" },
+        status:
+          status === "Current"
+            ? { _eq: "Offmarket" }
+            : { _eq: "Sold", _neq: "Inactive" },
       }
 
       if (city) {
@@ -241,53 +242,38 @@ export function SoldPageContent() {
   }, [propertiesCurrentPage])
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataOffMarket = async () => {
       try {
-        const dataSold = await getItems("property_sold", {
+        const token = localStorage.getItem("access_token")
+        const dataOffmarket = await getItems(
+          "property_offmarket",
+          {
+            fields: ["*", "translations.*"],
+          },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        )
+        const dataExplore_section = await getItems("explore_section", {
           fields: ["*", "translations.*", "cities.*"],
         })
-        const dataStatistic_section = await getItems("statistic_section", {
-          fields: ["*", "translations.*"],
-        })
-        const dataOffMarketSection = await getItems("offMarket_section", {
-          fields: ["*", "translations.*"],
-        })
-        const dataOffMarketProperties = await getItems("properties", {
-          fields: [
-            "*",
-            "translations.*",
-            "images.directus_files_id.*",
-            "plans.*",
-            "videos.*",
-            "features.feature_id.*",
-            "features.value",
-            "agents.agent_id.user_id.*",
-            "type.*.*",
-          ],
-          filter: {
-            status: { _eq: "Offmarket" },
-          },
-          limit: 4,
-          sort: ["-date_created"],
-        })
 
-        setStatistic(dataStatistic_section)
-        setDataSold(dataSold)
-        setOffMarketSection(dataOffMarketSection)
-        setOffMarket(dataOffMarketProperties)
+        setDataOffmarket(dataOffmarket)
+        setExplore(dataExplore_section)
         setLoading(false)
       } catch (error) {
         console.error("Error fetching data:", error)
         setError("Failed to load data")
       }
     }
-    fetchData()
+    fetchDataOffMarket()
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
     fetchProperties(
       propertiesCurrentPage,
+      "Current",
       type ? [type] : [],
       city,
       bedroom,
@@ -308,9 +294,9 @@ export function SoldPageContent() {
     featuresKey,
   ])
 
-  const translationSold =
-    dataSold?.translations?.find((t) => t.languages_code === language) ||
-    dataSold?.translations?.[0]
+  const translationDataOffmarket =
+    dataOffmarket?.translations?.find((t) => t.languages_code === language) ||
+    dataOffmarket?.translations?.[0]
 
   return (
     <main className="min-h-screen bg-[#211f17]">
@@ -326,7 +312,7 @@ export function SoldPageContent() {
               <h1
                 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}
               >
-                {translationSold?.property_sold_title}
+                {translationDataOffmarket?.property_offmarket_title}
               </h1>
               {/* Diamond Separator */}
               <div className="flex items-center justify-center gap-4 mb-8">
@@ -338,12 +324,12 @@ export function SoldPageContent() {
               <p
                 className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg mb-6`}
               >
-                {translationSold?.property_sold_description}
+                {translationDataOffmarket?.property_offmarket_description}
               </p>
             </div>
           </div>
 
-          <SearchBar pathTo={"/sold-properties"} />
+          <SearchBar pathTo={"/off-market"} />
 
           {/* Property Grid */}
           <div ref={gridRef} className="container mx-auto px-4 py-16">
@@ -451,12 +437,10 @@ export function SoldPageContent() {
             </div>
           </div>
 
-          <div className="px-[40px] py-16">
-            <StatsHome data={statistic} isMobileView={isMobileView} />
+          {/* Explore City Section */}
+          <div className="py-16 px-[40px]">
+            <ExploreCity data={explore} />
           </div>
-
-          {/* Off-Market Properties Section
-					<OffMarket data={offMarket} section={offMarketSection} /> */}
         </>
       )}
       <FloatingButtonWithModal
@@ -476,17 +460,18 @@ export function SoldPageContent() {
         }
       >
         <div className="w-[90vw] h-auto bg-[#bd9574] rounded-md p-4">
-          <SoldMap />
+          <BuyMap propertyStatus={"Offmarket"} />
         </div>
       </FloatingButtonWithModal>
+
       <Footer />
     </main>
   )
 }
-export default function SoldPage() {
+export default function OffMarketPage() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-[#211f17]"></div>}>
-      <SoldPageContent />
+      <OffMarketPageContent />
     </Suspense>
   )
 }

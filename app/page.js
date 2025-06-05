@@ -38,7 +38,7 @@ export default function Home() {
 	const [propertiesStatus, setPropertiesStatus] = useState("Current");
 	const [propertiesType, setPropertiesType] = useState([]);
 	const [propertiesCount, setPropertiesCount] = useState(0);
-	const ITEMS_PER_PAGE = 4;
+	const ITEMS_PER_PAGE = 12;
 	const [isMobileView, setIsMobileView] = useState(false);
 
 	useEffect(() => {
