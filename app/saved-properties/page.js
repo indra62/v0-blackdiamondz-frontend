@@ -154,7 +154,7 @@ export function SavedPropertyPage() {
 					filter: {
 						status: { _eq: "Offmarket" },
 					},
-					limit: 4,
+					limit: 8,
           sort: ["-date_listed"],
 				});
 

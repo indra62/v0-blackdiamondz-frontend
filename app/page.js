@@ -100,7 +100,7 @@ export default function Home() {
 					filter,
 					limit: ITEMS_PER_PAGE,
 					page: directusPage,
-					sort: ["-date_created"],
+					sort: ["-date_listed"],
 					meta: "filter_count,total_count",
 				},
 				{},
@@ -188,7 +188,7 @@ export default function Home() {
 						status: { _eq: "Offmarket" },
 					},
 					sort: ["-date_listed"],
-					limit: 4,
+					limit: 8,
 				});
 
 				const propertiesData = await fetchProperties(0, "Current", []);
