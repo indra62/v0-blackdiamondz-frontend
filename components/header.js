@@ -34,9 +34,6 @@ export default function Header() {
   const [selectedLanguage, setSelectedLanguage] = useState("en")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobileView, setIsMobileView] = useState(false)
-  const [isValueDropdownOpen, setIsValueDropdownOpen] = useState(false)
-  const valueDropdownRef = useRef()
-  const valueDropdownPortalRef = useRef()
   const activeTab = pathname.startsWith("/buy")
     ? "buy"
     : pathname.startsWith("/sell")
@@ -134,25 +131,6 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        valueDropdownRef.current &&
-        !valueDropdownRef.current.contains(event.target) &&
-        valueDropdownPortalRef.current &&
-        !valueDropdownPortalRef.current.contains(event.target)
-      ) {
-        setIsValueDropdownOpen(false)
-      }
-    }
-    if (isValueDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [isValueDropdownOpen])
-
-  useEffect(() => {
     if (!isLanguageDropdownOpen) return
 
     function handleClickOutside(event) {
@@ -168,8 +146,10 @@ export default function Header() {
     }
 
     document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("touchstart", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("touchstart", handleClickOutside);
     }
   }, [isLanguageDropdownOpen])
 
@@ -223,7 +203,7 @@ export default function Header() {
                 aria-haspopup="true"
                 className="flex items-center w-10 h-10 gap-1 text-[#BD9574] focus:outline-none relative z-[1001]"
               >
-                <span className="text-xl">{selectedLanguage.flag}</span>
+                <span className="text-xl"><FlagIcon code={selectedLanguage.flag} size={24} /></span>
                 <ChevronDown className="h-4 w-4 text-[#BD9574]" />
               </button>
 
@@ -504,6 +484,7 @@ export default function Header() {
       {/* Language Dropdown for Mobile */}
       {isMobileView && isLanguageDropdownOpen && (
         <div
+          ref={languageDropdownRef}
           className="bg-[#211f17] border border-[#333] shadow-lg fixed z-[1001]"
           style={{
             top: "60px",
@@ -517,7 +498,7 @@ export default function Header() {
               onClick={() => selectLanguage(language)}
               className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[#1A1814] transition-colors"
             >
-              <span className="text-[#BD9574] text-xl">{language.flag}</span>
+              <FlagIcon code={language.flag} size={24} />
               <span className="text-[#BD9574] text-base font-light">
                 {language.name}
               </span>

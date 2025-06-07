@@ -155,7 +155,7 @@ export function SavedPropertyPage() {
 						status: { _eq: "Offmarket" },
 					},
 					limit: 4,
-          sort: ["-date_created"],
+          sort: ["-date_listed"],
 				});
 
         fetchProperties()

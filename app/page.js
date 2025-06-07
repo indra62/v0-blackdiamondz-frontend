@@ -187,7 +187,7 @@ export default function Home() {
 					filter: {
 						status: { _eq: "Offmarket" },
 					},
-					sort: ["-date_created"],
+					sort: ["-date_listed"],
 					limit: 4,
 				});
 

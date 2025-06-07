@@ -52,6 +52,7 @@ export function BuyPageContent() {
   const bedroom = searchParams.get("bedroom")
   const priceMin = searchParams.get("price_min")
   const priceMax = searchParams.get("price_max")
+  const sortBy = searchParams.get("sort_by");
   const features = searchParams.getAll("features")
   const featuresKey = features.join(",")
   const rangesParam = searchParams.get("ranges")
@@ -72,6 +73,7 @@ export function BuyPageContent() {
     priceMax,
     features,
     rangesParam,
+    sortBy,
   })
 
   useEffect(() => {
@@ -84,7 +86,8 @@ export function BuyPageContent() {
       prev.priceMin !== priceMin ||
       prev.priceMax !== priceMax ||
       prev.featuresKey !== featuresKey ||
-      prev.rangesParam !== rangesParam
+      prev.rangesParam !== rangesParam ||
+      prev.sortBy !== sortBy
     ) {
       setPropertiesCurrentPage(0)
       prevFilters.current = {
@@ -95,10 +98,11 @@ export function BuyPageContent() {
         priceMax,
         featuresKey,
         rangesParam,
+        sortBy,
       }
     }
     // eslint-disable-next-line
-  }, [city, type, bedroom, priceMin, priceMax, featuresKey, rangesParam])
+  }, [city, type, bedroom, priceMin, priceMax, featuresKey, rangesParam, sortBy])
 
   useEffect(() => {
     const handleResize = () => {
@@ -131,7 +135,8 @@ export function BuyPageContent() {
     priceMin,
     priceMax,
     ranges = [],
-    features = []
+    features = [],
+    sortBy,
   ) => {
     try {
       const directusPage = page + 1
@@ -213,7 +218,7 @@ export function BuyPageContent() {
           limit: ITEMS_PER_PAGE,
           page: directusPage,
           meta: "filter_count,total_count",
-          sort: ["-date_created"],
+          sort: [sortBy || "-date_listed"],
         },
         {},
         true
@@ -271,7 +276,7 @@ export function BuyPageContent() {
             status: { _eq: "Offmarket" },
           },
           limit: 4,
-          sort: ["-date_created"],
+          sort: ["-date_listed"],
         })
 
         setExplore(dataExplore_section)
@@ -298,7 +303,8 @@ export function BuyPageContent() {
       priceMin,
       priceMax,
       ranges,
-      features
+      features,
+      sortBy,
     )
     // eslint-disable-next-line
   }, [
@@ -310,6 +316,7 @@ export function BuyPageContent() {
     priceMax,
     rangesParam,
     featuresKey,
+    sortBy,
   ])
 
   const translationExplore =
