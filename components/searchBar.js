@@ -71,6 +71,13 @@ const bedroomOptions = [
 	{ value: 6, label: "6+ Bedrooms" },
 ];
 
+const sortByOptions = [
+	{ value: "-date_listed", label: "Latest" },
+	{ value: "date_listed", label: "Oldest" },
+	{ value: "price", label: "Lowest Price" },
+	{ value: "-price", label: "Highest Price" },
+];
+
 export default function SearchBar({ pathTo = "/buy" }) {
 	const [hasMounted, setHasMounted] = useState(false);
 	useEffect(() => {
@@ -85,6 +92,7 @@ export default function SearchBar({ pathTo = "/buy" }) {
 	const priceMin = searchParams.get("price_min");
 	const priceMax = searchParams.get("price_max");
 	const features = searchParams.getAll("features");
+	const sortBy = searchParams.get("sort_by");
 	const { logout, isAuthenticated } = useAuth();
 	const [error, setError] = useState(null);
 	const [language, setLanguage] = useState("en");
@@ -106,6 +114,7 @@ export default function SearchBar({ pathTo = "/buy" }) {
 		price_min: priceMin || "",
 		price_max: priceMax || "",
 		features: features || "",
+		sort_by: sortBy || "",
 	});
 	const [activeFilters, setActiveFilters] = useState([]);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -149,6 +158,7 @@ export default function SearchBar({ pathTo = "/buy" }) {
 
 		if (formData.price_min) params.set("price_min", formData.price_min);
 		if (formData.price_max) params.set("price_max", formData.price_max);
+		if (formData.sort_by) params.set("sort_by", formData.sort_by);
 
 		if (activeFilters.length > 0) {
 			activeFilters.forEach((feature) => {
@@ -371,6 +381,7 @@ export default function SearchBar({ pathTo = "/buy" }) {
 									menuPosition="fixed"
 									className={archivo.className}
 									isClearable
+									isSearchable={false}
 								/>
 							</div>
 						</div>
@@ -399,6 +410,7 @@ export default function SearchBar({ pathTo = "/buy" }) {
 									menuPosition="fixed"
 									className={archivo.className}
 									isClearable
+									isSearchable={false}
 								/>
 							</div>
 						</div>
@@ -468,6 +480,35 @@ export default function SearchBar({ pathTo = "/buy" }) {
 									</div>,
 									document.body
 								)}
+						</div>
+
+						{/* Sort */}
+						<div className="flex items-center px-6 py-4 border-r border-[#333] w-1/4">
+							<div className="flex flex-col w-full">
+								<Select
+									instanceId="property-sort-select"
+									name="sort_by"
+									value={sortByOptions.find(
+										(option) => option.value === formData.sort_by
+									)}
+									onChange={(option) =>
+										setFormData((prev) => ({
+											...prev,
+											sort_by: option ? option.value : "",
+										}))
+									}
+									options={sortByOptions}
+									placeholder="Sort By"
+									styles={customStyles}
+									menuPortalTarget={
+										typeof window !== "undefined" ? document.body : null
+									}
+									menuPosition="fixed"
+									className={archivo.className}
+									isClearable
+									isSearchable={false}
+								/>
+							</div>
 						</div>
 
 						{/* Search Button */}
@@ -603,7 +644,7 @@ function PropertyFilter({
 								/>
 							</div>
 							<div className="flex items-center">
-								<div className="flex flex-col justify-center px-7 py-2 border-[#333] border-l">
+								<div className="flex flex-col justify-center items-center px-3 py-2 w-[80px] border-[#333] border-l">
 									<div className={isMobileFiltersOpen ? "rotate-180" : ""}>
 										<button
 											type="button"
@@ -626,7 +667,7 @@ function PropertyFilter({
 										</button>
 									</div>
 									<span className="text-xs whitespace-nowrap text-[#888]">
-										{isMobileFiltersOpen ? "Hide" : "Filter"}
+										{isMobileFiltersOpen ? "Hide" : "Sort/Filter"}
 									</span>
 								</div>
 							</div>
@@ -726,6 +767,31 @@ function PropertyFilter({
 										}))
 									}
 									className="bg-[#211F17]/40 backdrop-blur-md rounded border border-[#333] text-[#e2dbcc] placeholder:text-[#888] text-sm p-2 pr-8 appearance-none focus:outline-none"
+								/>
+							</div>
+
+							<div className="flex flex-col col-span-2">
+								<span className="text-[14px] text-[#888] mb-1">Sort By</span>
+								<Select
+									instanceId="property-sort-select-mobile"
+									name="sort_by"
+									value={sortByOptions.find(
+										(option) => option.value === formData.sort_by
+									)}
+									onChange={(option) =>
+										setFormData((prev) => ({
+											...prev,
+											sort_by: option ? option.value : "",
+										}))
+									}
+									options={sortByOptions}
+									placeholder="Sort By"
+									styles={customStyles}
+									menuPortalTarget={document.body}
+									menuPosition="absolute"
+									className={archivo.className}
+									isClearable
+									isSearchable={false}
 								/>
 							</div>
 						</div>

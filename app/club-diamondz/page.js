@@ -250,8 +250,8 @@ export default function ClubDiamondz() {
           filter: {
             status: { _eq: "Offmarket" },
           },
-          limit: 4,
-          sort: ["-date_created"],
+          limit: 8,
+          sort: ["-date_listed"],
         })
 
         setDiamondzPage(dataDiamondzPage)

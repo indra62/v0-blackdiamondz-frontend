@@ -50,6 +50,7 @@ export function OffMarketPageContent() {
   const bedroom = searchParams.get("bedroom")
   const priceMin = searchParams.get("price_min")
   const priceMax = searchParams.get("price_max")
+  const sortBy = searchParams.get("sort_by")
   const features = searchParams.getAll("features")
   const featuresKey = features.join(",")
   const rangesParam = searchParams.get("ranges")
@@ -70,6 +71,7 @@ export function OffMarketPageContent() {
     priceMax,
     features,
     rangesParam,
+    sortBy
   })
 
   useEffect(() => {
@@ -82,7 +84,8 @@ export function OffMarketPageContent() {
       prev.priceMin !== priceMin ||
       prev.priceMax !== priceMax ||
       prev.featuresKey !== featuresKey ||
-      prev.rangesParam !== rangesParam
+      prev.rangesParam !== rangesParam ||
+      prev.sortBy !== sortBy
     ) {
       setPropertiesCurrentPage(0)
       prevFilters.current = {
@@ -93,10 +96,11 @@ export function OffMarketPageContent() {
         priceMax,
         featuresKey,
         rangesParam,
+        sortBy
       }
     }
     // eslint-disable-next-line
-  }, [city, type, bedroom, priceMin, priceMax, featuresKey, rangesParam])
+  }, [city, type, bedroom, priceMin, priceMax, featuresKey, rangesParam, sortBy])
 
   useEffect(() => {
     const handleResize = () => {
@@ -129,7 +133,8 @@ export function OffMarketPageContent() {
     priceMin,
     priceMax,
     ranges = [],
-    features = []
+    features = [],
+    sortBy,
   ) => {
     try {
       const directusPage = page + 1
@@ -211,7 +216,7 @@ export function OffMarketPageContent() {
           limit: ITEMS_PER_PAGE,
           page: directusPage,
           meta: "filter_count,total_count",
-          sort: ["-date_created"],
+          sort: [sortBy || "-date_listed"],
         },
         {},
         true
@@ -280,7 +285,8 @@ export function OffMarketPageContent() {
       priceMin,
       priceMax,
       ranges,
-      features
+      features,
+      sortBy,
     )
     // eslint-disable-next-line
   }, [
@@ -292,6 +298,7 @@ export function OffMarketPageContent() {
     priceMax,
     rangesParam,
     featuresKey,
+    sortBy,
   ])
 
   const translationDataOffmarket =

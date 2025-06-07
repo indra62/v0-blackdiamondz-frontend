@@ -17,6 +17,7 @@ import { Archivo } from "next/font/google";
 import { getImageUrl } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
+import { BlurFade } from "./magicui/blur-fade";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
@@ -93,6 +94,7 @@ export default function Hero({ data }) {
             <div className="w-24 h-px bg-[#bd9574]"></div>
           </div>
 
+					<BlurFade delay={0.25} inView>
 				<div
 					className={`${archivo.className} text-[#E2DBCC] text-[16px] leading-[150%] tracking-[0px] text-center mb-2`}
 				>
@@ -107,11 +109,14 @@ export default function Hero({ data }) {
 						)}
 					</span>
 				</div>
+				</BlurFade>
+				<BlurFade delay={0.25 * 2} inView>
 				<div
 					className={`${archivo.className} text-[#E2DBCC] text-[16px] leading-[150%] tracking-[0px] text-center mb-2`}
 				>
 					{translation?.hero_message}
 				</div>
+				</BlurFade>
 
 				{/* Scroll Indicator */}
 				<div className="absolute bottom-12 flex flex-col items-center">

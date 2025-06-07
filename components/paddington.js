@@ -166,7 +166,7 @@ export default function Paddington({ selectedSuggestion }) {
                 {translationData?.paddington_description}
               </p>
               {/* Stats Row 1 */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-16">
                 {translatedStats.map((stat, index) => (
                   <div key={stat.id} className="flex flex-col items-center">
                     <div

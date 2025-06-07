@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
 import Link from "next/link";
+import { NumberTicker } from "./magicui/number-ticker";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
@@ -51,7 +52,7 @@ export default function StatsHome({ data, isMobileView }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_project_value}
+                <NumberTicker value={translation?.left_project_value} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6  ">
                   {translation?.left_project_text}
@@ -61,7 +62,7 @@ export default function StatsHome({ data, isMobileView }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_units_value}
+                <NumberTicker value={translation?.left_units_value} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6  ">
                   {translation?.left_units_text}
@@ -71,7 +72,7 @@ export default function StatsHome({ data, isMobileView }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_totalSQM_value}
+                  <NumberTicker value={translation?.left_totalSQM_value} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6 ">
                   {translation?.left_totalSQM_text}
@@ -120,7 +121,7 @@ export default function StatsHome({ data, isMobileView }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_project_value}
+                  <NumberTicker value={translation?.left_project_value} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6  ">
                   {translation?.right_project_text}
@@ -130,7 +131,7 @@ export default function StatsHome({ data, isMobileView }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.right_units_value}
+                  <NumberTicker value={translation?.right_units_value} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6">
                   {translation?.right_units_text}
@@ -140,7 +141,7 @@ export default function StatsHome({ data, isMobileView }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.right_totalSQM_value}
+                  <NumberTicker value={translation?.right_totalSQM_value} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6">
                   {translation?.right_totalSQM_text}
