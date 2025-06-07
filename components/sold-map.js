@@ -177,10 +177,21 @@ export default function SoldMap() {
 		mapRef.current.fitBounds(bounds);
 	}, [isLoaded, property]);
 
+	useEffect(() => {
+			if (!selectedProperty || !mapRef.current) return
+			// Pan to the marker
+			mapRef.current.panTo({
+				lat: selectedProperty.geo_lat,
+				lng: selectedProperty.geo_lon,
+			})
+	
+			mapRef.current.setZoom(16)
+		}, [selectedProperty])
+
 	return (
 		<div className="relative bg-[#211f17] z-50 flex flex-col rounded-md">
 			<div className="flex-1 relative">
-				<div className="h-[500px] w-full">
+				<div className="h-[700px] w-full">
 					{isLoaded ? (
 						<GoogleMap
 							mapContainerStyle={{ width: "100%", height: "100%" }}
@@ -204,7 +215,7 @@ export default function SoldMap() {
 									key={item.id}
 									position={{ lat: item.geo_lat, lng: item.geo_lon }}
 									icon={{
-										url: "/map-pointer-invert.png",
+										url: "/gold-marker.png",
 										scaledSize: { width: 50, height: 50 },
 										anchor: { x: 25, y: 50 },
 									}}

@@ -11,6 +11,7 @@
 import { useState, useEffect } from "react";
 import { Taviraj } from "next/font/google";
 import { Archivo } from "next/font/google";
+import { NumberTicker } from "./magicui/number-ticker";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
@@ -47,7 +48,7 @@ export default function Stats({ data }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_title_value_1}
+                  <NumberTicker value={translation?.left_title_value_1} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.left_title_value_1_text}
@@ -57,7 +58,7 @@ export default function Stats({ data }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_title_value_2}
+                  <NumberTicker value={translation?.left_title_value_2} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.left_title_value_2_text}
@@ -67,7 +68,7 @@ export default function Stats({ data }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.left_title_value_3}
+                  <NumberTicker value={translation?.left_title_value_3} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.left_title_value_3_text}
@@ -97,7 +98,7 @@ export default function Stats({ data }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.right_title_value_1}
+                  <NumberTicker value={translation?.right_title_value_1} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.right_title_value_1_text}
@@ -107,7 +108,7 @@ export default function Stats({ data }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.right_title_value_2}
+                  <NumberTicker value={translation?.right_title_value_2} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.right_title_value_2_text}
@@ -117,7 +118,7 @@ export default function Stats({ data }) {
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
-                  {translation?.right_title_value_3}
+                  <NumberTicker value={translation?.right_title_value_3} className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574]`}/>
                 </div>
                 <div className="font-archivo font-light text-base leading-6 text-[#e2dbcc]">
                   {translation?.right_title_value_3_text}

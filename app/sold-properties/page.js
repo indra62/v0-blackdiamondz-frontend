@@ -20,7 +20,7 @@ import { Property } from "@/lib/component/property"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import Loading from "@/components/loading"
-import StatsHome from "@/components/stats_home"
+import Statistics from "@/components/sold-statistics"
 import FloatingButtonWithModal from "@/components/FloatingButtonWithModal"
 import { useSearchParams } from "next/navigation"
 import SearchBar from "@/components/searchBar"
@@ -452,7 +452,7 @@ export function SoldPageContent() {
           </div>
 
           <div className="px-[40px] py-16">
-            <StatsHome data={statistic} isMobileView={isMobileView} />
+            <Statistics />
           </div>
 
           {/* Off-Market Properties Section

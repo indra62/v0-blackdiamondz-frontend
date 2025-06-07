@@ -190,6 +190,17 @@ export default function PropertyMap({ onClose, property, type }) {
   //   setDistance(meters)
   // }, [searchMarker, property])
 
+  useEffect(() => {
+        if (!selectedProperty || !mapRef.current) return
+        // Pan to the marker
+        mapRef.current.panTo({
+          lat: selectedProperty.geo_lat,
+          lng: selectedProperty.geo_lon,
+        })
+    
+        mapRef.current.setZoom(16)
+      }, [selectedProperty])
+
   return (
     <div className="relative bg-[#211f17] z-[1001] flex flex-col px-10">
       {/* Property Info - Updated with correct font sizes */}
@@ -275,7 +286,7 @@ export default function PropertyMap({ onClose, property, type }) {
                 <Marker
                   position={{ lat: property.geo_lat, lng: property.geo_lon }}
                   icon={{
-                    url: "/map-pointer-invert.png",
+                    url: "/red-marker.png",
                     scaledSize: { width: 80, height: 80 },
                     anchor: { x: 40, y: 80 },
                   }}
@@ -288,7 +299,7 @@ export default function PropertyMap({ onClose, property, type }) {
                     key={item.id}
                     position={{ lat: item.geo_lat, lng: item.geo_lon }}
                     icon={{
-                      url: "/map-pointer.png",
+                      url: "/white-marker.png",
                       scaledSize: { width: 50, height: 50 },
                       anchor: { x: 25, y: 50 },
                     }}
