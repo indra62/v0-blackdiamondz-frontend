@@ -114,7 +114,7 @@ export default function SearchBar({ pathTo = "/buy" }) {
 		price_min: priceMin || "",
 		price_max: priceMax || "",
 		features: features || "",
-		sort_by: sortBy || "",
+		sort_by: sortBy || "-date_listed",
 	});
 	const [activeFilters, setActiveFilters] = useState([]);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -505,7 +505,6 @@ export default function SearchBar({ pathTo = "/buy" }) {
 									}
 									menuPosition="fixed"
 									className={archivo.className}
-									isClearable
 									isSearchable={false}
 								/>
 							</div>
@@ -790,7 +789,6 @@ function PropertyFilter({
 									menuPortalTarget={document.body}
 									menuPosition="absolute"
 									className={archivo.className}
-									isClearable
 									isSearchable={false}
 								/>
 							</div>

@@ -10,7 +10,7 @@ export const AvatarCircles = ({
   darkMode = true,
 }) => {
   return (
-    <div className={cn("z-10 flex -space-x-2 rtl:space-x-reverse", className)}>
+    <div className={cn("z-10 flex -space-x-2 rtl:space-x-reverse flex-shrink-0", className)}>
       {avatarUrls.map((url, index) => (
         <a
           key={index}
