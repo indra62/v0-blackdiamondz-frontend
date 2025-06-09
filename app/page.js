@@ -37,7 +37,6 @@ export default function Home() {
 	const [propertiesTotalPages, setPropertiesTotalPages] = useState(0);
 	const [propertiesStatus, setPropertiesStatus] = useState("Current");
 	const [propertiesType, setPropertiesType] = useState([]);
-	const [propertiesCount, setPropertiesCount] = useState(0);
 	const ITEMS_PER_PAGE = 12;
 	const [isMobileView, setIsMobileView] = useState(false);
 
@@ -94,6 +93,9 @@ export default function Home() {
 						"videos.*",
 						"features.feature_id.*",
 						"features.value",
+						"agents.agent_id.*",
+            "agents.agent_id.agent_photo.directus_files_id.*",
+            "agents.agent_id.external_logo.directus_files_id.*",
 						"agents.agent_id.user_id.*",
 						"type.*.*",
 					],
@@ -181,6 +183,9 @@ export default function Home() {
 						"videos.*",
 						"features.feature_id.*",
 						"features.value",
+						"agents.agent_id.*",
+            "agents.agent_id.agent_photo.directus_files_id.*",
+            "agents.agent_id.external_logo.directus_files_id.*",
 						"agents.agent_id.user_id.*",
 						"type.*.*",
 					],
