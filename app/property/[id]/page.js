@@ -31,6 +31,7 @@ import Loading from "@/components/loading"
 import { getYouTubeEmbedUrl } from "@/lib/utils"
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
 import { ChevronLeft, ChevronRight, Grid } from "lucide-react"
+import HeartButton from "@/lib/component/heartButton"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
@@ -284,9 +285,46 @@ export default function PropertyDetailPage({ params }) {
             {/* Breadcrumb */}
             <div className="py-6">
               <div
-                className={`${archivo.className} text-[#e2dbcc] text-[16px] font-light`}
+                className={`${archivo.className} text-[#e2dbcc] text-[16px] font-light flex justify-between items-center`}
               >
                 <span>{translation?.name || ""}</span>
+                <div className="flex justify-start items-center gap-6">
+                  <HeartButton
+                    propertyId={property.id}
+                    uniqueId={property.unique_id}
+                    mode={"dark"}
+                    // savedPropertyId={savedPropertyId}
+                    // refreshSavedProperties={refreshSavedProperties}
+                  />
+                  <button
+                    className="text-[#e2dbcc] hover:text-[#bd9574] transition-colors"
+                    onClick={async () => {
+                      if (navigator.share) {
+                        try {
+                          await navigator.share({
+                            title: property?.name, // or your property title
+                            text: `Check out this property: ${
+                              property?.address_street
+                            } ${property?.address_suburb} ${
+                              property?.address_state
+                            } ${property?.address_postcode
+                              .toString()
+                              .padStart(4, "0")}}`,
+                            url: window.location.href,
+                          })
+                          // Optionally show a success message
+                        } catch (err) {
+                          // Optionally handle share cancel/error
+                        }
+                      } else {
+                        // Fallback: Show your own share modal or copy link
+                        alert("Sharing is not supported on this browser.")
+                      }
+                    }}
+                  >
+                    Share
+                  </button>
+                </div>
               </div>
             </div>
 
