@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 
 /**
@@ -10,8 +10,34 @@ import Image from "next/image"
  * @param {Object} props.archivo - Font class object.
  */
 const PartnerCarousel = ({ partners, language, getImageUrl, archivo }) => {
+  const containerRef = useRef(null)
+    const [containerWidth, setContainerWidth] = useState(1500) // fallback default
+  
+    useEffect(() => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth)
+      }
+      // Optionally, add a resize listener for responsiveness
+      const handleResize = () => {
+        if (containerRef.current) {
+          setContainerWidth(containerRef.current.offsetWidth)
+        }
+      }
+      window.addEventListener("resize", handleResize)
+      return () => window.removeEventListener("resize", handleResize)
+    }, [])
+  
+    const minWidth = 80
+    const maxWidth = 300
+    const partnerCount = partners?.length || 1
+  
+    const cardWidth = Math.max(
+      Math.min(containerWidth / partnerCount, maxWidth),
+      minWidth)
+
+
   return (
-    <div className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-full mx-auto justify-center">
+    <div ref={containerRef} className="flex flex-nowrap overflow-x-auto gap-4 mb-12 max-w-full mx-auto md:justify-center justify-start">
       {partners?.map((partner) => {
         // Find translation for the current language or fallback
         const translation =
@@ -32,10 +58,11 @@ const PartnerCarousel = ({ partners, language, getImageUrl, archivo }) => {
         return (
           <div
             key={partner.id}
-            className="flex flex-col items-center flex-shrink-0 w-[150.25px]"
-            style={{ height: "320px" }}
+            className="flex flex-col items-center flex-shrink-0"
+            style={{ height: "320px", width: `${cardWidth}px` }}
           >
-            <div className="w-[150.25px] h-[220.25px] flex items-center justify-center">
+            <div className={`h-[220.25px] w-[${cardWidth}px] flex items-center justify-center`}
+              style={{ width: `${cardWidth}px`, position: "relative" }}>
               {partner.url ? (
                 <a href={partner.url} target="_blank" rel="noopener noreferrer">
                   <Image
