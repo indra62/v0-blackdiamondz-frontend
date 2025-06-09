@@ -124,18 +124,18 @@ export function AuthProvider({ children }) {
         },
       })
 
-      const userId = meResponse.data.data.id
+      // const userId = meResponse.data.data.id
 
-      const userResponse = await api.get(`/users/${userId}`, {
-        params: {
-          fields: ["*.*"],
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      // const userResponse = await api.get(`/users/${userId}`, {
+      //   params: {
+      //     fields: ["*.*"],
+      //   },
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // })
 
-      return userResponse.data.data
+      return meResponse.data.data
     } catch (err) {
       console.error("Error fetching user data:", err)
       throw new Error("Failed to fetch user data")
@@ -287,18 +287,22 @@ export function useAuth() {
         },
       })
 
-      const userId = meResponse.data.data.id
+      // localStorage.setItem("user", meResponse.data)
 
-      const userResponse = await api.get(`/users/${userId}`, {
-        params: {
-          fields: ["*.*"],
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      // const userId = meResponse.data.data.id
 
-      return userResponse.data
+      // const userResponse = await api.get(`/users/${userId}`, {
+      //   params: {
+      //     fields: ["*.*"],
+      //   },
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // })
+
+      console.log("User data fetched:", meResponse.data)
+
+      return meResponse.data
     } catch (err) {
       console.error("Error fetching user data:", err)
       throw new Error("Failed to fetch user data")

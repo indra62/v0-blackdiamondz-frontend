@@ -170,7 +170,7 @@ export default function ContactUs() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column - Contact Info */}
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center md:items-start items-center md:text-left text-center">
               <h1
                 className={`${taviraj.className} text-[#E2DBCC] text-4xl md:text-5xl leading-[125%] tracking-[2px] mb-12`}
               >
@@ -180,7 +180,7 @@ export default function ContactUs() {
               </h1>
 
               <div
-                className={`${archivo.className} text-[#656565] font-light text-base mb-12`}
+                className={`${archivo.className} text-[#656565] md:text-left text-center font-light text-base mb-12`}
               >
                 <p className="mb-1">
                   ph{" "}
@@ -206,7 +206,7 @@ export default function ContactUs() {
             {/* Right Column - Contact Form */}
             <div>
               {/* User Type Selection */}
-              <div className="flex space-x-8 mb-8">
+              <div className="flex space-x-8 mb-8 md:justify-start justify-center">
                 <label className="flex items-center cursor-pointer">
                   <input
                     type="radio"
@@ -280,7 +280,7 @@ export default function ContactUs() {
               {/* Contact Form */}
               <form
                 onSubmit={handleSubmit}
-                className="grid grid-cols-1 md:grid-cols-2 gap-0"
+                className="grid grid-cols-1 md:grid-cols-2 gap-0 md:mb-0 mb-16"
               >
                 {/* First Name */}
                 <div className="md:border border-x border-t border-[#656565]/30 p-4">

@@ -465,7 +465,7 @@ export function BuyPageContent() {
           </div>
 
           {/* Explore City Section */}
-          <div className="py-16 px-[40px]">
+          <div className="md:py-16 px-0 md:px-[40px]">
             <ExploreCity data={explore} />
           </div>
 
