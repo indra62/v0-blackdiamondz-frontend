@@ -244,6 +244,10 @@ export default function ClubDiamondz() {
             "videos.*",
             "features.feature_id.*",
             "features.value",
+            "agents.agent_id.*",
+            "agents.agent_id.agent_photo.directus_files_id.*",
+            "agents.agent_id.external_logo.directus_files_id.*",
+            "agents.agent_id.user_id.*",
             "agents.*",
             "type.*.*",
           ],
@@ -380,7 +384,7 @@ export default function ClubDiamondz() {
           <div className="relative min-h-screen md:h-[400px] w-full">
             <Image
               src={
-                getImageUrl(diamondzPage?.hero_background, {
+                getImageUrl(diamondzPage?.hero_background?.id, {
                   format: "webp",
                   quality: 100,
                   fit: "cover",
@@ -571,7 +575,7 @@ export default function ClubDiamondz() {
         />*/}
 
         {/* Off-Market Properties Section */}
-        <div className="px-[40px]">
+        <div className="px-4 md:px-[40px]">
           <OffMarket data={offMarket} section={offMarketSection} dark={false} />
         </div>
 

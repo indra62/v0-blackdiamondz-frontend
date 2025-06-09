@@ -464,7 +464,7 @@ export function SoldPageContent() {
             </div>
           </div>
 
-          <div className="px-[40px] py-16">
+          <div className="px-4 md:px-[40px] py-0 md:py-16">
             <Statistics />
           </div>
 

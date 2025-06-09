@@ -223,7 +223,7 @@ export default function Home() {
 				<>
 					<Hero data={heroData} />
 					<SearchBar />
-					<div className="px-[40px]">
+					<div className="px-4 md:px-[40px]">
 						<Properties
 							data={properties}
 							currentPage={propertiesCurrentPage}
@@ -235,16 +235,16 @@ export default function Home() {
 							isMobileView={isMobileView}
 						/>
 					</div>
-					<div className="px-[40px] py-16">
+					<div className="px-4 md:px-[40px] py-0 md:py-16">
 						<StatsHome data={statistic} isMobileView={isMobileView} />
 					</div>
-					<div className="px-[40px] py-16">
+					<div className="px-4 md:px-[40px] py-0 md:py-16">
 						<AboutUs data={aboutUs} />
 					</div>
-					<div className="py-16 px-[40px]">
+					<div className="pt-16 md:py-16 px-0 md:px-[40px]">
 						<ExploreCity data={explore} />
 					</div>
-					<div className="px-[40px]">
+					<div className="px-4 md:px-[40px]">
 						<OffMarket data={offMarket} section={offMarketSection} />
 					</div>
 				</>

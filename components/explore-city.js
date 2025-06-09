@@ -128,7 +128,7 @@ export default function ExploreCity({ data }) {
 
   return (
 		<div className="bg-[#211f17]">
-			<div className={data?.cities.length <= 3 ? "" : "px-[40px]"}>
+			<div className={data?.cities.length <= 3 ? "" : "px-4 md:px-[40px]"}>
 				{/* Header */}
 				<div className="text-center mb-16">
 					<h2
@@ -148,7 +148,7 @@ export default function ExploreCity({ data }) {
 				{/* Container with fixed width to show 3 full images + 250px of the fourth */}
 				<div
 					ref={scrollRef}
-					className="overflow-x-auto pl-2 pb-8 max-w-full md:max-w-[calc(508px*3+270px+12px)] hide-scrollbar cursor-grab active:cursor-grabbing"
+					className="overflow-x-auto pb-8 max-w-full md:max-w-[calc(508px*3+270px+12px)] hide-scrollbar cursor-grab active:cursor-grabbing"
 					onMouseDown={onMouseDown}
 					style={{ userSelect: isDragging ? "none" : "auto" }}
 				>
@@ -164,7 +164,7 @@ export default function ExploreCity({ data }) {
 							return (
 								<div
 									key={city.id}
-									className="relative w-[280px] md:w-[300px] h-[320px] flex-none group cursor-pointer overflow-hidden"
+									className="relative w-[300px] h-[320px] flex-none group cursor-pointer overflow-hidden"
 								>
 									<Link
 										href={`/buy?ranges=${encodeURIComponent(rangesParam)}`}

@@ -47,7 +47,7 @@ export default function StatsHome({ data, isMobileView }) {
               <Link href="/our-story">More about Black Diamondz</Link>  
               </button>
             </div>
-            <div className="grid grid-cols-3 w-full gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 w-full gap-8">
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
@@ -68,7 +68,7 @@ export default function StatsHome({ data, isMobileView }) {
                   {translation?.left_units_text}
                 </div>
               </div>
-              <div className="text-center">
+              <div className="text-center col-span-2 md:col-span-1">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >
@@ -116,7 +116,7 @@ export default function StatsHome({ data, isMobileView }) {
                 More about Australian Market
               </button>
             </div>
-            <div className="grid grid-cols-3 w-full gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 w-full gap-8">
               <div className="text-center">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
@@ -137,7 +137,7 @@ export default function StatsHome({ data, isMobileView }) {
                   {translation?.right_units_text}
                 </div>
               </div>
-              <div className="text-center">
+              <div className="text-center col-span-2 md:col-span-1">
                 <div
                   className={`${taviraj.className} font-normal text-[48px] leading-[81.89px] text-[#BD9574] mb-2`}
                 >

@@ -271,7 +271,7 @@ export default function SellPage() {
       ) : (
         <>
           {/* Hero Section */}
-          <section className="flex flex-col items-center pt-32 text-center">
+          <section className="flex flex-col items-center pt-32 text-center px-4 md:px-[40px]">
             <h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
               {translation?.property_sell_title}
             </h1>
@@ -289,14 +289,14 @@ export default function SellPage() {
           </section>
 
           {/* Stats Section */}
-          <section className="pb-16">
+          <section className="pb-0 md:pb-16">
             <div className="container mx-auto px-4">
               <StatsHome data={statistic} isMobileView={isMobileView} />
             </div>
           </section>
 
           {/* Property Images Grid */}
-          <section className="pb-16">
+          <section className="pb-16 px-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
               <div className="h-64 md:h-[392px] relative">
                 <Image
@@ -580,7 +580,7 @@ export default function SellPage() {
           </section>
 
           {/* Second Sell Section */}
-          <section className="py-16 text-center">
+          <section className="py-16 text-center px-4">
             <h2
               className={`${taviraj.className} text-[#e2dbcc] text-[48px] font-light leading-[60px] tracking-[2px] mb-8`}
             >

@@ -11,7 +11,7 @@ import { getItems } from "@/lib/api"
 import { Taviraj } from "next/font/google"
 import { Archivo } from "next/font/google"
 import { useEffect, useState } from "react"
-import { NumberTicker } from "@/components/magicui/number-ticker";
+import { NumberTicker } from "@/components/magicui/number-ticker"
 import Loading from "./loading"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400"] })
@@ -100,39 +100,56 @@ export default function Statistics() {
           </p>
 
           {translatedStats.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-16">
-              {translatedStats.map((stat, index) => (
-                <div key={stat.id} className="flex flex-col items-center">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+              {translatedStats.map((stat, index) => {
+                const isLast = index === translatedStats.length - 1
+                const isOdd = translatedStats.length % 2 === 1
+                // On small screens, last item in odd-length array gets col-span-2
+                const colSpanClass =
+                  isLast && isOdd
+                    ? "sm:col-span-2 col-span-2 md:col-span-1"
+                    : "col-span-1"
+
+                return (
                   <div
-                    className="mb-6 text-[#BD9574]"
-                    dangerouslySetInnerHTML={{ __html: stat.svg }}
-                  ></div>
-                  <div
-                    className={`${archivo.className} text-[#BD9574] font-light text-base leading-[150%] tracking-[0px] mb-2 text-center`}
+                    key={stat.id}
+                    className={`flex flex-col items-center ${colSpanClass}`}
                   >
-                    {stat.translatedData?.title}
-                  </div>
-                  {stat.value_type === 1 && (
                     <div
-                    className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-normal leading-[120%] tracking-[0px] mb-2 text-center`}
-                  >
-                    {stat.translatedData?.value}
-                  </div>
-                  )}
-                  {stat.value_type === 2 && (
+                      className="mb-6 text-[#BD9574]"
+                      dangerouslySetInnerHTML={{ __html: stat.svg }}
+                    ></div>
                     <div
-                    className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-normal leading-[120%] tracking-[0px] mb-2 text-center`}
-                  >
-                    <NumberTicker value={stat.translatedData?.value} decimalPlaces={stat.translatedData?.decimal_places} className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-normal leading-[120%] tracking-[0px]`}/>
+                      className={`${archivo.className} text-[#BD9574] font-light text-base leading-[150%] tracking-[0px] mb-2 text-center`}
+                    >
+                      {stat.translatedData?.title}
+                    </div>
+                    {stat.value_type === 1 && (
+                      <div
+                        className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-normal leading-[120%] tracking-[0px] mb-2 text-center`}
+                      >
+                        {stat.translatedData?.value}
+                      </div>
+                    )}
+                    {stat.value_type === 2 && (
+                      <div
+                        className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-normal leading-[120%] tracking-[0px] mb-2 text-center`}
+                      >
+                        <NumberTicker
+                          value={stat.translatedData?.value}
+                          decimalPlaces={stat.translatedData?.decimal_places}
+                          className={`${taviraj.className} text-[#E2DBCC] text-[48px] font-normal leading-[120%] tracking-[0px]`}
+                        />
+                      </div>
+                    )}
+                    <div
+                      className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center`}
+                    >
+                      {stat.translatedData?.period}
+                    </div>
                   </div>
-                  )}
-                  <div
-                    className={`${archivo.className} text-[#BD9574] font-light text-[16px] leading-[150%] tracking-[0px] text-center`}
-                  >
-                    {stat.translatedData?.period}
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           ) : (
             <p
