@@ -35,6 +35,7 @@ export default function TeamListing({ agentProperties, status }) {
         infinite={true}
         showButton={true}
         href={status === "Current" ? "/buy" : "/sold-properties"}
+        fullCount={3}
       >
         {currentListings.map((property) => (
           <Property

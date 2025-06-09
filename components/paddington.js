@@ -45,8 +45,8 @@ export default function Paddington({ selectedSuggestion }) {
     const fetchSuggestions = async (query = "QLD") => {
       try {
         const res = await fetch(
-          `/api/corelogic-suggest?q=${encodeURIComponent("2001/1 Boys Avenue Blacktown NSW 2148")}`
-          // `/api/corelogic-suggest?q=${encodeURIComponent(query)}`
+          // `/api/corelogic-suggest?q=${encodeURIComponent("2001/1 Boys Avenue Blacktown NSW 2148")}`
+          `/api/corelogic-suggest?q=${encodeURIComponent(query)}`
         )
         if (!res.ok) {
           console.log("not found")

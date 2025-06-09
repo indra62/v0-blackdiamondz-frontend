@@ -485,6 +485,97 @@ export default function PropertyDetailPage({ params }) {
                   {property?.land_area > 0 && (
                     <div className="flex items-center gap-1" title="Land Area">
                       <svg
+                        width="22px"
+                        height="22px"
+                        viewBox="0 0 0.66 0.66"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        transform="matrix(-1.8369701987210297e-16,-1,1,-1.8369701987210297e-16,0,0)"
+                      >
+                        <path
+                          d="m0.565 0.186 0.068 -0.068a0.021 0.021 0 0 0 0 -0.029L0.568 0.024"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M0.103 0.639v-0.495a0.041 0.041 0 0 1 0.041 -0.041H0.632"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="m0.021 0.565 0.068 0.068a0.021 0.021 0 0 0 0.029 0l0.068 -0.068"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M0.598 0.639a0.041 0.041 0 0 0 0.041 -0.041"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M0.516 0.639h-0.041"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M0.392 0.639h-0.041"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M0.268 0.639h-0.041"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M0.639 0.516v-0.041"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M0.639 0.392v-0.041"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M0.639 0.268v-0.041"
+                          stroke="#BD9574"
+                          strokeWidth="0.04125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <span
+                        className={`${archivo.className} font-light text-[#E2DBCC] text-[14px]`}
+                      >
+                        {property?.land_area} m<sup>2</sup>
+                      </span>
+                    </div>
+                  )}
+                  {property?.building_area > 0 && (
+                    <div
+                      className="flex items-center gap-1"
+                      title="Building Area"
+                    >
+                      <svg
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
                         width="22"
@@ -503,7 +594,7 @@ export default function PropertyDetailPage({ params }) {
                       <span
                         className={`${archivo.className} font-light text-[#E2DBCC] text-[14px]`}
                       >
-                        {property?.land_area} m<sup>2</sup>
+                        {property?.building_area} m<sup>2</sup>
                       </span>
                     </div>
                   )}
