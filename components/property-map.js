@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Archivo, Taviraj } from "next/font/google"
 import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
@@ -9,11 +9,13 @@ import {
   GoogleMap,
   Marker,
   InfoWindow,
-  // Autocomplete,
+  DirectionsRenderer,
+  Autocomplete,
 } from "@react-google-maps/api"
 import Loading from "./loading"
 import { getImageUrl, getItems } from "@/lib/api"
 import { useMapLoader } from "@/lib/component/MapLoaderProvider"
+import Select from "react-select"
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -23,6 +25,43 @@ const taviraj = Taviraj({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 })
+
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    backgroundColor: "#211f17",
+    border: "none",
+    boxShadow: "none",
+    color: "#E2DBCC",
+    height: "40px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: "#211f17",
+    border: "1px solid rgba(101, 101, 101, 0.3)",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? "#2c2a20" : "#211f17",
+    color: "#E2DBCC",
+    cursor: "pointer",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "#E2DBCC",
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "#656565",
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: "#E2DBCC",
+  }),
+  indicatorSeparator: (base) => ({
+    display: "none",
+  }),
+}
 
 const mapStyles = [
   {
@@ -121,14 +160,26 @@ const mapStyles = [
   },
 ]
 
+const travelModeOptions = [
+  { value: "DRIVING", label: "Driving" },
+  { value: "WALKING", label: "Walking" },
+  { value: "BICYCLING", label: "Bicycling" },
+  { value: "TRANSIT", label: "Transit" },
+]
+
 export default function PropertyMap({ onClose, property, type }) {
   const [mapType, setMapType] = useState("Map")
   const [otherProperty, setOtherProperty] = useState([])
   const [error, setError] = useState(null)
   const [selectedProperty, setSelectedProperty] = useState(null)
-  // const [searchBox, setSearchBox] = useState(null)
-  // const [searchMarker, setSearchMarker] = useState(null)
-  // const [distance, setDistance] = useState(null)
+  const mapRef = useRef(null)
+
+  // Directions-related state
+  const originAutocompleteRef = useRef(null)
+  const [originInput, setOriginInput] = useState("")
+  const [travelMode, setTravelMode] = useState("DRIVING")
+  const [directions, setDirections] = useState(null)
+  const [showDirectionsPanel, setShowDirectionsPanel] = useState(false)
 
   const { isLoaded } = useMapLoader()
 
@@ -191,18 +242,77 @@ export default function PropertyMap({ onClose, property, type }) {
   // }, [searchMarker, property])
 
   useEffect(() => {
-        if (!selectedProperty || !mapRef.current) return
-        // Pan to the marker
-        mapRef.current.panTo({
+    if (!selectedProperty || !mapRef.current) return
+    // Pan to the marker
+    mapRef.current.panTo({
+      lat: selectedProperty.geo_lat,
+      lng: selectedProperty.geo_lon,
+    })
+
+    mapRef.current.setZoom(16)
+  }, [selectedProperty])
+
+  useEffect(() => {
+    if (!selectedProperty || !mapRef.current) return
+    // Pan to the marker
+    mapRef.current.panTo({
+      lat: selectedProperty.geo_lat,
+      lng: selectedProperty.geo_lon,
+    })
+
+    mapRef.current.setZoom(16)
+  }, [selectedProperty])
+
+  const handleUseMyLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setOriginInput(
+            `${position.coords.latitude},${position.coords.longitude}`
+          )
+        },
+        () => alert("Unable to retrieve your location")
+      )
+    }
+  }
+
+  const handleGetDirections = async (e) => {
+    e.preventDefault()
+    if (!selectedProperty) {
+      alert("Please select a property as your destination.")
+      return
+    }
+    if (!originInput) {
+      alert("Please enter your starting location or use your current location.")
+      return
+    }
+    const directionsService = new window.google.maps.DirectionsService()
+    directionsService.route(
+      {
+        origin: originInput,
+        destination: {
           lat: selectedProperty.geo_lat,
           lng: selectedProperty.geo_lon,
-        })
-    
-        mapRef.current.setZoom(16)
-      }, [selectedProperty])
+        },
+        travelMode: window.google.maps.TravelMode[travelMode],
+      },
+      (result, status) => {
+        if (status === "OK") {
+          setDirections(result)
+          setShowDirectionsPanel(true)
+        } else {
+          alert("Directions request failed: " + status)
+        }
+      }
+    )
+  }
+
+  useEffect(() => {
+    setDirections(null)
+  }, [originInput, selectedProperty])
 
   return (
-    <div className="relative bg-[#211f17] z-[1001] flex flex-col px-10">
+    <div className="relative bg-[#211f17] z-[1001] flex flex-col">
       {/* Property Info - Updated with correct font sizes */}
       <div className="container mx-auto px-4 py-6">
         <div
@@ -214,7 +324,7 @@ export default function PropertyMap({ onClose, property, type }) {
         <div className="flex justify-between items-start">
           <div>
             <h1
-              className={`${taviraj.className} text-[#bd9574] text-[32px] font-light leading-[125%] tracking-[0px] mb-0`}
+              className={`${taviraj.className} text-[#bd9574] text-[24px] font-light leading-[125%] tracking-[0px] mb-0`}
             >
               {property?.name || ""}
             </h1>
@@ -238,29 +348,57 @@ export default function PropertyMap({ onClose, property, type }) {
 
       {/* Map Container */}
       <div className="flex-1 relative">
-        {/* Map Image - Different based on selected map type */}
-        <div className="h-[500px] w-full">
-          {
-            /* Only render Google Map after API is loaded */
-            console.log("nandha lagi", property?.geo_lat + property?.geo_lon)
-          }
-          {/* <Autocomplete
-            className="mb-4"
-            onLoad={setSearchBox}
-            onPlaceChanged={() => {
-              const place = searchBox.getPlace()
-              if (!place.geometry) return
-              const lat = place.geometry.location.lat()
-              const lng = place.geometry.location.lng()
-              setSearchMarker({ lat, lng })
-            }}
-          >
+        <form
+          onSubmit={handleGetDirections}
+          className="flex flex-col gap-2 py-3 bg-[#bd9574] md:flex-row md:items-center md:gap-3"
+        >
+          <div className="flex-1">
+            {/* <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (originAutocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={() => {
+                        const place = originAutocompleteRef.current.getPlace()
+                        if (place && place.formatted_address) {
+                          setOriginInput(place.formatted_address)
+                        } else if (place && place.name) {
+                          setOriginInput(place.name)
+                        }
+                      }}
+                    > */}
             <input
               type="text"
-              placeholder="Search address or station"
-              className="p-2 rounded border w-full mb-2"
+              placeholder="Enter your location"
+              value={originInput}
+              onChange={(e) => setOriginInput(e.target.value)}
+              className="w-full px-3 py-2 rounded border border-[#bd9574] focus:outline-none"
             />
-          </Autocomplete> */}
+            {/* </Autocomplete> */}
+          </div>
+          <button
+            type="button"
+            onClick={handleUseMyLocation}
+            className="w-full md:w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
+          >
+            Use My Location
+          </button>
+          <Select
+            value={travelModeOptions.find((opt) => opt.value === travelMode)}
+            onChange={(option) => setTravelMode(option.value)}
+            options={travelModeOptions}
+            isSearchable={false}
+            className="w-full md:w-[200px] h-10"
+            styles={customStyles}
+          />
+          <button
+            type="submit"
+            className="w-full md:w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
+          >
+            Get Directions
+          </button>
+        </form>
+
+        <div className="h-[50vh] min-h-[300px] max-h-[500px] md:h-[500px] w-full">
           {isLoaded ? (
             <>
               <GoogleMap
@@ -287,8 +425,8 @@ export default function PropertyMap({ onClose, property, type }) {
                   position={{ lat: property.geo_lat, lng: property.geo_lon }}
                   icon={{
                     url: "/red-marker.png",
-                    scaledSize: { width: 80, height: 80 },
-                    anchor: { x: 40, y: 80 },
+                    scaledSize: { width: 70, height: 70 },
+                    anchor: { x: 40, y: 70 },
                   }}
                   onClick={() =>
                     setSelectedProperty({ ...property, isMain: true })
@@ -386,7 +524,7 @@ export default function PropertyMap({ onClose, property, type }) {
       </div>
 
       {/* Back Button - Moved below the map */}
-      <div className="py-6 flex justify-center bg-[#211f17]">
+      {/* <div className="py-6 flex justify-center bg-[#211f17]">
         <button
           onClick={onClose}
           className="flex items-center justify-center gap-2 px-8 py-3 border border-[#656565] text-[#bd9574] hover:bg-[#2c2920] transition-colors"
@@ -395,7 +533,7 @@ export default function PropertyMap({ onClose, property, type }) {
           <ArrowLeft size={20} />
           <span className={`${archivo.className} font-light`}>Go Back</span>
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }

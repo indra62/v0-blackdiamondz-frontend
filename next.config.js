@@ -9,8 +9,13 @@ const nextConfig = {
         hostname: "staging.cms.black-diamondz.62dev.org",
         pathname: "/assets/**",
       },
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+        pathname: "/**",
+      },
     ],
-    domains: ["img.youtube.com"],
+    // domains: ["img.youtube.com"],
   },
   typescript: {
     // !! WARN !!
