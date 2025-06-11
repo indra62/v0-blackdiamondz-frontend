@@ -32,6 +32,7 @@ import { getYouTubeEmbedUrl } from "@/lib/utils"
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
 import { ChevronLeft, ChevronRight, Grid } from "lucide-react"
 import HeartButton from "@/lib/component/heartButton"
+import FloatingButtonWithModal from "@/components/FloatingButtonWithModal"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
@@ -1127,6 +1128,31 @@ export default function PropertyDetailPage({ params }) {
           />
         </>
       )}
+
+      <FloatingButtonWithModal
+        buttonLabel="Show map"
+        buttonIcon={
+          <svg
+            width="25px"
+            height="25px"
+            viewBox="0 0 0.625 0.625"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill="#211f17"
+              d="M0.507 0.061c0.02 0.016 0.034 0.042 0.04 0.069a0.031 0.031 0 0 1 0.002 0.001l0.064 0.03a0.021 0.021 0 0 1 0.012 0.019v0.386a0.021 0.021 0 0 1 -0.027 0.02l-0.177 -0.05 -0.211 0.058a0.021 0.021 0 0 1 -0.012 0L0.015 0.538a0.021 0.021 0 0 1 -0.015 -0.02V0.125c0 -0.014 0.013 -0.024 0.027 -0.02l0.178 0.052 0.091 -0.028q0.002 -0.001 0.004 -0.001c0.004 -0.021 0.013 -0.04 0.03 -0.059 0.019 -0.023 0.054 -0.036 0.087 -0.038 0.035 -0.002 0.061 0.006 0.091 0.029M0.042 0.153v0.35l0.152 0.045V0.197zm0.257 0.019 -0.063 0.019v0.352l0.158 -0.044v-0.103c0 -0.011 0.009 -0.021 0.021 -0.021s0.021 0.009 0.021 0.021v0.099l0.148 0.042V0.192l-0.035 -0.016q-0.001 0.005 -0.002 0.01A0.191 0.191 0 0 1 0.512 0.252l-0.077 0.097a0.021 0.021 0 0 1 -0.034 -0.001l-0.072 -0.105q-0.018 -0.025 -0.025 -0.045a0.116 0.116 0 0 1 -0.006 -0.026m0.12 -0.099c-0.023 0.001 -0.046 0.01 -0.057 0.023 -0.013 0.016 -0.02 0.03 -0.021 0.045 -0.002 0.018 -0.001 0.03 0.004 0.043 0.003 0.009 0.01 0.021 0.02 0.035l0.057 0.082 0.06 -0.075a0.15 0.15 0 0 0 0.026 -0.052c0.007 -0.026 -0.004 -0.065 -0.025 -0.081 -0.022 -0.017 -0.038 -0.022 -0.063 -0.02m0.004 0.022c0.035 0 0.063 0.028 0.063 0.062a0.062 0.062 0 0 1 -0.063 0.062c-0.035 0 -0.063 -0.028 -0.063 -0.062s0.028 -0.062 0.063 -0.062m0 0.041a0.021 0.021 0 0 0 -0.021 0.021c0 0.011 0.009 0.021 0.021 0.021a0.021 0.021 0 0 0 0.021 -0.021 0.021 0.021 0 0 0 -0.021 -0.021"
+            />
+          </svg>
+        }
+      >
+        <div className="w-[90vw] h-auto bg-[#bd9574] rounded-md p-4">
+          <PropertyMap
+            property={property}
+            type={translation?.name}
+          />
+        </div>
+      </FloatingButtonWithModal>
+
       <Footer />
     </main>
   )

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 
 /**
  * FloatingButtonWithModal
@@ -14,6 +14,21 @@ export default function FloatingButtonWithModal({
   className = "",
 }) {
   const [open, setOpen] = useState(false);
+  const modalRef = useRef(null);
+
+  // Close modal on outside click
+  useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside, true);
+    };
+  }, [open]);
 
   return (
     <>
@@ -34,10 +49,10 @@ export default function FloatingButtonWithModal({
 
       {/* Modal overlay */}
       {open && (
-        <div className="fixed inset-0 z-[1001] flex items-center justify-center bg-black/60">
-          <div className="bg-[#211f17] rounded-lg shadow-xl p-6 max-w-full max-h-full relative">
+        <div className="fixed inset-0 z-[1004] flex items-center justify-center bg-black/60">
+          <div ref={modalRef} className="bg-[#211f17] rounded-lg shadow-xl p-6 max-w-full max-h-full relative">
             <button
-              className="absolute top-2 right-2 text-white hover:text-[#bd9574]"
+              className="absolute top-2 right-2 text-white text-lg hover:text-[#bd9574]"
               onClick={() => setOpen(false)}
               aria-label="Close"
             >

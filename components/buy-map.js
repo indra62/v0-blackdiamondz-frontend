@@ -2,13 +2,18 @@
 
 import { useState, useMemo, useEffect, useRef } from "react"
 import { Archivo, Taviraj } from "next/font/google"
-import { ArrowLeft } from "lucide-react"
-import Image from "next/image"
 
-import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api"
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  DirectionsRenderer,
+  Autocomplete,
+} from "@react-google-maps/api"
 import Loading from "./loading"
 import { getImageUrl, getItems } from "@/lib/api"
 import { useMapLoader } from "@/lib/component/MapLoaderProvider"
+import Select from "react-select"
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -18,6 +23,43 @@ const taviraj = Taviraj({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 })
+
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    backgroundColor: "#211f17",
+    border: "none",
+    boxShadow: "none",
+    color: "#E2DBCC",
+    height: "40px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: "#211f17",
+    border: "1px solid rgba(101, 101, 101, 0.3)",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? "#2c2a20" : "#211f17",
+    color: "#E2DBCC",
+    cursor: "pointer",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "#E2DBCC",
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "#656565",
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: "#E2DBCC",
+  }),
+  indicatorSeparator: (base) => ({
+    display: "none",
+  }),
+}
 
 const mapStyles = [
   {
@@ -116,12 +158,26 @@ const mapStyles = [
   },
 ]
 
+const travelModeOptions = [
+  { value: "DRIVING", label: "Driving" },
+  { value: "WALKING", label: "Walking" },
+  { value: "BICYCLING", label: "Bicycling" },
+  { value: "TRANSIT", label: "Transit" },
+]
+
 export default function BuyMap({ propertyStatus = "Current" }) {
   const [mapType, setMapType] = useState("Map")
   const [property, setProperty] = useState([])
   const [error, setError] = useState(null)
   const [selectedProperty, setSelectedProperty] = useState(null)
   const mapRef = useRef(null)
+
+  // Directions-related state
+  const originAutocompleteRef = useRef(null)
+  const [originInput, setOriginInput] = useState("")
+  const [travelMode, setTravelMode] = useState("DRIVING")
+  const [directions, setDirections] = useState(null)
+  const [showDirectionsPanel, setShowDirectionsPanel] = useState(false)
 
   const { isLoaded } = useMapLoader()
 
@@ -184,10 +240,108 @@ export default function BuyMap({ propertyStatus = "Current" }) {
     mapRef.current.setZoom(16)
   }, [selectedProperty])
 
+  const handleUseMyLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setOriginInput(
+            `${position.coords.latitude},${position.coords.longitude}`
+          )
+        },
+        () => alert("Unable to retrieve your location")
+      )
+    }
+  }
+
+  const handleGetDirections = async (e) => {
+    e.preventDefault()
+    if (!selectedProperty) {
+      alert("Please select a property as your destination.")
+      return
+    }
+    if (!originInput) {
+      alert("Please enter your starting location or use your current location.")
+      return
+    }
+    const directionsService = new window.google.maps.DirectionsService()
+    directionsService.route(
+      {
+        origin: originInput,
+        destination: {
+          lat: selectedProperty.geo_lat,
+          lng: selectedProperty.geo_lon,
+        },
+        travelMode: window.google.maps.TravelMode[travelMode],
+      },
+      (result, status) => {
+        if (status === "OK") {
+          setDirections(result)
+          setShowDirectionsPanel(true)
+        } else {
+          alert("Directions request failed: " + status)
+        }
+      }
+    )
+  }
+
+  useEffect(() => {
+    setDirections(null)
+  }, [originInput, selectedProperty])
+
   return (
-    <div className="relative bg-[#211f17] z-[1001] flex flex-col rounded-md">
+    <div className="relative bg-[#bd9574] z-[1004] flex flex-col rounded-md">
       <div className="flex-1 relative">
-        <div className="h-[700px] w-full">
+        <form
+          onSubmit={handleGetDirections}
+          className="flex flex-col gap-2 py-3 bg-[#bd9574] md:flex-row md:items-center md:gap-3"
+        >
+          <div className="flex-1">
+            {/* <Autocomplete
+              onLoad={(autocomplete) =>
+                (originAutocompleteRef.current = autocomplete)
+              }
+              onPlaceChanged={() => {
+                const place = originAutocompleteRef.current.getPlace()
+                if (place && place.formatted_address) {
+                  setOriginInput(place.formatted_address)
+                } else if (place && place.name) {
+                  setOriginInput(place.name)
+                }
+              }}
+            > */}
+            <input
+              type="text"
+              placeholder="Enter your location"
+              value={originInput}
+              onChange={(e) => setOriginInput(e.target.value)}
+              className="w-full px-3 py-2 rounded border border-[#bd9574] focus:outline-none"
+            />
+            {/* </Autocomplete> */}
+          </div>
+          <button
+            type="button"
+            onClick={handleUseMyLocation}
+            className="w-full md:w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
+          >
+            Use My Location
+          </button>
+          <Select
+            value={travelModeOptions.find((opt) => opt.value === travelMode)}
+            onChange={(option) => setTravelMode(option.value)}
+            options={travelModeOptions}
+            isSearchable={false}
+            className="w-full md:w-[200px] h-10"
+            styles={customStyles}
+          />
+          <button
+            type="submit"
+            className="w-full md:w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
+          >
+            Get Directions
+          </button>
+        </form>
+
+        <div className="h-[50vh] min-h-[300px] max-h-[700px] md:h-[700px] w-full">
           {isLoaded ? (
             <GoogleMap
               mapContainerStyle={{ width: "100%", height: "100%" }}
@@ -215,7 +369,11 @@ export default function BuyMap({ propertyStatus = "Current" }) {
                     scaledSize: { width: 50, height: 50 },
                     anchor: { x: 25, y: 50 },
                   }}
-                  onClick={() => setSelectedProperty(item)}
+                  onClick={() => {
+                    setSelectedProperty(item)
+                    setDirections(null)
+                    setShowDirectionsPanel(false)
+                  }}
                 />
               ))}
               {selectedProperty && (
@@ -280,6 +438,18 @@ export default function BuyMap({ propertyStatus = "Current" }) {
                     </a>
                   </div>
                 </InfoWindow>
+              )}
+              {directions && (
+                <DirectionsRenderer
+                  directions={directions}
+                  options={{
+                    suppressMarkers: false,
+                    polylineOptions: {
+                      strokeColor: "#FBF4E4",
+                      strokeWeight: 5,
+                    },
+                  }}
+                />
               )}
             </GoogleMap>
           ) : (
