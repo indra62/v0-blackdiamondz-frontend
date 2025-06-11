@@ -9,6 +9,8 @@ import Loading from "@/components/loading"
 import { useRef, useState, useEffect } from "react";
 import { getImageUrl, getItems } from "@/lib/api"
 import Link from "next/link"
+import SlideInOnView from "@/components/magicui/slide-in"
+import { TextAnimate } from "@/components/magicui/text-animate"
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
@@ -263,9 +265,9 @@ export default function OurStoryPage() {
 
             {/* Hero Content */}
             <div className="text-[#E2DBCC] relative h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
-              <h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
+              <TextAnimate as="h1" animation="slideLeft" className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 max-w-5xl -mt-32 leading-[125%] tracking-[2px]`}>
                 {translation?.title}
-              </h1>
+              </TextAnimate>
 
               {/* Diamond Separator */}
               <div className="flex items-center justify-center gap-4 mb-8">
@@ -305,16 +307,16 @@ export default function OurStoryPage() {
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
                 {/* Left Column */}
-                <div className="md:w-[505px] self-start ml-auto">
+                <SlideInOnView direction="left" className="md:w-[505px] self-start ml-auto">
                   <h2
                     className={`${taviraj.className} text-[#E2DBCC] text-[24px] font-normal leading-[180%] tracking-[0%] mb-8 text-right`}
                   >
                     <span dangerouslySetInnerHTML={{ __html: translationStoryStory?.story_1 || '' }} />
                   </h2>
-                </div>
+                </SlideInOnView>
 
                 {/* Right Column */}
-                <div className="md:w-[505px] self-start">
+                <SlideInOnView direction="right" className="md:w-[505px] self-start">
                   {/* Read More/Less logic for story_2 */}
                   <ExpandableText
   text={translationStoryStory?.story_2?.replace(/<[^>]+>/g, "") || ''}
@@ -322,7 +324,7 @@ export default function OurStoryPage() {
   lineCount={12}
 />
 
-                </div>
+                </SlideInOnView>
               </div>
             </div>
           </section>

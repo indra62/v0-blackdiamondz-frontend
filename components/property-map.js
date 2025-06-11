@@ -278,7 +278,7 @@ export default function PropertyMap({ onClose, property, type }) {
 
   const handleGetDirections = async (e) => {
     e.preventDefault()
-    if (!selectedProperty) {
+    if (!selectedProperty || !property) {
       alert("Please select a property as your destination.")
       return
     }
@@ -291,8 +291,8 @@ export default function PropertyMap({ onClose, property, type }) {
       {
         origin: originInput,
         destination: {
-          lat: selectedProperty.geo_lat,
-          lng: selectedProperty.geo_lon,
+          lat: selectedProperty.geo_lat || property.geo_lat,
+          lng: selectedProperty.geo_lon || property.geo_lon,
         },
         travelMode: window.google.maps.TravelMode[travelMode],
       },

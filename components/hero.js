@@ -18,6 +18,7 @@ import { getImageUrl } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { BlurFade } from "./magicui/blur-fade";
+import { TextAnimate } from "./magicui/text-animate";
 
 const taviraj = Taviraj({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const archivo = Archivo({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
@@ -29,7 +30,6 @@ export default function Hero({ data }) {
    * Limited to max 100 to prevent excessive calculations
    */
   const { user } = useAuth();
-  const [scrollCount, setScrollCount] = useState(0);
   const [language, setLanguage] = useState("en");
   const [heroData, setHeroData] = useState(null);
 
@@ -45,16 +45,6 @@ export default function Hero({ data }) {
   const translation =
     data?.translations?.find((t) => t.languages_code === language) ||
     data?.translations?.[0];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const count = Math.min(Math.floor(window.scrollY / 10), 100);
-      setScrollCount(count);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
 		<div className="relative h-screen w-full overflow-hidden">
@@ -83,9 +73,9 @@ export default function Hero({ data }) {
 
 			{/* Content */}
 			<div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-				<h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 max-w-5xl -mt-32 leading-[125%] tracking-[2px]`}>
+				<TextAnimate as="h1" animation="slideLeft" className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 max-w-5xl -mt-32 leading-[125%] tracking-[2px]`}>
 					{translation?.hero_text || ""}
-				</h1>
+				</TextAnimate>
 
 				{/* Diamond divider */}
           <div className="flex items-center justify-center mb-8">

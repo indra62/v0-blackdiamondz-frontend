@@ -8,6 +8,7 @@ import Footer from "@/components/footer"
 import Loading from "@/components/loading"
 import { getImageUrl, getItems } from "@/lib/api"
 import { formatDate } from "@/lib/utils"
+import { TextAnimate } from "@/components/magicui/text-animate"
 
 const taviraj = Taviraj({
   subsets: ["latin"],
@@ -46,10 +47,10 @@ export default function MediaNews() {
         })
 
         const dataNews = await getItems("news", {
-					fields: ["*", "translations.*"],
-					sort: ["-news_date"],
-					filter: { status: { _eq: "published" } },
-				});
+          fields: ["*", "translations.*"],
+          sort: ["-news_date"],
+          filter: { status: { _eq: "published" } },
+        })
 
         setHeroData(dataHero)
         setNews(dataNews)
@@ -97,16 +98,22 @@ export default function MediaNews() {
               ></div>
             </div>
             <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-              <h1 className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 leading-[125%] tracking-[2px] max-w-5xl`}>
+              <TextAnimate
+                as="h1"
+                animation="slideLeft"
+                className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 max-w-5xl -mt-32 leading-[125%] tracking-[2px]`}
+              >
                 {translation?.title || ""}
-              </h1>
+              </TextAnimate>
               {/* Diamond Separator */}
               <div className="flex items-center justify-center gap-4 mb-8">
                 <div className="w-24 h-[1px] bg-[#BD9574]"></div>
                 <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
                 <div className="w-24 h-[1px] bg-[#BD9574]"></div>
               </div>
-              <p className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg`}>
+              <p
+                className={`${archivo.className} text-[#e2dbcc] max-w-3xl mx-auto text-base md:text-lg`}
+              >
                 {translation?.description || ""}
               </p>
             </div>
