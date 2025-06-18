@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react"
-import Portal from "@/lib/component/portal"
+import Portal from "@/lib/component/Portal"
 
 /**
  * FloatingButtonWithModal
