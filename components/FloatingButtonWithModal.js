@@ -1,4 +1,5 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react"
+import Portal from "@/lib/component/portal"
 
 /**
  * FloatingButtonWithModal
@@ -13,22 +14,41 @@ export default function FloatingButtonWithModal({
   buttonIcon,
   className = "",
 }) {
-  const [open, setOpen] = useState(false);
-  const modalRef = useRef(null);
+  const [open, setOpen] = useState(false)
+  const modalRef = useRef(null)
 
   // Close modal on outside click
   useEffect(() => {
-    if (!open) return;
+    if (!open) return
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setOpen(false);
+        setOpen(false)
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside, true);
+    }
+    document.addEventListener("mousedown", handleClickOutside, true)
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside, true);
-    };
-  }, [open]);
+      document.removeEventListener("mousedown", handleClickOutside, true)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+
+    const movePacContainer = () => {
+      const pacContainers = document.querySelectorAll(".pac-container")
+      const modal = document.querySelector(".floating-modal")
+      pacContainers.forEach((container) => {
+        if (modal && !modal.contains(container)) {
+          modal.appendChild(container)
+        }
+      })
+    }
+
+    // Run after a short delay to ensure .pac-container is created
+    setTimeout(movePacContainer, 100)
+
+    // Optionally, rerun when modal opens or input is focused
+  }, [open])
 
   return (
     <>
@@ -49,8 +69,12 @@ export default function FloatingButtonWithModal({
 
       {/* Modal overlay */}
       {open && (
+        <Portal>
         <div className="fixed inset-0 z-[1004] flex items-center justify-center bg-black/60">
-          <div ref={modalRef} className="bg-[#211f17] rounded-lg shadow-xl p-6 max-w-full max-h-full relative">
+          <div
+            ref={modalRef}
+            className="floating-modal bg-[#211f17] rounded-lg shadow-xl p-6 max-w-full max-h-full relative"
+          >
             <button
               className="absolute top-2 right-2 text-white text-lg hover:text-[#bd9574]"
               onClick={() => setOpen(false)}
@@ -61,7 +85,8 @@ export default function FloatingButtonWithModal({
             {children}
           </div>
         </div>
+        </Portal>
       )}
     </>
-  );
+  )
 }

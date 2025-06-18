@@ -293,55 +293,81 @@ export default function BuyMap({ propertyStatus = "Current" }) {
       <div className="flex-1 relative">
         <form
           onSubmit={handleGetDirections}
-          className="flex flex-col gap-2 py-3 bg-[#bd9574] md:flex-row md:items-center md:gap-3"
+          className="flex flex-col gap-2 mb bg-[#bd9574] md:flex-row md:items-center md:gap-3"
         >
-          <div className="flex-1">
-            {/* <Autocomplete
-              onLoad={(autocomplete) =>
-                (originAutocompleteRef.current = autocomplete)
-              }
-              onPlaceChanged={() => {
-                const place = originAutocompleteRef.current.getPlace()
-                if (place && place.formatted_address) {
-                  setOriginInput(place.formatted_address)
-                } else if (place && place.name) {
-                  setOriginInput(place.name)
-                }
-              }}
-            > */}
-            <input
-              type="text"
-              placeholder="Enter your location"
-              value={originInput}
-              onChange={(e) => setOriginInput(e.target.value)}
-              className="w-full px-3 py-2 rounded border border-[#bd9574] focus:outline-none"
-            />
-            {/* </Autocomplete> */}
+          {/* Row 1: Autocomplete and Use My Location */}
+          <div className="flex w-full items-center gap-2 md:gap-3">
+            <div className="flex-1">
+              <Autocomplete>
+                <input
+                  type="text"
+                  placeholder="Enter your location"
+                  value={originInput}
+                  onChange={(e) => setOriginInput(e.target.value)}
+                  className="w-full px-3 py-2 rounded border border-[#bd9574] focus:outline-none"
+                />
+              </Autocomplete>
+            </div>
+            <button
+              type="button"
+              onClick={handleUseMyLocation}
+              className="w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
+            >
+              <svg
+                fill="#FBF4E4"
+                width="22px"
+                height="22px"
+                viewBox="0 0 0.66 0.66"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M0.084 0.357H0.028v-0.055h0.057A0.248 0.248 0 0 1 0.302 0.084V0.028h0.055v0.057A0.248 0.248 0 0 1 0.576 0.302H0.632v0.055h-0.057A0.248 0.248 0 0 1 0.357 0.576V0.632h-0.055v-0.057A0.248 0.248 0 0 1 0.084 0.357M0.33 0.138a0.193 0.193 0 1 0 0 0.385 0.193 0.193 0 0 0 0 -0.385m0 0.083a0.11 0.11 0 1 1 0 0.22 0.11 0.11 0 0 1 0 -0.22m0 0.055a0.055 0.055 0 1 0 0 0.11 0.055 0.055 0 0 0 0 -0.11"
+                />
+              </svg>
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={handleUseMyLocation}
-            className="w-full md:w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
-          >
-            Use My Location
-          </button>
-          <Select
-            value={travelModeOptions.find((opt) => opt.value === travelMode)}
-            onChange={(option) => setTravelMode(option.value)}
-            options={travelModeOptions}
-            isSearchable={false}
-            className="w-full md:w-[200px] h-10"
-            styles={customStyles}
-          />
-          <button
-            type="submit"
-            className="w-full md:w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
-          >
-            Get Directions
-          </button>
+
+          {/* Row 2: Travel mode, submit, and show direction */}
+          <div className="flex items-center gap-2 md:gap-3 w-full">
+            <Select
+              value={travelModeOptions.find((opt) => opt.value === travelMode)}
+              onChange={(option) => setTravelMode(option.value)}
+              options={travelModeOptions}
+              isSearchable={false}
+              className="w-full md:w-[200px] h-10"
+              styles={customStyles}
+            />
+            <button
+              type="submit"
+              className="w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
+            >
+              <svg
+                fill="#FBF4E4"
+                width="24px"
+                height="24px"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M12 3.515L3.515 12 12 20.485 20.485 12 12 3.515zm.707-2.122l9.9 9.9a1 1 0 0 1 0 1.414l-9.9 9.9a1 1 0 0 1-1.414 0l-9.9-9.9a1 1 0 0 1 0-1.414l9.9-9.9a1 1 0 0 1 1.414 0zM13 10V7.5l3.5 3.5-3.5 3.5V12h-3v3H8v-4a1 1 0 0 1 1-1h4z" />
+                </g>
+              </svg>
+            </button>
+          {directions && (
+            <button
+              type="button"
+              onClick={() => setShowDirectionsPanel(!showDirectionsPanel)}
+              className="w-full md:w-auto px-3 py-2 rounded bg-[#211f17] text-[#FBF4E4] hover:bg-[#3a2e1e]"
+            >
+              {showDirectionsPanel ? "Hide Directions" : "Show Directions"}
+            </button>
+          )}
+          </div>
         </form>
 
-        <div className="h-[50vh] min-h-[300px] max-h-[700px] md:h-[700px] w-full">
+        <div className="h-[70vh] min-h-[300px] max-h-[600px] md:h-[600px] w-full">
           {isLoaded ? (
             <GoogleMap
               mapContainerStyle={{ width: "100%", height: "100%" }}
@@ -458,6 +484,47 @@ export default function BuyMap({ propertyStatus = "Current" }) {
             </section>
           )}
         </div>
+        {showDirectionsPanel && directions && (
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 130,
+              width: 320,
+              maxHeight: 600,
+              overflowY: "auto",
+              background: "#23201b",
+              color: "#FBF4E4",
+              borderRadius: 8,
+              padding: 16,
+              zIndex: 10,
+              boxShadow: "0 2px 16px rgba(0,0,0,0.3)",
+            }}
+          >
+            <h4 style={{ color: "#bd9574", marginBottom: 12 }}>Directions</h4>
+            {directions.routes[0].legs[0].steps.map((step, idx) => (
+              <div key={idx} style={{ marginBottom: 8 }}>
+                <span dangerouslySetInnerHTML={{ __html: step.instructions }} />
+                <div style={{ fontSize: 12, color: "#bd9574" }}>
+                  {step.distance.text} ({step.duration.text})
+                </div>
+              </div>
+            ))}
+            <button
+              onClick={() => setShowDirectionsPanel(false)}
+              style={{
+                marginTop: 12,
+                padding: 8,
+                borderRadius: 4,
+                background: "#bd9574",
+                color: "#211f17",
+                border: "none",
+              }}
+            >
+              Close
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
