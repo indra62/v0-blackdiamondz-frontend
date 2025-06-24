@@ -293,7 +293,7 @@ export default function BuyMap({ propertyStatus = "Current" }) {
       <div className="flex-1 relative">
         <form
           onSubmit={handleGetDirections}
-          className="flex flex-col gap-2 mb bg-[#bd9574] md:flex-row md:items-center md:gap-3"
+          className="flex flex-col gap-2 mb-3 bg-[#bd9574] md:flex-row md:items-center md:gap-3"
         >
           {/* Row 1: Autocomplete and Use My Location */}
           <div className="flex w-full items-center gap-2 md:gap-3">
