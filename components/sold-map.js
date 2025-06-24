@@ -291,7 +291,7 @@ export default function SoldMap() {
   }, [originInput, selectedProperty])
 
   return (
-    <div className="relative bg-[#211f17] z-50 flex flex-col rounded-md">
+    <div className="relative bg-[#bd9574] z-50 flex flex-col rounded-md">
       <div className="flex-1 relative">
         <form
           onSubmit={handleGetDirections}
