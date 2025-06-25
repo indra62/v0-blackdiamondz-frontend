@@ -128,7 +128,7 @@ export default function Paddington({ selectedSuggestion }) {
     </section>
   ) : (
     <>
-      <section className="pb-0 pt-16">
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2

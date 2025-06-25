@@ -156,11 +156,11 @@ export default function Header() {
   return (
     <>
       <header
-        className={`${archivo.className} font-light sticky-header h-[140px]`}
+        className={`${archivo.className} font-light sticky-header h-auto`}
       >
         {/* Main Navigation */}
         <div
-          className={`bg-[#211F17]/80 backdrop-blur-md text-[#BD9574] md:border-b md:border-[#333] transition-colors duration-300 h-[140px]`}
+          className={`bg-[#211F17]/80 backdrop-blur-md text-[#BD9574] md:border-b md:border-[#333] transition-colors duration-300 w-full h-auto`}
         >
           {/* Mobile Header */}
           <div className="md:hidden flex items-center justify-between px-4 h-[60px]">
@@ -235,9 +235,9 @@ export default function Header() {
               </Link>
               <Link
                 href="/club-diamondz"
-                className={`flex justify-center items-center px-6 py-2 w-[180px] text-sm font-light text-[#888]`}
+                className={`flex justify-center items-center px-6 py-2 w-[160px] text-sm font-light text-[#888]`}
               >
-                <svg
+                {/* <svg
                   width="25"
                   height="25"
                   viewBox="0 0 25 25"
@@ -252,7 +252,7 @@ export default function Header() {
                     d="M16.902 19.12H6.848V20.625h10.054z"
                     fill="currentColor"
                   />
-                </svg>
+                </svg> */}
                 Club Diamondz
               </Link>
               <Link
@@ -286,7 +286,7 @@ export default function Header() {
           <div className="hidden md:grid grid-cols-[repeat(3,1fr)] md:grid-rows-[1fr] md:gap-y-[10px] md:gap-x-[10px] md:justify-items-stretch">
             {/* Logo Section */}
             <div className="row-1 row-2 col-1 col-2 flex flex-col justify-start items-start">
-              <div className="px-7 py-4 h-[70px]">
+              <div className="flex items-center px-6 py-3 h-auto">
                 <Link href="/">
                   <img
                     src={
@@ -301,10 +301,10 @@ export default function Header() {
                   />
                 </Link>
               </div>
-              <div className="flex h-[70px]">
+              <div className="flex h-auto">
                 <Link
                   href="/buy"
-                  className={`flex items-center px-7 py-4 text-sm font-light border-r border-[#333] ${
+                  className={`flex items-center px-6 py-3 text-sm font-light border-r border-[#333] ${
                     activeTab === "buy" ? "text-[#BD9574]" : "text-[#888]"
                   }`}
                 >
@@ -312,7 +312,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/sold-properties"
-                  className={`flex items-center px-7 py-4 text-sm font-light ${
+                  className={`flex items-center px-6 py-3 text-sm font-light ${
                     activeTab === "sold" ? "text-[#BD9574]" : "text-[#888]"
                   }`}
                 >
@@ -325,11 +325,12 @@ export default function Header() {
               <Link href="/">
                 <img
                   src={
-                    getImageUrl(dataSocial?.footer_logo?.id, {
-                      format: "webp",
-                      quality: 80,
-                      fit: "fit",
-                    }) || "/images/smallLogoBD.png"
+                    // getImageUrl(dataSocial?.footer_logo?.id, {
+                    //   format: "webp",
+                    //   quality: 80,
+                    //   fit: "fit",
+                    // }) || 
+                    "/bd-logo-header.png"
                   }
                   alt="Black Diamondz Logo"
                   className="lg:max-w-[300px] md:max-w-[150px] h-auto"
@@ -339,9 +340,9 @@ export default function Header() {
 
             {/* Language Selection */}
             <div className="row-1 row-2 col-3 col-4 flex-col items-center justify-end">
-              <div className="flex items-center justify-end px-6 h-[70px]">
+              <div className="flex items-center justify-end px-6 h-auto">
                 {/* Login Button */}
-                <div className="flex items-center justify-center px-6 py-4 w-[120px]">
+                <div className="flex items-center justify-center px-6 py-3 w-[120px]">
                   {hasMounted ? (
                     isAuthenticated ? (
                       <button
@@ -362,7 +363,7 @@ export default function Header() {
                     <span style={{ visibility: "hidden" }}>Login</span>
                   )}
                 </div>
-                <div className="flex items-center justify-center px-6 py-4">
+                <div className="flex items-center justify-center px-6 py-3">
                   <button
                     ref={languageButtonRef}
                     onClick={toggleLanguageDropdown}
@@ -431,26 +432,26 @@ export default function Header() {
                 </div>
               </div>
               {!isMobileView && (
-                <div className="hidden md:flex items-stretch text-[#888] h-[70px]">
+                <div className="hidden md:flex items-stretch text-[#888] h-auto">
                   {/* Spacer */}
                   <div className="flex-grow"></div>
                   {/* <Link
 										href="/our-team"
-										className={`flex items-center px-7 py-4 text-sm font-light text-[#888]`}
+										className={`flex items-center px-6 py-3 text-sm font-light text-[#888]`}
 									>
 										Our Team
 									</Link> */}
                   <Link
                     href="/sell"
-                    className={`flex items-center px-7 py-4 text-sm font-light text-[#888]`}
+                    className={`flex items-center px-6 py-3 text-sm font-light text-[#888]`}
                   >
                     Sell
                   </Link>
                   <Link
                     href="/club-diamondz"
-                    className={`flex items-center px-7 py-4 text-sm font-light border-l border-[#333] text-[#888]`}
+                    className={`flex items-center px-6 py-3 text-sm font-light border-l border-[#333] text-[#888]`}
                   >
-                    <svg
+                    {/* <svg
                       width="25"
                       height="25"
                       viewBox="0 0 25 25"
@@ -465,12 +466,12 @@ export default function Header() {
                         d="M16.902 19.12H6.848V20.625h10.054z"
                         fill="currentColor"
                       />
-                    </svg>
+                    </svg> */}
                     Club Diamondz
                   </Link>
                   <Link
                     href="/contact-us"
-                    className={`flex items-center px-7 py-4 text-sm font-light border-l border-[#333] text-[#888]`}
+                    className={`flex items-center px-6 py-3 text-sm font-light border-l border-[#333] text-[#888]`}
                   >
                     Contact Us
                   </Link>
