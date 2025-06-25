@@ -26,7 +26,8 @@ import PropertyImagesGallery from "@/components/property-images-gallery"
 import PropertyGridGallery from "@/components/property-grid-gallery"
 import PropertyMap from "@/components/property-map"
 import PropertyAgents from "@/components/property-agents"
-import { getItem, getImageUrl, findFeature } from "@/lib/api"
+import Properties from "@/components/properties";
+import { getItem, getItems, getImageUrl, findFeature } from "@/lib/api"
 import Loading from "@/components/loading"
 import { getYouTubeEmbedUrl } from "@/lib/utils"
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
@@ -71,6 +72,49 @@ export default function PropertyDetailPage({ params }) {
     }
   }
 
+  const fetchOtherProperties = async (id) => {
+    try {
+
+      const filter = {
+				is_off_market: { _eq: false },
+				status: { _eq: "Current" },
+        id: { _neq: id }, // Exclude the current property
+			};
+
+      const data = await getItems(
+				"properties",
+				{
+					fields: [
+						"*",
+						"translations.*",
+						"images.directus_files_id.*",
+						"plans.*",
+						"videos.*",
+						"features.feature_id.*",
+						"features.value",
+						"agents.agent_id.*",
+            "agents.agent_id.agent_photo.directus_files_id.*",
+            "agents.agent_id.external_logo.directus_files_id.*",
+						"agents.agent_id.user_id.*",
+						"type.*.*",
+					],
+					filter,
+					limit: 8,
+					page: 1,
+					sort: ["-date_listed"],
+					meta: "filter_count,total_count",
+				},
+				{},
+				true
+			);
+
+      return data?.data || []
+    } catch (error) {
+      setError("Error fetching property:", error)
+      return null
+    }
+  }
+
   // State management for different view modes and selected images
   const [viewMode, setViewMode] = useState("grid") // "grid", "gallery", "gridGallery", "map", or "agents"
   const [selectedImageId, setSelectedImageId] = useState(0) // Default to first image
@@ -83,6 +127,22 @@ export default function PropertyDetailPage({ params }) {
   const [videoLightboxOpen, setVideoLightboxOpen] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [scale, setScale] = useState(1)
+
+  const [otherProperties, setOtherProperties] = useState([])
+  const [isMobileView, setIsMobileView] = useState(false);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobileView(window.innerWidth < 768);
+		};
+
+		handleResize();
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
   const [expanded, setExpanded] = useState(false)
   const description = property?.description || ""
@@ -112,6 +172,10 @@ export default function PropertyDetailPage({ params }) {
       setAllMedia(combinedMedia)
       setAlbum(combinedMedia)
       setLoading(false)
+    })
+
+    fetchOtherProperties(propertyId).then((data) => {
+      setOtherProperties(data || [])
     })
 
     if (typeof window !== "undefined") {
@@ -1126,6 +1190,27 @@ export default function PropertyDetailPage({ params }) {
                 property?.address_postcode.toString().padStart(4, "0"),
             }}
           />
+          <div className="container mx-auto px-4">
+          <div className="text-center">
+            {/* Diamond Separator */}
+            <div className="flex items-center justify-center gap-4">
+              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+              <div className="w-2 h-2 bg-[#BD9574] rotate-45"></div>
+              <div className="w-24 h-[1px] bg-[#BD9574]"></div>
+            </div>
+            </div>
+
+						<Properties
+							data={otherProperties}
+							currentPage={1}
+							totalPages={1}
+							// onPageChange={handlePropertyPageChange}
+							// onFilterChange={handlePropertyFilterChange}
+							// onTypeChange={handlePropertyTypeChange}
+							// categories={categories}
+							isMobileView={isMobileView}
+						/>
+					</div>
         </>
       )}
 
