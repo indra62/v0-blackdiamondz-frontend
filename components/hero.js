@@ -72,7 +72,7 @@ export default function Hero({ data }) {
 			</div>
 
 			{/* Content */}
-			<div className="relative h-full flex flex-col items-center justify-center text-center px-4 222">
+			<div className="relative h-full flex flex-col items-center justify-center text-center px-4 222 333">
 				<TextAnimate as="h1" animation="slideLeft" className={`${taviraj.className} text-[#e2dbcc] text-4xl md:text-5xl mb-8 max-w-5xl -mt-32 leading-[125%] tracking-[2px]`}>
 					{translation?.hero_text || ""}
 				</TextAnimate>
