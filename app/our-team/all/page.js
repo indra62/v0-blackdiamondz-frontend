@@ -157,7 +157,7 @@ export default function OurTeamAllPage() {
             <div className="container mx-auto px-4">
               <div className="flex flex-col md:flex-row justify-center items-start">
                 {/* First Member */}
-                <div className="flex flex-col items-center text-center w-full mb-16 md:mb-0">
+                <div className="flex flex-col items-center text-center w-full mb-16 md:mb-0 333">
                   <Link
                     href={`/team/monika-tu`}
                     className="group cursor-pointer flex flex-col items-center"
