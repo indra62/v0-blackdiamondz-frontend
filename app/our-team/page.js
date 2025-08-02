@@ -164,7 +164,7 @@ export default function OurTeamPage() {
                     href={`/team/monika-tu`}
                     className="group cursor-pointer flex flex-col items-center"
                   >
-                    <div className="w-[400px] h-[400px] mb-8 overflow-hidden 111">
+                    <div className="w-[400px] h-[400px] mb-8 overflow-hidden 222">
                       <Image
                         src={getImageUrl(teamFounderData?.founder_1?.id, {
                           format: "webp",
